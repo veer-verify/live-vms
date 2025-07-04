@@ -1,0 +1,136 @@
+
+<ng-container *ngIf="details.type=='add'">
+  <div class="main-container">
+      <div class="d-flex justify-content-between">
+          <p class="headingp">{{details.item.siteName}}</p>
+          <p class="headingp">Monitoring Hours</p>
+          <button class="closebtn" mat-dialog-close>×</button>
+      </div>
+      <div class="row mt-2">
+          <!-- <div class="col-lg-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Select site</mat-label>
+              <input matInput [matAutocomplete]="site" [(ngModel)]="siteName" (keyup)="searchSites($event)">
+              <button matSuffix mat-icon-button>
+                <mat-icon>arrow_drop_down</mat-icon>
+              </button>
+              <mat-autocomplete #site="matAutocomplete">
+               
+                <mat-option *ngFor="let item of cameralist | search: siteSearch" [value]="item.siteId" (click)="filter(item)">
+                  {{ item.siteId }} - {{ item.siteName }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div> -->
+      
+          <div class="col-lg-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Select Cameras</mat-label>
+              <mat-select [(ngModel)]="deviceName" (keyup)="searchDevices($event)" multiple>
+                <mat-checkbox class="mat-option" color="primary" [checked]="isChecked()" (click)="$event.stopPropagation()" (change)="toggleSelection()">
+                Select All
+                </mat-checkbox>
+                <mat-option *ngFor="let item of monitoringCameras" [value]="item.cameraId" (click)="filterCam(item)"> {{ item.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+  
+          <div class="col-lg-12 mb-1"> 
+            <!-- <div> -->
+              <mat-checkbox class="mat-option" color="primary" [checked]="isChecked1()" (click)="$event.stopPropagation()" (change)="toggleSelection1()">
+                Select All
+                </mat-checkbox>
+            <!-- </div> -->
+              <label *ngFor="let day of daysOfWeek">
+                <mat-checkbox color="primary" (change)="toggleDaySelection(day)" [checked]="selectedDays.includes(day)"></mat-checkbox>
+                {{ day }}
+              </label>
+           
+          </div>
+          <div class="col-lg-6">
+            <!-- <material-timepicker classFormField="w-100" color="primary"   label="StartTime" [userTime]="exportTime" revertLabel="Remove" submitLabel="Ok"></material-timepicker> -->
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>StartTime</mat-label>
+              <input matInput [(ngModel)]="startTime" (ngModelChange)="onTimeChange('start')"  [ngxMatTimepicker]="picker"  [format]="24" > 
+              <ngx-mat-timepicker #picker [hoursOnly]="true" [enableKeyboardInput]="true" ></ngx-mat-timepicker >
+
+                <!-- <input matInput [(ngModel)]="startTime"  [max]="endTime" [ngxMatTimepicker]="picker"  [format]="24"  >
+                <ngx-mat-timepicker #picker [hoursOnly]="true" [enableKeyboardInput]="true" (timeChanged)="eventChange($event,'start')"></ngx-mat-timepicker > -->
+            </mat-form-field>
+          </div>
+    
+          <div class="col-lg-6">
+            <!-- <material-timepicker color="primary" classFormField="w-100" label="EndTime"  [userTime]="exportTime" revertLabel="Remove" (change)="onChangeHour1($event)" submitLabel="Ok"></material-timepicker> -->
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>EndTime</mat-label>
+              <input matInput [(ngModel)]="endTime" (ngModelChange)="onTimeChange('end')"   [ngxMatTimepicker]="picker1"  [format]="24" > 
+              <ngx-mat-timepicker #picker1 [hoursOnly]="true" [enableKeyboardInput]="true" ></ngx-mat-timepicker>
+
+              <!-- <input matInput [(ngModel)]="endTime" [min]="startTime"  [ngxMatTimepicker]="picker1"  [format]="24" >
+              <ngx-mat-timepicker #picker1 [hoursOnly]="true" [enableKeyboardInput]="true" (timeChanged)="eventChange($event,'end')"></ngx-mat-timepicker> -->
+            </mat-form-field>
+          </div>
+        </div>
+        <button class="btn-template" [ngClass]="{addTimeSlot:endTime && startTime && deviceName?.length !=0 && selectedDays.length != 0}" (click)="addTimeSlot()">Add Time Slot</button>
+        <div class="accord-view">
+  
+            <mat-accordion>
+              <mat-expansion-panel *ngFor="let group of groupedCameras">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <p class="cam-name">
+
+                      Cameras: {{ group.cameraId.join(', ') }}
+                    </p>
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    Monitoring : {{ group.monitoringHours.length }}
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                
+                <!-- Monitoring Hours Table -->
+                <div class="monitoring-table">
+                  <table mat-table [dataSource]="group.monitoringHours" class="mat-elevation-z4">
+                    
+                    <!-- Hours Column -->
+                    <ng-container matColumnDef="hours">
+                      <th mat-header-cell *matHeaderCellDef> Hours </th>
+                      <td mat-cell *matCellDef="let element"> {{ element.hours.join(', ') }} </td>
+                    </ng-container>
+                    
+                    <!-- Days Column -->
+                    <ng-container matColumnDef="days">
+                      <th mat-header-cell *matHeaderCellDef> Days </th>
+                      <td mat-cell *matCellDef="let element"> {{ element.days.join(', ') }} </td>
+                    </ng-container>
+                    
+                    <tr mat-header-row *matHeaderRowDef="monitoringColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: monitoringColumns;"></tr>
+                  </table>
+                </div>
+                
+              </mat-expansion-panel>
+            </mat-accordion>
+            
+        </div>
+  
+        <button *ngIf="groupedCameras.length!=0"  class="btn-template"(click)="createCameraMonitoringHours()" matTooltip="Add Timeslot for all monitoring cameras then only press Submit">Submit</button>
+  
+  
+  
+  </div>
+</ng-container>
+
+<ng-container *ngIf="details.type=='view'">
+<div  style="width: 50vw;" >
+<div class="d-flex justify-content-between bg-light mb-2 p-1" style="position: sticky; top: 0; font-size: 14px;">
+  <p>{{details?.item.siteName}} - Monitoring Hours</p>
+  <button mat-dialog-close class="closebtn">x</button>
+</div>
+  
+<div class="p-3">
+    <app-table [fields]="fields" [data]="monhrCamera"></app-table>
+
+</div>
+</div>
+</ng-container>

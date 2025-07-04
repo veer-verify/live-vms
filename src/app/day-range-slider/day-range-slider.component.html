@@ -1,0 +1,24 @@
+<mat-card class="example-result-card">
+  <mat-card class="example-result-card">
+    <mat-card-content>
+      <h2>Result</h2>
+  
+      <div class="example-label-container">
+        <label id="example-name-label" class="example-name-label">Value</label>
+        <label class="example-value-label">{{slider.value}}</label>
+      </div>
+      <mat-slider
+          class="example-margin"
+          [disabled]="disabled"
+          [max]="max"
+          [min]="min"
+          [step]="step"
+          [discrete]="thumbLabel"
+          [showTickMarks]="showTicks" >
+        <input matSliderThumb [(ngModel)]="value" #slider  >
+      </mat-slider>
+    </mat-card-content>
+  </mat-card>
+
+
+ 

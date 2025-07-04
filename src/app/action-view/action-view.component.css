@@ -1,0 +1,113 @@
+.grid-template{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 3px;
+   max-height: 50vh;
+    overflow-y: auto;
+ 
+}
+
+.alert-header {
+    background-color: #ffecb3;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+  }
+  
+  .alert-header p{
+     
+  }
+  .alert-header h2 {
+    color: #c34e01;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  
+  .alert-body {
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .greeting {
+    font-weight: bold;
+    margin-bottom: 10px;
+     
+  }
+  
+  .message {
+    margin-bottom: 15px;
+     
+  }
+  
+  .previewmail{
+/* color: #ffffff; */
+/* background-color: #084982; */
+/* text-align: center; */
+/* border-radius:  15px 50px 15px 50px; */
+   
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 5px;
+    }
+
+  .vehicle-info p {
+     
+    font-size: 1rem;
+    margin: 5px 0;
+    color: #333;
+  }
+ 
+
+  .card {
+    border-radius: 10px;
+    margin-top: 10px;
+    box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+    transition:cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
+
+  .demo-chart {
+    height: 400px;
+  }
+
+  .btn-template{
+     
+    padding: 0.7em 1.4em;
+    background-color: rgba(8,73,130,1);
+    text-decoration: none;
+    border: none;
+    border-radius: 0.5em;
+    color: #fff;
+    box-shadow: 0.2em 0.2em 0.2em rgba(58, 58, 58, 0.3);
+  }
+  .btn-template:active {
+    box-shadow: inset 0px 0.3em 0.6em rgba(8,73,130,1);
+    transform: translateY(0em);
+  }
+
+  .closebtn {
+    /* padding: 6px 10px 6px 10px;
+    outline: none;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid whitesmoke;
+    text-transform: uppercase;
+    background-color: white;
+    border-radius: 50%;
+    color: black;
+    font-weight: 300;
+    font-size: 24px; */
+    background-color: transparent;
+    border-radius: 50%;
+    color: #000; 
+  }
+  
+
+  .table th, .table td {
+    vertical-align: middle;
+    max-width: 200px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }

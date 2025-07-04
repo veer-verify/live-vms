@@ -1,0 +1,47 @@
+.signin-content {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.login-text {
+   
+  font-weight: 600;
+  font-size: 16px;
+  color: #392222;
+  text-transform: uppercase;
+}
+
+
+.signin-content ::ng-deep .mat-mdc-raised-button:not(:disabled) {
+  background-color: #084982 !important;
+  border-radius: 50px !important;
+}
+
+.signin-content ::ng-deep .mat-mdc-card {
+  border-radius: 16px !important;
+  width: 500px !important;
+  margin: 10px;
+  background-color: #e8f0fe !important;
+}
+
+
+/* 
+::ng-deep .mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  background-color: #ffffff !important;
+}
+
+::ng-deep .mat-mdc-snack-bar-container .mdc-snackbar__label {
+  color: #000000 !important;
+} */

@@ -1,0 +1,56 @@
+
+<ng-container *ngIf="details.type=='add'">
+    <div class="p-1" >
+       <div class="site-details">
+            <p>Total Cameras - {{cameras.length}}</p> 
+            <!--<p>Monitoring Cameras - {{monitoringCameras.length}}</p>
+            <p>Non-Monitoring Cameras - {{cameras.length - monitoringCameras.length}}</p> -->
+            <p style="font-size: 16px;">{{details?.item.siteName}}</p>
+            <button mat-dialog-close class="closebtn" >×</button>
+        </div>
+
+        <div echarts [options]="chartOption" [autoResize]="true" class="demo-chart" #evt (chartLegendSelectChanged)="legendselectchanged($event)"></div> 
+    
+       <div class="mt-2 d-flex justify-content-between">
+            <p>Select Monitoring Cameras</p>
+           <label>
+               <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()"> Select All
+             </label>
+
+       </div>
+    <div class="card-container" >
+        <div class="card" *ngFor="let item of newCameras" [ngClass]="{'bordered': item.monitoring}">
+            <div class="image_container" >
+                <img [src]="item.snapshotUrl | image | async" width="250" height="250" alt="Loading...">
+            </div>
+    
+            <div class="checkbox-list">
+                <label>
+                    <input type="checkbox" [(ngModel)]="item.monitoring" (change)="updateSelectAll()">
+                </label>
+                <p class="cam-name" [matTooltip]="item.name">{{item.name}}</p>
+            </div> 
+          </div>
+    </div>
+    
+    <div class="d-flex justify-content-end  mt-2">
+        <button class="btn-style" (click)="openDialog()">Save</button>
+    </div>
+    
+    </div>
+
+</ng-container>
+
+<ng-container *ngIf="details.type=='view'">
+    <div  style="width: 40vw;">
+
+        <div class="d-flex justify-content-between bg-light mb-2 p-1" style="position: sticky; top: 0; font-size: 14px;">
+            <p >{{details?.item.siteName}} - Monitoring Cameras</p>
+            <button mat-dialog-close class="closebtn">x</button>
+        </div>
+        
+        <div class="p-3">
+             <app-table [fields]="fields" [data]="monitoringCameras" ></app-table>
+         </div>
+    </div>
+</ng-container>

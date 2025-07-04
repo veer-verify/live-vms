@@ -1,0 +1,82 @@
+
+<ng-container *ngIf="details.type=='add'">
+<div class="main-container">
+    <div class="d-flex justify-content-between">
+        <p class="headingp">{{details.item.siteName}}</p>
+        <p class="headingp">Action Tag</p>
+        <button class="closebtn" mat-dialog-close>×</button>
+    </div>
+
+<div class="row mt-4">
+  <div>
+    <label id="example-radio-group-label">Select Option</label>
+<mat-radio-group
+  aria-labelledby="example-radio-group-label"
+  class="example-radio-group"
+  [(ngModel)]="optionselect">
+  <mat-radio-button class="example-radio-button" color="primary" *ngFor="let item of renderoption" [value]="item">
+    {{item}}
+  </mat-radio-button>
+</mat-radio-group>
+<div>ActionTag will be assigned to {{optionselect}}</div>
+  </div>
+</div>
+
+    <div class="row mt-4">
+
+        <div class="col-lg-6" *ngIf="optionselect!=='Site'">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Select Cameras</mat-label>
+            <mat-select [(ngModel)]="deviceName" (keyup)="searchDevices($event)" multiple>
+              <mat-option *ngFor="let item of cameralist" [value]="item.cameraId" (click)="filterCam(item)"> {{ item.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Select Action Tags</mat-label>
+            <mat-select [(ngModel)]="actionTag" multiple >
+              <mat-option *ngFor="let item of actionTags" [value]="item.keyId" > {{ item.value }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+   
+
+      <!-- <div class="col-lg-6">
+
+        <mat-form-field class="example-chip-list w-100" >
+          <mat-label>Action Tags</mat-label>
+          <mat-chip-grid #toGrid aria-label="Fruit selection">
+            <mat-chip-row *ngFor="let fruit of to" (removed)="remove(fruit, 'to')">
+              {{fruit}}
+              <button matChipRemove [attr.aria-label]="'remove ' + fruit">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          </mat-chip-grid>
+          <input placeholder="Type here" #fruitInput name="to" [formControl]="toCtrl" [matChipInputFor]="toGrid"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" >
+        </mat-form-field>
+      </div> -->
+
+      <div class="d-flex gap-2">
+        <button class="btn-template"  (click)="deviceName=null;actionTag=null">Cancel</button>
+        <button class="btn-template" (click)="createActionTag()">Submit</button>
+      </div>
+    </div>
+</div>
+</ng-container>
+
+
+<ng-container *ngIf="details.type=='view'">
+  <div style="width: 30vw;">
+    <div class="d-flex justify-content-between bg-light mb-2 p-1" style="position: sticky; top: 0; font-size: 14px;">
+      <p >{{details?.item.siteName}}</p>
+      <button mat-dialog-close class="closebtn">x</button>
+    </div>
+
+    <div class="p-3">
+      <app-table [fields]="fields" [data]="actionTagData"></app-table>
+    </div>
+  </div>
+</ng-container>

@@ -1,0 +1,43 @@
+/* table css */
+.table-resp {
+    max-height: calc(100vh - 250px);
+    /* max-width: 85vw; */
+    overflow-y: auto;
+  }
+
+  .table-resp table thead tr{
+    margin-top: 20px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    font-weight: 500;
+
+  }
+  
+  thead tr th p {
+    display: inline-flex;
+  }
+  
+  thead tr th {
+    color: #fff;
+    font-size: 12px;
+    vertical-align: middle;
+    text-transform:capitalize;
+  }
+  
+  .table tbody tr td {
+    vertical-align: middle;
+    /* height: 36px; */
+    font-size: 12px;
+    padding: 8px 10px;
+    text-transform: capitalize;
+  }
+  
+  .table-icons {
+    text-align: center;
+    min-width: 100px;
+  }
+
+  .table-dark {
+    --bs-table-bg:  #084982 !important;
+  }

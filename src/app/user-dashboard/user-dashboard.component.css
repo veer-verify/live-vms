@@ -1,0 +1,113 @@
+
+.status {
+  font-size: 12px;
+  color: #28231D;
+  letter-spacing: 0.5px;
+  width: 120px;
+  font-weight: 600;
+}
+.count {
+  font-size: 18px;
+  color: #000000;
+  font-weight: 600;
+}
+.vl-green {
+  border-left: 2px solid #00A44C;
+  height: 40px;
+}
+
+.vl-blue {
+  border-left: 2px solid #084982 ;
+  height: 40px;
+}
+
+.vl-red {
+  border-left: 2px solid #EF2800;
+  height: 40px;
+}
+
+.vl-yellow {
+  border-left: 2px solid #F5B400;
+  height: 40px;
+}
+
+.vl-orange {
+  border-left: 2px solid #EF6000;
+  height: 40px;
+}
+
+.overall-container{
+  display: flex;
+  height: calc(100vh - 70px);
+}
+
+.left-content {
+  color: #fff;
+  background: url('../../assets/images/bgimg.png') top left no-repeat;
+  /* background-image: linear-gradient(to top, #1a4464, #3977a0,#5c5a5a); */
+ /* background-color:#77b1d4; */
+  /* height: calc(100vh - 70px); */
+  /* background-image: linear-gradient(to bottom, #D34124, #084982); */
+  background-size: cover;
+  width: 300px;
+}
+
+.main-container{
+    width: 100%;
+    background-color: white;
+    padding: 16px;
+}
+
+.site-Details{
+    display: flex;
+    flex-flow: row wrap;
+    gap: 30px;
+}
+
+
+
+.list-group-item {
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  margin: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.list-group-item :active {
+  background-color: #084982;
+  border-radius: 5px;
+}
+
+.list-group {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+  margin-bottom: 0;
+  border-radius: 0.25rem;
+  margin-top: 20px;
+}
+
+.list-group :hover {
+  background-color: #084982;
+  border-radius: 5px;
+}
+
+.routeactive {
+  background-color: #084982;
+  border-radius: 5px;
+}
+
+.routeactive1 {
+  background-color: #D34124;
+  border-radius: 5px;
+}
+
+.list-group img {
+  margin-right: 10px;
+}
+
+.srch ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  display: none !important;
+}

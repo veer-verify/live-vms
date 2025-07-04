@@ -1,0 +1,45 @@
+.header {
+  /* background-color: #084982; */
+  /* padding: 5px; */
+  /* background-color: #3b7497; */
+  /* background-image: linear-gradient(to right, #032f53, #1b5980,#5f5d5d); */
+  /* background-image: linear-gradient(to right, #084982, #D34124); */
+  /* background-color: #084982; */
+  position: sticky;
+  width: 100%;
+  top: 0px;
+  z-index: 99;
+  height: 70px;
+}
+
+.user-btn {
+  border: none;
+  background-color: transparent;
+}
+
+.profile p {
+  font-size: 14px;
+}
+
+.image {
+  /* background-image: linear-gradient(to right, #084982 , #D34124); */
+  height: 150px;
+}
+
+.profile .image img{
+  background: #fff;
+  border-radius: 50%;
+  padding: 10px;
+}
+
+::ng-deep .mat-mdc-unelevated-button:not(:disabled) {
+  background-color: #084982 !important;
+}
+
+::ng-deep .mat-mdc-menu-content {
+  padding: 0 !important;
+}
+
+::ng-deep .mat-mdc-menu-panel.mat-mdc-menu-panel {
+  max-width: 500px !important;
+}

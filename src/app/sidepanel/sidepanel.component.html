@@ -1,0 +1,301 @@
+
+
+<div class="side-panel" @inOutPaneAnimation>
+  
+  <div class="d-flex justify-content-between">
+  <button class="closebtn" (click)="closeSidePanel()">×</button>
+    <p class="header">{{details?.item.siteName}}</p>
+    <div>
+      <button class="btn-template me-2" (click)="newTemplate()">New Template</button>
+      <button class="btn-template" (click)="Escalation()">Escalation</button>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <!-- <div class="col-lg-6 col-sm-12">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Select site</mat-label>
+        <input matInput [matAutocomplete]="site" [(ngModel)]="siteName" (keyup)="searchSites($event)">
+        <button matSuffix mat-icon-button>
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-autocomplete #site="matAutocomplete">
+    
+          <mat-option *ngFor="let item of siteslist | search: siteSearch" [value]="item.siteId" (click)="filter(item)">
+            {{ item.siteId }} - {{ item.siteName }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div> -->
+
+    <!-- <div class="col-lg-6 "> -->
+     <!-- <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Select Camera</mat-label>
+        <input matInput [matAutocomplete]="device" [(ngModel)]="deviceName" (keyup)="searchDevices($event)">
+        <button matSuffix mat-icon-button>
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-autocomplete #device="matAutocomplete" multiple>
+       
+          <mat-option *ngFor="let item of devicesList | search: deviceSearch" [value]="item.cameraId" (click)="filterCam(item)">
+            {{ item.cameraId }} - {{ item.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>  -->
+<!-- 
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Devices</mat-label>
+        <mat-select [(ngModel)]="deviceName" (keyup)="searchDevices($event)" multiple>
+          <mat-option *ngFor="let item of devicesList" [value]="item.cameraId" (click)="filterCam(item)"> {{ item.name }}</mat-option>
+        </mat-select>
+      </mat-form-field> -->
+
+    <!-- </div> -->
+  </div>
+
+
+
+
+  <div *ngIf="templateDisplay" class="template mt-1">
+    <div class="d-flex justify-content-between mb-3">
+      <p class="header">New Template</p>
+      <!-- <p class="header">{{details?.item.siteName}}</p> -->
+      <button class="template-close" (click)="clsTemplate()">×</button>
+
+    </div>
+
+
+
+    <div class="row">
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Alert Type</mat-label>
+          <mat-select [(ngModel)]="alert">
+            <!-- <mat-option (click)="AddNew('alert')">Add New</mat-option> -->
+            <mat-option *ngFor="let item of alertTypes; let i=index" [value]="item.keyId"
+              (click)="getData(item)" [hidden]="i>6">{{item.value}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- <div *ngIf="addnew">
+          <mat-form-field class="example-form-field" appearance="outline">
+            <mat-label>Add New Alert</mat-label>
+            <input matInput type="text" [(ngModel)]="addalert">
+            <button *ngIf="addalert" matSuffix mat-icon-button aria-label="Clear" (click)="addalert=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div> -->
+
+      </div>
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Alert Sub Type</mat-label>
+          <mat-select [(ngModel)]="subalert">
+            <!-- <mat-option (click)="AddNew('subalert')">Add New</mat-option> -->
+            <mat-option *ngFor="let item of alertSubTypes; let i=index" [value]="item.keyId"
+              (click)="getData1(item)" [hidden]="i>6">{{item.value}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- <div *ngIf="addnew1">
+          <mat-form-field class="example-form-field" appearance="outline">
+            <mat-label>Add Sub Alert</mat-label>
+            <input matInput type="text" [(ngModel)]="addsubalert">
+            <button *ngIf="addalert" matSuffix mat-icon-button aria-label="Clear" (click)="addsubalert=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div> -->
+      </div>
+      <div class="col-lg-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Fields</mat-label>
+          <mat-select [(ngModel)]="alertField" multiple >
+            <mat-option *ngFor="let item of alertFields" [value]="item.keyId">{{item.value}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12">
+        <div class="example-form">
+          <mat-form-field class="example-full-width">
+            <mat-label>Leave a Message</mat-label>
+            <textarea matInput placeholder="Type here..." [(ngModel)]="message"></textarea>
+          </mat-form-field>
+        </div>
+
+      </div>
+
+
+      <!-- <div class="col-lg-3">
+   
+        <input type="text" class="form-control" [(ngModel)]="colorpicker" placeholder="color">
+      </div> -->
+
+      <div class="col-lg-4">
+        <div class="example-form">
+          <mat-form-field class="example-full-width">
+            <mat-label>Footer</mat-label>
+            <textarea matInput placeholder="Type here..." [(ngModel)]="footer"></textarea>
+          </mat-form-field>
+        </div>
+
+      </div>
+
+
+      <div class="d-flex justify-content-start">
+        <button class="button2 me-2" (click)="openPreview()">Preview</button>
+        <button class="button2 me-2" (click)="createGuardMasterData()">Submit</button>
+        <button class="button2 me-2" (click)="clearFilledData()">Clear</button>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+  <div *ngIf="templateDisplay1" class="template mt-1">
+
+    <div class="d-flex justify-content-between mb-3">
+      <p class="header">Escalation Info</p>
+      <!-- <p class="header">{{details?.item.siteName}}</p> -->
+      <button class="template-close" (click)="clsEscalation()">×</button>
+    </div>
+
+
+    <div class="row">
+      <div class="col-lg-12 mb-1"> 
+        <!-- <div> -->
+          <mat-checkbox class="mat-option" color="primary" [checked]="isChecked1()" (click)="$event.stopPropagation()" (change)="toggleSelection1()">
+            Select All
+            </mat-checkbox>
+        <!-- </div> -->
+          <label *ngFor="let day of daysOfWeek">
+            <mat-checkbox color="primary" (change)="toggleDaySelection(day)" [checked]="selectedDays.includes(day)"></mat-checkbox>
+            {{ day }}
+          </label>
+       
+      </div>
+      <div class="col-lg-6">
+        <!-- <material-timepicker classFormField="w-100" color="primary"  label="StartTime" [userTime]="exportTime" (change)="onChangeHour($event)" revertLabel="Remove" submitLabel="Ok"></material-timepicker> -->
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>StartTime</mat-label>
+          <input matInput [(ngModel)]="startTime" (ngModelChange)="onTimeChange('start')" [max]="endTime" [ngxMatTimepicker]="picker"  [format]="24" >
+          <ngx-mat-timepicker #picker [hoursOnly]="true" [enableKeyboardInput]="true"></ngx-mat-timepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-6">
+        <!-- <material-timepicker color="primary" classFormField="w-100" label="EndTime" [userTime]="exportTime" revertLabel="Remove" (change)="onChangeHour1($event)" submitLabel="Ok"></material-timepicker> -->
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>EndTime</mat-label>
+          <input matInput [(ngModel)]="endTime" (ngModelChange)="onTimeChange('end')" [ngxMatTimepicker]="picker1" [min]="startTime" [format]="24" >
+          <ngx-mat-timepicker #picker1 [hoursOnly]="true" [enableKeyboardInput]="true"></ngx-mat-timepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-6">
+
+        <mat-form-field class="example-chip-list w-100">
+          <mat-label>To</mat-label>
+          <mat-chip-grid #toGrid aria-label="Fruit selection">
+            <mat-chip-row *ngFor="let fruit of to" (removed)="remove(fruit, 'to')">
+              {{fruit}}
+              <button matChipRemove [attr.aria-label]="'remove ' + fruit">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          </mat-chip-grid>
+          <input placeholder=" To Email..." #fruitInput name="to" [formControl]="toCtrl" [matChipInputFor]="toGrid"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"  (input)="onInput($event)" >
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-6">
+
+        <mat-form-field class="example-chip-list w-100">
+          <mat-label>Cc</mat-label>
+          <mat-chip-grid #ccGrid aria-label="Fruit selection">
+            <mat-chip-row *ngFor="let fruit of cc" (removed)="remove(fruit, 'cc')">
+              {{fruit}}
+              <button matChipRemove [attr.aria-label]="'remove ' + fruit">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          </mat-chip-grid>
+          <input placeholder=" CC Email..." #ccInput name="cc" [formControl]="ccCtrl" [matChipInputFor]="ccGrid"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" (input)="onInput($event)">
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-6">
+
+        <mat-form-field class="example-chip-list w-100">
+          <mat-label>Bcc</mat-label>
+          <mat-chip-grid #bccGrid aria-label="Fruit selection">
+            <mat-chip-row *ngFor="let fruit of bcc" (removed)="remove(fruit, 'bcc')">
+              {{fruit}}
+              <button matChipRemove [attr.aria-label]="'remove ' + fruit">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          </mat-chip-grid>
+          <input placeholder=" BCC Email..." #bccInput name="bcc" [formControl]="bccCtrl" [matChipInputFor]="bccGrid"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" (input)="onInput($event)">
+        </mat-form-field>
+      </div>
+      <div>
+        <button class="btn-template" (click)="createGuardEmailsData()">Submit</button>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<ng-template #emailDialog>
+  <div style="background-color: #084982;text-align: center;">
+    <p class="previewmail p-3">Preview Mail</p>
+  </div>
+
+  <div class="dialog-content p-3">
+    <div class="alert-header">
+      <p>⚠️ {{alertField1}} {{"@"}} {{details?.item.siteName}} - {{currentCamera?.name}} {{subAlertfield1}} ⚠️</p>
+    </div>
+    <div class="alert-body">
+      <!-- <p class="greeting">Dear Valued Client,</p> -->
+      <p class="message mt-3" style="width: 50vw;word-wrap: break-word;white-space: pre-line;">
+        {{message}}
+      </p>
+
+      <div class="vehicle-info mt-2">
+        <div  *ngFor="let item of alertField">
+          <p class="mt-2" *ngFor="let val of getValById(item)">
+            <strong>{{val.value }}</strong>
+
+            <span *ngIf="item == 1">
+              {{ this.details?.item.siteName }}
+            </span>
+            <span *ngIf=" item == 2">
+              {{ date | date: 'mediumDate' }}
+            </span>
+            <span *ngIf=" item == 3">
+              {{ date | date: 'shortTime' }}
+            </span>
+            <span *ngIf="item != 1 && item != 2 && item != 3">
+              {{ deviceName }}All
+            </span>
+          </p>
+        </div>
+
+        <!-- <p><strong>TYPE:</strong> CAR / TRUCK / SUV / VAN / MINIVAN</p> -->
+        <!-- <p><strong>COLOR:</strong> {{colorpicker}}</p> -->
+      </div>
+
+      <p class="message mt-3" style="word-wrap: break-word;white-space: pre-line;">
+        {{footer}}
+      </p>
+    </div>
+  </div>
+
+</ng-template>

@@ -1,0 +1,124 @@
+<div style="height: 70vh; overflow-y: auto; width: 55vw;">
+    
+    <div >
+
+      <div class="d-flex justify-content-between align-items-center bg-light p-1" style="position: sticky; top: 0; font-size: 14px;">
+        <p >{{currentItem?.item.siteName}}</p>
+        <button mat-dialog-close class="closebtn">×</button>
+      </div>
+        <!-- <app-cameras [cameras]="cameraList" [details]="currentItem"></app-cameras>
+        
+        <app-monitoring-hours [monitoringCameras]="monitoringCameras" [details]="currentItem"></app-monitoring-hours>
+    
+        <app-actiontag [cameralist]="cameraList" [details]="currentItem"></app-actiontag> -->
+        <div class="p-3 mt-4">
+
+          <app-table [fields]="fields" [data]="alldATA"></app-table>
+        </div>
+
+    </div>
+
+    <div class="p-3">
+      <div class="mb-3 w-25">
+        <p class="previewmail">📧 Escalation Info</p>
+      </div>
+    
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover" *ngIf="escalation1.length > 0">
+          <thead class="table-light">
+            <tr>
+              <th>To Email</th>
+              <th>CC Email</th>
+              <th>BCC Email</th>
+              <th>Days</th>
+              <th>Hours</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of escalation1">
+              <td>{{ item?.toEmails}}</td>
+              <td>{{ item?.ccEmails}}</td>
+              <td>{{ item?.bccEmails }}</td>
+              <td>{{ item?.days}}</td>
+              <td>{{ item?.hours }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    
+      <div *ngIf="escalation1.length === 0" class="text-muted mt-3">
+        No escalation data available.
+      </div>
+    </div>
+    
+
+    <div class="p-3">
+        <div class="w-25">
+            <p class="previewmail">📧 Templates</p>
+        </div>
+
+        <div class="row mt-4">
+
+            <div class="col-lg-4  m-0">
+
+                <div class="col-lg-12">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Alert Type</mat-label>
+                      <mat-select [(ngModel)]="alert">
+                        <!-- <mat-option (click)="AddNew('alert')">Add New</mat-option> -->
+                        <mat-option></mat-option> 
+                        <mat-option *ngFor="let item of alertTypes; let i=index" [value]="item.keyId"
+                          (click)="getData(item)" [hidden]="i>6">{{item.value}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                </div>
+    
+                <div class="col-lg-12">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Alert Sub Type</mat-label>
+                      <mat-select [(ngModel)]="subalert">
+                        <!-- <mat-option (click)="AddNew('subalert')">Add New</mat-option> -->
+                        <mat-option></mat-option> 
+                        <mat-option *ngFor="let item of alertSubTypes; let i=index" [value]="item.keyId"
+                          (click)="getData1(item)" [hidden]="i>6">{{item.value}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                </div>
+    
+                <div class="col-lg-12">
+                    <button class="btn-template" (click)="getTemplateData()">Submit</button>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+
+                <div class="grid-template" *ngIf="templateData.length!=0">
+          
+                    <div *ngFor="let item of templateData" class="card ">
+                          <div class="dialog-content p-3">
+                            <div class="alert-header">
+                              <p>{{item.emailSubject}}</p>
+                            </div>
+                            <div class="alert-body">
+                              <!-- <p class="greeting">Dear Valued Client,</p> -->
+                              <p class="message mt-3" style="word-wrap: break-word;white-space: pre-line;">
+                                {{item.emailBasicContent}}
+                              </p>
+                              <p class="message mt-3" style="word-wrap: break-word;white-space: pre-line;">
+                                {{item.emailFooter}}
+                              </p>
+                            </div>
+                          </div>
+            
+                    </div>
+                </div>  
+                <!-- <div *ngIf="templateData.length==0 || 0" class="text-center">No Data</div> -->
+
+            </div>
+        </div>
+    </div>
+
+
+   
+
+</div>

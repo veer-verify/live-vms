@@ -1,0 +1,56 @@
+<div class="table-resp">
+  <table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col" *ngFor="let field of fields">
+          <div>
+            <span>{{field.label}}</span>
+            <span *ngIf="field.sort" (click)="sort(field.id)"><img src="assets\icons\sorticon.svg" alt=""
+                width="16px"></span>
+          </div>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody *ngIf="data?.length !== 0 && !showLoader">
+      <tr *ngFor="let item of data | search: search; let i=index;">
+        <td *ngFor="let field of fields">
+          <ng-container *ngIf="field.showSerial">{{ i + 1 }}</ng-container>
+
+          <ng-container *ngIf="!field.weekdays">
+            <span class="p-1 rounded" [style.color]="field.id == 'monitoring' ? 'white' : 'black'"
+              [style.background-color]="field.id == 'monitoring' &&  item[field.id] ? 'green' : field.id == 'monitoring' &&  !item[field.id] ? 'red' : ''">
+
+              {{item[field.id]=='N/A'? item.miniSubject : item[field.id]}}
+            </span>
+          </ng-container>
+
+          <ng-container *ngIf="field.weekdays">
+            <p *ngFor="let el of field.loop"><span *ngIf="item[field.id][el]">{{el}}: </span>{{item[field.id][el]}}</p>
+          </ng-container>
+
+          <ng-container *ngIf="field.actiontag">
+            <p *ngFor="let el of item.actionTags">{{el.value}}</p>
+          </ng-container>
+
+          <!-- <span *ngIf="field.showAddView"><a class="pointer" style="text-decoration: none;" matTooltip="Add" (click)="openPopup(field,item,'add')">Add</a></span> -->
+          <span *ngIf="field.showCreate"><a class="pointer" style="text-decoration: none;" matTooltip="Add"
+              (click)="openPopup(field,item,'add')">Add</a></span>
+          <span *ngIf="field.showunikView">/<a class="pointer" style="text-decoration: none;" matTooltip="View"
+              (click)="openPopup(field,item,'view')">View</a></span>
+          <span *ngIf="field.showView"><a class="pointer" style="text-decoration: none;" matTooltip="View"
+              (click)="openPopup(field,item,'view')">
+              <img src="assets\icons\eye-blue.svg" width="20" height="25" /></a></span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<ng-container *ngIf="data?.length === 0 && !showLoader">
+  <h2 class="text-center mt-5">No Data</h2>
+</ng-container>
+<ng-container *ngIf="showLoader">
+  <h2 class="text-center mt-5">Loading...</h2>
+</ng-container>

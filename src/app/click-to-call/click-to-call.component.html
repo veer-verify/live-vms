@@ -1,0 +1,47 @@
+<div class="dialer-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle >
+
+
+      <mat-form-field>
+        <mat-label>Select Country:</mat-label>
+        <mat-select [(ngModel)]="country">
+          <mat-option *ngFor="let country of countries" [value]="country.countrycode" (click)="countryPrefix(country)">
+            {{country.name}}
+          </mat-option>
+        </mat-select>
+        <div>
+            <span class="flag-icon p-3" [class]="'flag-icon-' + selectedCountry"></span>
+         
+          </div>
+      </mat-form-field>
+      
+     
+    <div class="mb-3">
+        <p class="mb-2">Phone : {{message}}</p>
+        <p *ngIf="callAnswer">{{display}}</p>
+        <input type="text" class="w-100" [(ngModel)]="dialedNumber">
+    </div>
+   
+    <div class="keypad">
+      <button *ngFor="let key of keys" (click)="pressKey(key)" >{{ key }}</button>
+    </div>
+    <div *ngIf="!incomecall">
+      <div class="actions" *ngIf="!callbtn"> 
+        <button  class="call-btn" (click)="makeCall()"><img src="assets\icons\call_26dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg"></button>
+        <button   class="clear-btn" (click)="clear()">Clear</button>   
+      </div>
+
+    </div>
+    
+    <div class="actions" *ngIf="callbtn">
+        <button  class="clear-btn" (click)="onCallTerminated()">End</button>
+        <button (click)="mute(1)" *ngIf="!mic"><img src="assets\icons\mic_26dp_000000_FILL0_wght400_GRAD0_opsz24.svg" alt=""></button>
+        <button (click)="mute(2)" *ngIf="mic"><img src="assets\icons\mic_off_26dp_000000_FILL0_wght400_GRAD0_opsz24.svg" alt=""></button>
+    </div>
+    <div class="actions" *ngIf="incomecall">
+
+      <button  class="call-btn" (click)="incomeCall()"><img src="assets\icons\call_26dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg"></button>
+      <button   class="clear-btn" (click)="Reject()">Reject</button> 
+
+    </div>
+  </div>
+  

@@ -1,0 +1,79 @@
+<div  >
+    <div class="d-flex justify-content-betweenn p-1" style="background-color: #ababab">
+      <p>Dialog</p>
+      <div class="generate-event-handle" cdkDragHandle></div>
+    </div>
+
+    <div class="generate-event-container">
+      <section>
+        <mat-radio-group class="row m-0" [(ngModel)]="selectedAction">
+          <mat-radio-button class="col-md-6" *ngFor="let item of actionTypes" [value]="item.value"
+            (change)="setActionTime(item.value)">{{ item?.value }}</mat-radio-button>
+        </mat-radio-group>
+      </section>
+      <!-- <mat-list-item>
+        <div matListItemTitle>Action Time: {{eventObj?.callResponseTime}}</div>
+      </mat-list-item> -->
+
+      <hr *ngIf="selectedAction == 'Suspicous Activity'" />
+
+      <section [formGroup]="toppings" *ngIf="selectedAction == 'Suspicous Activity'">
+        <div class="row m-0">
+          <p class="col-md-6">
+            <mat-checkbox formControlName="callToClientRes" (ngModelChange)="setEventTime('callResponseTime')">Call to
+              Client(Responded)</mat-checkbox>
+          </p>
+          <p class="col-md-6">
+            <mat-checkbox formControlName="callToClientNotRes" (ngModelChange)="setEventTime('callNoResponseTime')">Call
+              to Client(Not Responded)</mat-checkbox>
+          </p>
+          <p class="col-md-6">
+            <mat-checkbox formControlName="emailToClient" (ngModelChange)="setEventTime('emailTime')">Email to
+              Client</mat-checkbox>
+          </p>
+          <!-- <p class="col-md-6">
+            <mat-checkbox formControlName="arrest" (ngModelChange)="setEventTime()">Arrest</mat-checkbox>
+          </p> -->
+          <p class="col-md-6">
+            <mat-checkbox formControlName="activityDettered" (ngModelChange)="setEventTime('activityDetTime')">Activity
+              Dettered</mat-checkbox>
+          </p>
+          <!-- <p class="col-md-6">
+            <mat-checkbox formControlName="policeIntervenction" (ngModelChange)="setEventTime()">Police Intervention</mat-checkbox>
+          </p> -->
+        </div>
+      </section>
+
+      <hr *ngIf="selectedAction == 'Suspicous Activity'" />
+
+      <div *ngIf="selectedAction == 'Suspicous Activity'">
+        <mat-list-item>
+          <div matListItemTitle>
+            Call to Client(Responded): {{ eventObj?.callResponseTime }}
+          </div>
+        </mat-list-item>
+        <mat-list-item>
+          <div matListItemTitle>
+            Call to Client(Not Responded): {{ eventObj?.callNoResponseTime }}
+          </div>
+        </mat-list-item>
+        <mat-list-item>
+          <div matListItemTitle>Email to Client: {{ eventObj?.emailTime }}</div>
+        </mat-list-item>
+        <mat-list-item>
+          <div matListItemTitle>
+            Activity Dettered: {{ eventObj?.activityDetTime }}
+          </div>
+        </mat-list-item>
+      </div>
+
+      <div class="d-flex justify-content-end align-items-end">
+        <button class="dialog-close-btn" (click)="closeActionDialog()">
+          Cancel
+        </button>
+        <button class="dialog-update-btn" (click)="updateEventInfo(currentItem)">
+          Send
+        </button>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,490 @@
+<app-loader *ngIf="showLoader"></app-loader>
+
+<div [ngClass]="!showSidenav ? 'menu-active' : 'menu'">
+
+
+  <!-- <button class="sidepanel-btn" matTooltip="sidepanel" (click)="isSidePanelOpen = true"><img src="assets\icons\expand_content_24dp.svg" width="20"></button> -->
+
+  <button [ngClass]="showSidenav ? 'logout-btn-active' : 'logout-btn'" (click)="logout()" matTooltip="Logout">
+    <img src="assets/icons/logout_black.svg" alt="" width="20" />
+  </button>
+  <!-- <button [ngClass]="showSidenav ? 'device-btn-active' : 'device-btn'" (click)="openDevices()">
+    D
+  </button> -->
+  <!-- <div style="position: absolute; z-index: 9999999; cursor: pointer;" cdkDrag>
+    <img src="assets/images/compass.png" width="42px" alt="">
+  </div> -->
+
+  <button class="nav-btn" matTooltip="Back to Dashboard" routerLink="/user-dashboard">
+    <img src="assets/icons/home.svg" alt="" width="20" (click)="clearCams(null)" />
+  </button>
+
+  <button class="arrow-btn" (click)="openSidenav()" [disabled]="sitesList.length === 0">
+    <img *ngIf="showSidenav" src="assets/icons/arrow_back.svg" alt="" width="20" />
+    <img *ngIf="!showSidenav" src="assets/icons/arrow_back.svg" style="rotate: 180deg" alt="" width="20" />
+  </button>
+
+  <button [ngClass]="listType === 0 ? 'draw-btn' : 'draw-btn-active'" [style.top.px]="showSidenav ? '5' : '50'"
+    [style.right.px]="showSidenav ? '35' : '2'" [matMenuTriggerFor]="menu" matTooltip="Draw Points"
+    *ngIf="pagesForDropdown.length !== 0">
+    <img src="assets/icons/drive_file.svg" alt="" width="20" />
+  </button>
+  <mat-menu #menu="matMenu" xPosition="before">
+    <mat-radio-group [(ngModel)]="listType" class="d-flex flex-column py-2">
+      <ng-container>
+        <mat-radio-button class="example-radio-button" *ngFor="let season of listTypes" [value]="season.id">
+          {{ season.label }}
+        </mat-radio-button>
+      </ng-container>
+
+      <!-- <ng-container *ngIf="currentSite?.siteId == 36444">
+        <mat-radio-button class="example-radio-button" *ngFor="let season of oneWatchTypes" [value]="season.id">
+          {{ season.label }}
+        </mat-radio-button>
+      </ng-container> -->
+
+      <!-- <ng-container *ngIf="currentSite.siteId !== 36346 && currentSite.siteId !== 36360">
+        <mat-radio-button class="example-radio-button" *ngFor="let season of listTypes" [value]="season.id">
+          {{ season.label }}
+        </mat-radio-button>
+      </ng-container>
+      <ng-container *ngIf="currentSite.siteId === 36346 || currentSite.siteId === 36360">
+        <mat-radio-button class="example-radio-button" *ngFor="let season of listTypes1" [value]="season.id">
+          {{ season.label }}
+        </mat-radio-button>
+      </ng-container> -->
+    </mat-radio-group>
+  </mat-menu>
+
+  <button [ngClass]="showSidenav ? 'clear-btn-active' : 'clear-btn'" matTooltip="Clear Cameras"
+    *ngIf="pagesForDropdown.length !== 0">
+    <img src="assets/icons/clean.svg" alt="" width="20" (click)="clearCams(null)" />
+  </button>
+
+</div>
+
+<div class="d-flex">
+  <div class="side-nav" [style.left]="showSidenav ? '0px' : '-300px'">
+
+    <!-- pagination -->
+    <div class="pagination-container p-2" *ngIf="sitesList.length != 0">
+      <div class="row text-center">
+        <div class="col-lg-4 mb-2" *ngFor="let item of gridBtnTypes">
+          <button class="grid-btn"
+            [ngStyle]="{'background-color': camerasForPage == item.items ? '#084982' : '#ffffff', 'color': camerasForPage == item.items ? '#fff' : '#000'}"
+            (click)="adjustGrid(item.items, item.rows)">{{item.label}}</button>
+        </div>
+      </div>
+
+      <div class="d-flex align-items-center justify-content-between" *ngIf="pagesForDropdown.length !== 0">
+        <div>
+          <button class="nav-btn" (click)="prevPage()" matTooltip="Preveous" [disabled]="currentPage == 1">
+            <img src="assets/icons/chevron_left.svg" width="20" alt="" />
+          </button>
+        </div>
+        <div class="w-75">
+          <select class="form-select form-select-md w-100" [(ngModel)]="currentPage">
+            <option *ngFor="let page of pagesForDropdown" [value]="page" (click)="changeCurrent(page)">
+              {{ page }} of {{ totalPages }}
+            </option>
+          </select>
+        </div>
+        <div>
+          <button class="nav-btn" (click)="nextPage()" matTooltip="Next" [disabled]="currentPage == totalPages">
+            <img src="assets/icons/navigate_next.svg" width="20" alt="" />
+          </button>
+        </div>
+      </div>
+
+      <!-- search for site -->
+      <div class="mt-2" style="position: relative;">
+        <span style="position: absolute; right: 10px; top: 8px;" *ngIf="searchText === ''"><img
+            src="assets/icons/search.svg" width="20" alt=""></span>
+        <input type="search" class="form-control" placeholder="Search Sites" [(ngModel)]="searchText">
+      </div>
+    </div>
+
+    <!-- side-nav -->
+    <div class="cam-nav mt-1">
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let site of sitesList | search: searchText; let i = index"
+          (opened)="getCamerasForForPortal(site)" [disabled]="showCamLoader">
+          <mat-expansion-panel-header cdkDropList #siteList="cdkDropList" [cdkDropListConnectedTo]="[siteList]"
+            (cdkDropListDropped)="moveAllCams()">
+            <mat-panel-title>
+              <div [title]="site?.siteName" cdkDrag>
+                {{ site?.siteName}}
+                <!-- <img class="settings" src="assets/icons/settings_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg"  alt="" width="16px" (click)="Settings(site,$event)"> -->
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <!-- cam list -->
+          <div *ngIf="!showCamLoader">
+            <mat-nav-list>
+              <mat-list-item *ngIf="cameras.length == 0">
+                <p class="text-center">NO CAMERAS</p>
+              </mat-list-item>
+              <mat-list-item *ngFor="let cam of cameras; let c = index" cdkDropList [cdkDropListData]="cameras"
+                #camList="cdkDropList" [cdkDropListConnectedTo]="[camList]" (cdkDropListDropped)="onDrop(cam)">
+                <div cdkDrag [cdkDragDisabled]="checkCam(cam)">
+                  <img class="me-2 mb-1"
+                    [src]="cam.camMonitor === 'T' ? 'assets/icons/eye-blue.svg' : 'assets/icons/eye-red.svg'" alt=""
+                    width="16" />
+                  <!-- <img class="me-2 mb-1" [src]="'assets/themes/CameraLogowhite.png'" alt=""width="16" /> -->
+                  <span *ngIf="cameras.length != 0">{{cam?.name | uppercase}}</span>
+                  <span style="float: right" *ngIf="cam?.isPlaying">
+                    <img src="assets/icons/play.svg" alt="" width="18" />
+                  </span>
+                </div>
+              </mat-list-item>
+            </mat-nav-list>
+          </div>
+          
+          <div class="d-flex align-items-center justify-content-center" *ngIf="showCamLoader">
+            <img src="assets/gif/cam-loader.gif" alt="Loading..." width="150px" />
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+
+
+  <div class="main-container" [style.marginLeft]="showSidenav ? '300px' : '40px'">
+
+    <!-- grid container -->
+    <div #dropListContainer class="grid-container" #gridList cdkDropListGroup>
+      <div *ngFor="let item of getCurrentPageItems; let c = index" cdkDropList [cdkDropListData]="c">
+        <div [ngClass]="iframeIndex === c ? 'tile-active' : 'tile'" [cdkDragData]="c"
+          (cdkDragEntered)="dragEntered($event)" (cdkDragMoved)="dragMoved()" (cdkDragDropped)="dragDropped()"
+          [cdkDragDisabled]="isMaximized" cdkDrag>
+          <div class="cam-detail">
+            <!-- <div>
+              <p class="cam-name ms-2"><span *ngIf="item?.showSiteName">{{ item?.siteName }}-</span>{{ item?.name }}</p>
+            </div> -->
+
+            <div class="">
+              <a class="cam-name ms-1"><span *ngIf="item?.showSiteName">{{ item?.siteName }}-</span>{{ item?.name }}</a>
+
+              <span style="position: absolute; right: 0;">
+                <!-- <a class="frame-icon" *ngIf="iframeIndex == -1" matTooltip="Generate Event" (click)="openuserActionDialog(item)">
+                  <img src="assets/icons/event.svg" alt="" width="18">
+                </a> -->
+                <!-- <a class="frame-icon" *ngIf="iframeIndex == -1" (click)="openMessageDialog()" matTooltip="Send Text Message">
+                <a class="frame-icon" *ngIf="iframeIndex == -1" (click)="OpenPlivo()" matTooltip="Call">
+                  <img src="assets\icons\call_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg" alt="" width="15" />
+                </a>
+                <a class="frame-icon" *ngIf="iframeIndex == -1" (click)="openMessageDialog()" matTooltip="Send Text Message">
+                  <img src="assets\icons\sms800.svg" alt="" width="15" />
+                </a> -->
+                <a class="frame-icon" matTooltip="Screenshot" (click)="normalCapture(item, c)">
+                  <img src="assets/icons/screenshot.svg" alt="" width="16" />
+                </a>
+                <!-- <a class="frame-icon" *ngIf="iframeIndex == -1" matTooltip="Email" (click)="openEmaiDialog(item)">
+                  <img src="assets/icons/mail.svg" alt="" width="16" />
+                </a> -->
+                <a class="frame-icon" *ngIf="iframeIndex == -1" matTooltip="Full Screen" (click)="toggleMaximize(c)">
+                  <img src="assets/icons/fullscreen.svg" alt="" width="18" />
+                </a>
+                <a class="frame-icon" *ngIf="iframeIndex === c" matTooltip="Close" (click)="toggleMaximize(c)">
+                  <img src="assets/icons/close.svg" alt="" width="18" />
+                </a>
+
+                <!-- <a [ngClass]="audioIndex == j ? 'frame-icon-active' : 'frame-icon'" *ngIf="iframeIndex == -1" [href]="item.audiUrl" target="_blank" matTooltip="Siren">
+                  <img src="assets/icons/volume_up.svg" alt="" width="18" />
+                </a> -->
+                <!-- <a class="frame-icon" *ngIf="iframeIndex == -1 && item.audioUrl" [href]="item.audioUrl" target="_blank"
+                  matTooltip="Siren">
+                  <img src="assets/icons/volume_up.svg" alt="" width="18" [hidden]="!item?.videoUrl" />
+                </a>
+                <a class="frame-icon" *ngIf="iframeIndex == -1 && item.audioSpeakerType === 'IP'" matTooltip="Siren">
+                  <img src="assets/icons/volume_up.svg" alt="" width="18" [hidden]="!item?.videoUrl" />
+                </a> -->
+
+                <a class="frame-icon" *ngIf="iframeIndex == -1 && item.audioUrl" (click)="audio(item, c)"
+                  matTooltip="Siren">
+                  <img src="assets/icons/volume_up.svg" [ngClass]="audioIndex == c ? 'blink-animation' : ''" alt=""
+                    width="15" />
+                </a>
+                <a class="frame-icon" *ngIf="iframeIndex == -1" (click)="clearCams(item)" matTooltip="Close">
+                  <img src="assets/icons/close.svg" alt="" width="15" />
+                </a>
+              </span>
+            </div>
+
+            <!-- <div class="d-flex justify-content-end d-xxl-none">
+              <a class="frame-icon" *ngIf="item?.siteId !== 36321" matTooltip="Screenshot"
+                (click)="normalCapture(item, c)">
+                <img src="assets/icons/screenshot.svg" alt="" width="16" [hidden]="!item?.videoUrl" />
+              </a>
+              <a class="frame-icon" *ngIf="iframeIndex == -1" matTooltip="Email" (click)="openEmaiDialog(item)">
+                <img src="assets/icons/mail.svg" alt="" width="16" [hidden]="!item?.videoUrl" />
+              </a>
+              <a class="frame-icon" *ngIf="iframeIndex == -1" (click)="clearCams(item)" matTooltip="Close">
+                <img src="assets/icons/close.svg" alt="" width="15" />
+              </a>
+              
+            </div> -->
+          </div>
+
+
+          <div>
+            <div class="btn-event" [style.cursor]="listType === 0 || isMaximized ? 'default' : 'crosshair'"
+              (click)="createButton($event, item)" (dblclick)="toggleMaximize(c)" #btn>
+              <span *ngFor="let btn of item?.buttons; let b = index">
+                <img [ngClass]="currentTime > btn?.chkTime1 ? 'btn-item-active' : 'btn-item'" [style.left.px]="btn.x"
+                  [style.top.px]="btn.y" [style.height.px]="btn.height" [style.width.px]="btn.width" [src]="
+                    currentTime > btn?.chkTime5 ? 'assets/icons/violet-dot.png':
+                    currentTime > btn?.chkTime4 ? 'assets/icons/orange-dot.png':
+                    currentTime > btn?.chkTime3 ? 'assets/icons/blue-dot.png':
+                    currentTime > btn?.chkTime2 ? 'assets/icons/red-dot.png':
+                    currentTime > btn?.chkTime1 ? 'assets/icons/yellow-dot.png' :
+                    'assets/icons/green-dot.png'" (load)="
+                    currentTime > btn?.chkTime5 ? captureScreenshot(item, c, 'violet', btn, b) :
+                    currentTime > btn?.chkTime4 ? captureScreenshot(item, c, 'orange', btn, b) :
+                    currentTime > btn?.chkTime3 ? captureScreenshot(item, c, 'blue', btn, b) :
+                    currentTime > btn?.chkTime2 ? captureScreenshot(item, c, 'red', btn, b) :
+                    currentTime > btn?.chkTime1 ? captureScreenshot(item, c, 'yellow', btn, b) :
+                    captureScreenshot(item, c, 'green', btn, b)" alt="">
+
+                <span *ngIf="listType === 0">
+                  <img src="assets/icons/close-white.svg" width="15" class="pointer"
+                    style="opacity: 0; position: absolute;" [style.left.px]="btn.x" [style.top.px]="btn.y"
+                    (click)="closeEvent(item, b)" [matTooltip]="(btn?.dspTime) ?? ''" />
+                </span>
+
+                <!-- <div class="close-event mt-1" [style.left.px]="btn.x" [style.top.px]="btn.y" *ngIf="currrentCamId == item?.cameraId && btnIndex == b">
+                    <span class="d-flex mt-3">
+                      <div class="bg-light p-1" *ngFor="let img of imgFiles">
+                        <img [src]="img" class="m-1" width="300" height="300" alt="">
+                      </div>
+                    </span>
+
+                    <button (click)="closeEvent(item, b)">Close Event</button>
+                  </div> -->
+              </span>
+            </div>
+
+            <!-- <iframe class="d-none" (load)="getUrl(item)"></iframe> -->
+            <!-- <ng-container *ngIf="!item.cameraId.startsWith('MLD') && item.videoUrl">
+              <app-video-player [videoData]="item?.videoUrl" [camerasForPage]="camerasForPage"
+                [isMaximized]="isMaximized" (emailDataEmitter)="getEmail($event)" #video></app-video-player>
+            </ng-container>
+            <ng-container *ngIf="!item.cameraId.startsWith('MLD') && !item.videoUrl">
+              <app-dummy-video [camerasForPage]="camerasForPage" #video></app-dummy-video>
+            </ng-container>
+
+            <ng-container *ngIf="item.cameraId.startsWith('MLD')">
+              <iframe [src]="item?.httpUrl | sanitize" width="100%"
+                [style.height]="iframeIndex === c ? '100vh' : iframeHeight" #video></iframe>
+            </ng-container> -->
+
+            <ng-container>
+              <app-video-player [videoData]="item?.httpUrl + '/'" [camerasForPage]="camerasForPage"
+                [isMaximized]="isMaximized" (screenshotEmitter)="getImageFromVideo($event)" #video></app-video-player>
+            </ng-container>
+            <!-- <ng-container *ngIf="item.indexNo != 1 && !item.videoUrl">
+              <app-dummy-video [camerasForPage]="camerasForPage" #video></app-dummy-video>
+            </ng-container> -->
+
+            <!-- <ng-container *ngIf="item.indexNo == 1">
+              <iframe [src]="item?.httpUrl | sanitize" width="100%"
+                [style.height]="iframeIndex === c ? '100vh' : iframeHeight" #video></iframe>
+            </ng-container> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- error info -->
+    <div class="err-info" *ngIf="errInfo">
+      <p>{{ errInfo }}</p>
+    </div>
+
+  </div>
+
+  <ng-container *ngIf="showActionDialog">
+    <div style="position: absolute; z-index: 999; width: 50vw" cdkDrag>
+      <app-incident [currentItem]="currentItem" (closeEvent)="closeActionDialog($event)"></app-incident>
+    </div>
+  </ng-container>
+
+  <div *ngIf="openChat"
+    style="height: 300px;width: 300px;position: absolute;right: 30px;bottom: 30px;background-color: white;border-radius: 7px;z-index: 9999;overflow-y: auto; padding: 10px;"
+    cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+    <div *ngFor="let msg of latestMsg" class="mb-3">
+      <div *ngIf="msg.latestItem?.details.type=='message'">
+        <mat-card class="p-3" *ngIf="msg.latestItem?.isInbound">
+          <p class="fs-6">{{msg.contact?.name}}</p>
+          <p class="fs-6">{{msg.latestItem?.details.content}}</p>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div style="position: absolute;bottom: 10px;right: 20px;z-index: 9999;" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+    <mat-icon [matBadge]="count" matBadgeColor="warn" [matBadgeHidden]="hidden">
+    <img src="assets\icons\mail_28dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg" (click)="openChatbot()">
+    </mat-icon>
+  </div> -->
+</div>
+
+<ng-template #mannualEmailDialog>
+  <div style="background-color: #084982;" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+    <p class="dialog-title mb-2">send mail</p>
+  </div>
+  <!-- <h1 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>Hi</h1> -->
+
+  <div class="dialog-content" style="width: 500px; height: 50vh; overflow-y: auto;">
+    <div class="row mx-0 mt-2">
+      <div class="col-lg-6">
+        <mat-form-field class="w-100">
+          <mat-label>Action Tag</mat-label>
+          <mat-select [(ngModel)]="mannualEmailBody.actionTag">
+            <mat-option *ngFor="let item of actionTags; let i=index" [value]="item.id"
+              [hidden]="i>6">{{item.value}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-6">
+        <mat-form-field class="w-100">
+          <mat-label>Camera</mat-label>
+          <mat-select [(ngModel)]="selectedCameras">
+            <mat-option *ngFor="let item of eventCameras" [value]="item.cameraId">{{item.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-6">
+        <mat-form-field class="w-100">
+          <mat-label>Alert Type</mat-label>
+          <mat-select [(ngModel)]="mannualEmailBody.alertType">
+            <mat-option *ngFor="let item of alertTypes; let i=index" [value]="item.keyId"
+              [hidden]="i>6">{{item.value}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-6">
+        <mat-form-field class="w-100">
+          <mat-label>Alert Sub Type</mat-label>
+          <mat-select [(ngModel)]="mannualEmailBody.alertSubType">
+            <mat-option *ngFor="let item of alertSubTypes; let i=index" [value]="item.keyId" (click)="getEmailData()"
+              [hidden]="i>6">{{item.value}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <ng-container *ngIf="mannualEmailBody.recipientEmails && !dialogLoader">
+        <div class="col-lg-12">
+          <mat-form-field class="w-100">
+            <mat-label>To</mat-label>
+            <textarea matInput type="text" [(ngModel)]="mannualEmailBody.recipientEmails"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-12">
+          <mat-form-field class="w-100">
+            <mat-label>Bcc</mat-label>
+            <textarea matInput type="text" [(ngModel)]="mannualEmailBody.bcc"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-12">
+          <mat-form-field class="w-100">
+            <mat-label>cc</mat-label>
+            <textarea matInput type="text" [(ngModel)]="mannualEmailBody.cc"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-12">
+          <mat-form-field class="w-100">
+            <mat-label>Subject</mat-label>
+            <input matInput type="text" [(ngModel)]="mannualEmailBody.subject">
+          </mat-form-field>
+        </div>
+        <div class="col-lg-12">
+          <mat-form-field class="w-100">
+            <mat-label>Body</mat-label>
+            <textarea matInput type="text" [(ngModel)]="mannualEmailBody.body"></textarea>
+          </mat-form-field>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="dialogLoader">
+        <p class="text-center fw-bold my-3">Loading...</p>
+      </ng-container>
+
+      <div class="col-lg-12">
+        <div class="image-container">
+          <div *ngFor="let img of mannualEmailBody.files" style="position: relative;">
+            <img [src]="img | image | async" alt="Loading..." width="100%" height="100%">
+            <button class="close-container" (click)="closeImage1(img)"><img src="assets/icons/cancel.png" width="26px"
+                alt=""></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center justify-content-end mt-2">
+    <button class="dialog-close-btn" mat-dialog-close>Close</button>
+    <button class="dialog-update-btn" mat-dialog-close (click)="guardEmail()"
+      [disabled]="!mannualEmailBody.recipientEmails">Submit</button>
+  </div>
+</ng-template>
+
+
+<ng-template #openmessage>
+  <div style="background-color: #084982;">
+    <p class="dialog-title mb-2">Send Message</p>
+  </div>
+
+
+  <div class="dialog-content" style="width: 20vw;">
+    <div class="row mx-0 mt-2">
+      <div class="col-lg-12">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Sender</mat-label>
+          <input matInput type="text" [(ngModel)]="sender" disabled>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-12">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Recipient</mat-label>
+          <input matInput type="text" [(ngModel)]="recipient" maxlength="15" required>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12">
+        <!-- <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Message</mat-label>
+          <textarea matInput ></textarea>
+        </mat-form-field> -->
+
+        <mat-form-field class="w-100">
+          <mat-label>Message</mat-label>
+          <textarea matInput [(ngModel)]="message"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-12">
+        <!-- <mat-form-field appearance="outline" class="w-100"> -->
+        <!-- <mat-label>Upload Screenshot</mat-label> -->
+        <input type="file" (change)="selected800File($event)">
+        <!-- </mat-form-field> -->
+      </div>
+
+      <div class="d-flex align-items-center justify-content-end mt-2">
+        <button class="dialog-close-btn" mat-dialog-close>Close</button>
+        <!-- <button class="dialog-update-btn" mat-dialog-close  (click)="SendMessage800()">Submit</button> -->
+        <button class="dialog-update-btn" mat-dialog-close (click)="sendMessage()">Submit</button>
+        <!-- <progress id="uploadProgress" [value]="progress" max="100" style="width: 100%;"></progress>
+    <span id="progressText">{{progress}}%</span> -->
+      </div>
+
+    </div>
+  </div>
+
+
+
+</ng-template>
+<!-- 
+<ng-container *ngIf="isSidePanelOpen">
+  <app-sidepanel [isSidePanelOpen]="isSidePanelOpen" (sidePanelClosed)="onCloseSidePanel($event)"></app-sidepanel>
+</ng-container> -->

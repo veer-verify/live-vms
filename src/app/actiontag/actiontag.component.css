@@ -1,0 +1,49 @@
+.main-container{
+
+    padding: 20px;
+     width: 50vw;
+}
+.headingp {
+    margin: 0;  /* Remove default margin */
+     
+    font-size: 16px;
+    font-weight: 600;
+  }
+ /* From Uiverse.io by mrhyddenn */ 
+  .closebtn {
+
+    background-color: transparent;
+    border-radius: 50%;
+    color: #000; 
+  }
+  
+
+/* From Uiverse.io by krlozCJ */ 
+.btn-template{
+  border-radius: 5px;
+  background-color: rgb(8, 69, 122);
+  color: white;
+  border: none;
+}
+
+
+.example-radio-group {
+  display: flex;
+  margin: 15px 0;
+  align-items: flex-start;
+}
+
+.example-radio-button {
+  margin: 5px;
+
+}
+
+/* ::ng-deep .mat-mdc-radio-button.mat-accent {
+
+  --mdc-radio-selected-pressed-icon-color: #084982 !important;
+  --mdc-radio-selected-icon-color: #084982 !important;
+  --mat-radio-ripple-color: #000 !important;
+  --mdc-radio-selected-hover-icon-color:#084982 !important;
+  --mat-radio-checked-ripple-color: #084982 !important;
+  --mat-radio-disabled-label-color: rgba(0, 0, 0, 0.38) !important;
+} */

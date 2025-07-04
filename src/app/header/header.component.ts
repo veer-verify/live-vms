@@ -1,0 +1,45 @@
+import { Component, HostListener, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { LoginService } from 'src/services/login.service';
+import { StorageService } from 'src/services/storage.service';
+
+@Component({
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.css']
+})
+export class HeaderComponent {
+
+  constructor(
+    private router: Router,
+    private loginSer: LoginService,
+    private storageSer: StorageService
+  ) {}
+
+  userData: any;
+  ngOnInit() {
+    this.userData = this.storageSer.getData('userData');
+  }
+
+  isHidden: boolean = false;
+  lastScrollTop: number = 0;
+
+  // @HostListener('window:scroll', [])
+  // onWindowScroll() {
+  //   const currentScroll = window.scrollY || document.documentElement.scrollTop;
+  //   console.log(currentScroll)
+  //   if (currentScroll > this.lastScrollTop) {
+  //     this.isHidden = true; // Scrolling down, hide the header
+  //   } else {
+  //     this.isHidden = false; // Scrolling up, show the header
+  //   }
+  //   this.lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+  // }
+
+  logout() {
+    localStorage.clear();
+    // this.loginSer.user$.next(null);
+    this.router.navigate(['/login'])
+  }
+
+}

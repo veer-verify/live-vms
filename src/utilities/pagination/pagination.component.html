@@ -1,0 +1,8 @@
+<section>
+    <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Page</mat-label>
+        <mat-select [(ngModel)]="page" (selectionChange)="changePage()">
+            <mat-option *ngFor="let item of noOfPages" [value]="item">{{item + 1}} of {{totalPages}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</section>
