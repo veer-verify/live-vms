@@ -36,10 +36,23 @@ export class HeaderComponent {
   //   this.lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
   // }
 
+  showLoader: boolean = false;
   logout() {
-    localStorage.clear();
-    // this.loginSer.user$.next(null);
-    this.router.navigate(['/login'])
+    this.showLoader = true;
+    this.loginSer.manageUserSession('logOut').subscribe({
+      error: (err: any) => {
+        this.showLoader = false;
+        this.router.navigateByUrl('/login');
+        localStorage.clear();
+        window.location.reload();
+      },
+      complete: () => {
+        this.showLoader = false;
+        this.router.navigateByUrl('/login');
+        localStorage.clear();
+        window.location.reload();
+      }
+    })
   }
 
 }

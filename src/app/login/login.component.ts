@@ -48,7 +48,8 @@ export class LoginComponent {
           this.showLoader = false;
           if (res.Status === 'Success') {
             this.storageSer.saveData('userData', res);
-            this.storageSer.saveData('acTok', res.AccessToken ?? '')
+            this.storageSer.saveData('acTok', res.AccessToken ?? '');
+            this.manageUserSession();
             this.router.navigate(['/user-dashboard']);
             // this.router.navigate(['/dashboard']);
           } else if (res?.Status == 'Failed') {
@@ -60,6 +61,15 @@ export class LoginComponent {
           this.alertSer.snackError(err?.error?.statusText);
         }
       })
+  }
+
+  manageUserSession() {
+    this.loginSer.manageUserSession('logIn').subscribe((res: any) => {
+      // console.log(res);
+      localStorage.setItem('sId', JSON.stringify(res.sessionId ?? ''))
+    }, (err) => {
+      console.log(err)
+    })
   }
 
   showPassword: boolean = false;

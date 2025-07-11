@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import * as CryptoJS from 'crypto-js';
+
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +24,9 @@ export class StorageService {
 
   constructor() { }
 
+  key = "verifai";
+
+
   public saveData(name: any, data: any) {
     // let x = btoa(encodeURIComponent(JSON.stringify(data)));
     // localStorage.setItem(name, x);
@@ -40,6 +45,14 @@ export class StorageService {
 
   public clearData() {
     localStorage.clear();
+  }
+
+  public encrypt(txt: string): string {
+    return CryptoJS.AES.encrypt(txt, this.key).toString();
+  }
+
+  public decrypt(txtToDecrypt: string) {
+    return CryptoJS.AES.decrypt(txtToDecrypt, this.key).toString(CryptoJS.enc.Utf8);
   }
 
 }

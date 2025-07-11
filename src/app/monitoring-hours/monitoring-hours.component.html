@@ -48,7 +48,6 @@
            
           </div>
           <div class="col-lg-6">
-            <!-- <material-timepicker classFormField="w-100" color="primary"   label="StartTime" [userTime]="exportTime" revertLabel="Remove" submitLabel="Ok"></material-timepicker> -->
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>StartTime</mat-label>
               <input matInput [(ngModel)]="startTime" (ngModelChange)="onTimeChange('start')"  [ngxMatTimepicker]="picker"  [format]="24" > 
@@ -60,7 +59,6 @@
           </div>
     
           <div class="col-lg-6">
-            <!-- <material-timepicker color="primary" classFormField="w-100" label="EndTime"  [userTime]="exportTime" revertLabel="Remove" (change)="onChangeHour1($event)" submitLabel="Ok"></material-timepicker> -->
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>EndTime</mat-label>
               <input matInput [(ngModel)]="endTime" (ngModelChange)="onTimeChange('end')"   [ngxMatTimepicker]="picker1"  [format]="24" > 

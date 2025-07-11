@@ -1,23 +1,20 @@
 import { CountryService } from '../../services/country.service';
 import { Component, ElementRef, QueryList, TemplateRef, ViewChild, ViewChildren, } from '@angular/core';
 import { CameraService } from 'src/services/camera.service';
-import { LoginService } from 'src/services/login.service';
 import { StorageService } from 'src/services/storage.service';
 import { Router } from '@angular/router';
-import { CdkDragDrop, CdkDragEnter, CdkDragMove, moveItemInArray, transferArrayItem, } from '@angular/cdk/drag-drop';
-import { BehaviorSubject, Observable, Subject, Subscription, fromEvent, tap, } from 'rxjs';
+import { CdkDragEnter, moveItemInArray, } from '@angular/cdk/drag-drop';
+import { Observable, Subscription, fromEvent, } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from 'src/services/alert.service';
-import { formatDate } from '@angular/common';
 import * as moment from 'moment-timezone';
-import { HttpClient, HttpErrorResponse, HttpEventType, } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, } from '@angular/common/http';
 import { SiteService } from 'src/services/site.service';
 import { v4 as uuid } from 'uuid';
 import { MetadataService } from 'src/services/metadata.service';
 import { environment } from 'src/environments/environment';
 import { DeviceStatusComponent } from '../device-status/device-status.component';
-import { ClickToCallComponent } from '../click-to-call/click-to-call.component';
-import { ActionViewComponent } from '../action-view/action-view.component';
+import { LoginService } from 'src/services/login.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -67,7 +64,8 @@ export class DashboardComponent {
     private matDialog: MatDialog,
     private metadaSer: MetadataService,
     private http: HttpClient,
-    private CountryService: CountryService
+    private CountryService: CountryService,
+    private loginSer: LoginService
   ) { }
 
   searchText!: string;
@@ -345,7 +343,7 @@ export class DashboardComponent {
 
 
   /** drag and drop cameras */
-
+  
   @ViewChild('dropListContainer') dropListContainer!: ElementRef;
   dropListReceiverElement: any;
   dragDropInfo: any;
@@ -732,91 +730,21 @@ export class DashboardComponent {
   }
 
   logout() {
-    this.storageSer.clearData();
-    this.router.navigate(['/login']);
-  }
-
-  @ViewChild('openmessage') openmessage: any = ElementRef;
-  sender: string = '+18444384847';
-  recipient: string = '';
-  message: string = '';
-  openMessageDialog() {
-    this.recipient = '';
-    this.message = '';
-    this.progress = 0;
-    this.selectedfile = null;
-    this.matDialog.open(this.openmessage, { disableClose: true });
-  }
-
-  selectedfile: any;
-  selected800File(event: any) {
-    this.selectedfile = event.target.files[0];
-  }
-
-  progress: number = 0;
-  async sendMessage() {
-    let obj = {
-      sender: this.sender,
-      recipient: this.recipient,
-      message: this.message,
-    };
-
-    try {
-      const response = await this.camSer
-        .sendMessage800(obj, this.selectedfile)
-        .pipe(tap((event: any) => {
-            if (event.type === HttpEventType.UploadProgress) {
-              const progress = Math.round((100 * event.loaded) / event.total);
-              this.progress = progress;
-            }
-          })
-        )
-        .toPromise();
-        alert('Message sent successfully');
-    }
-    catch (error) {
-      alert(`Failed to send message:${error}`);
-      this.progress = 0;
-    }
-  }
-
-  OpenPlivo() {
-    this.matDialog.open(ClickToCallComponent);
-  }
-
-  openChat: boolean = false;
-  hidden: boolean = false;
-
-  latestMsg: any;
-  latestMsg1: any;
-
-  openChatbot1() {
-    this.camSer.getRecievedMsg().subscribe((res: any) => {
-      this.latestMsg1 = res.data;
-
-      this.count = this.latestMsg1
-        .flatMap((el: any) => el.latestItem)
-        .filter((item: any) => item.isInbound)?.length;
-    });
-  }
-
-  openChatbot() {
-    this.camSer.getRecievedMsg().subscribe((res: any) => {
-      this.latestMsg = res.data;
-    });
-    this.openChat = !this.openChat;
-    this.hidden = true;
-  }
-
-  // isSidePanelOpen = false;
-  // Method to handle the event emitted from the child
-  // onCloseSidePanel(event: boolean) {
-  //   this.isSidePanelOpen = event; // The child tells the parent to close the side panel
-  // }
-
-  Settings(type: any, event: any) {
-    event.stopPropagation();
-    this.matDialog.open(ActionViewComponent, { data: type });
+    this.showLoader = true;
+    this.loginSer.manageUserSession('logOut').subscribe({
+      error: (err: any) => {
+        this.showLoader = false;
+        this.router.navigateByUrl('/login');
+        localStorage.clear();
+        window.location.reload();
+      },
+      complete: () => {
+        this.showLoader = false;
+        this.router.navigateByUrl('/login');
+        localStorage.clear();
+        window.location.reload();
+      }
+    })
   }
 
   ngOnDestroy() {
