@@ -1,7 +1,6 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { first, from, fromEvent, last, take } from 'rxjs';
 import { AlertService } from 'src/services/alert.service';
 import { LoginService } from 'src/services/login.service';
 import { StorageService } from 'src/services/storage.service';
@@ -18,7 +17,7 @@ export class LoginComponent {
     private loginSer: LoginService,
     private router: Router,
     private storageSer: StorageService,
-    private alertSer: AlertService
+    private alertSer: AlertService,
   ) { }
   
   loginForm!: FormGroup;

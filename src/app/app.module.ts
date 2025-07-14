@@ -16,7 +16,6 @@ import { SortPipe } from 'src/utilities/pipes/sort.pipe';
 import { RemoveDuplicatesPipe } from 'src/utilities/pipes/remove-duplicates.pipe';
 import { MaterialModule } from './material.module';
 import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { ResizableModule } from 'angular-resizable-element';
 import { VideoPlayerComponent } from 'src/utilities/video-player/video-player.component';
 import { DummyVideoComponent } from 'src/utilities/dummy-video/dummy-video.component';
 import { SanitizePipe } from 'src/utilities/pipes/sanitize.pipe';
@@ -76,7 +75,6 @@ import { PaginationComponent } from 'src/utilities/pagination/pagination.compone
     ReactiveFormsModule,
     HttpClientModule,
     MaterialModule,
-    ResizableModule,
     MatBadgeModule,
     MaterialTimePickerModule,
     MatSliderModule,
