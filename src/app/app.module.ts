@@ -25,7 +25,6 @@ import { OrderByPipe } from 'src/utilities/pipes/order-by.pipe';
 import { DeviceStatusComponent } from './device-status/device-status.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { SidepanelComponent } from './sidepanel/sidepanel.component';
-import { MaterialTimePickerModule } from '@candidosales/material-time-picker';
 import { CamerasComponent } from './cameras/cameras.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { MonitoringHoursComponent } from './monitoring-hours/monitoring-hours.component';
@@ -76,7 +75,6 @@ import { PaginationComponent } from 'src/utilities/pagination/pagination.compone
     HttpClientModule,
     MaterialModule,
     MatBadgeModule,
-    MaterialTimePickerModule,
     MatSliderModule,
     NgxMatTimepickerModule,
     NgxEchartsModule.forRoot({

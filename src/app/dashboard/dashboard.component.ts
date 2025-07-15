@@ -736,13 +736,13 @@ export class DashboardComponent {
         this.showLoader = false;
         this.router.navigateByUrl('/login');
         localStorage.clear();
-        // window.location.reload();
+        window.location.reload();
       },
       complete: () => {
         this.showLoader = false;
         this.router.navigateByUrl('/login');
         localStorage.clear();
-        // window.location.reload();
+        window.location.reload();
       }
     })
   }
