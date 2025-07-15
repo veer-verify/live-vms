@@ -277,6 +277,12 @@ select {
   position: absolute;
 }
 
+.cam-detail button {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+}
+
 .tile {
   background-color: #000000;
   border-radius: 5px;

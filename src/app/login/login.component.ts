@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AlertService } from 'src/services/alert.service';
 import { LoginService } from 'src/services/login.service';
@@ -28,14 +29,6 @@ export class LoginComponent {
       userName: this.fb.control('', Validators.required),
       password: this.fb.control('', Validators.required)
     });
-
-    // let credentials = new Map();
-    // credentials.set('userName', 'john');
-    // credentials.set('password', '123');
-    // credentials.set('callingSystemDetail', 'vms');
-
-    // let x = this.fb.group(Object.entries(credentials));
-    // console.log(x.value);
   }
 
   showLoader: boolean = false;

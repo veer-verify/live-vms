@@ -159,10 +159,6 @@
           (cdkDragEntered)="dragEntered($event)" (cdkDragMoved)="dragMoved()" (cdkDragDropped)="dragDropped()"
           [cdkDragDisabled]="isMaximized" cdkDrag>
           <div class="cam-detail">
-            <!-- <div>
-              <p class="cam-name ms-2"><span *ngIf="item?.showSiteName">{{ item?.siteName }}-</span>{{ item?.name }}</p>
-            </div> -->
-
             <div class="">
               <a class="cam-name ms-1"><span *ngIf="item?.showSiteName">{{ item?.siteName }}-</span>{{ item?.name }}</a>
 
@@ -170,45 +166,26 @@
                 <!-- <a class="frame-icon" *ngIf="iframeIndex == -1" matTooltip="Generate Event" (click)="openuserActionDialog(item)">
                   <img src="assets/icons/event.svg" alt="" width="18">
                 </a> -->
-                <!-- <a class="frame-icon" *ngIf="iframeIndex == -1" (click)="openMessageDialog()" matTooltip="Send Text Message">
-                <a class="frame-icon" *ngIf="iframeIndex == -1" (click)="OpenPlivo()" matTooltip="Call">
-                  <img src="assets\icons\call_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg" alt="" width="15" />
-                </a>
-                <a class="frame-icon" *ngIf="iframeIndex == -1" (click)="openMessageDialog()" matTooltip="Send Text Message">
-                  <img src="assets\icons\sms800.svg" alt="" width="15" />
-                </a> -->
-                <a class="frame-icon" matTooltip="Screenshot" (click)="normalCapture(item, c)">
+                <button class="frame-icon" matTooltip="Screenshot" (click)="normalCapture(item, c)">
                   <img src="assets/icons/screenshot.svg" alt="" width="16" />
-                </a>
-                <!-- <a class="frame-icon" *ngIf="iframeIndex == -1" matTooltip="Email" (click)="openEmaiDialog(item)">
-                  <img src="assets/icons/mail.svg" alt="" width="16" />
-                </a> -->
-                <a class="frame-icon" *ngIf="iframeIndex == -1" matTooltip="Full Screen" (click)="toggleMaximize(c)">
-                  <img src="assets/icons/fullscreen.svg" alt="" width="18" />
-                </a>
-                <a class="frame-icon" *ngIf="iframeIndex === c" matTooltip="Close" (click)="toggleMaximize(c)">
-                  <img src="assets/icons/close.svg" alt="" width="18" />
-                </a>
-
-                <!-- <a [ngClass]="audioIndex == j ? 'frame-icon-active' : 'frame-icon'" *ngIf="iframeIndex == -1" [href]="item.audiUrl" target="_blank" matTooltip="Siren">
-                  <img src="assets/icons/volume_up.svg" alt="" width="18" />
-                </a> -->
-                <!-- <a class="frame-icon" *ngIf="iframeIndex == -1 && item.audioUrl" [href]="item.audioUrl" target="_blank"
-                  matTooltip="Siren">
-                  <img src="assets/icons/volume_up.svg" alt="" width="18" [hidden]="!item?.videoUrl" />
-                </a>
-                <a class="frame-icon" *ngIf="iframeIndex == -1 && item.audioSpeakerType === 'IP'" matTooltip="Siren">
-                  <img src="assets/icons/volume_up.svg" alt="" width="18" [hidden]="!item?.videoUrl" />
-                </a> -->
-
-                <a class="frame-icon" *ngIf="iframeIndex == -1 && item.audioUrl" (click)="audio(item, c)"
-                  matTooltip="Siren">
-                  <img src="assets/icons/volume_up.svg" [ngClass]="audioIndex == c ? 'blink-animation' : ''" alt=""
-                    width="15" />
-                </a>
-                <a class="frame-icon" *ngIf="iframeIndex == -1" (click)="clearCams(item)" matTooltip="Close">
-                  <img src="assets/icons/close.svg" alt="" width="15" />
-                </a>
+                </button>
+                <ng-container *ngIf="iframeIndex === -1">
+                  <button class="frame-icon" matTooltip="Email" (click)="openEmaiDialog(item)">
+                    <img src="assets/icons/mail.svg" alt="" width="16" />
+                  </button>
+                  <button class="frame-icon" matTooltip="Full Screen" (click)="toggleMaximize(c)">
+                    <img src="assets/icons/fullscreen.svg" alt="" width="18" />
+                  </button>
+                  <button class="frame-icon" *ngIf="iframeIndex === c" matTooltip="Close" (click)="toggleMaximize(c)">
+                    <img src="assets/icons/close.svg" alt="" width="18" />
+                  </button>
+                  <button class="frame-icon" *ngIf="item.audioUrl" (click)="audio(item, c)" matTooltip="Siren" [disabled]="audioIndex === c">
+                    <img [src]="audioIndex === c ? 'assets/icons/siren-red.png' : 'assets/icons/siren-new.png'" [ngClass]="audioIndex == c ? 'blink-animation' : ''" alt="" width="15" />
+                  </button>
+                  <button class="frame-icon" (click)="clearCams(item)" matTooltip="Close">
+                    <img src="assets/icons/close.svg" alt="" width="15" />
+                  </button>
+                </ng-container>
               </span>
             </div>
 

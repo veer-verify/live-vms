@@ -14,16 +14,11 @@ export const environment = {
     // guard_monitoring_url:`${dev_url}:8015/guard_monitoring`,
     // monitoring_url:`${dev_url}:8016/monitoring`,
 
-    login_url: `${prod_url}:8543/userDetails`,
-    site_url: `${prod_url}:8943/vipsites`,
-    common_url: `${prod_url}:8844/metadata`,
-    event_url: `${prod_url}:80`,
-    dot_analytics_url: `${dev_url}:8952/dotAnalytics`,
-    email_url: `${dev_url}:8953/guard`,
-    guard_automation_url: `${dev_url}:8089/guard_automation`,
-    guard_url:`${dev_url}:8015/guardEmails`,
-    guard_monitoring_url:`${dev_url}:8015/guard_monitoring`,
-    monitoring_url:`${dev_url}:8016/monitoring`,
+    login_url: `${prod_url}/userDetails`,
+    site_url: `${prod_url}/vipsites`,
+    common_url: `${prod_url}/metadata`,
+    guard_monitoring_url:`${prod_url}/guard_monitoring`,
+    monitoring_url:`${prod_url}/monitoring`,
     
     firstAlert: {
         time1: 160,

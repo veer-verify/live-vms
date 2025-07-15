@@ -1,9 +1,9 @@
 // const dev_url: string = "https://preprod.ivisecurity.com";
 const dev_url: string = "https://usstaging.ivisecurity.com";
-// const local_url: string = "http://192.168.0.180";
+const local_url: string = "http://192.168.0.103";
 
 export const environment = {
-    // login_url: `${local_url}:8922/userDetails`,
+    // login_url: `${dev_url}:8922/userDetails`,
     // site_url: `${dev_url}:8943/vipsites`,
     // common_url: `${dev_url}:8844/metadata`,
     // dot_analytics_url: `${dev_url}:8952/dotAnalytics`,
@@ -12,7 +12,7 @@ export const environment = {
     // guard_automation_url: `${dev_url}:8089/guard_automation`,
     // guard_url:`${dev_url}:8015/guardEmails`,
     // guard_monitoring_url:`${dev_url}:8015/guard_monitoring`,
-    // monitoring_url:`${dev_url}:8016/monitoring`
+    // monitoring_url:`${dev_url}:8016/monitoring`,
 
     login_url: `${dev_url}/userDetails`,
     site_url: `${dev_url}/vipsites`,
