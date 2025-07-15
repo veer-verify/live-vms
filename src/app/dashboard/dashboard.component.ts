@@ -1,4 +1,3 @@
-import { CountryService } from '../../services/country.service';
 import { Component, ElementRef, QueryList, TemplateRef, ViewChild, ViewChildren, } from '@angular/core';
 import { CameraService } from 'src/services/camera.service';
 import { StorageService } from 'src/services/storage.service';
@@ -64,7 +63,6 @@ export class DashboardComponent {
     private matDialog: MatDialog,
     private metadaSer: MetadataService,
     private http: HttpClient,
-    private CountryService: CountryService,
     private loginSer: LoginService
   ) { }
 
@@ -79,8 +77,6 @@ export class DashboardComponent {
   count: number = 0;
   ngOnInit() {
     this.getSites();
-
-    this.CountryService.plivoLogin();
     this.resizeObservable = fromEvent(window, 'resize');
     this.resizeSubscription = this.resizeObservable.subscribe((evt: any) => {
       if (evt.target.innerWidth < 768) {
