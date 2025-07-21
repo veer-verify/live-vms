@@ -26,7 +26,7 @@ export class LoginService {
     return this.http.post(url, Object.fromEntries(credentials));
   }
 
-    manageUserSession(type: string) {
+    manageUserSession(type: string): Observable<any> {
     let url = environment.login_url + `/manageUserSession_1_0`;
     var user = this.storageSer.getData('userData');
     let sessionId = JSON.parse(localStorage.getItem('sId')!);

@@ -50,17 +50,16 @@ export class LoginComponent {
         },
         error: (err: any) => {
           this.showLoader = false;
-          this.alertSer.snackError(err?.error?.statusText);
+          this.alertSer.snackError(err?.error?.statusText ?? 'login failed!');
         }
       })
   }
 
   manageUserSession() {
-    this.loginSer.manageUserSession('logIn').subscribe((res: any) => {
-      // console.log(res);
-      localStorage.setItem('sId', JSON.stringify(res.sessionId ?? ''))
-    }, (err) => {
-      console.log(err)
+    this.loginSer.manageUserSession('logIn').subscribe({
+      next: (res) => {
+        localStorage.setItem('sId', JSON.stringify(res.sessionId ?? ''))
+      }
     })
   }
 

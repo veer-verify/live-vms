@@ -305,8 +305,7 @@
         <mat-form-field class="w-100">
           <mat-label>Action Tag</mat-label>
           <mat-select [(ngModel)]="mannualEmailBody.actionTag">
-            <mat-option *ngFor="let item of actionTags; let i=index" [value]="item.id"
-              [hidden]="i>6">{{item.value}}</mat-option>
+            <mat-option *ngFor="let item of actionTags; let i=index" [value]="item.id">{{item.value}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -322,8 +321,7 @@
         <mat-form-field class="w-100">
           <mat-label>Alert Type</mat-label>
           <mat-select [(ngModel)]="mannualEmailBody.alertType">
-            <mat-option *ngFor="let item of alertTypes; let i=index" [value]="item.keyId"
-              [hidden]="i>6">{{item.value}}</mat-option>
+            <mat-option *ngFor="let item of alertTypes; let i=index" [value]="item.keyId">{{item.value}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -331,8 +329,7 @@
         <mat-form-field class="w-100">
           <mat-label>Alert Sub Type</mat-label>
           <mat-select [(ngModel)]="mannualEmailBody.alertSubType">
-            <mat-option *ngFor="let item of alertSubTypes; let i=index" [value]="item.keyId" (click)="getEmailData()"
-              [hidden]="i>6">{{item.value}}</mat-option>
+            <mat-option *ngFor="let item of alertSubTypes; let i=index" [value]="item.keyId" (click)="getEmailData()">{{item.value}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>

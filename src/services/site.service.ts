@@ -19,12 +19,13 @@ export class SiteService {
     let params = new HttpParams();
 
     params = params.set('userName', user?.UserName);
+    params = params.set('siteStatus', 'Active');
     if(payload?.page) {
       params = params.set('page', payload?.page);
     }
-    if(payload?.siteStatus) {
-      params = params.set('siteStatus', payload?.siteStatus);
-    }
+    // if(payload?.siteStatus) {
+    //   params = params.set('siteStatus', payload?.siteStatus);
+    // }
     return this.http.get(url, {params: params});
   }
 

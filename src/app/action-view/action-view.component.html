@@ -68,7 +68,7 @@
                         <!-- <mat-option (click)="AddNew('alert')">Add New</mat-option> -->
                         <mat-option></mat-option> 
                         <mat-option *ngFor="let item of alertTypes; let i=index" [value]="item.keyId"
-                          (click)="getData(item)" [hidden]="i>6">{{item.value}}</mat-option>
+                          (click)="getData(item)">{{item.value}}</mat-option>
                       </mat-select>
                     </mat-form-field>
                 </div>
@@ -80,7 +80,7 @@
                         <!-- <mat-option (click)="AddNew('subalert')">Add New</mat-option> -->
                         <mat-option></mat-option> 
                         <mat-option *ngFor="let item of alertSubTypes; let i=index" [value]="item.keyId"
-                          (click)="getData1(item)" [hidden]="i>6">{{item.value}}</mat-option>
+                          (click)="getData1(item)">{{item.value}}</mat-option>
                       </mat-select>
                     </mat-form-field>
                 </div>
