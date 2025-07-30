@@ -427,9 +427,14 @@ export class DashboardComponent {
       let timeAlert;
       if (data.siteId == 36415) {
         timeAlert = environment.newAlert;
-      } else if (data.siteId == 36444 || data?.siteId === 36446) {
+      }
+      else if (data.siteId == 36444 || data?.siteId === 36446) {
         timeAlert = environment.oneWatchAlert;
-      } else {
+      }
+      else if(data.siteId == 36562) {
+        timeAlert = environment.springAlert;
+      }
+      else {
         timeAlert = environment.firstAlert;
       }
 

@@ -43,4 +43,12 @@ export const environment = {
         time4: 210,
         time5: 240
     },
+
+    springAlert: {
+        time1: 115,
+        time2: 180,
+        time3: 210,
+        time4: 240,
+        time5: 270
+    },
 };
