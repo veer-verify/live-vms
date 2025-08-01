@@ -29,7 +29,7 @@ export const environment = {
         time5: 270
     },
     
-    newAlert: {
+    kennedyAlert: {
         time1: 135,
         time2: 150,
         time3: 180,

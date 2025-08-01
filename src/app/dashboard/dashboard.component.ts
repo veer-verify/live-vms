@@ -72,7 +72,6 @@ export class DashboardComponent {
   resizeSubscription!: Subscription;
   currentTime: any;
   displayTime: any;
-  threesisterTime: any;
   intervalId: any;
   count: number = 0;
   ngOnInit() {
@@ -339,7 +338,7 @@ export class DashboardComponent {
 
 
   /** drag and drop cameras */
-  
+
   @ViewChild('dropListContainer') dropListContainer!: ElementRef;
   dropListReceiverElement: any;
   dragDropInfo: any;
@@ -358,7 +357,7 @@ export class DashboardComponent {
 
   dragMoved() {
     if (!this.dropListContainer) return;
-    const placeholderEl =this.dropListContainer.nativeElement.querySelector('.cdk-drag-placeholder');
+    const placeholderEl = this.dropListContainer.nativeElement.querySelector('.cdk-drag-placeholder');
     const receiverEl = this.dragDropInfo?.dragIndex > this.dragDropInfo?.dropIndex ? placeholderEl?.nextElementSibling : placeholderEl?.previousElementSibling;
     if (!receiverEl) return;
     receiverEl.style.display = 'none';
@@ -423,71 +422,60 @@ export class DashboardComponent {
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
 
-      this.currentTime = new Date();
       let timeAlert;
       if (data.siteId == 36415) {
-        timeAlert = environment.newAlert;
+        timeAlert = environment.kennedyAlert;
       }
       else if (data.siteId == 36444 || data?.siteId === 36446) {
         timeAlert = environment.oneWatchAlert;
       }
-      else if(data.siteId == 36562) {
+      else if (data.siteId == 36562) {
         timeAlert = environment.springAlert;
       }
       else {
         timeAlert = environment.firstAlert;
       }
-
-      let d1 = new Date();
-      let check1 = new Date(d1);
-      let one;
-      if (data.cameraId == 'GISUS7031C3') {
-        one = d1.getMinutes() + 1;
-      } else {
-        one = d1.getMinutes() + timeAlert.time1;
-      }
-      check1.setMinutes(one);
-
-      let check2 = new Date(d1);
-      check2.setMinutes(d1.getMinutes() + timeAlert.time2);
-
-      let check3 = new Date(d1);
-      check3.setMinutes(d1.getMinutes() + timeAlert.time3);
-
-      let check4 = new Date(d1);
-      check4.setMinutes(d1.getMinutes() + timeAlert.time4);
-
-      let check5 = new Date(d1);
-      check5.setMinutes(d1.getMinutes() + timeAlert.time5);
-
+      
+      // let d1 = new Date();
+      // let check1 = new Date(d1);
+      // check1.setMinutes((d1.getMinutes() + timeAlert.time1));
+      // let check2 = new Date(d1);
+      // check2.setMinutes(d1.getMinutes() + timeAlert.time2);
+      // let check3 = new Date(d1);
+      // check3.setMinutes(d1.getMinutes() + timeAlert.time3);
+      // let check4 = new Date(d1);
+      // check4.setMinutes(d1.getMinutes() + timeAlert.time4);
+      // let check5 = new Date(d1);
+      // check5.setMinutes(d1.getMinutes() + timeAlert.time5);
+      
       data.buttons.push({
         id: uuid(),
         x: x,
         y: y,
         elementWidth: event.target.offsetParent.clientWidth,
         elementHeight: event.target.offsetParent.clientHeight,
-        chkTime1: check1,
-        chkTime2: check2,
-        chkTime3: check3,
-        chkTime4: check4,
-        chkTime5: check5,
+        chkTime1: new Date().setMinutes(new Date().getMinutes() + timeAlert.time1),
+        chkTime2: new Date().setMinutes(new Date().getMinutes() + timeAlert.time2),
+        chkTime3: new Date().setMinutes(new Date().getMinutes() + timeAlert.time3),
+        chkTime4: new Date().setMinutes(new Date().getMinutes() + timeAlert.time4),
+        chkTime5: new Date().setMinutes(new Date().getMinutes() + timeAlert.time5),
         dspTime: this.displayTime,
-        threeTime: this.threesisterTime,
         width: `${this.listType === 1 ? 8 : this.listType === 2 ? 12 : 15}`,
         height: `${this.listType === 1 ? 8 : this.listType === 2 ? 12 : 15}`,
       });
-
+      
       // let hourVal = formatDate(this.displayTime, 'HH:MM:SS', 'en-us').split(':')[0];
       // this.analyticsObj = {
-      //   siteId: data?.siteId,
-      //   cameraId: data?.cameraId,
-      //   cameraTime: moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss'),
-      //   hour: parseInt(hourVal),
-      //   no_of_objects: 1,
-      //   createdBy: null
-      // }
-      // this.addVehicleCount();
-
+        //   siteId: data?.siteId,
+        //   cameraId: data?.cameraId,
+        //   cameraTime: moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss'),
+        //   hour: parseInt(hourVal),
+        //   no_of_objects: 1,
+        //   createdBy: null
+        // }
+        // this.addVehicleCount();
+        
+      this.currentTime = new Date();
       this.btnInterval = setInterval(() => {
         this.currentTime = new Date();
       }, 1000);
@@ -505,7 +493,7 @@ export class DashboardComponent {
     //     this.url = event.target.result;
     //   }
     // }
-    for (let i=0; i<x.length; i++) {
+    for (let i = 0; i < x.length; i++) {
       await this.selectedFiles.push(x[i]);
       // this.emailBody.mannualEmailBody.push(item);
     }
@@ -544,7 +532,14 @@ export class DashboardComponent {
               this.currentItem?.siteId === 36446
             ) {
               this.emailLimited({ ...data, ...this.emailObject })
-            } else {
+            }
+            else if (this.currentItem?.siteId === 36336) {
+              console.log(data.internalPort)
+              setTimeout(() => {
+                this.emailLimited({ ...data, ...this.emailObject })
+              }, data.internalPort * 60 * 1000)
+            }
+            else {
               this.openEmaiDialog(data);
             }
           }
@@ -572,7 +567,7 @@ export class DashboardComponent {
     footer: null,
     files: [],
   };
-  
+
   emailObjects: any = [];
 
   @ViewChild('mannualEmailDialog') mannualEmailDialog = {} as TemplateRef<any>;
@@ -582,7 +577,7 @@ export class DashboardComponent {
     this.selectedFiles = [];
     this.selectedCameras = [];
     this.currentItem = data;
-    
+
     Object.keys(this.mannualEmailBody).map((key: any) => {
       if (this.mannualEmailBody[key] instanceof Array) {
         this.mannualEmailBody[key] = [];
@@ -603,7 +598,7 @@ export class DashboardComponent {
     this.mannualEmailBody.siteId = data?.siteId;
 
     this.camSer.listActionTags(data).toPromise().then((res: any) => {
-      if(res.statusCode === 200) {
+      if (res.statusCode === 200) {
         this.actionTags = res.data[0].actionTags;
       }
     });
