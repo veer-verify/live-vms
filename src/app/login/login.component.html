@@ -1,12 +1,11 @@
 <div class="logo">
-  <img src="assets/icons/Logo.svg" width="200px">
-  <!-- <img src="assets/themes/Uneeviu Logo Blue png.png" width="250px"> -->
+  <img [src]="storageSer.logo" width="200px">
 </div>
 
 <div class="signin-content">
   <mat-card>
     <mat-card-content>
-      <p class="login-text text-center mb-3">login</p>
+      <p class="login-text text-center mb-3">welcome</p>
 
       <form [formGroup]="loginForm">
         <div class="row">

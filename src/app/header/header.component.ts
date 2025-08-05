@@ -44,13 +44,11 @@ export class HeaderComponent {
         this.showLoader = false;
         this.router.navigateByUrl('/login');
         localStorage.clear();
-        window.location.reload();
       },
       complete: () => {
         this.showLoader = false;
         this.router.navigateByUrl('/login');
         localStorage.clear();
-        window.location.reload();
       }
     })
   }

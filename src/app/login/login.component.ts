@@ -17,7 +17,7 @@ export class LoginComponent {
     private fb: FormBuilder,
     private loginSer: LoginService,
     private router: Router,
-    private storageSer: StorageService,
+    public storageSer: StorageService,
     private alertSer: AlertService,
   ) { }
   

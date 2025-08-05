@@ -22,6 +22,20 @@ export class StorageService {
   //   }
   // ]
 
+    //ivis
+  // logo = 'assets/icons/logo_white.png';
+  // headerLogo = 'assets/themes/IVISsecurity_logo.png';
+  // accordianLogo = 'assets/icons/eye.svg';
+  // activeLogo = 'assets/icons/eye-blue.svg';
+  // inActiveLogo = 'assets/icons/eye-red.svg';
+
+  //unv
+  logo = 'assets/images/UneeviuLogowhite (1).png';
+  headerLogo = 'assets/themes/Uneeviu Logo Blue png.png';
+  accordianLogo = 'assets/themes/CameraLogowhite.png';
+  activeLogo = 'assets/themes/Uneeviu Logo Blue png.png';
+  inActiveLogo = 'assets/themes/Uneeviu Logo Blue png.png';
+
   private readonly key = "verifai";
 
   constructor() { }

@@ -43,11 +43,11 @@
 
 .left-content {
   color: #fff;
-  background: url('../../assets/images/bgimg.png') top left no-repeat;
+  /* background: url('../../assets/images/bgimg.png') top left no-repeat; */
   /* background-image: linear-gradient(to top, #1a4464, #3977a0,#5c5a5a); */
  /* background-color:#77b1d4; */
   /* height: calc(100vh - 70px); */
-  /* background-image: linear-gradient(to bottom, #D34124, #084982); */
+  background-image: var(--background-img);
   background-size: cover;
   width: 300px;
 }

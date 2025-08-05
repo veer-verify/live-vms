@@ -55,7 +55,7 @@ export class DashboardComponent {
   ];
 
   constructor(
-    private storageSer: StorageService,
+    public storageSer: StorageService,
     private camSer: CameraService,
     private siteSrvc: SiteService,
     private router: Router,
@@ -534,7 +534,6 @@ export class DashboardComponent {
               this.emailLimited({ ...data, ...this.emailObject })
             }
             else if (this.currentItem?.siteId === 36336) {
-              console.log(data.internalPort)
               setTimeout(() => {
                 this.emailLimited({ ...data, ...this.emailObject })
               }, data.internalPort * 60 * 1000)
@@ -732,13 +731,11 @@ export class DashboardComponent {
         this.showLoader = false;
         this.router.navigateByUrl('/login');
         localStorage.clear();
-        window.location.reload();
       },
       complete: () => {
         this.showLoader = false;
         this.router.navigateByUrl('/login');
         localStorage.clear();
-        window.location.reload();
       }
     })
   }
