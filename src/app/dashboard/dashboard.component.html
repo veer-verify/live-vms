@@ -128,7 +128,7 @@
               <mat-list-item *ngFor="let cam of cameras; let c = index" cdkDropList [cdkDropListData]="cameras"
                 #camList="cdkDropList" [cdkDropListConnectedTo]="[camList]" (cdkDropListDropped)="onDrop(cam)">
                 <div cdkDrag [cdkDragDisabled]="checkCam(cam)">
-                <img [src]="cam?.camMonitor === 'T' ? storageSer.activeLogo : storageSer.inActiveLogo" alt="" width="15px">
+                <img [src]="cam?.camMonitor === 'T' ? storageSer.activeLogo : storageSer.inActiveLogo" alt="" class="me-1" width="15px">
 
                   <span *ngIf="cameras.length != 0">{{cam?.name | uppercase}}</span>
                   <span style="float: right" *ngIf="cam?.isPlaying">
