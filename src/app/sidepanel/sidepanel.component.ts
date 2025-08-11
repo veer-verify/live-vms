@@ -324,7 +324,7 @@ createGuardEmailsData(){
   ccCtrl = new FormControl('');
 
   to: string[] = [];
-  bcc: string[] = ["pavank@ivisecurity.com","nathanm@ivisecurity.com","danielh@ivisecurity.com","vamsiv@ivisecurity.com","ghostguard@ivisecurity.com"];
+  bcc: string[] = [];
   cc: string[] = [];
   @ViewChild('fruitInput') fruitInput !: ElementRef<HTMLInputElement>;
   @ViewChild('bccInput') bccInput !: ElementRef<HTMLInputElement>;
