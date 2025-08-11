@@ -47,8 +47,34 @@ export class MonitoringHoursComponent {
       label:"Monitoring Hours",
       id:"monitoringHoursDetails",
       sort:false,
-      loop: [, 'monday','tuesday','wednesday','thursday','friday','saturday','sunday'],
+      loop: ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'],
       weekdays: true
+    },
+    {     
+      serial:4,
+      key: 'actions',
+      label: 'Actions',
+      actions: ['delete'],
+      type: 'actions',
+      sort: false,
+      call: (data: any, type: string) => {
+        switch(type) {
+          case 'view':
+          //   this.openViewPopup(data);
+            break;
+          case 'edit':
+            this.openEditPopup(data);
+            break;
+             case 'save':
+            this.saveEditPopup();
+            break;
+             case 'cancel':
+           this.cancelEditPopup();
+            break;
+          default:
+            break;
+        }
+      }
     }
   ]
 
@@ -66,6 +92,28 @@ export class MonitoringHoursComponent {
     }
     
   }
+
+  monhoursindex:any;
+  monhrseditindexdata:any;
+  openEditPopup(item: any) {
+ this.monhrseditindexdata={...item};
+
+   this.monhoursindex= this.monhrCamera.indexOf(item);
+  
+
+  }
+  cancelEditPopup(){
+    this.monhoursindex=-1;
+  }
+  saveEditPopup(){
+   this.SiteSer.updateCameraMonitoringHours(this.monhrseditindexdata).subscribe((res:any)=>{
+    if(res.statusCode==200){
+
+    }
+   });
+   
+  }
+
 
   @Input() monitoringCameras!:any;
   @Input() details!:any;
@@ -320,7 +368,7 @@ for (const slot of this.cameraTimeSlots) {
 
   
     this.groupedCameras = Object.values(groups);
-    // console.log("Grouped Cameras: ", this.groupedCameras);
+    console.log("Grouped Cameras: ", this.groupedCameras);
   }
 
 createCameraMonitoringHours(){

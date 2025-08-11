@@ -95,6 +95,14 @@ export class SiteService {
 
     return this.http.post(url,payload);
   }
+  updateCameraMonitoringHours(payload:any){
+    //  let url=`${environment.guard_monitoring_url}/updateCameraMonitoringHours_1_0`;
+      let url=`http://192.168.0.103:3009/updateCameraMonitoringHours_1_0`;
+    let user = this.storageSer.getData('userData');
+    payload.modifiedBy=user?.UserId;
+
+    return this.http.put(url,payload);
+  }
 
   // getSiteCameraCountsForUserName(): any {
   //   let url  = `${environment.site_url}/getSiteCameraCountsForUserName_1_0`;
@@ -142,6 +150,12 @@ export class SiteService {
       params = params.set('subTypeId', payload?.subTypeId);
     }
     return this.http.get(url, {params: params});
+  }
+  updateTemplate(payload:any){
+    let url  = `${environment.guard_monitoring_url}/updateGuardMasterData_1_0`;
+    let user = this.storageSer.getData('userData');
+    payload.modifiedBy=user?.UserId;
+    return this.http.put(url, payload);
   }
 
 }

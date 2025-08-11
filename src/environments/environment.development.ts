@@ -1,6 +1,6 @@
-// const dev_url: string = "https://preprod.ivisecurity.com";
-const dev_url: string = "http://usstaging.ivisecurity.com";
-// const local_url: string = "http://192.168.0.103";
+// const dev_url: string = "";
+const dev_url: string = "https://usstaging.ivisecurity.com";
+// const local_url: string = "";
 
 export const environment = {
     // login_url: `${dev_url}:8922/userDetails`,

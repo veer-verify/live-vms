@@ -25,8 +25,15 @@
             </span>
           </ng-container>
 
-          <ng-container *ngIf="field.weekdays">
-            <p *ngFor="let el of field.loop"><span *ngIf="item[field.id][el]">{{el}}: </span>{{item[field.id][el]}}</p>
+          <ng-container *ngIf="field.weekdays ">
+            <ng-container *ngFor="let el of field.loop">
+
+              <p *ngIf="index!==i"><span *ngIf="item[field.id][el]">{{el}}: </span>{{item[field.id][el]}}</p>
+            </ng-container>
+            <ng-container *ngFor="let el of field.loop">
+
+              <p *ngIf="index==i"><span *ngIf="item[field.id][el]">{{el}}: </span><input type="text" [(ngModel)]="item[field.id][el]"></p>
+            </ng-container>
           </ng-container>
 
           <ng-container *ngIf="field.actiontag">
@@ -41,6 +48,17 @@
           <span *ngIf="field.showView"><a class="pointer" style="text-decoration: none;" matTooltip="View"
               (click)="openPopup(field,item,'view')">
               <img src="assets\icons\eye-blue.svg" width="20" height="25" /></a></span>
+
+
+              <ng-container *ngIf="field?.type === 'actions'">
+                <div class="d-inline-flex">
+                  <a class="mx-1 pointer" *ngFor="let el of field.actions" (click)="field.call(item, el)" [matTooltip]="el"><img
+                      src="assets/icons/{{el}}.svg"></a>
+
+                </div>
+              </ng-container>
+
+
         </td>
       </tr>
     </tbody>

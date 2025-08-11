@@ -11,6 +11,8 @@ export class TableComponent {
 
   @Input({required: true}) data!: any[];
 
+  @Input() index!:number;
+
   @Input() showLoader!: any;
 
   @Input() search!: any;

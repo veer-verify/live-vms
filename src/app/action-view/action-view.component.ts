@@ -53,16 +53,16 @@ export class ActionViewComponent {
   loop: ['sunday', 'monday','tuesday','wednesday','thursday','friday','saturday'],
   weekdays: true
 },
-{
-  serial:5,
-  label:"ActionTags",
-  id:"actionTags",
-  sort:true,
-  weekdays:true,
-  loop: [],
-  actiontag:true
+// {
+//   serial:5,
+//   label:"ActionTags",
+//   id:"actionTags",
+//   sort:true,
+//   weekdays:true,
+//   loop: [],
+//   actiontag:true
   
-}
+// }
 ]
 
    @Input() cameraList!:any[];
@@ -174,6 +174,27 @@ getTemplateData(){
 
   })
 
+}
+
+templateindex!:number;
+templateedititem:any;
+editTemplate(item:any,i:number){
+
+  this.templateindex=i;
+
+  this.templateedititem={...item};
+
+}
+SaveTemplate(){
+  this.siteser.updateTemplate({siteId: this.currentItem?.item.siteId,...this.templateedititem}).subscribe((res:any)=>{
+
+    if(res.statusCode==200){
+
+      this.alaram.snackSuccess(res.message);
+      this.templateindex=-1;
+      this.getTemplateData();
+    }
+  })
 }
    
 }
