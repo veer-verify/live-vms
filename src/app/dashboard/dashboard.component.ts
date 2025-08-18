@@ -484,7 +484,7 @@ export class DashboardComponent {
 
   url: any;
   selectedFiles: Array<any> = new Array();
-  async onFileSelected(event: any) {
+  onFileSelected(event: any) {
     let x: Array<any> = event.target.files ?? [];
     // if (event.target.files && event.target.files[0]) {
     //   var reader = new FileReader();
@@ -494,7 +494,7 @@ export class DashboardComponent {
     //   }
     // }
     for (let i = 0; i < x.length; i++) {
-      await this.selectedFiles.push(x[i]);
+      this.selectedFiles.push(x[i]);
       // this.emailBody.mannualEmailBody.push(item);
     }
   }
@@ -524,7 +524,7 @@ export class DashboardComponent {
     this.camSer.screenshots(data, file).subscribe({
       next: (res: any) => {
         if (res.statusCode === 200) {
-          if (data.color == 'yellow') {
+          if (data.color == 'yellow' || (this.currentItem?.siteId === 36336 && data.color == 'green')) {
             if (
               this.currentItem?.siteId === 36346 ||
               this.currentItem?.siteId === 36360 ||
@@ -535,8 +535,8 @@ export class DashboardComponent {
             }
             else if (this.currentItem?.siteId === 36336) {
               setTimeout(() => {
-                this.emailLimited({ ...data, ...this.emailObject })
-              }, data.internalPort * 60 * 1000)
+                this.openEmaiDialog(data)
+              }, data?.internalPort * 60 * 1000)
             }
             else {
               this.openEmaiDialog(data);

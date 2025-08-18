@@ -11,6 +11,10 @@
         <img src="assets\icons\sites.svg">
         <span style="font-weight: 500;">Sites</span>
       </a>
+      <!-- <a class="list-group-item " [routerLink]="['/device-status']" routerLinkActive="routeactive">
+        <img src="assets\icons\sites.svg">
+        <span style="font-weight: 500;">Devices</span>
+      </a> -->
     </div>
   </div>
 
@@ -42,13 +46,15 @@
         <div class="me-2">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Site</mat-label>
-            <input matInput #siteIdInput [matAutocomplete]="site" [(ngModel)]="siteName" (keyup)="searchSites($event); siteSearch1 = null">
+            <input matInput #siteIdInput [matAutocomplete]="site" [(ngModel)]="siteName"
+              (keyup)="searchSites($event); siteSearch1 = null">
             <button matSuffix mat-icon-button>
               <mat-icon>arrow_drop_down</mat-icon>
             </button>
             <mat-autocomplete #site="matAutocomplete">
               <mat-option [value]="null" (click)="siteSearch1 = null">All</mat-option>
-              <mat-option *ngFor="let item of siteslist | search: siteSearch" [value]="item.siteId" (click)="this.siteSearch1 = item.siteName">{{ item.siteName }}</mat-option>
+              <mat-option *ngFor="let item of siteslist | search: siteSearch" [value]="item.siteId"
+                (click)="this.siteSearch1 = item.siteName">{{ item.siteName }}</mat-option>
             </mat-autocomplete>
           </mat-form-field>
         </div>

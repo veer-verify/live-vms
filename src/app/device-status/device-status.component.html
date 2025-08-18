@@ -1,4 +1,26 @@
-<div class="container-fluid">
+<app-header></app-header>
+<div class="row">
+    <div class="col-lg-2">
+      <div class="left-content ">
+    <div class="list-group">
+      <a class="list-group-item active" [routerLink]="['/user-dashboard']" routerLinkActive="routeactive">
+        <img src="assets\icons\dashboard.svg">
+        <span style="font-weight: 500;">Dashboard</span>
+      </a>
+      <a class="list-group-item " [routerLink]="['/dashboard']" routerLinkActive="routeactive">
+        <img src="assets\icons\sites.svg">
+        <span style="font-weight: 500;">Sites</span>
+      </a>
+      <a class="list-group-item " [routerLink]="['/device-status']" routerLinkActive="routeactive">
+        <img src="assets\icons\sites.svg">
+        <span style="font-weight: 500;">Devices</span>
+      </a>
+    </div>
+  </div>
+    </div>
+
+<div class="col-lg-10">
+  <div class="container-fluid">
 
   
     <!-- count -->
@@ -110,6 +132,8 @@
     </div>
   
   </div>
+</div>
+</div>
   
   
   
