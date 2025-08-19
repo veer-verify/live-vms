@@ -62,6 +62,43 @@ p {
   margin: 0 !important;
 }
 
+.status {
+  font-size: 12px;
+  color: #28231D;
+  letter-spacing: 0.5px;
+  width: 120px;
+  font-weight: 600;
+}
+.count {
+  font-size: 18px;
+  color: #000000;
+  font-weight: 600;
+}
+.vl-green {
+  border-left: 2px solid #00A44C;
+  height: 40px;
+}
+
+.vl-blue {
+  border-left: 2px solid #084982 ;
+  height: 40px;
+}
+
+.vl-red {
+  border-left: 2px solid #EF2800;
+  height: 40px;
+}
+
+.vl-yellow {
+  border-left: 2px solid #F5B400;
+  height: 40px;
+}
+
+.vl-orange {
+  border-left: 2px solid #EF6000;
+  height: 40px;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 3px;

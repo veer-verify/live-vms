@@ -37,6 +37,7 @@ import { DayRangeSliderComponent } from './day-range-slider/day-range-slider.com
 import { TokenInterceptor } from 'src/interceptor/token.interceptor';
 import { ImagePipe } from 'src/utilities/pipes/image.pipe';
 import { PaginationComponent } from 'src/utilities/pagination/pagination.component';
+import { MonitoringInfoComponent } from './monitoring-info/monitoring-info.component';
 
 
 @NgModule({
@@ -64,7 +65,8 @@ import { PaginationComponent } from 'src/utilities/pagination/pagination.compone
     ActiontagComponent,
     ActionViewComponent,
     DayRangeSliderComponent,
-    PaginationComponent
+    PaginationComponent,
+    MonitoringInfoComponent
   ],
   imports: [
     BrowserModule,

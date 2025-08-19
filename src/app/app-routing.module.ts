@@ -5,14 +5,23 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from 'src/utilities/auth/auth.guard';
 import { DeviceStatusComponent } from './device-status/device-status.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import { MonitoringInfoComponent } from './monitoring-info/monitoring-info.component';
+import { AlertsInfoComponent } from './alerts-info/alerts-info.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'user-dashboard', component: UserDashboardComponent, canActivate: [AuthGuard] },
+  {
+    path: 'user-dashboard', component: UserDashboardComponent, canActivate: [AuthGuard],
+    children: [
+      { path: 'monitoring-info', component: MonitoringInfoComponent },
+      { path: 'alerts-info', component: AlertsInfoComponent },
+      { path: '', redirectTo: '/user-dashboard/monitoring-info', pathMatch: 'full' },
+    ]
+  },
   { path: 'device-status', component: DeviceStatusComponent, canActivate: [AuthGuard] },
-  { path: '**', component: LoginComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', component: LoginComponent }
 ];
 
 @NgModule({

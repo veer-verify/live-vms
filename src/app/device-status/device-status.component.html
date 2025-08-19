@@ -1,141 +1,113 @@
-<app-header></app-header>
-<div class="row">
-    <div class="col-lg-2">
-      <div class="left-content ">
-    <div class="list-group">
-      <a class="list-group-item active" [routerLink]="['/user-dashboard']" routerLinkActive="routeactive">
-        <img src="assets\icons\dashboard.svg">
-        <span style="font-weight: 500;">Dashboard</span>
-      </a>
-      <a class="list-group-item " [routerLink]="['/dashboard']" routerLinkActive="routeactive">
-        <img src="assets\icons\sites.svg">
-        <span style="font-weight: 500;">Sites</span>
-      </a>
-      <a class="list-group-item " [routerLink]="['/device-status']" routerLinkActive="routeactive">
-        <img src="assets\icons\sites.svg">
-        <span style="font-weight: 500;">Devices</span>
-      </a>
+<div class="container-fluid">
+
+
+  <!-- count -->
+  <div class="row my-2">
+    <div class="col-lg-1 d-flex justify-content-start">
+      <div class="vl-green"></div>
+      <div class="mx-2">
+        <div class="status">Tota Devices</div>
+        <div class="count">{{ newDeviceData?.length }}</div>
+      </div>
+    </div>
+    <div class="col-lg-1 d-flex justify-content-start">
+      <div class="vl-green"></div>
+      <div class="mx-2">
+        <div class="status">Online</div>
+        <div class="count">{{ active?.length }}</div>
+      </div>
+    </div>
+    <div class="col-lg-1 d-flex justify-content-start">
+      <div class="vl-red"></div>
+      <div class="mx-2">
+        <div class="status">Offline</div>
+        <div class="count">{{ inActive?.length }}</div>
+      </div>
     </div>
   </div>
-    </div>
 
-<div class="col-lg-10">
-  <div class="container-fluid">
-
-  
-    <!-- count -->
-    <div class="row my-2">
-      <div class="col-lg-1 d-flex justify-content-start">
-        <div class="vl-green"></div>
-        <div class="mx-2">
-          <div class="status">Tota Devices</div>
-          <div class="count">{{ newDeviceData?.length }}</div>
-        </div>
-      </div>
-      <div class="col-lg-1 d-flex justify-content-start">
-        <div class="vl-green"></div>
-        <div class="mx-2">
-          <div class="status">Online</div>
-          <div class="count">{{ active?.length }}</div>
-        </div>
-      </div>
-      <div class="col-lg-1 d-flex justify-content-start">
-        <div class="vl-red"></div>
-        <div class="mx-2">
-          <div class="status">Offline</div>
-          <div class="count">{{ inActive?.length }}</div>
-        </div>
-      </div>
-    </div>
-  
-    <!-- form -->
-<div class="row">
+  <!-- form -->
+  <div class="row">
     <div class="col-lg-4">
-        <mat-form-field class="example-form-field" appearance="outline" class="w-100">
-          <mat-label>Search</mat-label>
-          <input matInput type="text" [(ngModel)]="searchText">
-          <button matSuffix mat-icon-button>
-            <mat-icon>search</mat-icon>
-          </button>
-        </mat-form-field>
-      </div>
-</div>
-  
-    <!-- table -->
-    <div class="table-resp">
-      <table class="table table-hover" id="mytable">
-        <thead>
-          <tr class="form1">
-            <th>
-              <span>No</span>
-              <img (click)="sort('deviceId')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
-            </th>
-            <th>
-              <span>UnitId</span>
-              <img (click)="sort('UnitId')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
-            </th>
-            <th>
-              <span>DeviceName</span>
-              <img (click)="sort('DeviceName')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
-            </th>
-            <th >
+      <mat-form-field class="example-form-field" appearance="outline" class="w-100">
+        <mat-label>Search</mat-label>
+        <input matInput type="text" [(ngModel)]="searchText">
+        <button matSuffix mat-icon-button>
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- table -->
+  <div class="table-resp">
+    <table class="table table-hover" id="mytable">
+      <thead>
+        <tr class="form1">
+          <th>
+            <span>No</span>
+            <img (click)="sort('deviceId')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
+          </th>
+          <th>
+            <span>UnitId</span>
+            <img (click)="sort('UnitId')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
+          </th>
+          <th>
+            <span>DeviceName</span>
+            <img (click)="sort('DeviceName')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
+          </th>
+          <th>
             <span>Status</span>
             <img (click)="sort('Status')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
-            </th>
-            <th>Reboot</th>
-            <th>
-              <span>Actions</span>
-            </th>
-          </tr>
-        </thead>
-  
-        <tbody *ngIf="!showLoader">
-          <tr *ngFor="let cust of newDeviceData | search : searchText; let i = index">
-            <td>
-              <p>{{ i+1 }}</p>
-            </td>
-            <td>
-              <p>{{ cust.UnitId}}</p>
-            </td>
-            <td style="width: 500px;">
-              <p>{{ cust.DeviceName }}</p>
-            </td>
-            <td>
-                <p [style.background]="cust.Status ? 'green' : 'red'" class="status-txt">{{ cust.Status.toString() | titlecase }}</p>
-              </td>
-  
-            <td (click)="openRebootDevice(cust)">
-              <img class="pointer" style="opacity: 0.7;" src="assets/icons/restart.svg" width="25" height="25">
-            </td>
-  
-            <td>
-              <a class="pointer mx-1" matTooltip="view" (click)="openViewPopup(cust)">
-                <img src="assets/icons/view.svg" alt="">
-              </a>
-              <a class="pointer mx-1" matTooltip="Edit" (click)="openEditPopup(cust)">
-                <img src="assets/icons/edit.svg" alt="">
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+          </th>
+          <th>Reboot</th>
+          <th>
+            <span>Actions</span>
+          </th>
+        </tr>
+      </thead>
 
-      <!-- error info -->
-      <div class="err-info" style="height: 40vh;" *ngIf="newDeviceData.length == 0 && !showLoader">
-        <h1 class="text-secondary">No Devices</h1>
-      </div>
-  
-      <!-- loader -->
-      <div *ngIf="showLoader" class="d-flex justify-content-center align-items-center" style="height: 40vh;">
-        <app-loader></app-loader>
-      </div>
+      <tbody *ngIf="!showLoader">
+        <tr *ngFor="let cust of newDeviceData | search : searchText; let i = index">
+          <td>
+            <p>{{ i+1 }}</p>
+          </td>
+          <td>
+            <p>{{ cust.UnitId}}</p>
+          </td>
+          <td style="width: 500px;">
+            <p>{{ cust.DeviceName }}</p>
+          </td>
+          <td>
+            <p [style.background]="cust.Status ? 'green' : 'red'" class="status-txt">{{ cust.Status.toString() |
+              titlecase }}</p>
+          </td>
+
+          <td (click)="openRebootDevice(cust)">
+            <img class="pointer" style="opacity: 0.7;" src="assets/icons/restart.svg" width="25" height="25">
+          </td>
+
+          <td>
+            <a class="pointer mx-1" matTooltip="view" (click)="openViewPopup(cust)">
+              <img src="assets/icons/view.svg" alt="">
+            </a>
+            <a class="pointer mx-1" matTooltip="Edit" (click)="openEditPopup(cust)">
+              <img src="assets/icons/edit.svg" alt="">
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- error info -->
+    <div class="err-info" style="height: 40vh;" *ngIf="newDeviceData.length == 0 && !showLoader">
+      <h1 class="text-secondary">No Devices</h1>
     </div>
-  
+
+    <!-- loader -->
+    <div *ngIf="showLoader" class="d-flex justify-content-center align-items-center" style="height: 40vh;">
+      <app-loader></app-loader>
+    </div>
   </div>
+
 </div>
-</div>
-  
-  
-  
-  
-  
