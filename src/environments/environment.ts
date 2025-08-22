@@ -20,6 +20,7 @@ export const environment = {
     common_url: `${prod_url}/metadata`,
     guard_monitoring_url:`${prod_url}/guard_monitoring`,
     monitoring_url:`${prod_url}/monitoring`,
+    events_url: 'https://stagingmq.ivisecurity.com',
     
     firstAlert: {
         time1: 160,

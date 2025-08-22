@@ -338,10 +338,12 @@ export class VideoPlayerComponent {
     let x = btnItem.x + 8;
     let y = btnItem.y + 25;
     let finalHeight = 720;
-    let aspectRatio = btnItem.width / btnItem.height;
+
+    let aspectRatio = btnItem.elementWidth / btnItem.elementHeight;
+
     let finalWidth = Math.round(aspectRatio * finalHeight);
-    let widthScalingFactor = finalWidth / btnItem.width;
-    let heightScalingFactor = finalHeight / btnItem.height;
+    let widthScalingFactor = finalWidth / btnItem.elementWidth;
+    let heightScalingFactor = finalHeight / btnItem.elementHeight;
     let finalX = Math.round(x * widthScalingFactor);
     let finalY = Math.round(y * heightScalingFactor);
     this.canvasWidth = finalWidth;
@@ -359,7 +361,7 @@ export class VideoPlayerComponent {
       // const screenshotDataUrl = this.canvas.nativeElement.toDataURL('image/png');
       // const link = document.createElement('a');
       // link.href = screenshotDataUrl;
-      // link.download = `${camera?.cameraId}-${camera?.name}-${color ?? ''}-${moment().tz(camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss')}.png`
+      // link.download = `${camera?.cameraId}-${camera?.name}-${color ?? ''}-${moment().tz(camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss')}.png`;
       // link.click();
     }, 500)
   }

@@ -415,9 +415,7 @@ export class DashboardComponent {
   createButton(event: any, data: any) {
     this.currentItem = data;
     if (this.listType !== 0 && !this.isMaximized) {
-      this.displayTime = moment()
-        .tz(data?.timezone)
-        ?.format('YYYY-MM-DD HH:mm:ss');
+      this.displayTime = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss');
       const rect = (event.target as HTMLImageElement).getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
@@ -435,18 +433,6 @@ export class DashboardComponent {
       else {
         timeAlert = environment.firstAlert;
       }
-      
-      // let d1 = new Date();
-      // let check1 = new Date(d1);
-      // check1.setMinutes((d1.getMinutes() + timeAlert.time1));
-      // let check2 = new Date(d1);
-      // check2.setMinutes(d1.getMinutes() + timeAlert.time2);
-      // let check3 = new Date(d1);
-      // check3.setMinutes(d1.getMinutes() + timeAlert.time3);
-      // let check4 = new Date(d1);
-      // check4.setMinutes(d1.getMinutes() + timeAlert.time4);
-      // let check5 = new Date(d1);
-      // check5.setMinutes(d1.getMinutes() + timeAlert.time5);
       
       data.buttons.push({
         id: uuid(),
@@ -710,6 +696,8 @@ export class DashboardComponent {
   @ViewChildren('video') videos!: QueryList<any>;
   @ViewChildren('btn') btns!: QueryList<any>;
   captureScreenshot(camera: any, index: any, color: any, btnItem: any, btnIndex: any) {
+    this.camSer.write2Dispatch({...btnItem, color, ...camera}).subscribe();
+
     let a = this.btns.toArray()[index].nativeElement.children[btnIndex];
     let imgElement = a.firstChild;
     let videoComponents = this.videos.toArray();

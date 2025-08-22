@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
-import { formatDate } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import * as moment from 'moment';
 import { Observable, throwError } from 'rxjs';
@@ -24,8 +24,43 @@ export class CameraService {
 
   constructor(
     private http: HttpClient,
-    private storageSer: StorageService
+    private storageSer: StorageService,
+    private datePipe: DatePipe
   ) { }
+
+  incidentList(payload?: any) {
+    let url = `${environment.guard_monitoring_url}/incidentList_1_0`;
+    let params = new HttpParams();
+    if (payload?.siteId) {
+      params = params.set('siteId', payload?.siteId)
+    }
+    if (payload?.objectName) {
+      params = params.set('objectName', payload?.objectName)
+    }
+    if (payload?.cameraId) {
+      params = params.set('cameraId', payload?.cameraId)
+    }
+    if (payload?.actionTag) {
+      params = params.set('actionTag', payload?.actionTag)
+    }
+    if (payload?.fromDate) {
+      // let x = payload?.fromDate;
+      // params = params.set('fromDate', `${x.year}-${x.month}-${x.day}`);
+      params = params.set('fromDate', formatDate(payload?.fromDate, 'yyyy-MM-dd', 'en-us'));
+    }
+    if (payload?.toDate) {
+      // let x = payload?.toDate;
+      // params = params.set('toDate', `${x.year}-${x.month}-${x.day}`);
+      params = params.set('toDate', formatDate(payload?.toDate, 'yyyy-MM-dd', 'en-us'));
+    }
+    if (payload?.page) {
+      params = params.set('page', payload.page);
+    } else {
+      params = params.set('page', 1);
+    }
+
+    return this.http.get(url, { params: params });
+  }
 
   public play(payload: any) {
     return this.http.get(payload?.audioUrl);
@@ -123,8 +158,8 @@ export class CameraService {
     formData.append('actionTag', payload?.actionTag);
     formData.append('createdBy', user?.UserId);
 
-    for(var i = 0; i < payload?.files.length; i++) {
-      formData.append("files",  payload?.files[i]);
+    for (var i = 0; i < payload?.files.length; i++) {
+      formData.append("files", payload?.files[i]);
     }
     return this.http.post(url, formData);
   }
@@ -170,13 +205,13 @@ export class CameraService {
     //   formData.append("files",  payload?.files[i]);
     // }
 
-    return this.http.post(url, formData, {params: params});
+    return this.http.post(url, formData, { params: params });
   }
 
   getEmailData(payload: any) {
     let url = `${environment.guard_monitoring_url}/getEmailData_1_0`;
     let timer;
-    payload?.siteId == 36444 ? timer = 10 : timer = 120; 
+    payload?.siteId == 36444 ? timer = 10 : timer = 120;
     let params = new HttpParams();
     params = params.set('siteId', payload?.siteId);
     params = params.set('camerasList', payload?.camerasList);
@@ -186,16 +221,29 @@ export class CameraService {
     params = params.set('hour', payload?.hour);
     params = params.set('currentTime', payload?.currentTime);
     params = params.set('timer', timer);
-    return this.http.get(url, {params: params});
+    return this.http.get(url, { params: params });
+  }
+
+  write2Dispatch(payload: any) {
+    let url = `${environment.events_url}/write2Dispatch_queue_data_1_0/`;
+    let obj = {
+      cameraId: payload?.cameraId,
+      color: payload?.color,
+      id: payload?.id,
+      timestamp: payload?.dspTime,
+      queue_name: "dispatch-queue",
+      siteId: payload?.siteId
+    }
+    return this.http.post(url, obj);
   }
 
   listActionTags(payload: any) {
     let url: string = `${environment.guard_monitoring_url}/listActionTags_1_0`;
     let params = new HttpParams();
-    if(payload?.siteId) {
+    if (payload?.siteId) {
       params = params.set('siteId', payload?.siteId)
     }
-    return this.http.get(url, {params: params});
+    return this.http.get(url, { params: params });
   }
-  
+
 }

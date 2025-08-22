@@ -38,6 +38,8 @@ import { TokenInterceptor } from 'src/interceptor/token.interceptor';
 import { ImagePipe } from 'src/utilities/pipes/image.pipe';
 import { PaginationComponent } from 'src/utilities/pagination/pagination.component';
 import { MonitoringInfoComponent } from './monitoring-info/monitoring-info.component';
+import { AlertsInfoComponent } from './alerts-info/alerts-info.component';
+import { PlaybackInfoComponent } from './playback-info/playback-info.component';
 
 
 @NgModule({
@@ -66,7 +68,9 @@ import { MonitoringInfoComponent } from './monitoring-info/monitoring-info.compo
     ActionViewComponent,
     DayRangeSliderComponent,
     PaginationComponent,
-    MonitoringInfoComponent
+    MonitoringInfoComponent,
+    AlertsInfoComponent,
+    PlaybackInfoComponent
   ],
   imports: [
     BrowserModule,

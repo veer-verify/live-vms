@@ -7,6 +7,7 @@ import { DeviceStatusComponent } from './device-status/device-status.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { MonitoringInfoComponent } from './monitoring-info/monitoring-info.component';
 import { AlertsInfoComponent } from './alerts-info/alerts-info.component';
+import { PlaybackInfoComponent } from './playback-info/playback-info.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
     children: [
       { path: 'monitoring-info', component: MonitoringInfoComponent },
       { path: 'alerts-info', component: AlertsInfoComponent },
+      { path: 'playback-info', component: PlaybackInfoComponent },
       { path: '', redirectTo: '/user-dashboard/monitoring-info', pathMatch: 'full' },
     ]
   },
