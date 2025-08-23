@@ -14,6 +14,7 @@ import { MetadataService } from 'src/services/metadata.service';
 import { environment } from 'src/environments/environment';
 import { DeviceStatusComponent } from '../device-status/device-status.component';
 import { LoginService } from 'src/services/login.service';
+import { EventService } from 'src/services/event.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -63,7 +64,8 @@ export class DashboardComponent {
     private matDialog: MatDialog,
     private metadaSer: MetadataService,
     private http: HttpClient,
-    private loginSer: LoginService
+    private loginSer: LoginService,
+    private event_service: EventService
   ) { }
 
   searchText!: string;
@@ -379,9 +381,6 @@ export class DashboardComponent {
   getTypes() {
     this.metadaSer.getMetadata().subscribe((res: any) => {
       res.forEach((item: any) => {
-        // if (item.type === 36) {
-        //   this.actionTags = item.metadata;
-        // }
         if (item.type === 98) {
           this.alertTypes = item.metadata;
         }
@@ -696,7 +695,7 @@ export class DashboardComponent {
   @ViewChildren('video') videos!: QueryList<any>;
   @ViewChildren('btn') btns!: QueryList<any>;
   captureScreenshot(camera: any, index: any, color: any, btnItem: any, btnIndex: any) {
-    this.camSer.write2Dispatch({...btnItem, color, ...camera}).subscribe();
+    this.event_service.write2Dispatch({...btnItem, color, ...camera}).subscribe();
 
     let a = this.btns.toArray()[index].nativeElement.children[btnIndex];
     let imgElement = a.firstChild;

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
+import { MetadataService } from './metadata.service';
+import { Subject } from 'rxjs';
 
 
 @Injectable({
@@ -38,7 +40,19 @@ export class StorageService {
 
   private readonly key = "verifai";
 
+  metadat_sub: any = [];
+
   constructor() { }
+
+    weekdays = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ];
 
   public saveData(name: any, data: any) {
     localStorage.setItem(name, JSON.stringify(data));
@@ -62,6 +76,15 @@ export class StorageService {
 
   public decrypt(txtToDecrypt: string) {
     return CryptoJS.AES.decrypt(txtToDecrypt, this.key).toString(CryptoJS.enc.Utf8);
+  }
+
+  public getAlertTypes() {
+    return this.metadat_sub.filter((item: any) => item.type === 98).map((el: any) => el.metadata)
+  }
+
+  public getSubAlertTypes() {
+    return this.metadat_sub.filter((item: any) => item.type === 99).map((el: any) => el.metadata)
+
   }
 
 }

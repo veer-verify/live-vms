@@ -1,4 +1,10 @@
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { CameraService } from 'src/services/camera.service';
+import { EventService } from 'src/services/event.service';
+import { MetadataService } from 'src/services/metadata.service';
+import { StorageService } from 'src/services/storage.service';
 
 @Component({
   selector: 'app-events',
@@ -6,61 +12,102 @@ import { Component } from '@angular/core';
   styleUrls: ['./events.component.css']
 })
 export class EventsComponent {
-selectedSite: string | null = null;
-  siteName: string = 'Site Name';
-  siteTeam: string = 'Your Team';
-  emailBody: string = '';
-  
-  actionTag = '';
-  category = '';
-  subcategory = '';
-  subcategories: Record<string, string[]> = {
-    user: ['Signup', 'Login', 'Deactivation'],
-    product: ['Launch', 'Update'],
-    system: ['Downtime', 'Alert'],
-    marketing: ['Newsletter', 'Offer']
-  };
 
-  sites = [
-    { id: 'ecommerce', name: 'E-Commerce Store', status: 'Active', siteId: 'EC-2024-001', updated: '2:30 PM', statusClass: 'bg-green-100 text-green-800' },
-    { id: 'blog', name: 'Tech Blog', status: 'Live', siteId: 'TB-2024-002', updated: '1:45 PM', statusClass: 'bg-blue-100 text-blue-800' },
-    { id: 'portfolio', name: 'Portfolio Site', status: 'Draft', siteId: 'PS-2024-003', updated: '11:20 AM', statusClass: 'bg-purple-100 text-purple-800' },
-    { id: 'corporate', name: 'Corporate Website', status: 'Active', siteId: 'CW-2024-004', updated: '9:15 AM', statusClass: 'bg-green-100 text-green-800' }
-  ];
+  constructor(
+    public storage_service: StorageService,
+    private metadata_service: MetadataService,
+    private camera_service: CameraService,
+    private event_service: EventService,
+    private fb: FormBuilder,
+    private datePipe: DatePipe
+  ) { }
 
-  get availableSubcategories(): string[] {
-    return this.subcategories[this.category] || [];
+  ngOnInit() {
+    this.listActionTags();
+    this.getTypes();
+    this.getDispatchData();
   }
 
-  showSiteDetails(siteId: string) {
-    const site = this.sites.find(s => s.id === siteId);
-    if (site) {
-      this.selectedSite = siteId;
-      this.siteName = site.name;
-      this.siteTeam = `${site.name} Team`;
-    }
+  actionForm!: FormGroup;
+  initializeActionForm() {
+    this.actionForm = this.fb.group({
+
+    })
   }
 
-  updateSubcategories() {
-    this.subcategory = '';
+  eventData: any = [];
+  getDispatchData() {
+    this.event_service.getDispatchData().subscribe({
+      next: (res) => {
+        this.eventData = res;
+      }
+    })
   }
 
-  updateEmailTemplate() {
-    if (this.actionTag && this.category && this.subcategory) {
-      this.emailBody = `This is a <strong>${this.actionTag}</strong> email for the <strong>${this.subcategory}</strong> subcategory under <strong>${this.category}</strong>.`;
-    } else {
-      this.emailBody = '';
-    }
+  currentItem: any;
+  actionTag: any;
+  emailObject: any;
+  alertType: any;
+  alertSubType: any;
+  displayCurrent(data: any) {
+    this.currentItem = data;
+    // let cameraCurrentTime = moment().tz(data.camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss');
   }
 
-  cancelEmail() {
-    this.actionTag = '';
-    this.category = '';
-    this.subcategory = '';
-    this.emailBody = '';
+  getEmailData() {
+
+    let day = new Date().getDay();
+    let hour = new Date().getHours();
+
+    this.emailObject = {
+      siteId: this.currentItem?.siteId,
+      // camerasList: [],
+      alertTypeId: this.alertType,
+      subTypeId: this.alertSubType,
+      day: this.storage_service.weekdays[day],
+      hour: hour,
+      currentTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:MM:SS'),
+    };
+
+    this.camera_service.getEmailData(this.emailObject).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        if (res.statusCode === 200) {
+          // this.mannualEmailBody.recipientEmails = res.emailDetails.recipientEmails.join(', ');
+          // this.mannualEmailBody.subject = res.emailDetails.emailSubject;
+          // this.mannualEmailBody.body = res.emailDetails.emailBody;
+          // this.mannualEmailBody.bcc = res.emailDetails.BCC.join(', ');
+          // this.mannualEmailBody.cc = res.emailDetails.Cc.join(', ');
+          // this.mannualEmailBody.fields = res.emailDetails.emailFields;
+          // this.mannualEmailBody.footer = res.emailDetails.emailFooter;
+          // this.mannualEmailBody.files = res.emailDetails.screenshots;
+        }
+      },
+    });
   }
 
-  sendEmail() {
-    alert('Email sent!');
+  listActionTags() {
+    this.camera_service.listActionTags({ siteId: 36416 }).toPromise().then((res: any) => {
+      if (res.statusCode === 200) {
+        this.actionTags = res.data[0].actionTags;
+      }
+    });
   }
+
+  actionTags: any = [];
+  alertTypes: any = [];
+  alertSubTypes: any = [];
+  getTypes() {
+    this.metadata_service.getMetadata().subscribe((res: any) => {
+      res.forEach((item: any) => {
+        if (item.type === 98) {
+          this.alertTypes = item.metadata;
+        }
+        if (item.type === 99) {
+          this.alertSubTypes = item.metadata;
+        }
+      });
+    });
+  }
+
 }

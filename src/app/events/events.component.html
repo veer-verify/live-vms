@@ -1,52 +1,86 @@
 <div class="row">
   <div class="col-lg-2 side-panel">
-    <div>
-    <div class="card">
-    <!-- <img src="https://picsum.photos/300/180" alt="Card Image"> -->
-    <div class="card-content">
-      <p>Card Title</p>
-      <p>This is a simple card with hover effects using only CSS.</p>
-    </div>
+      <div class="card" *ngFor="let item of eventData" (click)="displayCurrent(item)">
+        <div class="card-content">
+          <p>{{ item?.siteId }} - {{ item?.cameraId }}</p>
+          <p>{{ item?.timestamp }}</p>
+        </div>
+      </div>
   </div>
-    </div>
-  </div>
-  <div class="col-lg-10">
-   <div class="row">
 
-    <div class="col-lg-8">
-ee
-    </div>
-    <div class="col-lg-4">
-        <div class="col-lg-6">
-        <mat-form-field class="w-100">
-          <mat-label>Action Tag</mat-label>
-          <mat-select [(ngModel)]="mannualEmailBody.actionTag">
-            <mat-option *ngFor="let item of actionTags; let i=index" [value]="item.id">{{item.value}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+  <div class="col-lg-10" *ngIf="currentItem">
+    <div class="row">
+
+      <div class="col-lg-8">
+        <img [src]="currentItem?.imageName" alt="LOADING..." width="100%">
       </div>
 
-       <div class="col-lg-6">
-        <mat-form-field class="w-100">
-          <mat-label>Alert Type</mat-label>
-          <mat-select [(ngModel)]="mannualEmailBody.alertType">
-            <mat-option *ngFor="let item of alertTypes; let i=index" [value]="item.keyId">{{item.value}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+      <div class="col-lg-4">
+        <div class="w-100">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Action Tag</mat-label>
+            <mat-select [(ngModel)]="actionTag">
+              <mat-option *ngFor="let item of actionTags; let i=index" [value]="item.id">{{item.value}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
 
-      <div class="col-lg-6">
-        <mat-form-field class="w-100">
-          <mat-label>Alert Sub Type</mat-label>
-          <mat-select [(ngModel)]="mannualEmailBody.alertSubType">
-            <mat-option *ngFor="let item of alertSubTypes; let i=index" [value]="item.keyId" (click)="getEmailData()">{{item.value}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <div class="w-100">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Alert Type</mat-label>
+            <mat-select [(ngModel)]="alertType">
+              <mat-option *ngFor="let item of alertTypes; let i=index" [value]="item.keyId">{{item.value}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="w-100">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Alert Sub Type</mat-label>
+            <mat-select [(ngModel)]="alertSubType" (selectionChange)="getEmailData()">
+              <mat-option *ngFor="let item of alertSubTypes; let i=index"
+                [value]="item.keyId">{{item.value}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
-      
     </div>
 
-   </div>
+    <!-- <div class="dialog-content p-3">
+      <div class="alert-header">
+        <p>⚠️ {{alertField1}} {{"@"}} {{details?.item.siteName}} - {{currentCamera?.name}} {{subAlertfield1}} ⚠️</p>
+      </div>
+      <div class="alert-body">
+        <p class="message mt-3" style="width: 50vw;word-wrap: break-word;white-space: pre-line;">
+          {{message}}
+        </p>
+
+        <div class="vehicle-info mt-2">
+          <div *ngFor="let item of alertField">
+            <p class="mt-2" *ngFor="let val of getValById(item)">
+              <strong>{{val.value }}</strong>
+
+              <span *ngIf="item == 1">
+                {{ this.details?.item.siteName }}
+              </span>
+              <span *ngIf=" item == 2">
+                {{ date | date: 'mediumDate' }}
+              </span>
+              <span *ngIf=" item == 3">
+                {{ date | date: 'shortTime' }}
+              </span>
+              <span *ngIf="item != 1 && item != 2 && item != 3">
+                {{ deviceName }}All
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <p class="message mt-3" style="word-wrap: break-word;white-space: pre-line;">
+          {{footer}}
+        </p>
+      </div>
+    </div> -->
 
   </div>
 

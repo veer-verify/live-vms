@@ -4,6 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AlertService } from 'src/services/alert.service';
 import { LoginService } from 'src/services/login.service';
+import { MetadataService } from 'src/services/metadata.service';
 import { StorageService } from 'src/services/storage.service';
 
 @Component({
@@ -19,6 +20,7 @@ export class LoginComponent {
     private router: Router,
     public storageSer: StorageService,
     private alertSer: AlertService,
+    private metadata_service: MetadataService
   ) { }
   
   loginForm!: FormGroup;
@@ -66,6 +68,16 @@ export class LoginComponent {
   showPassword: boolean = false;
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
+  }
+
+  // metadata: any = [];
+  getMetadata() {
+    this.metadata_service.getMetadata().subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.storageSer.metadat_sub = res
+      }
+    })
   }
 
 }

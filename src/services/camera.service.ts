@@ -224,19 +224,6 @@ export class CameraService {
     return this.http.get(url, { params: params });
   }
 
-  write2Dispatch(payload: any) {
-    let url = `${environment.events_url}/write2Dispatch_queue_data_1_0/`;
-    let obj = {
-      cameraId: payload?.cameraId,
-      color: payload?.color,
-      id: payload?.id,
-      timestamp: payload?.dspTime,
-      queue_name: "dispatch-queue",
-      siteId: payload?.siteId
-    }
-    return this.http.post(url, obj);
-  }
-
   listActionTags(payload: any) {
     let url: string = `${environment.guard_monitoring_url}/listActionTags_1_0`;
     let params = new HttpParams();
