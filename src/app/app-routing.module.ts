@@ -8,6 +8,7 @@ import { UserDashboardComponent } from './user-dashboard/user-dashboard.componen
 import { MonitoringInfoComponent } from './monitoring-info/monitoring-info.component';
 import { AlertsInfoComponent } from './alerts-info/alerts-info.component';
 import { PlaybackInfoComponent } from './playback-info/playback-info.component';
+import { EventsComponent } from './events/events.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
       { path: 'monitoring-info', component: MonitoringInfoComponent },
       { path: 'alerts-info', component: AlertsInfoComponent },
       { path: 'playback-info', component: PlaybackInfoComponent },
+      { path: 'events', component: EventsComponent },
       { path: '', redirectTo: '/user-dashboard/monitoring-info', pathMatch: 'full' },
     ]
   },

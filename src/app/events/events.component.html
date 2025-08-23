@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-lg-2 side-panel">
+    <div>
+    <div class="card">
+    <!-- <img src="https://picsum.photos/300/180" alt="Card Image"> -->
+    <div class="card-content">
+      <p>Card Title</p>
+      <p>This is a simple card with hover effects using only CSS.</p>
+    </div>
+  </div>
+    </div>
+  </div>
+  <div class="col-lg-10">
+   <div class="row">
+
+    <div class="col-lg-8">
+ee
+    </div>
+    <div class="col-lg-4">
+        <div class="col-lg-6">
+        <mat-form-field class="w-100">
+          <mat-label>Action Tag</mat-label>
+          <mat-select [(ngModel)]="mannualEmailBody.actionTag">
+            <mat-option *ngFor="let item of actionTags; let i=index" [value]="item.id">{{item.value}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+       <div class="col-lg-6">
+        <mat-form-field class="w-100">
+          <mat-label>Alert Type</mat-label>
+          <mat-select [(ngModel)]="mannualEmailBody.alertType">
+            <mat-option *ngFor="let item of alertTypes; let i=index" [value]="item.keyId">{{item.value}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-6">
+        <mat-form-field class="w-100">
+          <mat-label>Alert Sub Type</mat-label>
+          <mat-select [(ngModel)]="mannualEmailBody.alertSubType">
+            <mat-option *ngFor="let item of alertSubTypes; let i=index" [value]="item.keyId" (click)="getEmailData()">{{item.value}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      
+    </div>
+
+   </div>
+
+  </div>
+
+</div>

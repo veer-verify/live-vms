@@ -40,7 +40,8 @@ import { PaginationComponent } from 'src/utilities/pagination/pagination.compone
 import { MonitoringInfoComponent } from './monitoring-info/monitoring-info.component';
 import { AlertsInfoComponent } from './alerts-info/alerts-info.component';
 import { PlaybackInfoComponent } from './playback-info/playback-info.component';
-
+import { CommonModule } from '@angular/common';
+import { EventsComponent } from './events/events.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { PlaybackInfoComponent } from './playback-info/playback-info.component';
     PaginationComponent,
     MonitoringInfoComponent,
     AlertsInfoComponent,
-    PlaybackInfoComponent
+    PlaybackInfoComponent,
+    EventsComponent
   ],
   imports: [
     BrowserModule,
@@ -82,6 +84,7 @@ import { PlaybackInfoComponent } from './playback-info/playback-info.component';
     MaterialModule,
     MatBadgeModule,
     MatSliderModule,
+    CommonModule,
     NgxMatTimepickerModule,
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
