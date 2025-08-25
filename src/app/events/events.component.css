@@ -1,41 +1,61 @@
-.side-panel{
-    border-right: 1px solid #ddd;
-   height: 90vh;
+.side-panel {
+  border-right: 1px solid #ddd;
+  height: 90vh;
 }
 
 .card {
-      width: 100%;
-      background: #fff;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
+  width: 100%;
+  background: #fff;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  margin-bottom: 5px;
 
-    .card:hover {
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-      transform: translateY(-3px);
-    }
+  &:hover {
+    border: 1px solid #333;
+  }
+}
 
-    .card img {
-      width: 100%;
-      /* height: 180px; */
-      object-fit: cover;
-    }
+/* .card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+} */
 
-    .card-content {
-      padding: 10px;
-    }
+.card img {
+  width: 100%;
+  object-fit: cover;
+}
 
-    .card-content h3 {
-      margin: 0;
-      font-size: 20px;
-      color: #333;
-    }
+.card-content {
+  padding: 10px;
+}
 
-    .card-content p {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #666;
-    }
+.card-content h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.card-content p {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+.email-subject {
+  background-color: #e4e464;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 2px;
+
+}
+
+.fields {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}

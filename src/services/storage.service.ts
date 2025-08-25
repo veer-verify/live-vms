@@ -41,6 +41,7 @@ export class StorageService {
   private readonly key = "verifai";
 
   metadat_sub: any = [];
+  status_text!: string;
 
   constructor() { }
 

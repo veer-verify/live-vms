@@ -492,7 +492,10 @@ export class DashboardComponent {
   emailLimited(data: any) {
     let dateObj = {
       eventFromTime: moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss'),
-      eventToTime: moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss')
+      eventToTime: moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss'),
+      objectName: 'Person',
+      alertTypeId: '1',
+      subTypeId: '10',
     };
     this.camSer.email_with_incident({ ...data, ...dateObj }).subscribe({
       next: (res: any) => {

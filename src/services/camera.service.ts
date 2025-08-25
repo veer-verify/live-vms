@@ -178,17 +178,11 @@ export class CameraService {
     let user = this.storageSer.getData('userData');
     let formData = new FormData();
 
-    // let alertType: any = payload.listType === 4 ? 1 : payload.listType === 5 ? 1 : 1;
-    // let alertSubType: any = payload.listType === 4 ? 1 : payload.listType === 5 ? 3 : 1;
-    let objectName: any = payload.listType === 4 ? 'Person' : 'Vehicle';
-    let alertType = '1';
-    let alertSubType = '10';
-
     formData.append('siteId', payload?.siteId);
     formData.append('cameraId', payload?.cameraId);
-    formData.append('alertTypeId', alertType);
-    formData.append('alertSubTypeId', alertSubType);
-    formData.append('objectName', objectName);
+    formData.append('alertTypeId', payload?.alertTypeId);
+    formData.append('alertSubTypeId', payload?.subTypeId);
+    formData.append('objectName', payload?.objectName);
     formData.append('eventTag', 'Camera-Event');
     formData.append('eventFromTime', payload?.eventFromTime);
     formData.append('eventToTime', payload?.eventToTime);
