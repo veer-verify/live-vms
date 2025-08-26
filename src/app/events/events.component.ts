@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import * as moment from 'moment';
 import { AlertService } from 'src/services/alert.service';
 import { CameraService } from 'src/services/camera.service';
 import { EventService } from 'src/services/event.service';
@@ -20,56 +21,80 @@ export class EventsComponent {
     private metadata_service: MetadataService,
     private camera_service: CameraService,
     private event_service: EventService,
-    private fb: FormBuilder,
     private datePipe: DatePipe,
     private alert_service: AlertService,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
+  eventInterval: any;
   ngOnInit() {
     this.listActionTags();
     this.getTypes();
     this.getDispatchData();
 
-    setInterval(() => {
+    this.eventInterval = setInterval(() => {
       this.event_service.getDispatchData().subscribe({
         next: (res: any) => {
           if (res.length !== 0) {
+            this.storage_service.status_text = '';
             this.eventData.push(...res);
+            this.eventData.forEach((item: any) => item.landingTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'))
+            console.log(this.eventData)
           }
         },
       });
     }, 10000);
   }
 
-  actionForm!: FormGroup;
-  initializeActionForm() {
-    this.actionForm = this.fb.group({});
-  }
-
   eventData: any = [];
   getDispatchData() {
+    this.storage_service.status_text = 'loading...'
     this.event_service.getDispatchData().subscribe({
       next: (res: any) => {
         if (res.length !== 0) {
+          this.storage_service.status_text = '';
           this.eventData.push(...res);
+          this.eventData.forEach((item: any) => item.landingTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'))
           this.displayCurrent(this.eventData[0]);
+        } else {
+          this.storage_service.status_text = 'no events !'
         }
       },
+      error: (err: any) => {
+        this.storage_service.status_text = 'failed to load event !'
+      }
     });
   }
 
   currentItem: any;
+  object: string = 'person';
   actionTag: any;
   emailObject: any;
   alertType: any;
   alertSubType: any;
+  eventIndex!: number;
   displayCurrent(data: any) {
     this.currentItem = data;
-    // let cameraCurrentTime = moment().tz(data.camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss');
+    this.eventIndex = this.eventData.indexOf(data);
+  }
+
+  clearEvent(data?: any) {
+    // let index = this.eventData.indexOf(data ? data : this.currentItem);
+    // this.eventData.splice(index, 1);
+    console.log(this.currentItem)
+    if(data) {
+      this.eventData = this.eventData.filter((item: any) => item.timestamp !== data?.timestamp);
+    } else {
+            this.eventData = this.eventData.filter((item: any) => item.timestamp !== this.currentItem?.timestamp);
+    }
+
+    if (this.eventData.length === 0) {
+      this.storage_service.status_text = 'no events !';
+    }
   }
 
   categoryEmpty(i: string) {
+    this.falseActivityTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
     switch (i) {
       case 'action':
         // this.alertType = [];
@@ -94,7 +119,7 @@ export class EventsComponent {
       camerasList: this.currentItem?.cameraId,
       day: this.storage_service.weekdays[day],
       hour: hour,
-      currentTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:MM:SS'),
+      currentTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'),
     };
 
     if (this.alertSubType != undefined && this.alertType != undefined) {
@@ -115,27 +140,36 @@ export class EventsComponent {
     }
   }
 
+  falseActivityTime: any;
+  submitTime: any;
   updateFulleventDetails() {
-  
+    this.event_service.updateEventFullDetails({
+      ...this.currentItem,
+      actionTag: this.actionTag ? this.actionTag : 'Fasle Activity',
+      eventStartTime: this.currentItem?.timestamp,
+      objectName: this.object,
+      submitTime: this.submitTime,
+      falseActivityTime: this.falseActivityTime
+    }).subscribe((res: any) => {
+      this.alert_service.snackSuccess('updated!');
+          this.clearEvent();
+    }, (err) => {
+                this.clearEvent();
 
-    this.event_service.updateEventFullDetails({...this.currentItem}).subscribe((res: any) => 
-      {
-        
-      });
+    });
   }
 
   sendEmail() {
     let dateObj = {
-      eventFromTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:MM:SS'),
-      eventToTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:MM:SS'),
+      eventFromTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'),
+      eventToTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'),
       objectName: 'Person',
     };
-    this.camera_service
-      .email_with_incident({
-        ...this.emailObject,
-        ...dateObj,
-        ...this.currentItem,
-      })
+    this.camera_service.email_with_incident({
+      ...this.emailObject,
+      ...dateObj,
+      ...this.currentItem,
+    })
       .subscribe({
         next: (res: any) => {
           if (res.statusCode === 200) {
@@ -147,13 +181,17 @@ export class EventsComponent {
       });
   }
 
-  sendsubmitEmail() {
+  submitFalse() {
     this.updateFulleventDetails();
-    this.sendEmail();
   }
 
-  submitsendEmailto3rdperson() {
+  submit() {
+    this.submitTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+    this.sendEmail();
     this.updateFulleventDetails();
+  }
+
+  submitAndSend() {
     this.sendEmail();
   }
 
@@ -187,5 +225,9 @@ export class EventsComponent {
         }
       });
     });
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.eventInterval)
   }
 }

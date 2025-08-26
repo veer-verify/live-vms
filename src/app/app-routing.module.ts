@@ -20,6 +20,7 @@ const routes: Routes = [
       { path: 'alerts-info', component: AlertsInfoComponent },
       { path: 'playback-info', component: PlaybackInfoComponent },
       { path: 'events', component: EventsComponent },
+      { path: 'third-level', component: EventsComponent },
       { path: '', redirectTo: '/user-dashboard/monitoring-info', pathMatch: 'full' },
     ]
   },

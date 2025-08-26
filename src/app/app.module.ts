@@ -1,4 +1,4 @@
-import { TableComponent } from './table/table.component';
+import { TableComponent } from '../utilities/table/table.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -34,7 +34,7 @@ import { ActionViewComponent } from './action-view/action-view.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { MatSliderModule } from '@angular/material/slider';
 import { DayRangeSliderComponent } from './day-range-slider/day-range-slider.component';
-import { TokenInterceptor } from 'src/interceptor/token.interceptor';
+import { TokenInterceptor } from 'src/utilities/interceptor/token.interceptor';
 import { ImagePipe } from 'src/utilities/pipes/image.pipe';
 import { PaginationComponent } from 'src/utilities/pagination/pagination.component';
 import { MonitoringInfoComponent } from './monitoring-info/monitoring-info.component';
@@ -43,6 +43,7 @@ import { PlaybackInfoComponent } from './playback-info/playback-info.component';
 import { CommonModule } from '@angular/common';
 import { EventsComponent } from './events/events.component';
 import { LiveComponent } from 'src/utilities/live/live.component';
+import { StatusComponent } from 'src/utilities/status/status.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { LiveComponent } from 'src/utilities/live/live.component';
     AlertsInfoComponent,
     PlaybackInfoComponent,
     EventsComponent,
-    LiveComponent
+    LiveComponent,
+    StatusComponent
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@
 }
 
 .card {
+  position: relative;
   width: 100%;
   background: #fff;
   border-radius: 5px;
@@ -18,10 +19,11 @@
   }
 }
 
-/* .card:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  transform: translateY(-3px);
-} */
+.close-event {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
 
 .card img {
   width: 100%;
@@ -30,12 +32,6 @@
 
 .card-content {
   padding: 10px;
-}
-
-.card-content h3 {
-  margin: 0;
-  font-size: 20px;
-  color: #333;
 }
 
 .card-content p {

@@ -414,7 +414,7 @@ export class DashboardComponent {
   createButton(event: any, data: any) {
     this.currentItem = data;
     if (this.listType !== 0 && !this.isMaximized) {
-      this.displayTime = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss');
+      this.displayTime = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss:SSS');
       const rect = (event.target as HTMLImageElement).getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
@@ -527,7 +527,7 @@ export class DashboardComponent {
               }, data?.internalPort * 60 * 1000)
             }
             else {
-              this.openEmaiDialog(data);
+              // this.openEmaiDialog(data);
             }
           }
         }
