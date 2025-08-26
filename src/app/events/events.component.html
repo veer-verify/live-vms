@@ -3,7 +3,7 @@
     <div class="col-lg-2 d-none d-lg-block side-panel">
       <div class="card" *ngFor="let item of eventData; let i = index"
         [ngStyle]="{'border': eventIndex === i ? '1px solid' : ''}">
-        <a class="close-event" (click)="clearEvent(item)" matTooltip="clear"><img [src]="item?.imageName" alt=""
+        <a class="close-event" (click)="clearEvent(item)" matTooltip="clear"><img src="assets/icons/close.svg" alt=""
             width="20px"></a>
 
         <div class="card-content" (click)="displayCurrent(item)">
@@ -17,8 +17,8 @@
       <div class="col-lg-10" style="height: calc(100vh - 90px); overflow-y: auto;">
         <div class="row mb-2">
           <div class="col-lg-8">
-            <!-- <img [src]="currentItem?.imageName" alt="LOADING..." width="100%"> -->
-            <img src="assets/images/cam.png" alt="LOADING..." width="100%" style="border-radius: 6px;">
+            <img [src]="currentItem?.imageName" alt="LOADING..." width="100%" style="border-radius: 5px;">
+            <!-- <img src="assets/images/cam.png" alt="LOADING..." width="100%" style="border-radius: 5px;"> -->
           </div>
 
           <div class="col-lg-4 mt-2">
