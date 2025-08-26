@@ -3,7 +3,7 @@
     <div class="col-lg-2 d-none d-lg-block side-panel">
       <div class="card" *ngFor="let item of eventData; let i = index"
         [ngStyle]="{'border': eventIndex === i ? '1px solid' : ''}">
-        <a class="close-event" (click)="clearEvent(item)" matTooltip="clear"><img src="assets/icons/close.svg" alt=""
+        <a class="close-event" (click)="clearEvent(item)" matTooltip="clear"><img [src]="item?.imageName" alt=""
             width="20px"></a>
 
         <div class="card-content" (click)="displayCurrent(item)">
