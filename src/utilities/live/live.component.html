@@ -1,0 +1,16 @@
+<div class="live-container">
+  <div class="dialog-header">
+    <p>{{data?.siteName}}</p>
+    <a mat-dialog-close><img src="assets/icons/close.svg" width="20" alt=""></a>
+  </div>
+
+  <div class="gridcontainer">
+    <div class="border" *ngFor="let item of liveData">
+      <app-video-player [videoData]="item.httpUrl + '/'"></app-video-player>
+    </div>
+
+    <ng-container>
+      <!-- <app-status [text]="statusTxt"></app-status> -->
+    </ng-container>
+  </div>
+</div>

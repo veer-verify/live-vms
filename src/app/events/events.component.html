@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-lg-2 d-none d-lg-block side-panel">
     <div class="card" *ngFor="let item of eventData"
-      [ngStyle]="{'border': item?.cameraId == currentItem?.cameraId ? '1px solid' : ''}"
+      [ngStyle]="{'border': item?.timestamp == currentItem?.timestamp ? '1px solid' : ''}"
       (click)="displayCurrent(item)">
       <div class="card-content">
         <p>{{ item?.siteId }} - {{ item?.cameraId }}</p>
@@ -11,18 +11,24 @@
   </div>
 
   <div class="col-lg-10" style="height: calc(100vh - 90px); overflow-y: auto;" *ngIf="currentItem">
-    <div class="row">
-      <div class="col-lg-8">
+    <div class="row mb-2">
+      <div class="col-lg-8" >
         <!-- <img [src]="currentItem?.imageName" alt="LOADING..." width="100%"> -->
-         <img src="assets/images/cam.png"  alt="LOADING..." width="100%">
+         <img src="assets/images/cam.png"  alt="LOADING..." width="100%" style="border-radius: 6px;">
       </div>
 
-      <div class="col-lg-4">
+      <div class="col-lg-4 mt-2">
+
+        <div class="mb-2 d-flex gap-2 justify-content-end">
+          <button type="button" class="btn btn-sm btn-danger">False Act</button>
+          <button type="button" class="btn btn-sm btn-primary" (click)="openLiveDialog()">Live</button>
+        </div>
+
         <div class="w-100">
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Action Tag</mat-label>
             <mat-select [(ngModel)]="actionTag">
-              <mat-option *ngFor="let item of actionTags; let i=index" [value]="item.id">{{item.value}}</mat-option>
+              <mat-option *ngFor="let item of actionTags; let i=index" [value]="item.id" (click)="categoryEmpty('action')">{{item.value}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -31,7 +37,7 @@
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Alert Type</mat-label>
             <mat-select [(ngModel)]="alertType">
-              <mat-option *ngFor="let item of alertTypes; let i=index" [value]="item.keyId">{{item.value}}</mat-option>
+              <mat-option *ngFor="let item of alertTypes; let i=index" [value]="item.keyId" (click)="categoryEmpty('alert')">{{item.value}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -41,14 +47,14 @@
             <mat-label>Alert Sub Type</mat-label>
             <mat-select [(ngModel)]="alertSubType">
               <mat-option *ngFor="let item of alertSubTypes; let i=index"
-                [value]="item.keyId">{{item.value}}</mat-option>
+                [value]="item.keyId" (click)="getEmailData()">{{item.value}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
       </div>
     </div>
 
-    <button class="dialog-update-btn w-100 mt-2" (click)="getEmailData()" *ngIf="alertSubType">Preview</button>
+    <!-- <button class="dialog-update-btn w-100 mt-2" (click)="getEmailData()" *ngIf="alertSubType">Preview</button> -->
 
     <ng-container *ngIf="emailData">
       <div class="p-3 border rounded">
@@ -78,8 +84,9 @@
           </div>
   
           <div class="d-flex align-items-center justify-content-end mt-2">
-            <button class="dialog-close-btn">Close</button>
-            <button class="dialog-update-btn" (click)="sendEmail()">Submit</button>
+            <button class="dialog-close-btn"(click)="emailData=null">Cancel</button>
+            <button class="dialog-update-btn" (click)="sendsubmitEmail()">Submit</button>
+             <button class="dialog-update-submit" title="Submit & Send to 3rd level" (click)="submitsendEmailto3rdperson()">Submit & Send</button>
           </div>
         </div>
       </div>

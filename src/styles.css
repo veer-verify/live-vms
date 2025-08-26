@@ -157,7 +157,17 @@ p {
   font-size: 12px;
   margin: 0 10px 10px 0;
 }
+.dialog-update-submit{
 
+  background-color: #08827c;
+  color: #fff;
+  padding: 6px;
+  border-radius: 5px;
+  border-width: 0;
+  font-size: 12px;
+  margin: 0 10px 10px 0;
+
+}
 .dialog-update-btn:active {
   opacity: 0.8;
 }

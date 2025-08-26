@@ -42,6 +42,7 @@ import { AlertsInfoComponent } from './alerts-info/alerts-info.component';
 import { PlaybackInfoComponent } from './playback-info/playback-info.component';
 import { CommonModule } from '@angular/common';
 import { EventsComponent } from './events/events.component';
+import { LiveComponent } from 'src/utilities/live/live.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { EventsComponent } from './events/events.component';
     MonitoringInfoComponent,
     AlertsInfoComponent,
     PlaybackInfoComponent,
-    EventsComponent
+    EventsComponent,
+    LiveComponent
   ],
   imports: [
     BrowserModule,

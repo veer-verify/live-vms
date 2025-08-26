@@ -1,0 +1,16 @@
+.dialog-header {
+  background-color: #fff;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gridcontainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  height: 70vh;
+  overflow-y: auto;
+  width: min(50vw, 80vw);
+}
