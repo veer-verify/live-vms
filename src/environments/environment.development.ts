@@ -23,10 +23,10 @@ export const environment = {
 
     firstAlert: {
         time1: 0.5,
-        time2: 1,
-        time3: 2,
+        time2: 2,
+        time3: 3,
         time4: 4,
-        time5: 8
+        time5: 5
     },
     
     kennedyAlert: {

@@ -1,1 +1,3 @@
-<p class="text">{{storage_service.status_text}}</p>
+<ng-container *ngIf="storage_service.status_text">
+  <p class="text">{{storage_service.status_text}}</p>
+</ng-container>

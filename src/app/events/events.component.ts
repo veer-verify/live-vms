@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { AlertService } from 'src/services/alert.service';
 import { CameraService } from 'src/services/camera.service';
@@ -23,13 +24,15 @@ export class EventsComponent {
     private event_service: EventService,
     private datePipe: DatePipe,
     private alert_service: AlertService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+        private router: Router,
   ) { }
 
   eventInterval: any;
+  path: any
   ngOnInit() {
+    this.path = this.router.url.split('/').at(-1);
     this.listActionTags();
-    this.getTypes();
     this.getDispatchData();
 
     this.eventInterval = setInterval(() => {
@@ -39,11 +42,10 @@ export class EventsComponent {
             this.storage_service.status_text = '';
             this.eventData.push(...res);
             this.eventData.forEach((item: any) => item.landingTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'))
-            console.log(this.eventData)
           }
         },
       });
-    }, 10000);
+    }, 5000);
   }
 
   eventData: any = [];
@@ -57,11 +59,11 @@ export class EventsComponent {
           this.eventData.forEach((item: any) => item.landingTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'))
           this.displayCurrent(this.eventData[0]);
         } else {
-          this.storage_service.status_text = 'no events !'
+          this.storage_service.status_text = 'no events!'
         }
       },
       error: (err: any) => {
-        this.storage_service.status_text = 'failed to load event !'
+        this.storage_service.status_text = 'failed to load event!'
       }
     });
   }
@@ -75,21 +77,31 @@ export class EventsComponent {
   eventIndex!: number;
   displayCurrent(data: any) {
     this.currentItem = data;
-    this.eventIndex = this.eventData.indexOf(data);
+    this.eventIndex = this.eventData.indexOf(this.currentItem);
   }
 
-  clearEvent(data?: any) {
-    // let index = this.eventData.indexOf(data ? data : this.currentItem);
-    // this.eventData.splice(index, 1);
-    console.log(this.currentItem)
-    if(data) {
-      this.eventData = this.eventData.filter((item: any) => item.timestamp !== data?.timestamp);
+  closeEvent(data: any) {
+    if (data?.timestamp == this.currentItem?.timestamp) {
+      let index = this.eventData.indexOf(this.currentItem);
+      this.eventData.splice(index, 1);
+      this.currentItem = this.eventData[index];
     } else {
-            this.eventData = this.eventData.filter((item: any) => item.timestamp !== this.currentItem?.timestamp);
+      let index = this.eventData.indexOf(data);
+      this.eventData.splice(index, 1);
     }
 
     if (this.eventData.length === 0) {
-      this.storage_service.status_text = 'no events !';
+      this.storage_service.status_text = 'no events!';
+    }
+  }
+
+  cancelEvent() {
+    let index = this.eventData.indexOf(this.currentItem);
+    this.eventData.splice(index, 1);
+    this.currentItem = this.eventData[index];
+
+    if (this.eventData.length === 0) {
+      this.storage_service.status_text = 'no events!';
     }
   }
 
@@ -119,23 +131,23 @@ export class EventsComponent {
       camerasList: this.currentItem?.cameraId,
       day: this.storage_service.weekdays[day],
       hour: hour,
-      currentTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'),
+      currentTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss'),
     };
 
     if (this.alertSubType != undefined && this.alertType != undefined) {
-      this.storage_service.status_text = 'loading...';
-
       this.camera_service.getEmailData(this.emailObject).subscribe({
         next: (res: any) => {
           if (res.statusCode === 200) {
-            this.storage_service.status_text = '';
             this.emailData = res.emailDetails;
             // this.emailData.screenshots = ['assets/images/cam.png', 'assets/images/cam.png', 'assets/images/cam.png']
           } else {
             this.emailData = null;
-            this.storage_service.status_text = res.message;
+            this.alert_service.snackError(res.message)
           }
         },
+        error: (err) => [
+          this.alert_service.snackError('connection failed!')
+        ]
       });
     }
   }
@@ -150,13 +162,15 @@ export class EventsComponent {
       objectName: this.object,
       submitTime: this.submitTime,
       falseActivityTime: this.falseActivityTime
-    }).subscribe((res: any) => {
-      this.alert_service.snackSuccess('updated!');
-          this.clearEvent();
-    }, (err) => {
-                this.clearEvent();
-
-    });
+    }).subscribe({
+      next: (res) => {
+        this.alert_service.snackSuccess('updated!');
+        this.sendEmail();
+      },
+      error: (err) => [
+        this.alert_service.snackError('failed!')
+      ]
+    })
   }
 
   sendEmail() {
@@ -169,16 +183,16 @@ export class EventsComponent {
       ...this.emailObject,
       ...dateObj,
       ...this.currentItem,
-    })
-      .subscribe({
-        next: (res: any) => {
-          if (res.statusCode === 200) {
-            this.alert_service.snackSuccess(res.message);
-          } else {
-            this.alert_service.snackError(res.message);
-          }
-        },
-      });
+    }).subscribe({
+      next: (res: any) => {
+        if (res.statusCode === 200) {
+          this.alert_service.snackSuccess(res.message);
+          this.cancelEvent();
+        } else {
+          this.alert_service.snackError(res.message);
+        }
+      },
+    });
   }
 
   submitFalse() {
@@ -187,11 +201,11 @@ export class EventsComponent {
 
   submit() {
     this.submitTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
-    this.sendEmail();
     this.updateFulleventDetails();
   }
 
   submitAndSend() {
+    this.event_service.write2Dispatch({...this.currentItem, queue_name: 'dispatch-3rd-level'}).subscribe();
     this.sendEmail();
   }
 
@@ -206,6 +220,7 @@ export class EventsComponent {
       .listActionTags({ siteId: 36416 })
       .subscribe((res: any) => {
         if (res.statusCode === 200) {
+          this.getTypes();
           this.actionTags = res.data[0].actionTags;
         }
       });

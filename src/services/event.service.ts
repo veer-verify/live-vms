@@ -19,18 +19,21 @@ export class EventService {
 
   getDispatchData() {
     let url = `${environment.events_url}/get_dispatch_queue_data_1_0/`;
-    let params = new HttpParams().set('queue_name', 'dispatch-queue');
+    let path = this.router.url.split('/').at(-1);
+    let params = new HttpParams().set('queue_name', path === 'events' ? 'dispatch-2nd-level' : 'dispatch-3rd-level');
     return this.http.get(url, { params: params })
   }
 
+  //dispatch-2nd-level
+  //dispatch-3rd-level
   write2Dispatch(payload: any) {
     let url = `${environment.events_url}/write2Dispatch_queue_data_1_0/`;
     let obj = {
       cameraId: payload?.cameraId,
       color: payload?.color,
       id: payload?.id,
-      timestamp: payload?.dspTime,
-      queue_name: "dispatch-queue",
+      timestamp: payload?.dspTime ? payload?.dspTime : payload?.timestamp,
+      queue_name: payload?.queue_name,
       timezone: payload?.timezone,
       httpUrl: payload?.httpUrl,
       siteId: payload?.siteId
@@ -42,7 +45,6 @@ export class EventService {
     let url = `${environment.events_url}/updateEventFullDetails_1_0/`;
     let user = this.storageSer.getData('userData');
     let path = this.router.url.split('/').at(-1);
-    console.log(path);
 
     let obj = {
       siteName: 'dummy',
