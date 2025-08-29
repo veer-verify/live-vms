@@ -161,7 +161,7 @@ p {
 
   background-color: #08827c;
   color: #fff;
-  padding: 6px;
+  padding: 5px;
   border-radius: 5px;
   border-width: 0;
   font-size: 12px;
@@ -176,8 +176,8 @@ p {
 .dialog-close-btn {
   background-color: #d34124;
   color: #fff;
-  width: 70px;
-  padding: 6px 0;
+  /* width: 70px; */
+  padding: 5px;
   border-radius: 5px;
   border-width: 0;
   font-size: 12px;

@@ -24,7 +24,7 @@ export class StorageService {
   //   }
   // ]
 
-    //ivis
+  //ivis
   logo = 'assets/themes/logo.png';
   headerLogo = 'assets/themes/IVISsecurity_logo.png';
   accordianLogo = 'assets/icons/eye.svg';
@@ -45,15 +45,15 @@ export class StorageService {
 
   constructor() { }
 
-    weekdays = [
-      'Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-    ];
+  weekdays = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
 
   public saveData(name: any, data: any) {
     localStorage.setItem(name, JSON.stringify(data));
@@ -85,7 +85,42 @@ export class StorageService {
 
   public getSubAlertTypes() {
     return this.metadat_sub.filter((item: any) => item.type === 99).map((el: any) => el.metadata)
+  }
 
+  public isSuperAdmin(): boolean {
+    const user = this.getData('userData');
+    let a: Array<any> = Array.from(user?.roleList, (item: any) => item.category);
+    return a.includes('SuperAdmin') ? true : false;
+  }
+
+  public isAdmin(): boolean {
+    const user = this.getData('userData');
+    let a: Array<any> = Array.from(user?.roleList, (item: any) => item.category);
+    return a.includes('Admin') ? true : false;
+  }
+
+  public isFirstLevel(): boolean {
+    const user = this.getData('userData');
+    let a: Array<any> = Array.from(user?.roleList, (item: any) => item.category);
+    return a.includes('Member-1st-Level') ? true : false;
+  }
+
+  public isSecondLevel(): boolean {
+    const user = this.getData('userData');
+    let a: Array<any> = Array.from(user?.roleList, (item: any) => item.category);
+    return a.includes('TeamLead-2nd-Level') ? true : false;
+  }
+
+  public isThirdLevel(): boolean {
+    const user = this.getData('userData');
+    let a: Array<any> = Array.from(user?.roleList, (item: any) => item.category);
+    return a.includes('Dispatch-3rd-Level') ? true : false;
+  }
+
+  public isUser(): boolean {
+    const user = this.getData('userData');
+    let a: Array<any> = Array.from(user?.roleList, (item: any) => item.department);
+    return (a.includes('Client') || a.includes('Site')) ? true : false;
   }
 
 }

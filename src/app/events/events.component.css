@@ -34,10 +34,21 @@
   padding: 10px;
 }
 
-.card-content p {
-  margin-top: 10px;
+.site {
+  font-size: 16px;
+  font-weight: 700;
+  
+}
+
+.camera {
   font-size: 14px;
-  color: #666;
+    color: #666;
+}
+
+.date {
+  font-size: 12px;
+  color: #bb3137;
+  font-weight: 500;
 }
 
 .email-subject {

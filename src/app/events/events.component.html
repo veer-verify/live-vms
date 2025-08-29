@@ -4,31 +4,36 @@
   <div class="row">
     <div class="col-lg-2 d-none d-lg-block side-panel">
       <div class="card" *ngFor="let item of eventData; let i = index"
-        [ngStyle]="{'border': eventIndex === i ? '1px solid' : ''}">
-        <a class="close-event" (click)="closeEvent(item)" matTooltip="clear"><img src="assets/icons/close.svg" alt=""
-            width="20px"></a>
+        [ngStyle]="{'border': eventIndex === i ? '2px solid #084982' : ''}">
+
 
         <div class="card-content" (click)="displayCurrent(item)">
-          <p>{{ item?.siteId }} - {{ item?.cameraId }}</p>
-          <p>{{ item?.timestamp }}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <p class="site">{{ item?.siteId }}</p>
+            <a (click)="closeEvent(item)" matTooltip="clear"><img src="assets/icons/close.svg"
+                alt="" width="20px"></a>
+          </div>
+          <p class="camera">{{ item?.cameraId }}</p>
+          <p class="date">{{ item?.timestamp | date: 'mediumDate'}} {{ item?.timestamp | date: 'shortTime'}}</p>
         </div>
       </div>
     </div>
 
     <ng-container *ngIf="currentItem">
       <div class="col-lg-10" style="height: calc(100vh - 90px); overflow-y: auto;">
-        <div class="row mb-2">
-          <p>{{currentItem?.timestamp}}</p>
+        <div class="row">
+          <!-- <p>{{currentItem?.timestamp}}</p> -->
+
           <div class="col-lg-8">
-            <img [src]="currentItem?.imageName" alt="LOADING..." width="100%">
+            <img [src]="environment + currentItem?.imageName" alt="LOADING..." onerror="this.src='assets/images/IVISsecurity_logo.png'" width="100%" height="500px" class="bg-dark">
             <!-- <img src="assets/images/cam.png" alt="LOADING..." width="100%" style="border-radius: 6px;"> -->
           </div>
 
-          <div class="col-lg-4 mt-2">
+          <div class="col-lg-4">
 
             <div class="mb-2 d-flex gap-2 justify-content-end">
-              <button type="button" class="btn btn-sm btn-danger" (click)="submitFalse()">False Activity</button>
-              <button type="button" class="btn btn-sm btn-primary" (click)="openLiveDialog()">Live</button>
+              <button type="button" class="btn btn-sm dialog-close-btn" (click)="submitFalse()">False Activity</button>
+              <button type="button" class="btn btn-sm dialog-update-btn" (click)="openLiveDialog()">Live</button>
             </div>
 
             <div class="w-100">
@@ -102,7 +107,8 @@
               <div class="d-flex align-items-center justify-content-end mt-2">
                 <button class="dialog-close-btn" (click)="cancelEvent()">Cancel</button>
                 <button class="dialog-update-btn" (click)="submit()">Submit</button>
-                <button class="dialog-update-submit" (click)="submitAndSend()" title="Submit & Send to 3rd level" *ngIf="path === 'events'">Submit
+                <button class="dialog-update-submit" (click)="submitAndSend()" title="Submit & Send to 3rd level"
+                  *ngIf="path === 'events'">Submit
                   & Send</button>
               </div>
             </div>

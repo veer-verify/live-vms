@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { environment } from 'src/environments/environment';
 import { AlertService } from 'src/services/alert.service';
 import { CameraService } from 'src/services/camera.service';
 import { EventService } from 'src/services/event.service';
@@ -25,11 +26,12 @@ export class EventsComponent {
     private datePipe: DatePipe,
     private alert_service: AlertService,
     private dialog: MatDialog,
-        private router: Router,
+    private router: Router,
   ) { }
 
   eventInterval: any;
-  path: any
+  path: any;
+  environment = environment.eventImageUrl;
   ngOnInit() {
     this.path = this.router.url.split('/').at(-1);
     this.listActionTags();
@@ -154,24 +156,6 @@ export class EventsComponent {
 
   falseActivityTime: any;
   submitTime: any;
-  updateFulleventDetails() {
-    this.event_service.updateEventFullDetails({
-      ...this.currentItem,
-      actionTag: this.actionTag ? this.actionTag : 'Fasle Activity',
-      eventStartTime: this.currentItem?.timestamp,
-      objectName: this.object,
-      submitTime: this.submitTime,
-      falseActivityTime: this.falseActivityTime
-    }).subscribe({
-      next: (res) => {
-        this.alert_service.snackSuccess('updated!');
-        this.sendEmail();
-      },
-      error: (err) => [
-        this.alert_service.snackError('failed!')
-      ]
-    })
-  }
 
   sendEmail() {
     let dateObj = {
@@ -196,17 +180,52 @@ export class EventsComponent {
   }
 
   submitFalse() {
-    this.updateFulleventDetails();
+    this.event_service.updateEventFullDetails({
+      ...this.currentItem,
+      actionTag: this.actionTag ? this.actionTag : 'Fasle Activity',
+      eventStartTime: this.currentItem?.timestamp,
+      objectName: this.object,
+      submitTime: this.submitTime,
+      falseActivityTime: this.falseActivityTime
+    }).subscribe({
+      next: () => {
+        this.alert_service.snackSuccess('Alert sent successfully!');
+        this.cancelEvent();
+      },
+      error: (err) => {
+        this.alert_service.snackError('failed!');
+        this.cancelEvent();
+
+      }
+    })
   }
 
   submit() {
     this.submitTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
-    this.updateFulleventDetails();
+    this.event_service.updateEventFullDetails({
+      ...this.currentItem,
+      actionTag: this.actionTag ? this.actionTag : 'Fasle Activity',
+      eventStartTime: this.currentItem?.timestamp,
+      objectName: this.object,
+      submitTime: this.submitTime,
+      falseActivityTime: this.falseActivityTime
+    }).subscribe({
+      next: () => {
+        this.alert_service.snackSuccess('Alert sent successfully!');
+        this.sendEmail();
+      },
+      error: (err) => [
+        this.alert_service.snackError('failed!')
+      ]
+    })
   }
 
   submitAndSend() {
-    this.event_service.write2Dispatch({...this.currentItem, queue_name: 'dispatch-3rd-level'}).subscribe();
-    this.sendEmail();
+    this.event_service.write2Dispatch({ ...this.currentItem, queue_name: 'dispatch-3rd-level' }).subscribe({
+      next: () => {
+        this.sendEmail();
+      }
+    });
   }
 
   openLiveDialog() {

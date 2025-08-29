@@ -698,8 +698,8 @@ export class DashboardComponent {
   @ViewChildren('video') videos!: QueryList<any>;
   @ViewChildren('btn') btns!: QueryList<any>;
   captureScreenshot(camera: any, index: any, color: any, btnItem: any, btnIndex: any) {
-    if(color === 'green') {
-          this.event_service.write2Dispatch({...btnItem, color, ...camera, queue_name: 'dispatch-2nd-level'}).subscribe();
+    if(color === 'yellow') {
+      this.event_service.write2Dispatch({...btnItem, color, ...camera, queue_name: 'dispatch-2nd-level'}).subscribe();
     }
     let a = this.btns.toArray()[index].nativeElement.children[btnIndex];
     let imgElement = a.firstChild;
