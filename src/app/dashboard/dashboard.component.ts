@@ -399,14 +399,7 @@ export class DashboardComponent {
     { id: 3, label: 'Large' },
     { id: 4, label: 'Person', },
     { id: 5, label: 'Vehicle', },
-  ];
-
-  oneWatchTypes = [
-    { id: 0, label: 'None' },
-    { id: 1, label: 'Person Entry' },
-    { id: 2, label: 'Person Exit' },
-    { id: 3, label: 'Vehicle Entry' },
-    { id: 4, label: 'Vehicle Exit' },
+    { id: 6, label: 'Event', },
   ];
 
   btnInterval: any;
@@ -432,7 +425,7 @@ export class DashboardComponent {
       else {
         timeAlert = environment.firstAlert;
       }
-      
+
       data.buttons.push({
         id: uuid(),
         x: x,
@@ -448,18 +441,18 @@ export class DashboardComponent {
         width: `${this.listType === 1 ? 8 : this.listType === 2 ? 12 : 15}`,
         height: `${this.listType === 1 ? 8 : this.listType === 2 ? 12 : 15}`,
       });
-      
+
       // let hourVal = formatDate(this.displayTime, 'HH:MM:SS', 'en-us').split(':')[0];
       // this.analyticsObj = {
-        //   siteId: data?.siteId,
-        //   cameraId: data?.cameraId,
-        //   cameraTime: moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss'),
-        //   hour: parseInt(hourVal),
-        //   no_of_objects: 1,
-        //   createdBy: null
-        // }
-        // this.addVehicleCount();
-        
+      //   siteId: data?.siteId,
+      //   cameraId: data?.cameraId,
+      //   cameraTime: moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss'),
+      //   hour: parseInt(hourVal),
+      //   no_of_objects: 1,
+      //   createdBy: null
+      // }
+      // this.addVehicleCount();
+
       this.currentTime = new Date();
       this.btnInterval = setInterval(() => {
         this.currentTime = new Date();
@@ -508,28 +501,39 @@ export class DashboardComponent {
     });
   }
 
-  sendScreenshot(data: any, file: any) {
+  getScreenshot(data: any, file: any) {
+    let time = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss')
+    data.time = time;
+
     this.camSer.screenshots(data, file).subscribe({
       next: (res: any) => {
         if (res.statusCode === 200) {
-          if (data.color == 'yellow' || (this.currentItem?.siteId === 36336 && data.color == 'green')) {
-            if (
-              this.currentItem?.siteId === 36346 ||
-              this.currentItem?.siteId === 36360 ||
-              this.currentItem?.siteId === 36444 ||
-              this.currentItem?.siteId === 36446
-            ) {
-              this.emailLimited({ ...data, ...this.emailObject })
+          if (this.listType === 6) {
+            if (data.color == 'green') {
+              this.event_service.write2Dispatch({ ...data, queue_name: 'dispatch-2nd-level' }).subscribe();
             }
-            else if (this.currentItem?.siteId === 36336) {
-              setTimeout(() => {
-                this.openEmaiDialog(data)
-              }, data?.internalPort * 60 * 1000)
-            }
-            else {
-              // this.openEmaiDialog(data);
+          } else {
+            if (data.color == 'yellow' || (this.currentItem?.siteId === 36336 && data.color == 'green')) {
+              if (
+                this.currentItem?.siteId === 36346 ||
+                this.currentItem?.siteId === 36360 ||
+                this.currentItem?.siteId === 36444 ||
+                this.currentItem?.siteId === 36446
+              ) {
+                this.emailLimited({ ...data, ...this.emailObject })
+              }
+              else if (this.currentItem?.siteId === 36336) {
+                setTimeout(() => {
+                  this.openEmaiDialog(data)
+                }, data?.internalPort * 60 * 1000)
+              }
+              else {
+                this.openEmaiDialog(data);
+              }
             }
           }
+
+
         }
       },
     });
@@ -662,7 +666,7 @@ export class DashboardComponent {
       hour: hour,
       currentTime: this.cameraCurrentTime,
     };
-    this.sendScreenshot(data.camera, data.image);
+    this.getScreenshot(data.camera, data.image);
   }
 
   addVehicleCount() {
@@ -698,9 +702,6 @@ export class DashboardComponent {
   @ViewChildren('video') videos!: QueryList<any>;
   @ViewChildren('btn') btns!: QueryList<any>;
   captureScreenshot(camera: any, index: any, color: any, btnItem: any, btnIndex: any) {
-    if(color === 'yellow') {
-      this.event_service.write2Dispatch({...btnItem, color, ...camera, queue_name: 'dispatch-2nd-level'}).subscribe();
-    }
     let a = this.btns.toArray()[index].nativeElement.children[btnIndex];
     let imgElement = a.firstChild;
     let videoComponents = this.videos.toArray();

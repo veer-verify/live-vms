@@ -109,7 +109,7 @@ export class CameraService {
     formData.append('color', payload?.color);
     formData.append('id', payload?.id);
     formData.append('cameraId', payload?.cameraId);
-    formData.append('timeStamp', moment().tz(payload?.timezone)?.format('YYYY-MM-DD HH:mm:ss'));
+    formData.append('timeStamp', payload?.time);
     return this.http.post(url, formData);
   }
 

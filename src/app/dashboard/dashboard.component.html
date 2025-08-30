@@ -31,28 +31,9 @@
   </button>
   <mat-menu #menu="matMenu" xPosition="before">
     <mat-radio-group [(ngModel)]="listType" class="d-flex flex-column py-2">
-      <ng-container>
-        <mat-radio-button class="example-radio-button" *ngFor="let season of listTypes" [value]="season.id">
-          {{ season.label }}
-        </mat-radio-button>
-      </ng-container>
-
-      <!-- <ng-container *ngIf="currentSite?.siteId == 36444">
-        <mat-radio-button class="example-radio-button" *ngFor="let season of oneWatchTypes" [value]="season.id">
-          {{ season.label }}
-        </mat-radio-button>
-      </ng-container> -->
-
-      <!-- <ng-container *ngIf="currentSite.siteId !== 36346 && currentSite.siteId !== 36360">
-        <mat-radio-button class="example-radio-button" *ngFor="let season of listTypes" [value]="season.id">
-          {{ season.label }}
-        </mat-radio-button>
-      </ng-container>
-      <ng-container *ngIf="currentSite.siteId === 36346 || currentSite.siteId === 36360">
-        <mat-radio-button class="example-radio-button" *ngFor="let season of listTypes1" [value]="season.id">
-          {{ season.label }}
-        </mat-radio-button>
-      </ng-container> -->
+      <mat-radio-button class="example-radio-button" *ngFor="let season of listTypes" [value]="season.id">
+        {{ season.label }}
+      </mat-radio-button>
     </mat-radio-group>
   </mat-menu>
 

@@ -1,9 +1,10 @@
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { fromEvent, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AlertService } from 'src/services/alert.service';
 import { CameraService } from 'src/services/camera.service';
@@ -77,9 +78,33 @@ export class EventsComponent {
   alertType: any;
   alertSubType: any;
   eventIndex!: number;
+
+  @ViewChildren('currentBtn') currentBtn!: QueryList<ElementRef>;
   displayCurrent(data: any) {
-    this.currentItem = data;
-    this.eventIndex = this.eventData.indexOf(this.currentItem);
+
+    // this.currentBtn.forEach((btn: ElementRef) => {
+    //   fromEvent(btn.nativeElement, 'click').subscribe({
+    //     next: (res: any) => {
+    //       console.log(res.target);
+    //     }
+    //   });
+    // });
+
+    this.currentItem = null;
+    this.emailData = null;
+    this.actionTag = null;
+    this.alertType = null;
+    this.alertSubType = null;
+    this.object = 'person';
+
+    this.storage_service.status_text = 'loading...'
+    setTimeout(() => {
+      this.storage_service.status_text = ''
+
+      this.currentItem = data;
+      this.eventIndex = this.eventData.indexOf(this.currentItem);
+    }, 500);
+
   }
 
   closeEvent(data: any) {
@@ -221,6 +246,8 @@ export class EventsComponent {
   }
 
   submitAndSend() {
+    // let time = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD HH:mm:ss');
+    this.currentItem.time = this.currentItem.timestamp;
     this.event_service.write2Dispatch({ ...this.currentItem, queue_name: 'dispatch-3rd-level' }).subscribe({
       next: () => {
         this.sendEmail();

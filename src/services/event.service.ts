@@ -32,11 +32,12 @@ export class EventService {
       cameraId: payload?.cameraId,
       color: payload?.color,
       id: payload?.id,
-      timestamp: payload?.dspTime ? payload?.dspTime : payload?.timestamp,
+      timestamp: payload?.time,
       queue_name: payload?.queue_name,
       timezone: payload?.timezone,
       httpUrl: payload?.httpUrl,
-      siteId: payload?.siteId
+      siteId: payload?.siteId,
+      siteName: payload?.siteName
     }
     return this.http.post(url, obj);
   }
@@ -68,7 +69,9 @@ export class EventService {
       createdBy: user?.UserId,
       remarks: '',
       landingTime: payload?.landingTime.toString(),
-      eventType: 'Manual Wall'
+      eventType: 'Manual Wall',
+      timezone: payload?.timezone,
+      subActionTag: ''
     };
 
     return this.http.post(url, obj);
