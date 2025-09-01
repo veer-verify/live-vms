@@ -44,6 +44,7 @@ import { CommonModule } from '@angular/common';
 import { EventsComponent } from './events/events.component';
 import { LiveComponent } from 'src/utilities/live/live.component';
 import { StatusComponent } from 'src/utilities/status/status.component';
+import { Send800Component } from './send800/send800.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { StatusComponent } from 'src/utilities/status/status.component';
     PlaybackInfoComponent,
     EventsComponent,
     LiveComponent,
-    StatusComponent
+    StatusComponent,
+    Send800Component
   ],
   imports: [
     BrowserModule,

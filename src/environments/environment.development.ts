@@ -53,4 +53,5 @@ export const environment = {
         time4: 180,
         time5: 210
     },
+    API_TOKEN:'OjykxjAFrVn6KqBcppQI2ptAt4Dpf0RyWE0eUINs7WyqWXLrtUKr3iS1LPRem0TY0UtU43H3S4rtt300',
 };

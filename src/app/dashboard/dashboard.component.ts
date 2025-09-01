@@ -3,11 +3,11 @@ import { CameraService } from 'src/services/camera.service';
 import { StorageService } from 'src/services/storage.service';
 import { Router } from '@angular/router';
 import { CdkDragEnter, moveItemInArray, } from '@angular/cdk/drag-drop';
-import { Observable, Subscription, fromEvent, } from 'rxjs';
+import { Observable, Subscription, fromEvent, tap, } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from 'src/services/alert.service';
 import * as moment from 'moment-timezone';
-import { HttpClient, HttpErrorResponse, } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpEventType, } from '@angular/common/http';
 import { SiteService } from 'src/services/site.service';
 import { v4 as uuid } from 'uuid';
 import { MetadataService } from 'src/services/metadata.service';
@@ -75,7 +75,7 @@ export class DashboardComponent {
   currentTime: any;
   displayTime: any;
   intervalId: any;
-  count: number = 0;
+  
   ngOnInit() {
     this.getSites();
     this.resizeObservable = fromEvent(window, 'resize');
@@ -731,6 +731,9 @@ export class DashboardComponent {
       }
     })
   }
+
+
+  
 
   ngOnDestroy() {
     this.resizeSubscription?.unsubscribe();

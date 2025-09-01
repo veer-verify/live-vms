@@ -12,6 +12,7 @@ import { EventService } from 'src/services/event.service';
 import { MetadataService } from 'src/services/metadata.service';
 import { StorageService } from 'src/services/storage.service';
 import { LiveComponent } from 'src/utilities/live/live.component';
+import { Send800Component } from '../send800/send800.component';
 
 @Component({
   selector: 'app-events',
@@ -286,6 +287,10 @@ export class EventsComponent {
         }
       });
     });
+  }
+
+  open800(){
+    this.dialog.open(Send800Component);
   }
 
   ngOnDestroy() {

@@ -145,6 +145,9 @@
                 <!-- <a class="frame-icon" *ngIf="iframeIndex == -1" matTooltip="Generate Event" (click)="openuserActionDialog(item)">
                   <img src="assets/icons/event.svg" alt="" width="18">
                 </a> -->
+
+                 
+
                 <button class="frame-icon" matTooltip="Screenshot" (click)="normalCapture(item, c)">
                   <img src="assets/icons/screenshot.svg" alt="" width="16" />
                 </button>
@@ -265,11 +268,7 @@
     </div>
   </ng-container>
 
-  <!-- <div style="position: absolute;bottom: 10px;right: 20px;z-index: 9999;" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
-    <mat-icon [matBadge]="count" matBadgeColor="warn" [matBadgeHidden]="hidden">
-    <img src="assets\icons\mail_28dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg" (click)="openChatbot()">
-    </mat-icon>
-  </div> -->
+ 
 </div>
 
 <ng-template #mannualEmailDialog>
@@ -374,3 +373,8 @@
 <ng-container *ngIf="isSidePanelOpen">
   <app-sidepanel [isSidePanelOpen]="isSidePanelOpen" (sidePanelClosed)="onCloseSidePanel($event)"></app-sidepanel>
 </ng-container> -->
+
+
+
+
+
