@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +49,7 @@ export class EventService {
     let path = this.router.url.split('/').at(-1);
 
     let obj = {
-      siteName: 'dummy',
+      siteName: payload?.siteName,
       siteId: payload?.siteId,
       objectName: payload?.objectName,
       cameraId: payload?.cameraId,
@@ -60,15 +61,15 @@ export class EventService {
       suspiciousTime: '',
       callResponseTime: '',
       callNoResponseTime: '',
-      emailTime: '',
-      eventStartTime:  this.datePipe.transform(payload?.eventStartTime, 'yyyy-MM-dd hh:mm:ss:SSS'),
+      // emailTime: '',
+      eventStartTime: moment(payload?.eventStartTime).tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS'),
       eventEndtime: payload?.submitTime ?? '',
       httpUrl: '',
       videoFile: '',
       createdTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'),
       createdBy: user?.UserId,
       remarks: '',
-      landingTime: payload?.landingTime.toString(),
+      landingTime: moment(payload?.landingTime).tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS'),
       eventType: 'Manual Wall',
       timezone: payload?.timezone,
       subActionTag: ''
@@ -77,25 +78,25 @@ export class EventService {
     return this.http.post(url, obj);
   }
 
-    write2Queue(payload: any) {
-    let url: string = `${environment.events_url}/write2Queue_1_0/`;
-    let user = this.storageSer.getData('userData');
-    let myObj = {
-      siteName: payload?.siteName,
-      siteId: payload?.siteId,
-      cameraId: payload?.cameraId,
-      objectName: payload?.objectName,
-      eventTag: 'Camera-Event',
-      eventTime: payload?.eventTime,
-      actionTag: 'suspicious',
-      actionTime: new Date().toString(),
-      userLevels: user?.userLevel,
-      httpUrl: payload?.httpUrl,
-      imageUrl: payload?.imageUrl,
-      queue_name: payload?.queue,
-      landingTime: payload?.landingTime
-    }
-    return this.http.post(url, myObj);
-  }
+  //   write2Queue(payload: any) {
+  //   let url: string = `${environment.events_url}/write2Queue_1_0/`;
+  //   let user = this.storageSer.getData('userData');
+  //   let myObj = {
+  //     siteName: payload?.siteName,
+  //     siteId: payload?.siteId,
+  //     cameraId: payload?.cameraId,
+  //     objectName: payload?.objectName,
+  //     eventTag: 'Camera-Event',
+  //     eventTime: payload?.eventTime,
+  //     actionTag: 'suspicious',
+  //     actionTime: new Date().toString(),
+  //     userLevels: user?.userLevel,
+  //     httpUrl: payload?.httpUrl,
+  //     imageUrl: payload?.imageUrl,
+  //     queue_name: payload?.queue,
+  //     landingTime: payload?.landingTime
+  //   }
+  //   return this.http.post(url, myObj);
+  // }
 
 }

@@ -24,7 +24,7 @@ constructor(
     private siteSer: SiteService
   ) {}
 
-  environment = environment.common_url;
+  environment = environment.download_url;
   userData: any;
   showLoader: boolean = false;
   searchText: any;
@@ -59,10 +59,11 @@ constructor(
       if(res.Status === 'Success') {
         this.siteIdToNav = res?.sites.sort((a: any, b: any) => a.siteName > b.siteName ? 1 : a.siteName < b.siteName ? -1 : 0);
         // this.camerasListForSites(this.siteIdToNav[0]);
+        // this.footageList(this.siteIdToNav[0]);
+        this.siteId = this.siteIdToNav[0].siteId;
+        // this.currentSite = this.siteIdToNav[0];
+        this.filter();
         this.getTags();
-        this.footageList(this.siteIdToNav[0], 0);
-        this.siteId = this.siteIdToNav[0];
-        console.log(this.siteId)
       } else if(res.Status === 'Failed') {
         this.errInfo = res.message;
       }
@@ -74,8 +75,7 @@ constructor(
   
   camData: Array<any> = new Array();
   camerasListForSites(siteId: any) {
-    this.siteSer.getCamerasForSiteId(siteId).subscribe((res: any) => {
-      // console.log(res);
+    this.siteSer.getCamerasForSiteId({siteId: siteId}).subscribe((res: any) => {
       this.camData = res;
     });
   }
@@ -93,7 +93,7 @@ constructor(
     let cam = data?.cameraId;
     this.eventSer.listActionTags({cameraId: cam}).subscribe((res: any) => {
       if(res.statusCode == 200) {
-        this.newTags = res.data.filter((item: any) => item.siteId == this.currentSite?.siteId)[0].actionTags;
+        this.newTags = res.data.filter((item: any) => item.siteId == this.siteId)[0].actionTags;
       }
     })
   }
@@ -104,32 +104,29 @@ constructor(
 
   eventData: Array<any> = new Array();
   newEventData: Array<any> = new Array();
-  currentSite: any;
-  navActive!: number;
+  // currentSite: any;
   currentPage!: number;
   totalPages!: number;
-  footageList(data: any, index: any) {
-    this.isNew = false;
-    this.camerasListForSites(data);
-    this.currentSite = data;
-    this.navActive = index;
-    this.showLoader = true;
-    this.eventSer.incidentList(data).subscribe((res: any) => {
-      this.showLoader = false;
-      this.currentPage = res.page;
-      this.totalPages = res.totalPages;
-      if(res.statusCode == 200) {
-        this.eventData = res.IncidentList;
-        this.newEventData =[...this.eventData];
-        this.errInfo = null;
-      } else {
-        this.newEventData = [];
-      }
-    }, (err: any) => {
-      this.showLoader = false;
-      // this.errInfo = 'CONNECTION TIMED OUT!';
-    })
-  }
+  // footageList(data: any) {
+  //   this.camerasListForSites(data);
+  //   this.currentSite = data;
+  //   this.showLoader = true;
+  //   this.eventSer.incidentList(data).subscribe((res: any) => {
+  //     this.showLoader = false;
+  //     this.currentPage = res.page;
+  //     this.totalPages = res.totalPages;
+  //     if(res.statusCode == 200) {
+  //       this.eventData = res.IncidentList;
+  //       this.newEventData =[...this.eventData];
+  //       this.errInfo = null;
+  //     } else {
+  //       this.newEventData = [];
+  //     }
+  //   }, (err: any) => {
+  //     this.showLoader = false;
+  //     // this.errInfo = 'CONNECTION TIMED OUT!';
+  //   })
+  // }
 
   siteId: any = '';
   cameraId: any = '';
@@ -137,9 +134,9 @@ constructor(
   fromDate: any = '';
   toDate: any = '';
   filter(type?: string) {
+    this.camerasListForSites(this.siteId);
     let pageNumber;
     type == 'next' ? pageNumber = this.currentPage + 1 : type == 'prev' ? pageNumber = this.currentPage - 1 : pageNumber = type;
-
     this.showLoader = true;
     this.eventSer.incidentList({
       siteId: this.siteId,
@@ -153,23 +150,14 @@ constructor(
       this.currentPage = res.page;
       this.totalPages = res.totalPages;
       if(res.statusCode === 200) {
-        this.newEventData = res.IncidentList;
+        this.eventData = res.IncidentList;
+        this.newEventData = [...this.eventData];
       } else {
         this.newEventData = [];
       }
     }, (err: HttpErrorResponse) => {
       this.showLoader = false;
     });
-  }
-
-  isNew: boolean = false;
-  getNew() {
-    this.isNew = !this.isNew;
-    if(this.isNew) {
-      this.newEventData =  this.eventData.filter((item: any) => item.createdTime > this.latestIncidentTime);
-    } else {
-      this.newEventData = this.eventData;
-    }
   }
 
   selectedFile: any;
@@ -268,7 +256,6 @@ constructor(
   @ViewChild('editDialog') editDialog = {} as TemplateRef<any>;
   currentItem: any;
   openEditDialog(data: any) {
-    // console.log(data)
     this.listActionTags(data)
     this.currentItem =data;
     this.matdialog.open(this.editDialog);

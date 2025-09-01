@@ -9,7 +9,7 @@
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Site</mat-label>
                         <mat-select [(ngModel)]="siteId" (selectionChange)="filter()">
-                            <mat-option *ngFor="let site of siteIdToNav; let i = index" [value]="site.siteId">{{site?.siteName}}</mat-option>
+                            <mat-option *ngFor="let item of siteIdToNav; let i = index" [value]="item.siteId">{{item?.siteName}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -26,8 +26,7 @@
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Action Tag</mat-label>
                         <mat-select [(ngModel)]="actionTag" (selectionChange)="filter()">
-                            <mat-option *ngFor="let item of actionTags" [value]="item?.value">{{item?.value |
-                                titlecase}}</mat-option>
+                            <mat-option *ngFor="let item of actionTags" [value]="item?.id">{{item?.value | titlecase}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -76,7 +75,7 @@
                         <th scope="col">Object Name</th>
                         <th scope="col">Action Tag</th>
                         <th scope="col" class="text-center">Event Clip</th>
-                        <th>Actions</th>
+                        <!-- <th>Actions</th> -->
                         <th></th>
                     </tr>
                 </thead>
@@ -110,16 +109,16 @@
               </span> -->
                             <p class="text-primary pointer" (click)="openGalleryDialog(item)">View</p>
                         </td>
-                        <td>
+                        <!-- <td>
                             <div class="d-inline-flex">
                                 <img class="me-2" src="assets/icons/add_circle-black.svg" class="pointer" width="18"
                                     (click)="openUploadDialog(item)" alt="" matTooltip="Add File">
                                 <img src="assets/icons/edit.svg" class="pointer" alt="" width="18"
                                     (click)="openEditDialog(item)" matTooltip="Edit">
-                                <!-- <img src="assets/icons/delete-outline.svg" class="pointer" alt="" width="18"
-                                    (click)="deleteIncident(item)" matTooltip="Delete"> -->
+                                <img src="assets/icons/delete-outline.svg" class="pointer" alt="" width="18"
+                                    (click)="deleteIncident(item)" matTooltip="Delete">
                             </div>
-                        </td>
+                        </td> -->
                         <td>
                             <p class="new-item" *ngIf="item?.createdTime > latestIncidentTime">NEW</p>
                         </td>
@@ -339,14 +338,14 @@
           <option *ngFor="let item of actionTags" [value]="item?.value">{{item?.value}}</option>
         </select>
       </div> -->
-            <div class="col-md-6 mb-3" *ngIf="currentSite?.siteId != 36444">
+            <div class="col-md-6 mb-3" *ngIf="siteId != 36444">
                 <span class="label">Action Tag</span>
                 <select class="form-select" [(ngModel)]="currentItem.actionTag">
                     <option value="">Action Tag</option>
                     <option *ngFor="let item of actionTags" [value]="item?.value">{{item?.value}}</option>
                 </select>
             </div>
-            <div class="col-md-6 mb-3" *ngIf="currentSite?.siteId == 36444">
+            <div class="col-md-6 mb-3" *ngIf="siteId == 36444">
                 <span class="label">Action Tag</span>
                 <select class="form-select" [(ngModel)]="currentItem.actionTag">
                     <option value="">Action Tag</option>
