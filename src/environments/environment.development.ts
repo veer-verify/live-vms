@@ -18,6 +18,7 @@ export const environment = {
     login_url: `${dev_url}/userDetails`,
     site_url: `${dev_url}/vipsites`,
     common_url: `${dev_url}/metadata`,
+    download_url: `${dev_url}/common`,
     guard_monitoring_url:`${dev_url}/guard_monitoring`,
     monitoring_url:`${dev_url}/monitoring`,
     events_url: 'https://stagingmq.ivisecurity.com',

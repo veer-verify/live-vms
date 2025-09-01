@@ -42,6 +42,7 @@ export class StorageService {
 
   metadat_sub: any = [];
   status_text!: string;
+  show_loader: boolean = false;
 
   constructor() { }
 

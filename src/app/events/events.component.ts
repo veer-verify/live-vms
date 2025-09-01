@@ -133,19 +133,18 @@ export class EventsComponent {
     }
   }
 
-  categoryEmpty(i: string) {
-    this.falseActivityTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
-    switch (i) {
-      case 'action':
-        // this.alertType = [];
-        this.alertSubType = [];
-        break;
-      case 'alert':
-        this.alertSubType = [];
-        break;
-      default:
-    }
-  }
+  // categoryEmpty(i: string) {
+  //   switch (i) {
+  //     case 'action':
+  //       // this.alertType = [];
+  //       this.alertSubType = [];
+  //       break;
+  //     case 'alert':
+  //       this.alertSubType = [];
+  //       break;
+  //     default:
+  //   }
+  // }
 
   emailData: any;
   getEmailData() {
@@ -189,6 +188,7 @@ export class EventsComponent {
       eventToTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'),
       objectName: 'Person',
     };
+    // this.storage_service.show_loader = true;
     this.camera_service.email_with_incident({
       ...this.emailObject,
       ...dateObj,
@@ -196,29 +196,40 @@ export class EventsComponent {
     }).subscribe({
       next: (res: any) => {
         if (res.statusCode === 200) {
+          // this.storage_service.show_loader = false;
           this.alert_service.snackSuccess(res.message);
           this.cancelEvent();
         } else {
+          // this.storage_service.show_loader = false;
           this.alert_service.snackError(res.message);
         }
       },
+      error: (err) => {
+        // this.storage_service.show_loader = false;
+      }
     });
   }
 
   submitFalse() {
+    this.falseActivityTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+        // this.storage_service.show_loader = true;
     this.event_service.updateEventFullDetails({
       ...this.currentItem,
       actionTag: this.actionTag ? this.actionTag : 'Fasle Activity',
       eventStartTime: this.currentItem?.timestamp,
       objectName: this.object,
-      submitTime: this.submitTime,
+      // submitTime: this.submitTime,
       falseActivityTime: this.falseActivityTime
     }).subscribe({
       next: () => {
+                // this.storage_service.show_loader = false;
+
         this.alert_service.snackSuccess('Alert sent successfully!');
         this.cancelEvent();
       },
       error: (err) => {
+                // this.storage_service.show_loader = false;
+
         this.alert_service.snackError('failed!');
         this.cancelEvent();
 
@@ -227,6 +238,7 @@ export class EventsComponent {
   }
 
   submit() {
+    // this.falseActivityTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
     this.submitTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
     this.event_service.updateEventFullDetails({
       ...this.currentItem,
@@ -234,7 +246,7 @@ export class EventsComponent {
       eventStartTime: this.currentItem?.timestamp,
       objectName: this.object,
       submitTime: this.submitTime,
-      falseActivityTime: this.falseActivityTime
+      // falseActivityTime: this.falseActivityTime
     }).subscribe({
       next: () => {
         this.alert_service.snackSuccess('Alert sent successfully!');
