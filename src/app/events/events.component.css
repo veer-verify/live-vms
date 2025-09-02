@@ -23,6 +23,7 @@
   position: absolute;
   right: 5px;
   top: 5px;
+  z-index: 1;
 }
 
 .card img {
@@ -35,14 +36,17 @@
 }
 
 .site {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
-  
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
 }
 
 .camera {
   font-size: 14px;
-    color: #666;
+  color: #666;
 }
 
 .date {

@@ -394,12 +394,12 @@ export class DashboardComponent {
   listType: any = 0;
   listTypes = [
     { id: 0, label: 'None' },
+    { id: 6, label: 'Event' },
     { id: 1, label: 'Small' },
     { id: 2, label: 'Medium' },
     { id: 3, label: 'Large' },
-    { id: 4, label: 'Person', },
-    { id: 5, label: 'Vehicle', },
-    { id: 6, label: 'Event', },
+    { id: 4, label: 'Person' },
+    { id: 5, label: 'Vehicle' },
   ];
 
   btnInterval: any;

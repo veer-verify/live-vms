@@ -47,24 +47,25 @@ export class EventService {
     let url = `${environment.events_url}/updateEventFullDetails_1_0/`;
     let user = this.storageSer.getData('userData');
     let path = this.router.url.split('/').at(-1);
+    let endTime = this.datePipe.transform(new Date(payload?.timestamp), 'yyyy-MM-dd hh:mm:ss:SSS');
 
     let obj = {
       siteName: payload?.siteName,
       siteId: payload?.siteId,
       objectName: payload?.objectName,
       cameraId: payload?.cameraId,
-      eventTag: 'VMS-EVENTS',
+      eventTag: 'LIVE-VMS',
       actionTag: payload?.actionTag,
       userLevels: path === 'events' ? 2 : 3,
       falseActivityTime: payload?.falseActivityTime ?? '',
       activityDetTime: '',
-      suspiciousTime: '',
+      suspiciousTime: payload?.suspiciousTime ?? '',
       callResponseTime: '',
       callNoResponseTime: '',
-      // emailTime: '',
-      eventStartTime: moment(payload?.eventStartTime).tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS'),
+      eventStartTime: endTime,
       eventEndtime: payload?.submitTime ?? '',
-      httpUrl: '',
+      emailTime: payload?.submitTime ?? '',
+      httpUrl: payload?.httpUrl,
       videoFile: '',
       createdTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'),
       createdBy: user?.UserId,

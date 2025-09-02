@@ -24,16 +24,21 @@
     <img *ngIf="!showSidenav" src="assets/icons/arrow_back.svg" style="rotate: 180deg" alt="" width="20" />
   </button>
 
-  <button [ngClass]="listType === 0 ? 'draw-btn' : 'draw-btn-active'" [style.top.px]="showSidenav ? '5' : '50'"
-    [style.right.px]="showSidenav ? '35' : '2'" [matMenuTriggerFor]="menu" matTooltip="Draw Points"
-    *ngIf="pagesForDropdown.length !== 0">
+  <button
+    [ngClass]="listType === 0 ? 'draw-btn' : 'draw-btn-active'"
+    [style.top.px]="showSidenav ? '5' : '50'"
+    [style.right.px]="showSidenav ? '35' : '2'"
+    [matMenuTriggerFor]="menu" matTooltip="Draw Points"
+    >
     <img src="assets/icons/drive_file.svg" alt="" width="20" />
   </button>
-  <mat-menu #menu="matMenu" xPosition="before">
+  <mat-menu #menu xPosition="before">
     <mat-radio-group [(ngModel)]="listType" class="d-flex flex-column py-2">
-      <mat-radio-button class="example-radio-button" *ngFor="let season of listTypes" [value]="season.id">
-        {{ season.label }}
-      </mat-radio-button>
+      <div class="row m-0">
+      <mat-radio-button class="col-lg-6" *ngFor="let season of listTypes" [value]="season.id">
+          {{ season.label }}
+        </mat-radio-button>
+      </div>
     </mat-radio-group>
   </mat-menu>
 

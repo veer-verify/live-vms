@@ -40,16 +40,18 @@ export class EventsComponent {
     this.getDispatchData();
 
     this.eventInterval = setInterval(() => {
-      this.event_service.getDispatchData().subscribe({
-        next: (res: any) => {
-          if (res.length !== 0) {
-            this.storage_service.status_text = '';
-            this.eventData.push(...res);
-            this.eventData.forEach((item: any) => item.landingTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'))
-          }
-        },
-      });
-    }, 5000);
+      if(this.eventData.length < 6) {        
+        this.event_service.getDispatchData().subscribe({
+          next: (res: any) => {
+            if (res.length !== 0) {
+              this.storage_service.status_text = '';
+              this.eventData.push(...res);
+              this.eventData.forEach((item: any) => item.landingTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'))
+            }
+          },
+        });
+      }
+    }, 2000);
   }
 
   eventData: any = [];
@@ -82,22 +84,8 @@ export class EventsComponent {
 
   @ViewChildren('currentBtn') currentBtn!: QueryList<ElementRef>;
   displayCurrent(data: any) {
-
-    // this.currentBtn.forEach((btn: ElementRef) => {
-    //   fromEvent(btn.nativeElement, 'click').subscribe({
-    //     next: (res: any) => {
-    //       console.log(res.target);
-    //     }
-    //   });
-    // });
-
     this.currentItem = null;
-    this.emailData = null;
-    this.actionTag = null;
-    this.alertType = null;
-    this.alertSubType = null;
-    this.object = 'person';
-
+    this.resetVals();
     this.storage_service.status_text = 'loading...'
     setTimeout(() => {
       this.storage_service.status_text = ''
@@ -108,12 +96,21 @@ export class EventsComponent {
 
   }
 
+  resetVals() {
+    this.emailData = null;
+    this.actionTag = null;
+    this.alertType = null;
+    this.alertSubType = null;
+    this.object = 'person';
+  }
+
   closeEvent(data: any) {
     if (data?.timestamp == this.currentItem?.timestamp) {
       let index = this.eventData.indexOf(this.currentItem);
       this.eventData.splice(index, 1);
       this.currentItem = this.eventData[index];
     } else {
+      this.currentItem = null;
       let index = this.eventData.indexOf(data);
       this.eventData.splice(index, 1);
     }
@@ -124,6 +121,7 @@ export class EventsComponent {
   }
 
   cancelEvent() {
+    this.resetVals();
     let index = this.eventData.indexOf(this.currentItem);
     this.eventData.splice(index, 1);
     this.currentItem = this.eventData[index];
@@ -132,19 +130,6 @@ export class EventsComponent {
       this.storage_service.status_text = 'no events!';
     }
   }
-
-  // categoryEmpty(i: string) {
-  //   switch (i) {
-  //     case 'action':
-  //       // this.alertType = [];
-  //       this.alertSubType = [];
-  //       break;
-  //     case 'alert':
-  //       this.alertSubType = [];
-  //       break;
-  //     default:
-  //   }
-  // }
 
   emailData: any;
   getEmailData() {
@@ -166,7 +151,6 @@ export class EventsComponent {
         next: (res: any) => {
           if (res.statusCode === 200) {
             this.emailData = res.emailDetails;
-            // this.emailData.screenshots = ['assets/images/cam.png', 'assets/images/cam.png', 'assets/images/cam.png']
           } else {
             this.emailData = null;
             this.alert_service.snackError(res.message)
@@ -181,7 +165,7 @@ export class EventsComponent {
 
   falseActivityTime: any;
   submitTime: any;
-
+  suspiciousTime: any;
   sendEmail() {
     let dateObj = {
       eventFromTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'),
@@ -216,20 +200,17 @@ export class EventsComponent {
     this.event_service.updateEventFullDetails({
       ...this.currentItem,
       actionTag: this.actionTag ? this.actionTag : 'Fasle Activity',
-      eventStartTime: this.currentItem?.timestamp,
+      // eventStartTime: this.currentItem?.timestamp,
       objectName: this.object,
-      // submitTime: this.submitTime,
       falseActivityTime: this.falseActivityTime
     }).subscribe({
       next: () => {
                 // this.storage_service.show_loader = false;
-
         this.alert_service.snackSuccess('Alert sent successfully!');
         this.cancelEvent();
       },
       error: (err) => {
                 // this.storage_service.show_loader = false;
-
         this.alert_service.snackError('failed!');
         this.cancelEvent();
 
@@ -238,30 +219,38 @@ export class EventsComponent {
   }
 
   submit() {
-    // this.falseActivityTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
     this.submitTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
     this.event_service.updateEventFullDetails({
       ...this.currentItem,
       actionTag: this.actionTag ? this.actionTag : 'Fasle Activity',
-      eventStartTime: this.currentItem?.timestamp,
+      // eventStartTime: this.currentItem?.timestamp,
       objectName: this.object,
+      suspiciousTime: this.suspiciousTime,
       submitTime: this.submitTime,
-      // falseActivityTime: this.falseActivityTime
     }).subscribe({
       next: () => {
         this.alert_service.snackSuccess('Alert sent successfully!');
         this.sendEmail();
       },
-      error: (err) => [
-        this.alert_service.snackError('failed!')
-      ]
+      error: (err) => {
+                this.cancelEvent();
+
+        this.alert_service.snackError('failed!');
+      }
     })
   }
 
+  getTime() {
+    this.suspiciousTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+  }
+
   submitAndSend() {
-    // let time = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD HH:mm:ss');
     this.currentItem.time = this.currentItem.timestamp;
-    this.event_service.write2Dispatch({ ...this.currentItem, queue_name: 'dispatch-3rd-level' }).subscribe({
+    this.event_service.write2Dispatch({
+      ...this.currentItem,
+      queue_name: 'dispatch-3rd-level',
+
+    }).subscribe({
       next: () => {
         this.sendEmail();
       }

@@ -9,9 +9,8 @@
 
         <div class="card-content" (click)="displayCurrent(item)" #currentBtn>
           <div class="d-flex justify-content-between align-items-center">
-            <p class="site">{{ item?.siteId }}</p>
-            <a (click)="closeEvent(item)" matTooltip="clear"><img src="assets/icons/close.svg"
-                alt="" width="20px"></a>
+            <p class="site">{{ item?.siteName }}</p>
+            <a class="close-event" (click)="closeEvent(item)" matTooltip="clear"><img src="assets/icons/close.svg" alt="" width="20px"></a>
           </div>
           <p class="camera">{{ item?.cameraId }}</p>
           <p class="date">{{ item?.timestamp | date: 'mediumDate'}} {{ item?.timestamp | date: 'shortTime'}}</p>
@@ -36,7 +35,6 @@
           <div class="col-lg-4">
 
             <div class="mb-2 d-flex gap-2 justify-content-end">
-              <button type="button" class="btn btn-sm dialog-update-btn" (click)="open800()">800.com</button>
               <button type="button" class="btn btn-sm dialog-close-btn" (click)="submitFalse()">False Activity</button>
               <button type="button" class="btn btn-sm dialog-update-btn" (click)="openLiveDialog()">Live</button>
             </div>
@@ -44,7 +42,7 @@
             <div class="w-100">
               <mat-form-field class="w-100" appearance="outline">
                 <mat-label>Action Tag</mat-label>
-                <mat-select [(ngModel)]="actionTag">
+                <mat-select [(ngModel)]="actionTag" (selectionChange)="getTime()">
                   <mat-option *ngFor="let item of actionTags; let i=index" [value]="item.value">{{item.value}}</mat-option>
                 </mat-select>
               </mat-form-field>
@@ -109,6 +107,7 @@
 
               <div class="d-flex align-items-center justify-content-end mt-2">
                 <button class="dialog-close-btn" (click)="cancelEvent()">Cancel</button>
+                <button type="button" class="btn btn-sm dialog-update-btn" (click)="open800()">800.com</button>
                 <button class="dialog-update-btn" (click)="submit()">Submit</button>
                 <button class="dialog-update-submit" (click)="submitAndSend()" title="Submit & Send to 3rd level" *ngIf="path === 'events'">Submit & Send</button>
               </div>
