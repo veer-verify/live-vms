@@ -1,5 +1,4 @@
 const prod_url: string = "https://prod.ivisecurity.com";
-// const prod_url: string = "http://rsmgmt.ivisecurity.com";
 // const dev_url: string = "http://usstaging.ivisecurity.com";
 
 export const environment = {
@@ -22,7 +21,8 @@ export const environment = {
     download_url: `${prod_url}/common`,
     guard_monitoring_url:`${prod_url}/guard_monitoring`,
     monitoring_url:`${prod_url}/monitoring`,
-    events_url: 'https://stagingmq.ivisecurity.com',
+    // events_url: 'https://stagingmq.ivisecurity.com',
+        events_url: 'https://stagingmq.ivisecurity.com/queueManagement',
     
     firstAlert: {
         time1: 160,

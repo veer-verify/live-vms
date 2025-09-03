@@ -1,8 +1,9 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { CameraService } from 'src/services/camera.service';
-import { Observable, Subscription, fromEvent, tap, } from 'rxjs';
-import { HttpEventType } from '@angular/common/http';
+import { Observable, Subscription, fromEvent, switchMap, tap, } from 'rxjs';
+import { HttpClient, HttpEventType } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-send800',
@@ -11,81 +12,125 @@ import { HttpEventType } from '@angular/common/http';
 })
 export class Send800Component {
 
+  environment = environment.eventImageUrl;
 
-    constructor(
-   
-      private camSer: CameraService,
-      private matDialog: MatDialog,
-     
-    ) { }
 
-    openChat: boolean = false;
-    hidden: boolean = false;
-    count: number = 0;
-    latestMsg: any;
-    latestMsg1: any;
-  
-  
-    openChatbot1() {
-      this.camSer.getRecievedMsg().subscribe((res: any) => {
-        this.latestMsg1 = res.data;
-  
-        this.count = this.latestMsg1
-          .flatMap((el: any) => el.latestItem)
-          .filter((item: any) => item.isInbound)?.length;
-      });
-    }
-  
-    openChatbot() {
-      this.camSer.getRecievedMsg().subscribe((res: any) => {
-        this.latestMsg = res.data;
-      });
-      this.openChat = !this.openChat;
-      this.hidden = true;
-    }
-  
-      @ViewChild('openmessage') openmessage: any = ElementRef;
-    sender: string = '+18444384847';
-    recipient: string = '';
-    message: string = '';
-    openMessageDialog() {
-      this.recipient = '';
-      this.message = '';
-      this.progress = 0;
-      this.selectedfile = null;
-      this.matDialog.open(this.openmessage, { disableClose: true });
-    }
-  
-    selectedfile: any;
-    selected800File(event: any) {
-      this.selectedfile = event.target.files[0];
-    }
-  
-    progress: number = 0;
-    async sendMessage() {
-      let obj = {
-        sender: this.sender,
-        recipient: this.recipient,
-        message: this.message,
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private camSer: CameraService,
+    private matDialog: MatDialog,
+    private http: HttpClient
+  ) { }
+
+  ngOnInit(): void {
+    // console.log(this.data);
+  }
+
+  openChat: boolean = false;
+  hidden: boolean = false;
+  count: number = 0;
+  latestMsg: any;
+  latestMsg1: any;
+
+
+  openChatbot1() {
+    this.camSer.getRecievedMsg().subscribe((res: any) => {
+      this.latestMsg1 = res.data;
+
+      this.count = this.latestMsg1
+        .flatMap((el: any) => el.latestItem)
+        .filter((item: any) => item.isInbound)?.length;
+    });
+  }
+
+  openChatbot() {
+    this.camSer.getRecievedMsg().subscribe((res: any) => {
+      this.latestMsg = res.data;
+    });
+    this.openChat = !this.openChat;
+    this.hidden = true;
+  }
+
+  @ViewChild('openmessage') openmessage: any = ElementRef;
+  sender: string = '+18444384847';
+  recipient: string = '';
+  message: string = '';
+  // file: any;
+  openMessageDialog() {
+    this.recipient = '';
+    this.message = '';
+    this.progress = 0;
+    this.selectedfile = null;
+    this.matDialog.open(this.openmessage, { disableClose: true });
+  }
+
+  selectedfile: any;
+  selected800File(event: any) {
+    // this.selectedfile = event.target.files[0];
+    this.selectedfile = this.environment + this.data?.imageName
+  }
+
+  async getUrl() {
+    // this.http.get(this.environment + this.data?.imageName, { responseType: 'blob' })
+    //   .pipe(
+    //     switchMap((blob: any) => this.convertBlobToBase64(blob))
+    //   )
+    //   .subscribe((base64ImageUrl: any) => {this.selectedfile = base64ImageUrl});
+
+      await fetch(this.environment + this.data?.imageName)
+      .then(response => response.arrayBuffer()) // Get the response as an ArrayBuffer
+      .then(arrayBuffer => {
+        // arrayBuffer now contains the raw binary data of the image
+        // You can then convert it to a Uint8Array or further process it
+        const binaryData = new Uint8Array(arrayBuffer);
+        console.log(binaryData);
+      })
+      .catch(error => console.error('Error fetching image:', error));
+  }
+
+  convertBlobToBase64(blob: Blob) {
+    return Observable.create((observer: any) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onload = (event: any) => {
+        console.log(event.target.result);
+        observer.next(event.target.result);
+        observer.complete();
       };
-  
-      try {
-        const response = await this.camSer
-          .sendMessage800(obj, this.selectedfile)
-          .pipe(tap((event: any) => {
-              if (event.type === HttpEventType.UploadProgress) {
-                const progress = Math.round((100 * event.loaded) / event.total);
-                this.progress = progress;
-              }
-            })
-          )
-          .toPromise();
-          alert('Message sent successfully');
-      }
-      catch (error) {
-        alert(`Failed to send message:${error}`);
-        this.progress = 0;
-      }
+
+      reader.onerror = (event: any) => {
+        console.log(event.target.error.code);
+        observer.next(event.target.error.code);
+        observer.complete();
+      };
+    });
+  }
+
+  progress: number = 0;
+  async sendMessage() {
+    let obj = {
+      sender: this.sender,
+      recipient: this.recipient,
+      message: this.message,
+    };
+
+    try {
+      const response = await this.camSer
+        .sendMessage800(obj, this.selectedfile)
+        .pipe(tap((event: any) => {
+          if (event.type === HttpEventType.UploadProgress) {
+            const progress = Math.round((100 * event.loaded) / event.total);
+            this.progress = progress;
+          }
+        })
+        )
+        .toPromise();
+      alert('Message sent successfully');
     }
+    catch (error) {
+      alert(`Failed to send message:${error}`);
+      this.progress = 0;
+    }
+  }
 
 }

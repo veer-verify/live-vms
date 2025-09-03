@@ -75,7 +75,7 @@ export class DashboardComponent {
   currentTime: any;
   displayTime: any;
   intervalId: any;
-  
+
   ngOnInit() {
     this.getSites();
     this.resizeObservable = fromEvent(window, 'resize');
@@ -302,19 +302,22 @@ export class DashboardComponent {
     this.audioIndex = index;
     this.http
       .get(`${environment.site_url}/play_1_0/${data.cameraId}`)
-      .subscribe(
-        (res: any) => {
+      .subscribe({
+        next: (res: any) => {
           this.audioIndex = -1;
           if (res.statusCode === 200) {
             this.alertSrvc.snackSuccess(res.message);
           } else {
             this.alertSrvc.snackError(res.message);
           }
+
         },
-        (err: HttpErrorResponse) => {
+        error: (err) => {
           this.audioIndex = -1;
           this.alertSrvc.snackError('Siren not Played!');
+
         }
+      }
       );
 
     // this.camSer.play(data).subscribe({
@@ -502,6 +505,7 @@ export class DashboardComponent {
   }
 
   getScreenshot(data: any, file: any) {
+    let user = this.storageSer.getData('userData');
     let time = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss')
     data.time = time;
 
@@ -510,7 +514,17 @@ export class DashboardComponent {
         if (res.statusCode === 200) {
           if (this.listType === 6) {
             if (data.color == 'green') {
-              this.event_service.write2Dispatch({ ...data, queue_name: 'dispatch-2nd-level' }).subscribe();
+              this.event_service.write2Dispatch({
+                ...data,
+                queue_name: 'dispatch-2nd-level',
+                userLevelAlarmInfo: [
+                  {
+                    level: 1,
+                    user: user?.UserId,
+                    alarm: data?.audioUrl ? 'P' : 'N'
+                  }
+                ]
+              }).subscribe();
             }
           } else {
             if (data.color == 'yellow' || (this.currentItem?.siteId === 36336 && data.color == 'green')) {
@@ -532,8 +546,6 @@ export class DashboardComponent {
               }
             }
           }
-
-
         }
       },
     });
@@ -733,7 +745,7 @@ export class DashboardComponent {
   }
 
 
-  
+
 
   ngOnDestroy() {
     this.resizeSubscription?.unsubscribe();

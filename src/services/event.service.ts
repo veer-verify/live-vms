@@ -19,16 +19,14 @@ export class EventService {
   ) { }
 
   getDispatchData() {
-    let url = `${environment.events_url}/get_dispatch_queue_data_1_0/`;
+    let url = `${environment.events_url}/getVms_DispatchQueueData_1_0/`;
     let path = this.router.url.split('/').at(-1);
     let params = new HttpParams().set('queue_name', path === 'events' ? 'dispatch-2nd-level' : 'dispatch-3rd-level');
     return this.http.get(url, { params: params })
   }
-
-  //dispatch-2nd-level
-  //dispatch-3rd-level
+  
   write2Dispatch(payload: any) {
-    let url = `${environment.events_url}/write2Dispatch_queue_data_1_0/`;
+    let url = `${environment.events_url}/write2Vms_DispatchQueue_1_0/`;
     let obj = {
       cameraId: payload?.cameraId,
       color: payload?.color,
@@ -38,7 +36,12 @@ export class EventService {
       timezone: payload?.timezone,
       httpUrl: payload?.httpUrl,
       siteId: payload?.siteId,
-      siteName: payload?.siteName
+      siteName: payload?.siteName,
+      actionTag: '',
+      actionTime: moment().tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS'),
+      eventTag: '',
+      userLevelAlarmInfo: payload?.userLevelAlarmInfo,
+      userLevels: 0
     }
     return this.http.post(url, obj);
   }

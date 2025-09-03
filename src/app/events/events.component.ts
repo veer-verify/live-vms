@@ -40,7 +40,7 @@ export class EventsComponent {
     this.getDispatchData();
 
     this.eventInterval = setInterval(() => {
-      if(this.eventData.length < 6) {        
+      if (this.eventData.length < 6) {
         this.event_service.getDispatchData().subscribe({
           next: (res: any) => {
             if (res.length !== 0) {
@@ -56,7 +56,7 @@ export class EventsComponent {
 
   eventData: any = [];
   getDispatchData() {
-    this.storage_service.status_text = 'loading...'
+    this.storage_service.status_text = 'loading...';
     this.event_service.getDispatchData().subscribe({
       next: (res: any) => {
         if (res.length !== 0) {
@@ -196,7 +196,7 @@ export class EventsComponent {
 
   submitFalse() {
     this.falseActivityTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
-        // this.storage_service.show_loader = true;
+    // this.storage_service.show_loader = true;
     this.event_service.updateEventFullDetails({
       ...this.currentItem,
       actionTag: this.actionTag ? this.actionTag : 'Fasle Activity',
@@ -205,12 +205,12 @@ export class EventsComponent {
       falseActivityTime: this.falseActivityTime
     }).subscribe({
       next: () => {
-                // this.storage_service.show_loader = false;
+        // this.storage_service.show_loader = false;
         this.alert_service.snackSuccess('Alert sent successfully!');
         this.cancelEvent();
       },
       error: (err) => {
-                // this.storage_service.show_loader = false;
+        // this.storage_service.show_loader = false;
         this.alert_service.snackError('failed!');
         this.cancelEvent();
 
@@ -233,8 +233,7 @@ export class EventsComponent {
         this.sendEmail();
       },
       error: (err) => {
-                this.cancelEvent();
-
+        this.cancelEvent();
         this.alert_service.snackError('failed!');
       }
     })
@@ -245,11 +244,20 @@ export class EventsComponent {
   }
 
   submitAndSend() {
+    let user = this.storage_service.getData('userData');
+    this.currentItem?.userLevelAlarmInfo.push(
+      {
+        level: 2,
+        user: user?.UserId,
+        alarm: 'N'
+      }
+    )
+
     this.currentItem.time = this.currentItem.timestamp;
     this.event_service.write2Dispatch({
       ...this.currentItem,
       queue_name: 'dispatch-3rd-level',
-
+      userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
     }).subscribe({
       next: () => {
         this.sendEmail();
@@ -259,7 +267,8 @@ export class EventsComponent {
 
   openLiveDialog() {
     this.dialog.open(LiveComponent, {
-      data: this.currentItem
+      data: this.currentItem,
+      disableClose: false
     })
   }
 
@@ -290,8 +299,10 @@ export class EventsComponent {
     });
   }
 
-  open800(){
-    this.dialog.open(Send800Component);
+  open800() {
+    this.dialog.open(Send800Component, {
+      data: this.currentItem
+    });
   }
 
   ngOnDestroy() {

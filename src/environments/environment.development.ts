@@ -21,7 +21,8 @@ export const environment = {
     download_url: `${dev_url}/common`,
     guard_monitoring_url:`${dev_url}/guard_monitoring`,
     monitoring_url:`${dev_url}/monitoring`,
-    events_url: 'https://stagingmq.ivisecurity.com',
+    // events_url: 'https://stagingmq.ivisecurity.com',
+            events_url: 'https://stagingmq.ivisecurity.com/queueManagement',
 
     firstAlert: {
         time1: 0.5,
