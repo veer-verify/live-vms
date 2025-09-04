@@ -298,8 +298,8 @@ export class DashboardComponent {
   }
 
   audioIndex: number = -1;
-  audio(data: any, index: any) {
-    this.audioIndex = index;
+  audio(data: any) {
+    this.audioIndex = this.getCurrentPageItems.indexOf(data);
     this.http
       .get(`${environment.site_url}/play_1_0/${data.cameraId}`)
       .subscribe({
@@ -517,6 +517,7 @@ export class DashboardComponent {
               this.event_service.write2Dispatch({
                 ...data,
                 queue_name: 'dispatch-2nd-level',
+                actionTag: 'suspicious',
                 userLevelAlarmInfo: [
                   {
                     level: 1,
@@ -526,6 +527,8 @@ export class DashboardComponent {
                 ]
               }).subscribe();
             }
+
+            // this.audio(data);
           } else {
             if (data.color == 'yellow' || (this.currentItem?.siteId === 36336 && data.color == 'green')) {
               if (

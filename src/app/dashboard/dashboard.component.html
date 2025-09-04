@@ -166,7 +166,7 @@
                   <button class="frame-icon" *ngIf="iframeIndex === c" matTooltip="Close" (click)="toggleMaximize(c)">
                     <img src="assets/icons/close.svg" alt="" width="18" />
                   </button>
-                  <button class="frame-icon" *ngIf="item.audioUrl" (click)="audio(item, c)" matTooltip="Siren" [disabled]="audioIndex === c">
+                  <button class="frame-icon" *ngIf="item.audioUrl" (click)="audio(item)" matTooltip="Siren" [disabled]="audioIndex === c">
                     <img [src]="audioIndex === c ? 'assets/icons/siren-red.png' : 'assets/icons/siren-new.png'" [ngClass]="audioIndex == c ? 'blink-animation' : ''" alt="" width="15" />
                   </button>
                   <button class="frame-icon" (click)="clearCams(item)" matTooltip="Close">

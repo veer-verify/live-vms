@@ -37,7 +37,7 @@ export class EventService {
       httpUrl: payload?.httpUrl,
       siteId: payload?.siteId,
       siteName: payload?.siteName,
-      actionTag: '',
+      actionTag: payload?.actionTag ?? '',
       actionTime: moment().tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS'),
       eventTag: '',
       userLevelAlarmInfo: payload?.userLevelAlarmInfo,
@@ -47,7 +47,8 @@ export class EventService {
   }
 
   updateEventFullDetails(payload: any) {
-    let url = `${environment.events_url}/updateEventFullDetails_1_0/`;
+    // let url = `${environment.events_url}/updateEventFullDetails_1_0/`;
+    let url = `http://192.168.0.232:8000/updateEventFullDetails_1_0`;
     let user = this.storageSer.getData('userData');
     let path = this.router.url.split('/').at(-1);
     let endTime = this.datePipe.transform(new Date(payload?.timestamp), 'yyyy-MM-dd hh:mm:ss:SSS');
@@ -70,13 +71,14 @@ export class EventService {
       emailTime: payload?.submitTime ?? '',
       httpUrl: payload?.httpUrl,
       videoFile: '',
-      createdTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'),
+      createdTime: moment().tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS'),
       createdBy: user?.UserId,
       remarks: '',
       landingTime: moment(payload?.landingTime).tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS'),
       eventType: 'Manual Wall',
       timezone: payload?.timezone,
-      subActionTag: ''
+      subActionTag: '',
+      userLevelAlarmInfo: payload?.userLevelAlarmInfo
     };
 
     return this.http.post(url, obj);

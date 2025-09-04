@@ -195,6 +195,7 @@ export class EventsComponent {
   }
 
   submitFalse() {
+    let user = this.storage_service.getData('userData');
     this.falseActivityTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
     // this.storage_service.show_loader = true;
     this.event_service.updateEventFullDetails({
@@ -202,7 +203,14 @@ export class EventsComponent {
       actionTag: this.actionTag ? this.actionTag : 'Fasle Activity',
       // eventStartTime: this.currentItem?.timestamp,
       objectName: this.object,
-      falseActivityTime: this.falseActivityTime
+      falseActivityTime: this.falseActivityTime,
+      userLevelAlarmInfo: [
+        {
+          level: this.path == 'events' ? 1 : 2,
+          user: user?.UserId,
+          alarm: 'N'
+        }
+      ]
     }).subscribe({
       next: () => {
         // this.storage_service.show_loader = false;
@@ -219,6 +227,7 @@ export class EventsComponent {
   }
 
   submit() {
+    let user = this.storage_service.getData('userData');
     this.submitTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
     this.event_service.updateEventFullDetails({
       ...this.currentItem,
@@ -227,6 +236,13 @@ export class EventsComponent {
       objectName: this.object,
       suspiciousTime: this.suspiciousTime,
       submitTime: this.submitTime,
+      userLevelAlarmInfo: [
+        {
+          level: this.path == 'events' ? 1 : 2,
+          user: user?.UserId,
+          alarm: 'N'
+        }
+      ]
     }).subscribe({
       next: () => {
         this.alert_service.snackSuccess('Alert sent successfully!');

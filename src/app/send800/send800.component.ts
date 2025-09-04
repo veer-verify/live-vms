@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 })
 export class Send800Component {
 
-  environment = environment.eventImageUrl;
+  env = environment;
 
 
   constructor(
@@ -24,6 +24,7 @@ export class Send800Component {
 
   ngOnInit(): void {
     // console.log(this.data);
+    this.getUrl()
   }
 
   openChat: boolean = false;
@@ -67,25 +68,26 @@ export class Send800Component {
   selectedfile: any;
   selected800File(event: any) {
     // this.selectedfile = event.target.files[0];
-    this.selectedfile = this.environment + this.data?.imageName
+    this.selectedfile = this.env + this.data?.imageName
   }
 
   async getUrl() {
-    // this.http.get(this.environment + this.data?.imageName, { responseType: 'blob' })
-    //   .pipe(
-    //     switchMap((blob: any) => this.convertBlobToBase64(blob))
-    //   )
-    //   .subscribe((base64ImageUrl: any) => {this.selectedfile = base64ImageUrl});
+    this.http.get(this.env.guard_monitoring_url + '/download_1_0/' + this.data?.imageName, { responseType: 'blob' })
+      // .pipe(
+      //   switchMap((blob: any) => this.convertBlobToBase64(blob))
+      // )
+      .subscribe((res: any) => {
+        console.log(res)
+        this.selectedfile = res
+      });
 
-      await fetch(this.environment + this.data?.imageName)
-      .then(response => response.arrayBuffer()) // Get the response as an ArrayBuffer
-      .then(arrayBuffer => {
-        // arrayBuffer now contains the raw binary data of the image
-        // You can then convert it to a Uint8Array or further process it
-        const binaryData = new Uint8Array(arrayBuffer);
-        console.log(binaryData);
-      })
-      .catch(error => console.error('Error fetching image:', error));
+      // await fetch(this.env.guard_monitoring_url + this.data?.imageName)
+      // .then(response => response.arrayBuffer())
+      // .then(arrayBuffer => {
+      //   const binaryData = new Uint8Array(arrayBuffer);
+      //   console.log(binaryData);
+      // })
+      // .catch(error => console.error('Error fetching image:', error));
   }
 
   convertBlobToBase64(blob: Blob) {

@@ -270,6 +270,7 @@ export class CameraService {
   }
 
   sendMessage800(payload:any, file?: File): Observable<any> {
+    console.log(file)
     try {
       // Validate inputs
       if (!payload.recipient ) {
@@ -282,25 +283,22 @@ export class CameraService {
       formData.append('message', payload.message);
       formData.append('company_id', this.COMPANY_ID);
 
-      // Handle file if provided
       if (file) {
         this.validateFile(file);
         formData.append('media[0]', file);
       }
 
-      // Get token from secure storage (environment variables or secure storage service)
       const token = this.getSecureToken();
-
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
       });
 
       return this.http.post(this.API_URL, formData, { 
         headers,
-        reportProgress: true, // Enable progress reporting
-        observe: 'events'     // Get upload progress events
+        reportProgress: true,
+        observe: 'events'
       }).pipe(
-        retry(3), // Retry failed requests up to 3 times
+        retry(3),
         catchError(this.handleError)
       );
     } catch (error) {
@@ -309,20 +307,14 @@ export class CameraService {
   }
 
   getRecievedMsg(){
-
     const token = this.getSecureToken();
-
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
-      
     });
-
     return this.http.get(this.receive_URL,{headers : headers});
-
   }
 
   private getSecureToken(): string {
-   
     const token = `${environment.API_TOKEN}`; 
     if (!token) {
       throw new Error('API token not configured');
