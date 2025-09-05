@@ -23,8 +23,9 @@ export class Send800Component {
   ) { }
 
   ngOnInit(): void {
-    // console.log(this.data);
-    this.getUrl()
+    console.log(this.data);
+    this.getUrl();
+    this.message = this.data?.emailBody
   }
 
   openChat: boolean = false;
@@ -52,18 +53,18 @@ export class Send800Component {
     this.hidden = true;
   }
 
-  @ViewChild('openmessage') openmessage: any = ElementRef;
+  // @ViewChild('openmessage') openmessage: any = ElementRef;
   sender: string = '+18444384847';
   recipient: string = '';
   message: string = '';
   // file: any;
-  openMessageDialog() {
-    this.recipient = '';
-    this.message = '';
-    this.progress = 0;
-    this.selectedfile = null;
-    this.matDialog.open(this.openmessage, { disableClose: true });
-  }
+  // openMessageDialog() {
+  //   this.recipient = '';
+  //   this.message = '';
+  //   this.progress = 0;
+  //   this.selectedfile = null;
+  //   this.matDialog.open(this.openmessage, { disableClose: true });
+  // }
 
   selectedfile: any;
   selected800File(event: any) {
@@ -77,7 +78,6 @@ export class Send800Component {
       //   switchMap((blob: any) => this.convertBlobToBase64(blob))
       // )
       .subscribe((res: any) => {
-        console.log(res)
         this.selectedfile = res
       });
 
