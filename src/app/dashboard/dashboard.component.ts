@@ -416,7 +416,10 @@ export class DashboardComponent {
       const y = event.clientY - rect.top;
 
       let timeAlert;
-      if (data.siteId == 36415) {
+      if(this.listType === 6) {
+        timeAlert = {time1: 160, time2: 180, time3: 210, time4: 240, time5: 270};
+      }
+      else if (data.siteId == 36415) {
         timeAlert = environment.kennedyAlert;
       }
       else if (data.siteId == 36444 || data?.siteId === 36446) {
@@ -504,9 +507,9 @@ export class DashboardComponent {
     });
   }
 
-  getScreenshot(data: any, file: any) {
+  postScreenshot(data: any, file: any) {
     let user = this.storageSer.getData('userData');
-    let time = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss')
+    let time = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss');
     data.time = time;
 
     this.camSer.screenshots(data, file).subscribe({
@@ -527,7 +530,6 @@ export class DashboardComponent {
                 ]
               }).subscribe();
             }
-
             // this.audio(data);
           } else {
             if (data.color == 'yellow' || (this.currentItem?.siteId === 36336 && data.color == 'green')) {
@@ -681,7 +683,7 @@ export class DashboardComponent {
       hour: hour,
       currentTime: this.cameraCurrentTime,
     };
-    this.getScreenshot(data.camera, data.image);
+    this.postScreenshot(data.camera, data.image);
   }
 
   addVehicleCount() {
@@ -722,8 +724,6 @@ export class DashboardComponent {
     let videoComponents = this.videos.toArray();
     if (videoComponents[index]) {
       videoComponents[index].capture(camera, color, imgElement, btnItem);
-    } else {
-      console.log('No Component Found!');
     }
   }
 

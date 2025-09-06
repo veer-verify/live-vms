@@ -13,6 +13,7 @@ import { MetadataService } from 'src/services/metadata.service';
 import { StorageService } from 'src/services/storage.service';
 import { LiveComponent } from 'src/utilities/live/live.component';
 import { Send800Component } from '../send800/send800.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-events',
@@ -29,6 +30,7 @@ export class EventsComponent {
     private alert_service: AlertService,
     private dialog: MatDialog,
     private router: Router,
+        private http: HttpClient,
   ) { }
 
   eventInterval: any;
@@ -37,24 +39,45 @@ export class EventsComponent {
   ngOnInit() {
     this.path = this.router.url.split('/').at(-1);
     this.listActionTags();
-    this.getDispatchData();
+    // this.getDispatchData();
 
-    this.eventInterval = setInterval(() => {
-      if (this.eventData.length < 6) {
-        this.event_service.getDispatchData().subscribe({
-          next: (res: any) => {
-            if (res.length !== 0) {
-              this.storage_service.status_text = '';
-              this.eventData.push(...res);
-              this.eventData.forEach((item: any) => item.landingTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'))
-            }
-          },
-        });
-      }
-    }, 2000);
+    // this.eventInterval = setInterval(() => {
+    //   if (this.eventData.length < 6) {
+    //     this.event_service.getDispatchData().subscribe({
+    //       next: (res: any) => {
+    //         if (res.length !== 0) {
+    //           this.storage_service.status_text = '';
+    //           this.eventData.push(...res);
+    //           this.eventData.forEach((item: any) => item.landingTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'))
+    //         }
+    //       },
+    //     });
+    //   }
+    // }, 2000);
   }
 
-  eventData: any = [];
+  eventData: any = [{
+    "siteId": 36428,
+    "siteName": "Albemarle Crossing",
+    "timezone": "America/Los_Angeles",
+    "httpUrl": "https://gisus7028live-repo.us2.pitunnel.com/GISUS7028C1",
+    "cameraId": "GISUS7028C1",
+    "color": "green",
+    "id": "bc63d4a2-f62d-4ad6-a9e9-f6ac494ec167",
+    "imageName": "GISUS7028C1_bc63d4a2-f62d-4ad6-a9e9-f6ac494ec167_2025-09-06_06-02-41_green.png",
+    "timestamp": "2025-09-06 06:02:41",
+    "userLevels": 0,
+    "actionTag": "suspicious",
+    "actionTime": "2025-09-06 06:02:46:022",
+    "eventTag": "",
+    "userLevelAlarmInfo": [
+        {
+            "level": 1,
+            "user": 1626,
+            "alarm": "N"
+        }
+    ]
+}];
   getDispatchData() {
     this.storage_service.status_text = 'loading...';
     this.event_service.getDispatchData().subscribe({
@@ -129,6 +152,30 @@ export class EventsComponent {
     if (this.eventData.length === 0) {
       this.storage_service.status_text = 'no events!';
     }
+  }
+
+  isPlaying: boolean = false;
+    audio() {
+      this.isPlaying = true;
+    this.http
+      .get(`${environment.site_url}/play_1_0/${this.currentItem.cameraId}`)
+      .subscribe({
+        next: (res: any) => {
+          this.isPlaying = false;
+          if (res.statusCode === 200) {
+            this.alert_service.snackSuccess(res.message);
+          } else {
+            this.alert_service.snackError(res.message);
+          }
+
+        },
+        error: (err) => {
+          this.isPlaying = false
+          this.alert_service.snackError('Siren not Played!');
+
+        }
+      }
+      );
   }
 
   emailData: any;

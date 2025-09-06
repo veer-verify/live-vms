@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
-/* @font-face {
+@font-face {
   font-family: SG;
   src: url(assets/font/SackersGothicStd-Light.otf) format("opentype");
 }
@@ -23,7 +23,8 @@
 @font-face {
   font-family: PS;
   src: url(assets/font/Poppins-SemiBold.ttf) format("truetype");
-} */
+}
+
 
 
 :root {
@@ -41,7 +42,8 @@
 }
 
 *:not(.material-icons) {
-  font-family: Roboto, sans-serif !important;
+  /* font-family: Roboto, sans-serif !important; */
+  font-family: 'PS', sans-serif !important;
 }
 
 html, body {

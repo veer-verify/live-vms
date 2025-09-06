@@ -47,8 +47,7 @@ export class EventService {
   }
 
   updateEventFullDetails(payload: any) {
-    // let url = `${environment.events_url}/updateEventFullDetails_1_0/`;
-    let url = `http://192.168.0.232:8000/updateEventFullDetails_1_0`;
+    let url = `${environment.events_url}/updateEventFullDetails_1_0/`;
     let user = this.storageSer.getData('userData');
     let path = this.router.url.split('/').at(-1);
     let endTime = this.datePipe.transform(new Date(payload?.timestamp), 'yyyy-MM-dd hh:mm:ss:SSS');

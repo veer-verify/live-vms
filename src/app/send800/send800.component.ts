@@ -4,7 +4,6 @@ import { CameraService } from 'src/services/camera.service';
 import { Observable, Subscription, fromEvent, switchMap, tap, } from 'rxjs';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { NgxImageCompressService } from 'ngx-image-compress';
 
 @Component({
   selector: 'app-send800',
@@ -21,7 +20,6 @@ export class Send800Component {
     private camSer: CameraService,
     private matDialog: MatDialog,
     private http: HttpClient,
-    private imageCompress: NgxImageCompressService
   ) { }
 
   ngOnInit(): void {

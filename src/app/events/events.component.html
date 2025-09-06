@@ -10,7 +10,8 @@
         <div class="card-content" (click)="displayCurrent(item)" #currentBtn>
           <div class="d-flex justify-content-between align-items-center">
             <p class="site">{{ item?.siteName }}</p>
-            <a class="close-event" (click)="closeEvent(item)" matTooltip="clear"><img src="assets/icons/close.svg" alt="" width="20px"></a>
+            <a class="close-event" (click)="closeEvent(item)" matTooltip="clear"><img src="assets/icons/close.svg"
+                alt="" width="20px"></a>
           </div>
           <p class="camera">{{ item?.cameraId }}</p>
           <p class="date">{{ item?.timestamp | date: 'mediumDate'}} {{ item?.timestamp | date: 'shortTime'}}</p>
@@ -22,18 +23,24 @@
       <div class="col-lg-10" style="height: calc(100vh - 90px); overflow-y: auto;">
         <div class="row">
           <div class="col-lg-8">
-            <img [src]="environment + currentItem?.imageName"
-              alt="LOADING..."
-              onerror="this.src='assets/images/IVISsecurity_logo.png'"
-              width="100%" height="500px"
-              class="bg-dark border rounded">
-            <!-- <img src="assets/images/cam.png" alt="LOADING..." width="100%" style="border-radius: 6px;"> -->
+
+            <div style="position: relative;">
+              <img [src]="environment + currentItem?.imageName" alt="LOADING..."
+                onerror="this.src='assets/images/IVISsecurity_logo.png'" width="100%" height="500px"
+                class="bg-dark border rounded">
+
+              <button style="position: absolute; top: 5px; right: 5px;" (click)="audio()" matTooltip="Siren">
+                <img [src]="isPlaying ? 'assets/icons/siren-red.png' : 'assets/icons/siren-new.png'"
+                  [ngClass]="isPlaying ? 'blink-animation' : ''" alt="" width="15" />
+              </button>
+            </div>
           </div>
 
           <div class="col-lg-4">
 
             <div class="mb-2 d-flex gap-2 justify-content-end">
-              <button type="button" class="btn btn-sm dialog-close-btn" [matMenuTriggerFor]="falseMenu" >False Activity</button>
+              <button type="button" class="btn btn-sm dialog-close-btn" [matMenuTriggerFor]="falseMenu">False
+                Activity</button>
               <mat-menu #falseMenu>
                 <button (click)="submitFalse()">submit</button>
               </mat-menu>
@@ -44,7 +51,8 @@
               <mat-form-field class="w-100" appearance="outline">
                 <mat-label>Action Tag</mat-label>
                 <mat-select [(ngModel)]="actionTag" (selectionChange)="getTime()">
-                  <mat-option *ngFor="let item of actionTags; let i=index" [value]="item.value">{{item.value}}</mat-option>
+                  <mat-option *ngFor="let item of actionTags; let i=index"
+                    [value]="item.value">{{item.value}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -60,7 +68,8 @@
               <mat-form-field class="w-100" appearance="outline">
                 <mat-label>Alert Type</mat-label>
                 <mat-select [(ngModel)]="alertType">
-                  <mat-option *ngFor="let item of alertTypes; let i=index" [value]="item.keyId">{{item.value}}</mat-option>
+                  <mat-option *ngFor="let item of alertTypes; let i=index"
+                    [value]="item.keyId">{{item.value}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -110,7 +119,8 @@
                 <button class="dialog-close-btn" (click)="cancelEvent()">Cancel</button>
                 <button type="button" class="btn btn-sm dialog-update-btn" (click)="open800()">800.com</button>
                 <button class="dialog-update-btn" (click)="submit()">Submit</button>
-                <button class="dialog-update-submit" (click)="submitAndSend()" title="Submit & Send to 3rd level" *ngIf="path === 'events'">Submit & Send</button>
+                <button class="dialog-update-submit" (click)="submitAndSend()" title="Submit & Send to 3rd level"
+                  *ngIf="path === 'events'">Submit & Send</button>
               </div>
             </div>
           </div>
