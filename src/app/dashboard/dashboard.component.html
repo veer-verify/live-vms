@@ -227,7 +227,7 @@
             </div>
 
             <ng-container>
-              <app-video-player [videoData]="item?.httpUrl + '/'" [camerasForPage]="camerasForPage"
+              <app-video-player [siteData]="currentSite" [videoData]="item?.httpUrl + '/'" [camerasForPage]="camerasForPage"
                 [isMaximized]="isMaximized" (screenshotEmitter)="getImageFromVideo($event)" #video></app-video-player>
             </ng-container>
             <!-- <ng-container *ngIf="item.indexNo != 1 && !item.videoUrl">

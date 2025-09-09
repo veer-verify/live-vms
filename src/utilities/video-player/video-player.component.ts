@@ -28,6 +28,7 @@ export class VideoPlayerComponent {
   @ViewChild('video') video!: ElementRef;
   @ViewChild('canvas') canvas!: ElementRef;
   @ViewChild('image') image!: ElementRef;
+  @Input() siteData: any;
 
   peerConnection!: RTCPeerConnection;
   restartTimeout: any = null;
@@ -48,8 +49,13 @@ export class VideoPlayerComponent {
   }
 
   ngAfterViewInit() {
+    if (this.siteData?.siteId === 36585 || this.siteData?.siteId === 36591) {
+      this.video.nativeElement.muted = false;
+    } else {
+      this.video.nativeElement.muted = true;
+    }
+
     this.video.nativeElement.controls = false;
-    this.video.nativeElement.muted = true;
     this.video.nativeElement.autoplay = true;
     this.video.nativeElement.playsInline = true;
   }
