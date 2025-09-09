@@ -152,12 +152,13 @@ p {
 .dialog-update-btn {
   background-color: #084982;
   color: #fff;
-  width: 70px;
+  /* width: 70px; */
   padding: 6px 0;
   border-radius: 5px;
   border-width: 0;
   font-size: 12px;
   margin: 0 10px 10px 0;
+  padding: 4px 8px;
 }
 .dialog-update-submit{
 

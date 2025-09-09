@@ -6,7 +6,6 @@
       <div class="card" *ngFor="let item of eventData; let i = index"
         [ngStyle]="{'border': eventIndex === i ? '2px solid #084982' : ''}">
 
-
         <div class="card-content" (click)="displayCurrent(item)" #currentBtn>
           <div class="d-flex justify-content-between align-items-center">
             <p class="site">{{ item?.siteName }}</p>
@@ -23,7 +22,6 @@
       <div class="col-lg-10" style="height: calc(100vh - 90px); overflow-y: auto;">
         <div class="row">
           <div class="col-lg-8">
-
             <div style="position: relative;">
               <img [src]="environment + currentItem?.imageName" alt="LOADING..."
                 onerror="this.src='assets/images/IVISsecurity_logo.png'" width="100%" height="500px"
@@ -37,51 +35,65 @@
           </div>
 
           <div class="col-lg-4">
-
             <div class="mb-2 d-flex gap-2 justify-content-end">
-              <button type="button" class="btn btn-sm dialog-close-btn" [matMenuTriggerFor]="falseMenu">False
-                Activity</button>
-              <mat-menu #falseMenu>
-                <button (click)="submitFalse()">submit</button>
+              <button type="button" class="btn btn-sm dialog-update-btn" [matMenuTriggerFor]="falseMenu"
+                (click)="getActionTagCategories({actionTagId: 2, userLevel: 1, label: 'suspicious'})">
+                Suspicious
+              </button>
+              <button type="button" class="btn btn-sm dialog-close-btn" [matMenuTriggerFor]="falseMenu"
+                (click)="getActionTagCategories({actionTagId: 1, userLevel: 1, label: 'false activity'})">
+                False Activity
+              </button>
+
+              <mat-menu #falseMenu xPosition="before">
+                <div class="row m-0" *ngIf="subActionTags">
+                  <button class="col-lg-4 action-btn" *ngFor="let btn of subActionTags"
+                    (click)="currentSubActionTag = btn; submitFalse()">{{btn?.subCategoryName}}</button>
+                </div>
+
+                <p *ngIf="subActionTags.length === 0" class="text-center p-5">Loading...</p>
               </mat-menu>
               <button type="button" class="btn btn-sm dialog-update-btn" (click)="openLiveDialog()">Live</button>
             </div>
 
-            <div class="w-100">
-              <mat-form-field class="w-100" appearance="outline">
-                <mat-label>Action Tag</mat-label>
-                <mat-select [(ngModel)]="actionTag" (selectionChange)="getTime()">
-                  <mat-option *ngFor="let item of actionTags; let i=index"
-                    [value]="item.value">{{item.value}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
+            <div class="p-2 border rounded">
+              <h4>Email Template</h4>
+              <div class="w-100">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Email Action Tag</mat-label>
+                  <mat-select [(ngModel)]="actionTag" (selectionChange)="getTime()">
+                    <mat-option *ngFor="let item of actionTags; let i=index"
+                      [value]="item.value">{{item.value}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
 
-            <div class="w-100">
-              <mat-radio-group [(ngModel)]="object">
-                <mat-radio-button value="person">Person</mat-radio-button>
-                <mat-radio-button value="vehicle">Vehicle</mat-radio-button>
-              </mat-radio-group>
-            </div>
+              <div class="w-100">
+                <mat-radio-group [(ngModel)]="object">
+                  <mat-radio-button value="person">Person</mat-radio-button>
+                  <mat-radio-button value="vehicle">Vehicle</mat-radio-button>
+                </mat-radio-group>
+              </div>
 
-            <div class="w-100">
-              <mat-form-field class="w-100" appearance="outline">
-                <mat-label>Alert Type</mat-label>
-                <mat-select [(ngModel)]="alertType">
-                  <mat-option *ngFor="let item of alertTypes; let i=index"
-                    [value]="item.keyId">{{item.value}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
+              <div class="w-100">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Alert Type</mat-label>
+                  <mat-select [(ngModel)]="alertType">
+                    <mat-option *ngFor="let item of alertTypes; let i=index"
+                      [value]="item.keyId">{{item.value}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
 
-            <div class="w-100">
-              <mat-form-field class="w-100" appearance="outline">
-                <mat-label>Alert Sub Type</mat-label>
-                <mat-select [(ngModel)]="alertSubType">
-                  <mat-option *ngFor="let item of alertSubTypes; let i=index" [value]="item.keyId"
-                    (click)="getEmailData()">{{item.value}}</mat-option>
-                </mat-select>
-              </mat-form-field>
+              <div class="w-100">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Alert Sub Type</mat-label>
+                  <mat-select [(ngModel)]="alertSubType">
+                    <mat-option *ngFor="let item of alertSubTypes; let i=index" [value]="item.keyId"
+                      (click)="getEmailData()">{{item.value}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
             </div>
           </div>
         </div>
@@ -125,7 +137,6 @@
             </div>
           </div>
         </ng-container>
-
       </div>
     </ng-container>
   </div>

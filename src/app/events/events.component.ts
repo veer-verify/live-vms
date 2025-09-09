@@ -30,7 +30,7 @@ export class EventsComponent {
     private alert_service: AlertService,
     private dialog: MatDialog,
     private router: Router,
-        private http: HttpClient,
+    private http: HttpClient,
   ) { }
 
   eventInterval: any;
@@ -71,13 +71,20 @@ export class EventsComponent {
     "actionTime": "2025-09-06 06:02:46:022",
     "eventTag": "",
     "userLevelAlarmInfo": [
-        {
-            "level": 1,
-            "user": 1626,
-            "alarm": "N"
-        }
+      {
+        "level": 1,
+        "user": 1626,
+        "alarm": "N",
+        "landingTime": "",
+        "reviewStart": "",
+        "reviewEnd": "",
+        "actionTag": "suspicious",
+        "subActionTag": "",
+        "notes": ""
+      }
     ]
-}];
+  }];
+
   getDispatchData() {
     this.storage_service.status_text = 'loading...';
     this.event_service.getDispatchData().subscribe({
@@ -109,6 +116,7 @@ export class EventsComponent {
   displayCurrent(data: any) {
     this.currentItem = null;
     this.resetVals();
+    data.reviewStart = moment().tz(data?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
     this.storage_service.status_text = 'loading...'
     setTimeout(() => {
       this.storage_service.status_text = ''
@@ -155,8 +163,8 @@ export class EventsComponent {
   }
 
   isPlaying: boolean = false;
-    audio() {
-      this.isPlaying = true;
+  audio() {
+    this.isPlaying = true;
     this.http
       .get(`${environment.site_url}/play_1_0/${this.currentItem.cameraId}`)
       .subscribe({
@@ -241,10 +249,56 @@ export class EventsComponent {
     });
   }
 
+  // getUserLevelInfo(): Array<any> {
+  //   let user = this.storage_service.getData('userData');
+  //   let level = this.path === 'events' ? 2 : 3;
+  //   return [
+  //     {
+  //       level: level,
+  //       user: user?.UserId,
+  //       alarm: 'N',
+  //       landingTime: this.currentItem?.landingTime ?? '',
+  //       reviewStart: this.currentItem?.reviewStart ?? '',
+  //       reviewEnd: this.currentItem?.reviewEnd ?? '',
+  //       actionTag: this.currentItem?.actionTag ?? '',
+  //       subActionTag: this.currentItem?.subActionTag ?? '',
+  //       notes: ''
+  //     }
+  //   ]
+  // }
+
   submitFalse() {
     let user = this.storage_service.getData('userData');
     this.falseActivityTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
     this.submitTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+
+    this.path === 'events' ?
+    this.currentItem?.userLevelAlarmInfo.push(
+      {
+        level: 2,
+        user: user?.UserId,
+        alarm: 'N',
+        landingTime: this.currentItem?.landingTime ?? '',
+        reviewStart: this.currentItem?.reviewStart ?? '',
+        reviewEnd: this.falseActivityTime ?? '',
+        actionTag: this.currentActionTag?.label ?? '',
+        subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+        notes: ''
+      }
+    ) :
+    this.currentItem?.userLevelAlarmInfo.push(
+      {
+        level: 3,
+        user: user?.UserId,
+        alarm: 'N',
+        landingTime: this.currentItem?.landingTime ?? '',
+        reviewStart: this.currentItem?.reviewStart ?? '',
+        reviewEnd: this.falseActivityTime ?? '',
+        actionTag: this.currentActionTag?.label ?? '',
+        subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+        notes: ''
+      }
+    );
     // this.storage_service.show_loader = true;
     this.event_service.updateEventFullDetails({
       ...this.currentItem,
@@ -253,38 +307,53 @@ export class EventsComponent {
       objectName: this.object,
       falseActivityTime: this.falseActivityTime,
       submitTime: this.submitTime,
-      userLevelAlarmInfo: [
-        {
-          level: this.path == 'events' ? 1 : 2,
-          user: user?.UserId,
-          alarm: 'N'
-        }
-      ]
-    }).subscribe({
-      next: () => {
-        // this.storage_service.show_loader = false;
-        this.alert_service.snackSuccess('Alert sent successfully!');
-        this.cancelEvent();
-      },
-      error: (err) => {
-        // this.storage_service.show_loader = false;
-        this.alert_service.snackError('failed!');
-        this.cancelEvent();
-
-      }
+      userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
     })
+      .subscribe({
+        next: () => {
+          // this.storage_service.show_loader = false;
+          this.alert_service.snackSuccess('Alert sent successfully!');
+          this.cancelEvent();
+        },
+        error: (err) => {
+          // this.storage_service.show_loader = false;
+          this.alert_service.snackError('failed!');
+          this.cancelEvent();
+
+        }
+      })
   }
 
   submit() {
     let user = this.storage_service.getData('userData');
     this.submitTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+    this.path === 'events' ?
     this.currentItem?.userLevelAlarmInfo.push(
       {
-        level: this.path == 'events' ? 2 : 3,
+        level: 2,
         user: user?.UserId,
-        alarm: 'N'
+        alarm: 'N',
+        landingTime: this.currentItem?.landingTime ?? '',
+        reviewStart: this.currentItem?.reviewStart ?? '',
+        reviewEnd: this.falseActivityTime ?? '',
+        actionTag: this.currentActionTag?.label ?? '',
+        subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+        notes: ''
       }
-    )
+    ) :
+    this.currentItem?.userLevelAlarmInfo.push(
+      {
+        level: 3,
+        user: user?.UserId,
+        alarm: 'N',
+        landingTime: this.currentItem?.landingTime ?? '',
+        reviewStart: this.currentItem?.reviewStart ?? '',
+        reviewEnd: this.falseActivityTime ?? '',
+        actionTag: this.currentActionTag?.label ?? '',
+        subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+        notes: ''
+      }
+    );
 
     this.event_service.updateEventFullDetails({
       ...this.currentItem,
@@ -294,16 +363,17 @@ export class EventsComponent {
       suspiciousTime: this.suspiciousTime,
       submitTime: this.submitTime,
       userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
-    }).subscribe({
-      next: () => {
-        this.alert_service.snackSuccess('Alert sent successfully!');
-        this.sendEmail();
-      },
-      error: (err) => {
-        this.cancelEvent();
-        this.alert_service.snackError('failed!');
-      }
     })
+      .subscribe({
+        next: () => {
+          this.alert_service.snackSuccess('Alert sent successfully!');
+          this.sendEmail();
+        },
+        error: (err) => {
+          this.cancelEvent();
+          this.alert_service.snackError('failed!');
+        }
+      })
   }
 
   getTime() {
@@ -312,24 +382,45 @@ export class EventsComponent {
 
   submitAndSend() {
     let user = this.storage_service.getData('userData');
+    this.path === 'events' ?
     this.currentItem?.userLevelAlarmInfo.push(
       {
         level: 2,
         user: user?.UserId,
-        alarm: 'N'
+        alarm: 'N',
+        landingTime: this.currentItem?.landingTime ?? '',
+        reviewStart: this.currentItem?.reviewStart ?? '',
+        reviewEnd: this.falseActivityTime ?? '',
+        actionTag: this.currentActionTag?.label ?? '',
+        subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+        notes: ''
       }
-    )
+    ) :
+    this.currentItem?.userLevelAlarmInfo.push(
+      {
+        level: 3,
+        user: user?.UserId,
+        alarm: 'N',
+        landingTime: this.currentItem?.landingTime ?? '',
+        reviewStart: this.currentItem?.reviewStart ?? '',
+        reviewEnd: this.falseActivityTime ?? '',
+        actionTag: this.currentActionTag?.label ?? '',
+        subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+        notes: ''
+      }
+    );
 
     this.currentItem.time = this.currentItem.timestamp;
     this.event_service.write2Dispatch({
       ...this.currentItem,
       queue_name: 'dispatch-3rd-level',
       userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
-    }).subscribe({
-      next: () => {
-        this.sendEmail();
-      }
-    });
+    })
+      .subscribe({
+        next: () => {
+          this.sendEmail();
+        }
+      });
   }
 
   openLiveDialog() {
@@ -364,6 +455,21 @@ export class EventsComponent {
         }
       });
     });
+  }
+
+  subActionTags: any = [];
+  currentActionTag: any;
+    currentSubActionTag: any;
+  getActionTagCategories(data: any) {
+    this.subActionTags = [];
+    this.currentActionTag = data;
+    this.event_service.getActionTagCategories(data).subscribe({
+      next: (res: any) => {
+        if(res.statusCode === 200) {
+          this.subActionTags = res.actionTagSubCategories;
+        }
+      }
+    })
   }
 
   open800() {
