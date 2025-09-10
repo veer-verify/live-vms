@@ -24,7 +24,7 @@ export class EventService {
     let params = new HttpParams().set('queue_name', path === 'events' ? 'dispatch-2nd-level' : 'dispatch-3rd-level');
     return this.http.get(url, { params: params })
   }
-  
+
   write2Dispatch(payload: any) {
     let url = `${environment.events_url}/write2Vms_DispatchQueue_1_0/`;
     let obj = {
@@ -103,5 +103,18 @@ export class EventService {
   //   }
   //   return this.http.post(url, myObj);
   // }
+
+  getActionTagCategories(payload: any) {
+    // let url = `${environment.events_url}/getActionTagCategories_1_0`;
+    let url = 'http://192.168.0.232:3000/getActionTagCategories_1_0';
+    let params = new HttpParams();
+    if (payload?.actionTagId) {
+      params = params.set('actionTagId', payload?.actionTagId)
+    }
+    if (payload?.userLevel) {
+      params = params.set('userLevel', payload?.userLevel)
+    }
+    return this.http.get(url, { params: params })
+  }
 
 }
