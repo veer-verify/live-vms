@@ -50,10 +50,21 @@ export class VideoPlayerComponent {
 
   ngAfterViewInit() {
     if (this.siteData?.siteId === 36585 || this.siteData?.siteId === 36591) {
-      this.video.nativeElement.muted = false;
+      // if (this.camSer.siren_sub.getValue()) {
+      //   this.video.nativeElement.muted = false;
+      // }
+
+      this.camSer.siren_sub.subscribe((res: any) => {
+        if (res) {
+          this.video.nativeElement.muted = false;
+      } else  {
+          this.video.nativeElement.muted = true;
+        }
+      })
     } else {
       this.video.nativeElement.muted = true;
     }
+
 
     this.video.nativeElement.controls = false;
     this.video.nativeElement.autoplay = true;
@@ -78,7 +89,7 @@ export class VideoPlayerComponent {
         });
         const direction = 'sendrecv';
         this.peerConnection.addTransceiver('video', { direction });
-        // this.peerConnection.addTransceiver('audio', { direction });
+        this.peerConnection.addTransceiver('audio', { direction });
         this.peerConnection.onicecandidate = (evt: RTCPeerConnectionIceEvent) => this.onLocalCandidate(evt);
         this.peerConnection.oniceconnectionstatechange = () => this.onConnectionState();
         this.peerConnection.ontrack = (evt: RTCTrackEvent) => this.onTrack(evt);

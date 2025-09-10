@@ -300,11 +300,15 @@ export class DashboardComponent {
   audioIndex: number = -1;
   audio(data: any) {
     this.audioIndex = this.getCurrentPageItems.indexOf(data);
-    this.http
-      .get(`${environment.site_url}/play_1_0/${data.cameraId}`)
+    this.camSer.siren_sub.next(true);
+
+    this.http.get(`${environment.site_url}/play_1_0/${data.cameraId}`)
       .subscribe({
         next: (res: any) => {
           this.audioIndex = -1;
+          setTimeout(() => {
+            this.camSer.siren_sub.next(false);
+          }, 120000);
           if (res.statusCode === 200) {
             this.alertSrvc.snackSuccess(res.message);
           } else {
@@ -313,6 +317,9 @@ export class DashboardComponent {
 
         },
         error: (err) => {
+          setTimeout(() => {
+            this.camSer.siren_sub.next(false);
+          }, 120000);
           this.audioIndex = -1;
           this.alertSrvc.snackError('Siren not Played!');
 
@@ -416,8 +423,8 @@ export class DashboardComponent {
       const y = event.clientY - rect.top;
 
       let timeAlert;
-      if(this.listType === 6) {
-        timeAlert = {time1: 160, time2: 180, time3: 210, time4: 240, time5: 270};
+      if (this.listType === 6) {
+        timeAlert = { time1: 160, time2: 180, time3: 210, time4: 240, time5: 270 };
       }
       else if (data.siteId == 36415) {
         timeAlert = environment.kennedyAlert;
