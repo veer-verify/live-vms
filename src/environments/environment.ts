@@ -19,11 +19,12 @@ export const environment = {
     site_url: `${prod_url}/vipsites`,
     common_url: `${prod_url}/metadata`,
     download_url: `${prod_url}/common`,
-    guard_monitoring_url:`${prod_url}/guard_monitoring`,
-    monitoring_url:`${prod_url}/monitoring`,
+    guard_monitoring_url: `${prod_url}/guard_monitoring`,
+    monitoring_url: `${prod_url}/monitoring`,
     // events_url: 'https://stagingmq.ivisecurity.com',
-        events_url: 'https://stagingmq.ivisecurity.com/queueManagement',
-    
+    events_url: `https://stagingmq.ivisecurity.com/queueManagement`,
+    event_tags_url: `${prod_url}/events_data`,
+
     firstAlert: {
         time1: 160,
         time2: 180,
@@ -31,7 +32,7 @@ export const environment = {
         time4: 240,
         time5: 270
     },
-    
+
     kennedyAlert: {
         time1: 135,
         time2: 150,
@@ -56,5 +57,5 @@ export const environment = {
         time5: 210
     },
 
-    API_TOKEN:'OjykxjAFrVn6KqBcppQI2ptAt4Dpf0RyWE0eUINs7WyqWXLrtUKr3iS1LPRem0TY0UtU43H3S4rtt300',
+    API_TOKEN: 'OjykxjAFrVn6KqBcppQI2ptAt4Dpf0RyWE0eUINs7WyqWXLrtUKr3iS1LPRem0TY0UtU43H3S4rtt300',
 };

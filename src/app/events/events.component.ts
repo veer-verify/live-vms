@@ -39,51 +39,25 @@ export class EventsComponent {
   ngOnInit() {
     this.path = this.router.url.split('/').at(-1);
     this.listActionTags();
-    // this.getDispatchData();
+    this.getDispatchData();
 
-    // this.eventInterval = setInterval(() => {
-    //   if (this.eventData.length < 6) {
-    //     this.event_service.getDispatchData().subscribe({
-    //       next: (res: any) => {
-    //         if (res.length !== 0) {
-    //           this.storage_service.status_text = '';
-    //           this.eventData.push(...res);
-    //           this.eventData.forEach((item: any) => item.landingTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'))
-    //         }
-    //       },
-    //     });
-    //   }
-    // }, 2000);
+    this.eventInterval = setInterval(() => {
+      if (this.eventData.length < 6) {
+        this.event_service.getDispatchData().subscribe({
+          next: (res: any) => {
+            if (res.length !== 0) {
+              this.storage_service.status_text = '';
+              res[0].landingTime = moment().tz(res[0].timezone)?.format('YYYY-MM-DD hh:mm:ss');
+              res[0].audio = false;
+              this.eventData.push(...res);
+            }
+          },
+        });
+      }
+    }, 2000);
   }
 
-  eventData: any = [{
-    "siteId": 36428,
-    "siteName": "Albemarle Crossing",
-    "timezone": "America/Los_Angeles",
-    "httpUrl": "https://gisus7028live-repo.us2.pitunnel.com/GISUS7028C1",
-    "cameraId": "GISUS7028C1",
-    "color": "green",
-    "id": "bc63d4a2-f62d-4ad6-a9e9-f6ac494ec167",
-    "imageName": "GISUS7028C1_bc63d4a2-f62d-4ad6-a9e9-f6ac494ec167_2025-09-06_06-02-41_green.png",
-    "timestamp": "2025-09-06 06:02:41",
-    "userLevels": 0,
-    "actionTag": "suspicious",
-    "actionTime": "2025-09-06 06:02:46:022",
-    "eventTag": "",
-    "userLevelAlarmInfo": [
-      {
-        "level": 1,
-        "user": 1626,
-        "alarm": "N",
-        "landingTime": "",
-        "reviewStart": "",
-        "reviewEnd": "",
-        "actionTag": "suspicious",
-        "subActionTag": "",
-        "notes": ""
-      }
-    ]
-  }];
+  eventData: any = [];
 
   getDispatchData() {
     this.storage_service.status_text = 'loading...';
@@ -91,8 +65,9 @@ export class EventsComponent {
       next: (res: any) => {
         if (res.length !== 0) {
           this.storage_service.status_text = '';
+          res[0].landingTime = moment().tz(res[0].timezone)?.format('YYYY-MM-DD hh:mm:ss');
+          res[0].audio = false;
           this.eventData.push(...res);
-          this.eventData.forEach((item: any) => item.landingTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'))
           this.displayCurrent(this.eventData[0]);
         } else {
           this.storage_service.status_text = 'no events!'
@@ -165,6 +140,7 @@ export class EventsComponent {
   isPlaying: boolean = false;
   audio() {
     this.isPlaying = true;
+    this.currentItem.audio = true;
     this.http
       .get(`${environment.site_url}/play_1_0/${this.currentItem.cameraId}`)
       .subscribe({
@@ -180,7 +156,6 @@ export class EventsComponent {
         error: (err) => {
           this.isPlaying = false
           this.alert_service.snackError('Siren not Played!');
-
         }
       }
       );
@@ -188,8 +163,8 @@ export class EventsComponent {
 
   emailData: any;
   getEmailData() {
-    let day = new Date().getDay();
-    let hour = new Date().getHours();
+    let day = moment.tz(this.currentItem?.timezone).day();
+    let hour = moment.tz(this.currentItem?.timezone).hours();
 
     this.emailObject = {
       siteId: this.currentItem?.siteId,
@@ -198,7 +173,7 @@ export class EventsComponent {
       camerasList: this.currentItem?.cameraId,
       day: this.storage_service.weekdays[day],
       hour: hour,
-      currentTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss'),
+      currentTime: moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss'),
     };
 
     if (this.alertSubType != undefined && this.alertType != undefined) {
@@ -273,36 +248,37 @@ export class EventsComponent {
     this.submitTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
 
     this.path === 'events' ?
-    this.currentItem?.userLevelAlarmInfo.push(
-      {
-        level: 2,
-        user: user?.UserId,
-        alarm: 'N',
-        landingTime: this.currentItem?.landingTime ?? '',
-        reviewStart: this.currentItem?.reviewStart ?? '',
-        reviewEnd: this.falseActivityTime ?? '',
-        actionTag: this.currentActionTag?.label ?? '',
-        subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
-        notes: ''
-      }
-    ) :
-    this.currentItem?.userLevelAlarmInfo.push(
-      {
-        level: 3,
-        user: user?.UserId,
-        alarm: 'N',
-        landingTime: this.currentItem?.landingTime ?? '',
-        reviewStart: this.currentItem?.reviewStart ?? '',
-        reviewEnd: this.falseActivityTime ?? '',
-        actionTag: this.currentActionTag?.label ?? '',
-        subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
-        notes: ''
-      }
-    );
+      this.currentItem?.userLevelAlarmInfo.push(
+        {
+          level: 2,
+          user: user?.UserId,
+          alarm: this.currentItem?.audio ? 'P' : 'N',
+          landingTime: this.currentItem?.landingTime ?? '',
+          reviewStart: this.currentItem?.reviewStart ?? '',
+          reviewEnd: this.falseActivityTime ?? '',
+          actionTag: this.currentActionTag?.label ?? '',
+          subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+          notes: ''
+        }
+      ) :
+      this.currentItem?.userLevelAlarmInfo.push(
+        {
+          level: 3,
+          user: user?.UserId,
+          alarm: this.currentItem?.audio ? 'P' : 'N',
+          landingTime: this.currentItem?.landingTime ?? '',
+          reviewStart: this.currentItem?.reviewStart ?? '',
+          reviewEnd: this.falseActivityTime ?? '',
+          actionTag: this.currentActionTag?.label ?? '',
+          subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+          notes: ''
+        }
+      );
     // this.storage_service.show_loader = true;
     this.event_service.updateEventFullDetails({
       ...this.currentItem,
-      actionTag: this.actionTag ? this.actionTag : 'Fasle Activity',
+      actionTag: this.currentActionTag?.label ?? '',
+            subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
       // eventStartTime: this.currentItem?.timestamp,
       objectName: this.object,
       falseActivityTime: this.falseActivityTime,
@@ -328,36 +304,37 @@ export class EventsComponent {
     let user = this.storage_service.getData('userData');
     this.submitTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
     this.path === 'events' ?
-    this.currentItem?.userLevelAlarmInfo.push(
-      {
-        level: 2,
-        user: user?.UserId,
-        alarm: 'N',
-        landingTime: this.currentItem?.landingTime ?? '',
-        reviewStart: this.currentItem?.reviewStart ?? '',
-        reviewEnd: this.falseActivityTime ?? '',
-        actionTag: this.currentActionTag?.label ?? '',
-        subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
-        notes: ''
-      }
-    ) :
-    this.currentItem?.userLevelAlarmInfo.push(
-      {
-        level: 3,
-        user: user?.UserId,
-        alarm: 'N',
-        landingTime: this.currentItem?.landingTime ?? '',
-        reviewStart: this.currentItem?.reviewStart ?? '',
-        reviewEnd: this.falseActivityTime ?? '',
-        actionTag: this.currentActionTag?.label ?? '',
-        subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
-        notes: ''
-      }
-    );
+      this.currentItem?.userLevelAlarmInfo.push(
+        {
+          level: 2,
+          user: user?.UserId,
+          alarm: this.currentItem?.audio ? 'P' : 'N',
+          landingTime: this.currentItem?.landingTime ?? '',
+          reviewStart: this.currentItem?.reviewStart ?? '',
+          reviewEnd: this.falseActivityTime ?? '',
+          actionTag: this.currentActionTag?.label ?? '',
+          subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+          notes: ''
+        }
+      ) :
+      this.currentItem?.userLevelAlarmInfo.push(
+        {
+          level: 3,
+          user: user?.UserId,
+          alarm: this.currentItem?.audio ? 'P' : 'N',
+          landingTime: this.currentItem?.landingTime ?? '',
+          reviewStart: this.currentItem?.reviewStart ?? '',
+          reviewEnd: this.falseActivityTime ?? '',
+          actionTag: this.currentActionTag?.label ?? '',
+          subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+          notes: ''
+        }
+      );
 
     this.event_service.updateEventFullDetails({
       ...this.currentItem,
-      actionTag: this.actionTag ? this.actionTag : 'Fasle Activity',
+      actionTag: this.currentActionTag?.label ?? '',
+      subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
       // eventStartTime: this.currentItem?.timestamp,
       objectName: this.object,
       suspiciousTime: this.suspiciousTime,
@@ -383,32 +360,32 @@ export class EventsComponent {
   submitAndSend() {
     let user = this.storage_service.getData('userData');
     this.path === 'events' ?
-    this.currentItem?.userLevelAlarmInfo.push(
-      {
-        level: 2,
-        user: user?.UserId,
-        alarm: 'N',
-        landingTime: this.currentItem?.landingTime ?? '',
-        reviewStart: this.currentItem?.reviewStart ?? '',
-        reviewEnd: this.falseActivityTime ?? '',
-        actionTag: this.currentActionTag?.label ?? '',
-        subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
-        notes: ''
-      }
-    ) :
-    this.currentItem?.userLevelAlarmInfo.push(
-      {
-        level: 3,
-        user: user?.UserId,
-        alarm: 'N',
-        landingTime: this.currentItem?.landingTime ?? '',
-        reviewStart: this.currentItem?.reviewStart ?? '',
-        reviewEnd: this.falseActivityTime ?? '',
-        actionTag: this.currentActionTag?.label ?? '',
-        subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
-        notes: ''
-      }
-    );
+      this.currentItem?.userLevelAlarmInfo.push(
+        {
+          level: 2,
+          user: user?.UserId,
+          alarm: 'N',
+          landingTime: this.currentItem?.landingTime ?? '',
+          reviewStart: this.currentItem?.reviewStart ?? '',
+          reviewEnd: this.falseActivityTime ?? '',
+          actionTag: this.currentActionTag?.label ?? '',
+          subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+          notes: ''
+        }
+      ) :
+      this.currentItem?.userLevelAlarmInfo.push(
+        {
+          level: 3,
+          user: user?.UserId,
+          alarm: 'N',
+          landingTime: this.currentItem?.landingTime ?? '',
+          reviewStart: this.currentItem?.reviewStart ?? '',
+          reviewEnd: this.falseActivityTime ?? '',
+          actionTag: this.currentActionTag?.label ?? '',
+          subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+          notes: ''
+        }
+      );
 
     this.currentItem.time = this.currentItem.timestamp;
     this.event_service.write2Dispatch({
@@ -459,13 +436,13 @@ export class EventsComponent {
 
   subActionTags: any = [];
   currentActionTag: any;
-    currentSubActionTag: any;
+  currentSubActionTag: any;
   getActionTagCategories(data: any) {
     this.subActionTags = [];
     this.currentActionTag = data;
     this.event_service.getActionTagCategories(data).subscribe({
       next: (res: any) => {
-        if(res.statusCode === 200) {
+        if (res.statusCode === 200) {
           this.subActionTags = res.actionTagSubCategories;
         }
       }

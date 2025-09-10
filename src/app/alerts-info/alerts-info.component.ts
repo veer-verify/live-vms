@@ -50,6 +50,12 @@ constructor(
     return `${hours} hours, ${minutes} min`;
   }
 
+  isVid(data: string) {
+    if(!data) return;
+    let arr = ['mp4', 'avi'];
+    return arr.includes(data?.split('.')[data.split('.').length - 1])
+  }
+
   siteIdToNav: Array<any> = new Array();
   errInfo: any;
   getSitesListForUserName() {

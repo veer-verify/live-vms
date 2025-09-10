@@ -76,7 +76,7 @@ export class EventService {
       landingTime: moment(payload?.landingTime).tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS'),
       eventType: 'Manual Wall',
       timezone: payload?.timezone,
-      subActionTag: '',
+      subActionTag: payload?.subActionTag,
       userLevelAlarmInfo: payload?.userLevelAlarmInfo
     };
 
@@ -105,8 +105,7 @@ export class EventService {
   // }
 
   getActionTagCategories(payload: any) {
-    // let url = `${environment.events_url}/getActionTagCategories_1_0`;
-    let url = 'http://192.168.0.232:3000/getActionTagCategories_1_0';
+    let url = `${environment.event_tags_url}/getActionTagCategories_1_0`;
     let params = new HttpParams();
     if (payload?.actionTagId) {
       params = params.set('actionTagId', payload?.actionTagId)

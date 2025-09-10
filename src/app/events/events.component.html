@@ -35,7 +35,7 @@
           </div>
 
           <div class="col-lg-4">
-            <div class="mb-2 d-flex gap-2 justify-content-end">
+            <div class="mb-2 d-flex gap-2 justify-content-end menu">
               <button type="button" class="btn btn-sm dialog-update-btn" [matMenuTriggerFor]="falseMenu"
                 (click)="getActionTagCategories({actionTagId: 2, userLevel: 1, label: 'suspicious'})">
                 Suspicious
@@ -47,7 +47,7 @@
 
               <mat-menu #falseMenu xPosition="before">
                 <div class="row m-0" *ngIf="subActionTags">
-                  <button class="col-lg-4 action-btn" *ngFor="let btn of subActionTags"
+                  <button class="col-lg-12 action-btn" *ngFor="let btn of subActionTags"
                     (click)="currentSubActionTag = btn; submitFalse()">{{btn?.subCategoryName}}</button>
                 </div>
 
@@ -63,7 +63,7 @@
                   <mat-label>Email Action Tag</mat-label>
                   <mat-select [(ngModel)]="actionTag" (selectionChange)="getTime()">
                     <mat-option *ngFor="let item of actionTags; let i=index"
-                      [value]="item.value">{{item.value}}</mat-option>
+                      [value]="item.value" (click)="currentActionTag = { label: item.value }">{{item.value}}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -80,7 +80,7 @@
                   <mat-label>Alert Type</mat-label>
                   <mat-select [(ngModel)]="alertType">
                     <mat-option *ngFor="let item of alertTypes; let i=index"
-                      [value]="item.keyId">{{item.value}}</mat-option>
+                      [value]="item.keyId" (click)="currentSubActionTag = { subCategoryName: item.value }">{{item.value}}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>

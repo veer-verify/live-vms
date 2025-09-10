@@ -305,10 +305,10 @@ export class DashboardComponent {
     this.http.get(`${environment.site_url}/play_1_0/${data.cameraId}`)
       .subscribe({
         next: (res: any) => {
-          this.audioIndex = -1;
           setTimeout(() => {
             this.camSer.siren_sub.next(false);
           }, 120000);
+          this.audioIndex = -1;
           if (res.statusCode === 200) {
             this.alertSrvc.snackSuccess(res.message);
           } else {

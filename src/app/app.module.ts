@@ -1,14 +1,11 @@
-import { TableComponent } from '../utilities/table/table.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-
 import { HeaderComponent } from './header/header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoaderComponent } from 'src/utilities/loader/loader.component';
@@ -23,7 +20,6 @@ import { IncidentComponent } from './incident/incident.component';
 import { SearchPipe } from 'src/utilities/pipes/search.pipe';
 import { OrderByPipe } from 'src/utilities/pipes/order-by.pipe';
 import { DeviceStatusComponent } from './device-status/device-status.component';
-import { MatBadgeModule } from '@angular/material/badge';
 import { SidepanelComponent } from './sidepanel/sidepanel.component';
 import { CamerasComponent } from './cameras/cameras.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
@@ -32,7 +28,6 @@ import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import { ActiontagComponent } from './actiontag/actiontag.component';
 import { ActionViewComponent } from './action-view/action-view.component';
 import { NgxEchartsModule } from 'ngx-echarts';
-import { MatSliderModule } from '@angular/material/slider';
 import { DayRangeSliderComponent } from './day-range-slider/day-range-slider.component';
 import { TokenInterceptor } from 'src/utilities/interceptor/token.interceptor';
 import { ImagePipe } from 'src/utilities/pipes/image.pipe';
@@ -45,6 +40,7 @@ import { EventsComponent } from './events/events.component';
 import { LiveComponent } from 'src/utilities/live/live.component';
 import { StatusComponent } from 'src/utilities/status/status.component';
 import { Send800Component } from './send800/send800.component';
+import { TableComponent } from '../utilities/table/table.component';
 
 
 @NgModule({
@@ -89,8 +85,6 @@ import { Send800Component } from './send800/send800.component';
     ReactiveFormsModule,
     HttpClientModule,
     MaterialModule,
-    MatBadgeModule,
-    MatSliderModule,
     CommonModule,
     NgxMatTimepickerModule,
     NgxEchartsModule.forRoot({
