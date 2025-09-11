@@ -384,7 +384,7 @@ export class DashboardComponent {
   }
 
   /** drag and drop cameras */
-
+  
   actionTags: any = [];
   alertTypes: any = [];
   alertSubTypes: any = [];
@@ -455,17 +455,6 @@ export class DashboardComponent {
         height: `${this.listType === 1 ? 8 : this.listType === 2 ? 12 : 15}`,
       });
 
-      // let hourVal = formatDate(this.displayTime, 'HH:MM:SS', 'en-us').split(':')[0];
-      // this.analyticsObj = {
-      //   siteId: data?.siteId,
-      //   cameraId: data?.cameraId,
-      //   cameraTime: moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss'),
-      //   hour: parseInt(hourVal),
-      //   no_of_objects: 1,
-      //   createdBy: null
-      // }
-      // this.addVehicleCount();
-
       this.currentTime = new Date();
       this.btnInterval = setInterval(() => {
         this.currentTime = new Date();
@@ -486,7 +475,6 @@ export class DashboardComponent {
     // }
     for (let i = 0; i < x.length; i++) {
       this.selectedFiles.push(x[i]);
-      // this.emailBody.mannualEmailBody.push(item);
     }
   }
 
@@ -705,13 +693,6 @@ export class DashboardComponent {
 
   closeEvent(data: any, btnIndex: any) {
     if (this.listType === 0) {
-      // let hourVal = formatDate(data.buttons[btnIndex].dspTime, 'H:MM:SS', 'en-us').split(':')[0];
-      // this.analyticsObj.cameraId = data.cameraId;
-      // this.analyticsObj.cameraTime = formatDate(data.buttons[btnIndex].dspTime, 'yyyy-MM-dd HH:MM:SS', 'en-us'),
-      // this.analyticsObj.cameraTime = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss'),
-      // this.analyticsObj.hour = Number(hourVal),
-      // this.analyticsObj.no_of_objects = -1;
-      // this.addVehicleCount();
       data.buttons.splice(btnIndex, 1);
     }
   }

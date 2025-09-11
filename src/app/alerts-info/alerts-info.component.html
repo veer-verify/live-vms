@@ -1,7 +1,7 @@
 <!-- <app-loader *ngIf="showLoader"></app-loader> -->
 
 <div>
-    <p class="title mb-2" style="font-size: 18px; color: #3d3934; font-weight: 700;">ALERTS DASHBOARD</p>
+    <p class="title mb-2" style="font-size: 22px; color: #3d3934; font-weight: 700;">ALERTS DASHBOARD</p>
 
     <div *ngIf="siteIdToNav.length !== 0">
         <div class="d-lg-flex justify-content-between align-items-center d-none">
@@ -35,7 +35,6 @@
                 </div>
 
                 <div class="col-lg-3">
-
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Enter a date range</mat-label>
                         <mat-date-range-input [rangePicker]="rangePicker">
@@ -52,6 +51,10 @@
                             </mat-date-range-picker-actions>
                         </mat-date-range-picker>
                     </mat-form-field>
+                </div>
+
+                <div class="col-lg-2">
+                    <app-pagination [totalPages]="totalPages" (emitPage)="getPaginatedData($event)"></app-pagination>
                 </div>
 
                 <!-- <div class="col-lg-2">
@@ -99,18 +102,6 @@
                             {{ item?.actionTag | titlecase }}
                         </td>
                         <td class="text-center">
-                            <!-- <span class="pointer" *ngIf="
-                item.videoFile.split('.')[item.videoFile.split('.').length - 1] === 'JPG' ||
-                item.videoFile.split('.')[item.videoFile.split('.').length - 1] === 'png' ||
-                item.videoFile.split('.')[item.videoFile.split('.').length - 1] === 'jpg' ||
-                item.videoFile.split('.')[item.videoFile.split('.').length - 1] === 'jpeg'"
-                (click)="getImageDataforMode(item)"><img src="assets/icons/image_black.svg" alt="" width="20">
-              </span>
-              <span class="pointer" *ngIf="
-                item.videoFile.split('.')[item.videoFile.split('.').length - 1] === 'mp4' ||
-                item.videoFile.split('.')[item.videoFile.split('.').length - 1] === '3gp'"
-                (click)="getImageDataforMode(item)"><img src="assets/icons/play_circle.svg" alt="" width="20">
-              </span> -->
                             <p class="text-primary pointer" (click)="openGalleryDialog(item)">View</p>
                         </td>
                         <!-- <td>
@@ -134,45 +125,11 @@
                 class="d-flex justify-content-center align-items-center bg-white w-100" style="height: 50vh;">
                 <p style="font-size: 30px;">{{ 'NO DATA!' }}</p>
             </div>
-            <!-- <div *ngIf="showLoader1" class="d-flex justify-content-center align-items-center bg-white" style="height: 50vh;">
-        <img src="assets/gif/table-loader.webp" alt="" width="75px" height="75px">
-      </div> -->
-        </div>
-
-        <div class="pagi d-flex align-content-center mx-2" *ngIf="eventData.length !== 0">
-            <!-- <div>
-        <ul class="pagination">
-          <li class="page-item" [class.disabled]="currentPage === 1">
-            <a class="page-link" (click)="setPage(currentPage - 1)">Previous</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link">{{ currentPage }} of {{ totalPages }}</a>
-          </li>
-          <li class="page-item" [class.disabled]="currentPage === totalPages">
-            <a class="page-link" (click)="setPage(currentPage + 1)">Next</a>
-          </li>
-        </ul>
-      </div> -->
-
-            <div>
-                <ul class="pagination">
-                    <a class="page-item" [class.disabled]="currentPage === 1 || currentPage === 0">
-                        <span class="page-link" (click)="filter('prev')">Previous</span>
-                    </a>
-                    <a class="page-item">
-                        <span class="page-link">{{ currentPage }} of {{ totalPages }}</span>
-                    </a>
-                    <a class="page-item" [class.disabled]="currentPage === totalPages">
-                        <span class="page-link" (click)="filter('next')">Next</span>
-                    </a>
-                </ul>
-            </div>
-
-            <div class="d-flex">
-                <input type="number" placeholder="Enter page number" class="form-control mx-2" style="height: 35px;"
-                    #goTo>
-                <button class="btn btn-primary" style="height: 35px;" (click)="filter(goTo.value)">Go</button>
-            </div>
+            
+            <!-- <div *ngIf="showLoader1" class="d-flex justify-content-center align-items-center bg-white"
+                style="height: 50vh;">
+                <img src="assets/gif/table-loader.webp" alt="" width="75px" height="75px">
+            </div> -->
         </div>
     </div>
 </div>

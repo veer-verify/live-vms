@@ -74,7 +74,6 @@ export class LoginComponent {
   getMetadata() {
     this.metadata_service.getMetadata().subscribe({
       next: (res: any) => {
-        console.log(res);
         this.storageSer.metadat_sub = res
       }
     })

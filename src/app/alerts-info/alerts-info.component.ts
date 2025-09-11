@@ -166,6 +166,11 @@ constructor(
     });
   }
 
+  getPaginatedData(data: number) {
+    this.currentPage = data + 1;
+    this.filter();
+  }
+
   selectedFile: any;
   public onFileSelected(event: any): void {
     let file = event.target.files;

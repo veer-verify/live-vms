@@ -50,7 +50,8 @@ export class EventService {
     let url = `${environment.events_url}/updateEventFullDetails_1_0/`;
     let user = this.storageSer.getData('userData');
     let path = this.router.url.split('/').at(-1);
-    let endTime = this.datePipe.transform(new Date(payload?.timestamp), 'yyyy-MM-dd hh:mm:ss:SSS');
+    let eventStart = this.datePipe.transform(new Date(payload?.timestamp), 'yyyy-MM-dd hh:mm:ss:SSS');
+    let currentTime = moment().tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
 
     let obj = {
       siteName: payload?.siteName,
@@ -65,15 +66,15 @@ export class EventService {
       suspiciousTime: payload?.suspiciousTime ?? '',
       callResponseTime: '',
       callNoResponseTime: '',
-      eventStartTime: endTime,
-      eventEndtime: payload?.submitTime ?? '',
-      emailTime: payload?.submitTime ?? '',
+      eventStartTime: eventStart,
+      eventEndtime: currentTime,
+      emailTime: currentTime,
       httpUrl: payload?.httpUrl,
       videoFile: '',
-      createdTime: moment().tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS'),
+      createdTime: currentTime,
       createdBy: user?.UserId,
       remarks: '',
-      landingTime: moment(payload?.landingTime).tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS'),
+      landingTime: payload?.landingTime,
       eventType: 'Manual Wall',
       timezone: payload?.timezone,
       subActionTag: payload?.subActionTag,
@@ -104,15 +105,17 @@ export class EventService {
   //   return this.http.post(url, myObj);
   // }
 
-  getActionTagCategories(payload: any) {
-    let url = `${environment.event_tags_url}/getActionTagCategories_1_0`;
+  getActionTagCategories(payload?: any) {
+    // let url = `${environment.event_tags_url}/event_tags_url`;
+    let url = 'http://192.168.0.232:3000/getActionTagCategories_1_0';
+    let path = this.router.url.split('/').at(-1);
     let params = new HttpParams();
     if (payload?.actionTagId) {
       params = params.set('actionTagId', payload?.actionTagId)
     }
-    if (payload?.userLevel) {
-      params = params.set('userLevel', payload?.userLevel)
-    }
+    // if (payload?.userLevel) {
+      params = params.set('userLevel',  path === 'events' ? 2 : 3,)
+    // }
     return this.http.get(url, { params: params })
   }
 

@@ -55,9 +55,13 @@ export class EventsComponent {
         });
       }
     }, 2000);
+
+    this.getActionTagCategories();
   }
 
-  eventData: any = [];
+  eventData: any = [
+
+  ];
 
   getDispatchData() {
     this.storage_service.status_text = 'loading...';
@@ -193,9 +197,6 @@ export class EventsComponent {
     }
   }
 
-  falseActivityTime: any;
-  submitTime: any;
-  suspiciousTime: any;
   sendEmail() {
     let dateObj = {
       eventFromTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'),
@@ -224,28 +225,9 @@ export class EventsComponent {
     });
   }
 
-  // getUserLevelInfo(): Array<any> {
-  //   let user = this.storage_service.getData('userData');
-  //   let level = this.path === 'events' ? 2 : 3;
-  //   return [
-  //     {
-  //       level: level,
-  //       user: user?.UserId,
-  //       alarm: 'N',
-  //       landingTime: this.currentItem?.landingTime ?? '',
-  //       reviewStart: this.currentItem?.reviewStart ?? '',
-  //       reviewEnd: this.currentItem?.reviewEnd ?? '',
-  //       actionTag: this.currentItem?.actionTag ?? '',
-  //       subActionTag: this.currentItem?.subActionTag ?? '',
-  //       notes: ''
-  //     }
-  //   ]
-  // }
-
   submitFalse() {
     let user = this.storage_service.getData('userData');
-    this.falseActivityTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
-    this.submitTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+    let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
 
     this.path === 'events' ?
       this.currentItem?.userLevelAlarmInfo.push(
@@ -255,8 +237,8 @@ export class EventsComponent {
           alarm: this.currentItem?.audio ? 'P' : 'N',
           landingTime: this.currentItem?.landingTime ?? '',
           reviewStart: this.currentItem?.reviewStart ?? '',
-          reviewEnd: this.falseActivityTime ?? '',
-          actionTag: this.currentActionTag?.label ?? '',
+          reviewEnd: endTime ?? '',
+          actionTag: this.currentActionTag?.categoryName ?? '',
           subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
           notes: ''
         }
@@ -268,8 +250,8 @@ export class EventsComponent {
           alarm: this.currentItem?.audio ? 'P' : 'N',
           landingTime: this.currentItem?.landingTime ?? '',
           reviewStart: this.currentItem?.reviewStart ?? '',
-          reviewEnd: this.falseActivityTime ?? '',
-          actionTag: this.currentActionTag?.label ?? '',
+          reviewEnd: endTime ?? '',
+          actionTag: this.currentActionTag?.categoryName ?? '',
           subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
           notes: ''
         }
@@ -277,12 +259,10 @@ export class EventsComponent {
     // this.storage_service.show_loader = true;
     this.event_service.updateEventFullDetails({
       ...this.currentItem,
-      actionTag: this.currentActionTag?.label ?? '',
-            subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
-      // eventStartTime: this.currentItem?.timestamp,
+      actionTag: this.currentActionTag?.categoryName ?? '',
+      subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
       objectName: this.object,
-      falseActivityTime: this.falseActivityTime,
-      submitTime: this.submitTime,
+      falseActivityTime: this.actionTagTime,
       userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
     })
       .subscribe({
@@ -302,7 +282,8 @@ export class EventsComponent {
 
   submit() {
     let user = this.storage_service.getData('userData');
-    this.submitTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+    let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+
     this.path === 'events' ?
       this.currentItem?.userLevelAlarmInfo.push(
         {
@@ -311,8 +292,8 @@ export class EventsComponent {
           alarm: this.currentItem?.audio ? 'P' : 'N',
           landingTime: this.currentItem?.landingTime ?? '',
           reviewStart: this.currentItem?.reviewStart ?? '',
-          reviewEnd: this.falseActivityTime ?? '',
-          actionTag: this.currentActionTag?.label ?? '',
+          reviewEnd: endTime ?? '',
+          actionTag: this.currentActionTag?.categoryName ?? '',
           subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
           notes: ''
         }
@@ -324,8 +305,8 @@ export class EventsComponent {
           alarm: this.currentItem?.audio ? 'P' : 'N',
           landingTime: this.currentItem?.landingTime ?? '',
           reviewStart: this.currentItem?.reviewStart ?? '',
-          reviewEnd: this.falseActivityTime ?? '',
-          actionTag: this.currentActionTag?.label ?? '',
+          reviewEnd: endTime ?? '',
+          actionTag: this.currentActionTag?.categoryName ?? '',
           subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
           notes: ''
         }
@@ -333,12 +314,9 @@ export class EventsComponent {
 
     this.event_service.updateEventFullDetails({
       ...this.currentItem,
-      actionTag: this.currentActionTag?.label ?? '',
+      actionTag: this.currentActionTag?.categoryName ?? '',
       subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
-      // eventStartTime: this.currentItem?.timestamp,
       objectName: this.object,
-      suspiciousTime: this.suspiciousTime,
-      submitTime: this.submitTime,
       userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
     })
       .subscribe({
@@ -353,12 +331,15 @@ export class EventsComponent {
       })
   }
 
+  actionTagTime: any;
   getTime() {
-    this.suspiciousTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+    this.actionTagTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
   }
 
   submitAndSend() {
     let user = this.storage_service.getData('userData');
+    let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+
     this.path === 'events' ?
       this.currentItem?.userLevelAlarmInfo.push(
         {
@@ -367,8 +348,8 @@ export class EventsComponent {
           alarm: 'N',
           landingTime: this.currentItem?.landingTime ?? '',
           reviewStart: this.currentItem?.reviewStart ?? '',
-          reviewEnd: this.falseActivityTime ?? '',
-          actionTag: this.currentActionTag?.label ?? '',
+          reviewEnd: endTime ?? '',
+          actionTag: this.currentActionTag?.categoryName ?? '',
           subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
           notes: ''
         }
@@ -380,8 +361,8 @@ export class EventsComponent {
           alarm: 'N',
           landingTime: this.currentItem?.landingTime ?? '',
           reviewStart: this.currentItem?.reviewStart ?? '',
-          reviewEnd: this.falseActivityTime ?? '',
-          actionTag: this.currentActionTag?.label ?? '',
+          reviewEnd: endTime ?? '',
+          actionTag: this.currentActionTag?.categoryName ?? '',
           subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
           notes: ''
         }
@@ -434,19 +415,25 @@ export class EventsComponent {
     });
   }
 
+  actionTagsNew: any = [];
   subActionTags: any = [];
   currentActionTag: any;
   currentSubActionTag: any;
-  getActionTagCategories(data: any) {
-    this.subActionTags = [];
-    this.currentActionTag = data;
-    this.event_service.getActionTagCategories(data).subscribe({
+  getActionTagCategories() {
+    this.event_service.getActionTagCategories().subscribe({
       next: (res: any) => {
         if (res.statusCode === 200) {
-          this.subActionTags = res.actionTagSubCategories;
+          this.actionTagsNew = res.actionTagCategories;
         }
       }
     })
+  }
+  
+  getCurrentType(type: any) {
+    this.getTime();
+    this.currentActionTag = type;
+    let filteredData = this.actionTagsNew.filter((item: any) => item.categoryId === type.categoryId);
+    this.subActionTags = filteredData.flatMap((el: any) => el.actionTagSubCategories);
   }
 
   open800() {
