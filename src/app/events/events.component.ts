@@ -39,6 +39,7 @@ export class EventsComponent {
   ngOnInit() {
     this.path = this.router.url.split('/').at(-1);
     this.listActionTags();
+    this.getActionTagCategories();
     this.getDispatchData();
 
     this.eventInterval = setInterval(() => {
@@ -56,11 +57,37 @@ export class EventsComponent {
       }
     }, 2000);
 
-    this.getActionTagCategories();
   }
 
   eventData: any = [
-
+// {
+//     "siteId": 36428,
+//     "siteName": "Albemarle Crossing",
+//     "timezone": "America/Los_Angeles",
+//     "httpUrl": "https://gisus7028live-repo.us2.pitunnel.com/GISUS7028C1",
+//     "cameraId": "GISUS7028C1",
+//     "color": "green",
+//     "id": "68da8427-9bd3-4d25-9b9a-af1a9f38fa62",
+//     "imageName": "GISUS7028C1_68da8427-9bd3-4d25-9b9a-af1a9f38fa62_2025-09-12_03-42-14_green.png",
+//     "timestamp": "2025-09-12 03:42:14",
+//     "userLevels": 0,
+//     "actionTag": "suspicious",
+//     "actionTime": "2025-09-12 03:42:15:088",
+//     "eventTag": "",
+//     "userLevelAlarmInfo": [
+//         {
+//             "level": 1,
+//             "user": 1614,
+//             "alarm": "N",
+//             "landingTime": "2025-09-12 03:42:14",
+//             "reviewStart": "2025-09-12 03:42:14",
+//             "reviewEnd": "2025-09-12 03:42:14",
+//             "actionTag": 2,
+//             "subActionTag": 23,
+//             "notes": ""
+//         }
+//     ]
+// }
   ];
 
   getDispatchData() {
@@ -142,27 +169,29 @@ export class EventsComponent {
   }
 
   isPlaying: boolean = false;
+  sirenTime: any;
   audio() {
     this.isPlaying = true;
     this.currentItem.audio = true;
-    this.http
-      .get(`${environment.site_url}/play_1_0/${this.currentItem.cameraId}`)
-      .subscribe({
-        next: (res: any) => {
-          this.isPlaying = false;
-          if (res.statusCode === 200) {
-            this.alert_service.snackSuccess(res.message);
-          } else {
-            this.alert_service.snackError(res.message);
-          }
+    this.sirenTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss'),
+      this.http
+        .get(`${environment.site_url}/play_1_0/${this.currentItem.cameraId}`)
+        .subscribe({
+          next: (res: any) => {
+            this.isPlaying = false;
+            if (res.statusCode === 200) {
+              this.alert_service.snackSuccess(res.message);
+            } else {
+              this.alert_service.snackError(res.message);
+            }
 
-        },
-        error: (err) => {
-          this.isPlaying = false
-          this.alert_service.snackError('Siren not Played!');
+          },
+          error: (err) => {
+            this.isPlaying = false
+            this.alert_service.snackError('Siren not Played!');
+          }
         }
-      }
-      );
+        );
   }
 
   emailData: any;
@@ -226,6 +255,8 @@ export class EventsComponent {
   }
 
   submitFalse() {
+    if (this.currentActionTag.categoryId === 2) return;
+
     let user = this.storage_service.getData('userData');
     let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
 
@@ -238,8 +269,8 @@ export class EventsComponent {
           landingTime: this.currentItem?.landingTime ?? '',
           reviewStart: this.currentItem?.reviewStart ?? '',
           reviewEnd: endTime ?? '',
-          actionTag: this.currentActionTag?.categoryName ?? '',
-          subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+          actionTag: this.currentActionTag?.categoryId,
+          subActionTag: this.currentSubActionTag?.subCategoryId,
           notes: ''
         }
       ) :
@@ -251,18 +282,19 @@ export class EventsComponent {
           landingTime: this.currentItem?.landingTime ?? '',
           reviewStart: this.currentItem?.reviewStart ?? '',
           reviewEnd: endTime ?? '',
-          actionTag: this.currentActionTag?.categoryName ?? '',
-          subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+          actionTag: this.currentActionTag?.categoryId,
+          subActionTag: this.currentSubActionTag?.subCategoryId,
           notes: ''
         }
       );
     // this.storage_service.show_loader = true;
     this.event_service.updateEventFullDetails({
       ...this.currentItem,
-      actionTag: this.currentActionTag?.categoryName ?? '',
-      subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+      actionTag: this.currentActionTag?.categoryId,
+      subActionTag: this.currentSubActionTag?.subCategoryId,
       objectName: this.object,
       falseActivityTime: this.actionTagTime,
+      activityDetTime: this.sirenTime ?? '',
       userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
     })
       .subscribe({
@@ -293,8 +325,8 @@ export class EventsComponent {
           landingTime: this.currentItem?.landingTime ?? '',
           reviewStart: this.currentItem?.reviewStart ?? '',
           reviewEnd: endTime ?? '',
-          actionTag: this.currentActionTag?.categoryName ?? '',
-          subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+          actionTag: this.currentActionTag?.categoryId,
+          subActionTag: this.currentSubActionTag?.subCategoryId,
           notes: ''
         }
       ) :
@@ -306,17 +338,18 @@ export class EventsComponent {
           landingTime: this.currentItem?.landingTime ?? '',
           reviewStart: this.currentItem?.reviewStart ?? '',
           reviewEnd: endTime ?? '',
-          actionTag: this.currentActionTag?.categoryName ?? '',
-          subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+          actionTag: this.currentActionTag?.categoryId,
+          subActionTag: this.currentSubActionTag?.subCategoryId,
           notes: ''
         }
       );
 
     this.event_service.updateEventFullDetails({
       ...this.currentItem,
-      actionTag: this.currentActionTag?.categoryName ?? '',
-      subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+      actionTag: this.currentActionTag?.categoryId,
+      subActionTag: this.currentSubActionTag?.subCategoryId,
       objectName: this.object,
+      activityDetTime: this.sirenTime ?? '',
       userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
     })
       .subscribe({
@@ -349,8 +382,8 @@ export class EventsComponent {
           landingTime: this.currentItem?.landingTime ?? '',
           reviewStart: this.currentItem?.reviewStart ?? '',
           reviewEnd: endTime ?? '',
-          actionTag: this.currentActionTag?.categoryName ?? '',
-          subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+          actionTag: this.currentActionTag?.categoryId,
+          subActionTag: this.currentSubActionTag?.subCategoryId,
           notes: ''
         }
       ) :
@@ -362,8 +395,8 @@ export class EventsComponent {
           landingTime: this.currentItem?.landingTime ?? '',
           reviewStart: this.currentItem?.reviewStart ?? '',
           reviewEnd: endTime ?? '',
-          actionTag: this.currentActionTag?.categoryName ?? '',
-          subActionTag: this.currentSubActionTag?.subCategoryName ?? '',
+          actionTag: this.currentActionTag?.categoryId,
+          subActionTag: this.currentSubActionTag?.subCategoryId,
           notes: ''
         }
       );
@@ -379,6 +412,16 @@ export class EventsComponent {
           this.sendEmail();
         }
       });
+  }
+
+    @ViewChild('canvas') canvas!: ElementRef;
+  async downloadImg() {
+    console.log(this.canvas)
+    const screenshotDataUrl = await this.canvas.nativeElement.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = screenshotDataUrl;
+    link.download = `${new Date()}.png`;
+    link.click();
   }
 
   openLiveDialog() {
@@ -428,8 +471,9 @@ export class EventsComponent {
       }
     })
   }
-  
+
   getCurrentType(type: any) {
+    this.currentSubActionTag = null;
     this.getTime();
     this.currentActionTag = type;
     let filteredData = this.actionTagsNew.filter((item: any) => item.categoryId === type.categoryId);
@@ -438,7 +482,7 @@ export class EventsComponent {
 
   open800() {
     this.dialog.open(Send800Component, {
-      data: this.currentItem
+      data: { ...this.currentItem, ...this.emailData}
     });
   }
 

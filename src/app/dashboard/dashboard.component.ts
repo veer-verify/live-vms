@@ -520,7 +520,13 @@ export class DashboardComponent {
                   {
                     level: 1,
                     user: user?.UserId,
-                    alarm: data?.audioUrl ? 'P' : 'N'
+                    actionTag: 2,
+                    subActionTag: 23,
+                    alarm: data?.audioUrl ? 'P' : 'N',
+                    landingTime: time,
+                    reviewStart: time,
+                    reviewEnd: time,
+                    notes: '',
                   }
                 ]
               }).subscribe();

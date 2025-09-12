@@ -47,7 +47,8 @@ export class EventService {
   }
 
   updateEventFullDetails(payload: any) {
-    let url = `${environment.events_url}/updateEventFullDetails_1_0/`;
+    // let url = `${environment.events_url}/updateEventFullDetails_1_0/`;
+    let url = 'http://192.168.0.232:3000/updateEventFullDetails_1_0';
     let user = this.storageSer.getData('userData');
     let path = this.router.url.split('/').at(-1);
     let eventStart = this.datePipe.transform(new Date(payload?.timestamp), 'yyyy-MM-dd hh:mm:ss:SSS');
@@ -62,7 +63,7 @@ export class EventService {
       actionTag: payload?.actionTag,
       userLevels: path === 'events' ? 2 : 3,
       falseActivityTime: payload?.falseActivityTime ?? '',
-      activityDetTime: '',
+      activityDetTime: payload?.activityDetTime,
       suspiciousTime: payload?.suspiciousTime ?? '',
       callResponseTime: '',
       callNoResponseTime: '',
@@ -74,7 +75,7 @@ export class EventService {
       createdTime: currentTime,
       createdBy: user?.UserId,
       remarks: '',
-      landingTime: payload?.landingTime,
+      // landingTime: payload?.landingTime,
       eventType: 'Manual Wall',
       timezone: payload?.timezone,
       subActionTag: payload?.subActionTag,
@@ -83,27 +84,6 @@ export class EventService {
 
     return this.http.post(url, obj);
   }
-
-  //   write2Queue(payload: any) {
-  //   let url: string = `${environment.events_url}/write2Queue_1_0/`;
-  //   let user = this.storageSer.getData('userData');
-  //   let myObj = {
-  //     siteName: payload?.siteName,
-  //     siteId: payload?.siteId,
-  //     cameraId: payload?.cameraId,
-  //     objectName: payload?.objectName,
-  //     eventTag: 'Camera-Event',
-  //     eventTime: payload?.eventTime,
-  //     actionTag: 'suspicious',
-  //     actionTime: new Date().toString(),
-  //     userLevels: user?.userLevel,
-  //     httpUrl: payload?.httpUrl,
-  //     imageUrl: payload?.imageUrl,
-  //     queue_name: payload?.queue,
-  //     landingTime: payload?.landingTime
-  //   }
-  //   return this.http.post(url, myObj);
-  // }
 
   getActionTagCategories(payload?: any) {
     // let url = `${environment.event_tags_url}/event_tags_url`;
