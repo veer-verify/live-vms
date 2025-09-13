@@ -1,4 +1,5 @@
 <app-header></app-header>
+<app-loader *ngIf="storage_service.show_loader"></app-loader>
 
 <div class="overall-container">
   <div class="left-content ">
@@ -34,7 +35,7 @@
         *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || storage_service.isSecondLevel()">
         <a class="list-group-item" [routerLink]="['/user-dashboard/events']" routerLinkActive="routeactive">
           <img src="assets/icons/dashboard.svg">
-          <span style="font-weight: 500;">2nd Level</span>
+          <span style="font-weight: 500;">Reviewer</span>
         </a>
       </ng-container>
 
@@ -42,7 +43,7 @@
         *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || storage_service.isThirdLevel()">
         <a class="list-group-item" [routerLink]="['/user-dashboard/third-level']" routerLinkActive="routeactive">
           <img src="assets/icons/dashboard.svg">
-          <span style="font-weight: 500;">3rd Level</span>
+          <span style="font-weight: 500;">Dispatcher</span>
         </a>
       </ng-container>
     </div>

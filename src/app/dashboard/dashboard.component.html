@@ -219,9 +219,15 @@
                     alt="">
 
                 <span *ngIf="listType === 0">
-                  <img src="assets/icons/close-white.svg" width="15" class="pointer"
-                    style="opacity: 0; position: absolute;" [style.left.px]="btn.x" [style.top.px]="btn.y"
-                    (click)="closeEvent(item, b)" [matTooltip]="(btn?.dspTime) ?? ''" />
+                  <img
+                    src="assets/icons/close-white.svg"
+                    width="15"
+                    class="pointer"
+                    style="opacity: 0; position: absolute;"
+                    [style.left.px]="btn.x"
+                    [style.top.px]="btn.y"
+                    (click)="closeEvent(item, b)"
+                    [matTooltip]="(btn?.dspTime) ?? ''" />
                 </span>
               </span>
             </div>

@@ -504,7 +504,7 @@ export class DashboardComponent {
 
   postScreenshot(data: any, file: any) {
     let user = this.storageSer.getData('userData');
-    let time = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss');
+    let time = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss:SSS');
     data.time = time;
 
     this.camSer.screenshots(data, file).subscribe({
@@ -529,7 +529,12 @@ export class DashboardComponent {
                     notes: '',
                   }
                 ]
-              }).subscribe();
+              }).subscribe({
+                next: (res) => {
+                  // this.closeEvent()
+                  data.buttons.splice(0, 1);
+                }
+              });
             }
             // this.audio(data);
           } else {
