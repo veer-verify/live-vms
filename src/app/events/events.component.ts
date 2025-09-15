@@ -51,6 +51,9 @@ export class EventsComponent {
               res[0].landingTime = moment().tz(res[0].timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
               res[0].audio = false;
               this.eventData.push(...res);
+              if (this.eventData.length === 1) {
+                this.displayCurrent(this.eventData[0]);
+              }
             }
           },
         });
@@ -126,7 +129,6 @@ export class EventsComponent {
     this.storage_service.status_text = 'loading...'
     setTimeout(() => {
       this.storage_service.status_text = ''
-
       this.currentItem = data;
       this.eventIndex = this.eventData.indexOf(this.currentItem);
     }, 500);
@@ -143,14 +145,15 @@ export class EventsComponent {
   }
 
   closeEvent(data: any) {
-    if (data?.timestamp == this.currentItem?.timestamp) {
-      let index = this.eventData.indexOf(this.currentItem);
+    this.currentItem = data;
+    let index = this.eventData.indexOf(this.currentItem);
+
+    if (this.eventData.length === (index + 1)) {
+      this.eventData.splice(index, 1);
+      this.currentItem = this.eventData[index - 1]
+    } else {
       this.eventData.splice(index, 1);
       this.currentItem = this.eventData[index];
-    } else {
-      this.currentItem = null;
-      let index = this.eventData.indexOf(data);
-      this.eventData.splice(index, 1);
     }
 
     if (this.eventData.length === 0) {
@@ -160,9 +163,15 @@ export class EventsComponent {
 
   cancelEvent() {
     this.resetVals();
+
     let index = this.eventData.indexOf(this.currentItem);
-    this.eventData.splice(index, 1);
-    this.currentItem = this.eventData[index];
+    if (this.eventData.length === (index + 1)) {
+      this.eventData.splice(index, 1);
+      this.currentItem = this.eventData[index - 1]
+    } else {
+      this.eventData.splice(index, 1);
+      this.currentItem = this.eventData[index];
+    }
 
     if (this.eventData.length === 0) {
       this.storage_service.status_text = 'no events!';
@@ -240,6 +249,7 @@ export class EventsComponent {
     }).subscribe({
       next: (res: any) => {
         this.cancelEvent();
+
         if (res.statusCode === 200) {
           this.alert_service.snackSuccess(res.message);
         } else {
@@ -358,16 +368,16 @@ export class EventsComponent {
       .subscribe({
         next: () => {
           this.storage_service.show_loader = false;
+          this.sirenTime = null;
+          this.alert_service.snackSuccess('Alert sent successfully!');
           if (type === 3) {
             this.sendEmail();
+          } else {
+            this.cancelEvent();
           }
-          this.sirenTime = null;
-          this.cancelEvent();
-          this.alert_service.snackSuccess('Alert sent successfully!');
         },
         error: (err) => {
           this.storage_service.show_loader = false;
-          this.cancelEvent();
           this.alert_service.snackError('failed!');
         }
       })
@@ -411,6 +421,7 @@ export class EventsComponent {
       );
 
     this.currentItem.time = this.currentItem.timestamp;
+    this.storage_service.show_loader = true;
     this.event_service.write2Dispatch({
       ...this.currentItem,
       queue_name: 'dispatch-3rd-level',
@@ -418,7 +429,14 @@ export class EventsComponent {
     })
       .subscribe({
         next: () => {
-          this.sendEmail();
+          this.storage_service.show_loader = false;
+          this.cancelEvent();
+          this.alert_service.snackSuccess('Alert sent successfully!');
+          // this.sendEmail();
+        },
+        error: (err) => {
+          this.storage_service.show_loader = false;
+
         }
       });
   }

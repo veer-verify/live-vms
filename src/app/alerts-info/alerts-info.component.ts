@@ -8,6 +8,7 @@ import { AlertService } from 'src/services/alert.service';
 import { CameraService } from 'src/services/camera.service';
 import { MetadataService } from 'src/services/metadata.service';
 import { SiteService } from 'src/services/site.service';
+import { StorageService } from 'src/services/storage.service';
 
 @Component({
   selector: 'app-alerts-info',
@@ -21,7 +22,8 @@ constructor(
     public matdialog: MatDialog,
     private alertSer: AlertService,
     private metadaSer: MetadataService,
-    private siteSer: SiteService
+    private siteSer: SiteService,
+    public storage_service: StorageService
   ) {}
 
   environment = environment.download_url;
@@ -60,8 +62,10 @@ constructor(
   errInfo: any;
   getSitesListForUserName() {
     this.showLoader = true;
+            this.storage_service.status_text = 'loading...';
     this.siteSer.getSites(this.userData).subscribe((res: any) => {
       this.showLoader = false;
+              this.storage_service.status_text = 'loading...';
       if(res.Status === 'Success') {
         this.siteIdToNav = res?.sites.sort((a: any, b: any) => a.siteName > b.siteName ? 1 : a.siteName < b.siteName ? -1 : 0);
         // this.camerasListForSites(this.siteIdToNav[0]);
@@ -144,6 +148,7 @@ constructor(
     let pageNumber;
     type == 'next' ? pageNumber = this.currentPage + 1 : type == 'prev' ? pageNumber = this.currentPage - 1 : pageNumber = type;
     this.showLoader = true;
+        this.storage_service.status_text = 'loading...';
     this.eventSer.incidentList({
       siteId: this.siteId,
       cameraId: this.cameraId,
@@ -153,6 +158,8 @@ constructor(
       toDate: this.toDate,
     }).subscribe((res: any) => {
       this.showLoader = false;
+              this.storage_service.status_text = '';
+
       this.currentPage = res.page;
       this.totalPages = res.totalPages;
       if(res.statusCode === 200) {

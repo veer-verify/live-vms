@@ -1,6 +1,6 @@
 .side-panel {
   border-right: 1px solid #ddd;
-  height: 90vh;
+  height: calc(100vh - 90px);
   overflow-y: auto;
 }
 

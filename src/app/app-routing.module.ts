@@ -19,12 +19,12 @@ const routes: Routes = [
       { path: 'monitoring-info', component: MonitoringInfoComponent },
       { path: 'alerts-info', component: AlertsInfoComponent },
       { path: 'playback-info', component: PlaybackInfoComponent },
+      { path: 'device-status', component: DeviceStatusComponent },
       { path: 'events', component: EventsComponent },
       { path: 'third-level', component: EventsComponent },
       { path: '', redirectTo: '/user-dashboard/monitoring-info', pathMatch: 'full' },
     ]
   },
-  { path: 'device-status', component: DeviceStatusComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', component: LoginComponent }
 ];

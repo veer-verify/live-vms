@@ -1,138 +1,139 @@
 <!-- <app-loader *ngIf="showLoader"></app-loader> -->
+ <app-status></app-status>
 
-<div>
+
+<ng-container *ngIf="siteIdToNav.length !== 0">
     <p class="title mb-2" style="font-size: 22px; color: #3d3934; font-weight: 700;">ALERTS DASHBOARD</p>
 
-    <div *ngIf="siteIdToNav.length !== 0">
-        <div class="d-lg-flex justify-content-between align-items-center d-none">
-            <div class="row mx-0 mt-2 w-100">
-                <div class="col-lg-3 ps-0">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Site</mat-label>
-                        <mat-select [(ngModel)]="siteId" (selectionChange)="filter()">
-                            <mat-option *ngFor="let item of siteIdToNav; let i = index"
-                                [value]="item.siteId">{{item?.siteName}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="col-lg-2 ps-0">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Camera</mat-label>
-                        <mat-select [(ngModel)]="cameraId" (selectionChange)="filter()">
-                            <mat-option *ngFor="let item of camData" [value]="item?.cameraId">
-                                {{item?.name}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="col-lg-2 ps-0">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Action Tag</mat-label>
-                        <mat-select [(ngModel)]="actionTag" (selectionChange)="filter()">
-                            <mat-option *ngFor="let item of actionTags" [value]="item?.id">{{item?.value |
-                                titlecase}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-
-                <div class="col-lg-3">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Enter a date range</mat-label>
-                        <mat-date-range-input [rangePicker]="rangePicker">
-                            <input matStartDate placeholder="Start date" [(ngModel)]="fromDate">
-                            <input matEndDate placeholder="End date" [(ngModel)]="toDate">
-                        </mat-date-range-input>
-                        <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
-                        <mat-date-range-picker #rangePicker>
-                            <mat-date-range-picker-actions>
-                                <button mat-button matDateRangePickerCancel
-                                    (click)="fromDate = ''; toDate = ''; filter()">Cancel</button>
-                                <button mat-raised-button color="primary" matDateRangePickerApply
-                                    (click)="filter()">Apply</button>
-                            </mat-date-range-picker-actions>
-                        </mat-date-range-picker>
-                    </mat-form-field>
-                </div>
-
-                <div class="col-lg-2">
-                    <app-pagination [totalPages]="totalPages" (emitPage)="getPaginatedData($event)"></app-pagination>
-                </div>
-
-                <!-- <div class="col-lg-2">
-                    <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
-                </div> -->
-
+    <div class="d-lg-flex justify-content-between align-items-center d-none">
+        <div class="row mx-0 mt-2 w-100">
+            <div class="col-lg-3 ps-0">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Site</mat-label>
+                    <mat-select [(ngModel)]="siteId" (selectionChange)="filter()">
+                        <mat-option *ngFor="let item of siteIdToNav; let i = index"
+                            [value]="item.siteId">{{item?.siteName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
-            <!-- <div>
-                <button class="add-btn" (click)="show()">Create</button>
-            </div> -->
-        </div>
-
-        <div class="table-resp mt-1">
-            <table class="table">
-                <thead>
-                    <tr class="tab">
-                        <!-- <th scope="col">No</th> -->
-                        <!-- <th scope="col">Site</th> -->
-                        <th scope="col">Camera</th>
-                        <!-- <th scope="col">User Level</th> -->
-                        <th scope="col">Event ID</th>
-                        <th scope="col">From Time</th>
-                        <th scope="col">To Time</th>
-                        <th scope="col">Duration</th>
-                        <th scope="col">Object Name</th>
-                        <th scope="col">Action Tag</th>
-                        <th scope="col" class="text-center">Event Clip</th>
-                        <!-- <th>Actions</th> -->
-                        <th></th>
-                    </tr>
-                </thead>
-
-                <tbody *ngIf="!showLoader">
-                    <tr *ngFor="let item of newEventData; let i = index">
-                        <!-- <td>{{i+1}}</td> -->
-                        <!-- <td>{{item?.siteName}}</td> -->
-                        <td>{{item?.name}}</td>
-                        <td>{{item?.eventId}}</td>
-                        <td>{{item?.eventFromTime | date: 'short'}}</td>
-                        <td>{{item?.eventToTime | date: 'short'}}</td>
-                        <td>{{ getTimeDifference(item?.eventFromTime, item?.eventToTime) }}</td>
-                        <td>{{item?.objectName | titlecase}}</td>
-                        <td
-                            [style.color]="item?.actionTag == 'suspicious' ? 'red' : item?.actionTag == 'Police Visit' ? 'blue' : 'green'">
-                            {{ item?.actionTag | titlecase }}
-                        </td>
-                        <td class="text-center">
-                            <p class="text-primary pointer" (click)="openGalleryDialog(item)">View</p>
-                        </td>
-                        <!-- <td>
-                            <div class="d-inline-flex">
-                                <img class="me-2" src="assets/icons/add_circle-black.svg" class="pointer" width="18"
-                                    (click)="openUploadDialog(item)" alt="" matTooltip="Add File">
-                                <img src="assets/icons/edit.svg" class="pointer" alt="" width="18"
-                                    (click)="openEditDialog(item)" matTooltip="Edit">
-                                <img src="assets/icons/delete-outline.svg" class="pointer" alt="" width="18"
-                                    (click)="deleteIncident(item)" matTooltip="Delete">
-                            </div>
-                        </td> -->
-                        <td>
-                            <p class="new-item" *ngIf="item?.createdTime > latestIncidentTime">NEW</p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div *ngIf="newEventData.length === 0 && !showLoader"
-                class="d-flex justify-content-center align-items-center bg-white w-100" style="height: 50vh;">
-                <p style="font-size: 30px;">{{ 'NO DATA!' }}</p>
+            <div class="col-lg-2 ps-0">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Camera</mat-label>
+                    <mat-select [(ngModel)]="cameraId" (selectionChange)="filter()">
+                        <mat-option *ngFor="let item of camData" [value]="item?.cameraId">
+                            {{item?.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
-            
-            <!-- <div *ngIf="showLoader1" class="d-flex justify-content-center align-items-center bg-white"
-                style="height: 50vh;">
-                <img src="assets/gif/table-loader.webp" alt="" width="75px" height="75px">
+            <div class="col-lg-2 ps-0">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Action Tag</mat-label>
+                    <mat-select [(ngModel)]="actionTag" (selectionChange)="filter()">
+                        <mat-option *ngFor="let item of actionTags" [value]="item?.id">{{item?.value |
+                            titlecase}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="col-lg-3">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [rangePicker]="rangePicker">
+                        <input matStartDate placeholder="Start date" [(ngModel)]="fromDate">
+                        <input matEndDate placeholder="End date" [(ngModel)]="toDate">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #rangePicker>
+                        <mat-date-range-picker-actions>
+                            <button mat-button matDateRangePickerCancel
+                                (click)="fromDate = ''; toDate = ''; filter()">Cancel</button>
+                            <button mat-raised-button color="primary" matDateRangePickerApply
+                                (click)="filter()">Apply</button>
+                        </mat-date-range-picker-actions>
+                    </mat-date-range-picker>
+                </mat-form-field>
+            </div>
+
+            <div class="col-lg-2">
+                <app-pagination [totalPages]="totalPages" (emitPage)="getPaginatedData($event)"></app-pagination>
+            </div>
+
+            <!-- <div class="col-lg-2">
+                <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
             </div> -->
+
         </div>
+        <!-- <div>
+            <button class="add-btn" (click)="show()">Create</button>
+        </div> -->
     </div>
-</div>
+
+    <div class="table-resp mt-1">
+        <table class="table">
+            <thead>
+                <tr class="tab">
+                    <!-- <th scope="col">No</th> -->
+                    <!-- <th scope="col">Site</th> -->
+                    <th scope="col">Camera</th>
+                    <!-- <th scope="col">User Level</th> -->
+                    <th scope="col">Event ID</th>
+                    <th scope="col">From Time</th>
+                    <th scope="col">To Time</th>
+                    <th scope="col">Duration</th>
+                    <th scope="col">Object Name</th>
+                    <th scope="col">Action Tag</th>
+                    <th scope="col" class="text-center">Event Clip</th>
+                    <!-- <th>Actions</th> -->
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody *ngIf="!showLoader">
+                <tr *ngFor="let item of newEventData; let i = index">
+                    <!-- <td>{{i+1}}</td> -->
+                    <!-- <td>{{item?.siteName}}</td> -->
+                    <td>{{item?.name}}</td>
+                    <td>{{item?.eventId}}</td>
+                    <td>{{item?.eventFromTime | date: 'short'}}</td>
+                    <td>{{item?.eventToTime | date: 'short'}}</td>
+                    <td>{{ getTimeDifference(item?.eventFromTime, item?.eventToTime) }}</td>
+                    <td>{{item?.objectName | titlecase}}</td>
+                    <td
+                        [style.color]="item?.actionTag == 'suspicious' ? 'red' : item?.actionTag == 'Police Visit' ? 'blue' : 'green'">
+                        {{ item?.actionTag | titlecase }}
+                    </td>
+                    <td class="text-center">
+                        <p class="text-primary pointer" (click)="openGalleryDialog(item)">View</p>
+                    </td>
+                    <!-- <td>
+                        <div class="d-inline-flex">
+                            <img class="me-2" src="assets/icons/add_circle-black.svg" class="pointer" width="18"
+                                (click)="openUploadDialog(item)" alt="" matTooltip="Add File">
+                            <img src="assets/icons/edit.svg" class="pointer" alt="" width="18"
+                                (click)="openEditDialog(item)" matTooltip="Edit">
+                            <img src="assets/icons/delete-outline.svg" class="pointer" alt="" width="18"
+                                (click)="deleteIncident(item)" matTooltip="Delete">
+                        </div>
+                    </td> -->
+                    <td>
+                        <p class="new-item" *ngIf="item?.createdTime > latestIncidentTime">NEW</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div *ngIf="newEventData.length === 0 && !showLoader"
+            class="d-flex justify-content-center align-items-center bg-white w-100" style="height: 50vh;">
+            <p style="font-size: 30px;">{{ 'NO DATA!' }}</p>
+        </div>
+        
+        <!-- <div *ngIf="showLoader1" class="d-flex justify-content-center align-items-center bg-white"
+            style="height: 50vh;">
+            <img src="assets/gif/table-loader.webp" alt="" width="75px" height="75px">
+        </div> -->
+    </div>
+</ng-container>
+
 
 <div class="err-info" *ngIf="errInfo">
     <p>{{ errInfo }}</p>

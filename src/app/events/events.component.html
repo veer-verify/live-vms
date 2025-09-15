@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-lg-2 d-none d-lg-block side-panel">
       <div class="card" *ngFor="let item of eventData; let i = index"
-        [ngStyle]="{'border': eventIndex === i ? '2px solid #084982' : ''}">
+        [ngStyle]="{'border': item?.timestamp == this.currentItem?.timestamp ? '2px solid #084982' : ''}">
 
         <div class="card-content" (click)="displayCurrent(item)" #currentBtn>
           <div class="d-flex justify-content-between align-items-center">
@@ -13,7 +13,7 @@
                 alt="" width="20px"></a>
           </div>
           <p class="camera">{{ item?.cameraId }}</p>
-          <p class="date">{{ item?.timestamp | date: 'mediumDate'}} {{ item?.timestamp | date: 'shortTime'}}</p>
+          <p class="date">{{ item?.timestamp | date: 'medium'}}</p>
         </div>
       </div>
     </div>
