@@ -12,8 +12,13 @@ import { StorageService } from 'src/services/storage.service';
 
 export class UserDashboardComponent {
 
+  showSidenav=true;
   constructor(
     public storage_service: StorageService
   ) {}
+
+  collap_nav(){
+    this.showSidenav=!this.showSidenav;
+  }
 
 }
