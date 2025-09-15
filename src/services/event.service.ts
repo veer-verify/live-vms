@@ -19,16 +19,14 @@ export class EventService {
   ) { }
 
   getDispatchData() {
-    let url = `${environment.events_url}/get_dispatch_queue_data_1_0/`;
+    let url = `${environment.events_url}/getVms_DispatchQueueData_1_0/`;
     let path = this.router.url.split('/').at(-1);
     let params = new HttpParams().set('queue_name', path === 'events' ? 'dispatch-2nd-level' : 'dispatch-3rd-level');
     return this.http.get(url, { params: params })
   }
 
-  //dispatch-2nd-level
-  //dispatch-3rd-level
   write2Dispatch(payload: any) {
-    let url = `${environment.events_url}/write2Dispatch_queue_data_1_0/`;
+    let url = `${environment.events_url}/write2Vms_DispatchQueue_1_0/`;
     let obj = {
       cameraId: payload?.cameraId,
       color: payload?.color,
@@ -38,16 +36,22 @@ export class EventService {
       timezone: payload?.timezone,
       httpUrl: payload?.httpUrl,
       siteId: payload?.siteId,
-      siteName: payload?.siteName
+      siteName: payload?.siteName,
+      actionTag: payload?.actionTag ?? '',
+      actionTime: moment().tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS'),
+      eventTag: '',
+      userLevelAlarmInfo: payload?.userLevelAlarmInfo,
+      userLevels: 0
     }
     return this.http.post(url, obj);
   }
 
   updateEventFullDetails(payload: any) {
-    let url = `${environment.events_url}/updateEventFullDetails_1_0/`;
+    let url = `${environment.event_tags_url}/updateEventFullDetails_1_0/`;
     let user = this.storageSer.getData('userData');
     let path = this.router.url.split('/').at(-1);
-    let endTime = this.datePipe.transform(new Date(payload?.timestamp), 'yyyy-MM-dd hh:mm:ss:SSS');
+    // let eventStart = this.datePipe.transform(new Date(payload?.timestamp), 'yyyy-MM-dd hh:mm:ss:SSS');
+    let currentTime = moment().tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
 
     let obj = {
       siteName: payload?.siteName,
@@ -57,47 +61,40 @@ export class EventService {
       eventTag: 'LIVE-VMS',
       actionTag: payload?.actionTag,
       userLevels: path === 'events' ? 2 : 3,
-      falseActivityTime: payload?.falseActivityTime ?? '',
-      activityDetTime: '',
-      suspiciousTime: payload?.suspiciousTime ?? '',
+      falseActivityTime: payload?.type == 1 ? payload?.actionTagTime : '',
+      suspiciousTime: payload?.type !== 1 ? payload?.actionTagTime : '',
+      activityDetTime: payload?.activityDetTime,
       callResponseTime: '',
       callNoResponseTime: '',
-      eventStartTime: endTime,
-      eventEndtime: payload?.submitTime ?? '',
-      emailTime: payload?.submitTime ?? '',
+      eventStartTime: payload?.timestamp,
+      eventEndtime: currentTime,
+      emailTime: currentTime,
       httpUrl: payload?.httpUrl,
-      videoFile: '',
-      createdTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'),
+      videoFile: payload?.imageName,
       createdBy: user?.UserId,
       remarks: '',
-      landingTime: moment(payload?.landingTime).tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS'),
-      eventType: 'Manual Wall',
+      // createdTime: currentTime,
+      // landingTime: payload?.landingTime,
+      eventType: 'Manual_Wall',
       timezone: payload?.timezone,
-      subActionTag: ''
+      subActionTag: payload?.subActionTag,
+      userLevelAlarmInfo: payload?.userLevelAlarmInfo
     };
 
     return this.http.post(url, obj);
   }
 
-  //   write2Queue(payload: any) {
-  //   let url: string = `${environment.events_url}/write2Queue_1_0/`;
-  //   let user = this.storageSer.getData('userData');
-  //   let myObj = {
-  //     siteName: payload?.siteName,
-  //     siteId: payload?.siteId,
-  //     cameraId: payload?.cameraId,
-  //     objectName: payload?.objectName,
-  //     eventTag: 'Camera-Event',
-  //     eventTime: payload?.eventTime,
-  //     actionTag: 'suspicious',
-  //     actionTime: new Date().toString(),
-  //     userLevels: user?.userLevel,
-  //     httpUrl: payload?.httpUrl,
-  //     imageUrl: payload?.imageUrl,
-  //     queue_name: payload?.queue,
-  //     landingTime: payload?.landingTime
-  //   }
-  //   return this.http.post(url, myObj);
-  // }
+  getActionTagCategories(payload?: any) {
+    let url = `${environment.event_tags_url}/getActionTagCategories_1_0`;
+    let path = this.router.url.split('/').at(-1);
+    let params = new HttpParams();
+    if (payload?.actionTagId) {
+      params = params.set('actionTagId', payload?.actionTagId)
+    }
+    // if (payload?.userLevel) {
+      params = params.set('userLevel',  path === 'events' ? 2 : 3,)
+    // }
+    return this.http.get(url, { params: params })
+  }
 
 }

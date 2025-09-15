@@ -1,6 +1,7 @@
 <!-- <app-loader *ngIf="showLoader"></app-loader> -->
 
 <div>
+    <p class="title mb-2" style="font-size: 22px; color: #3d3934; font-weight: 700;">ALERTS DASHBOARD</p>
 
     <div *ngIf="siteIdToNav.length !== 0">
         <div class="d-lg-flex justify-content-between align-items-center d-none">
@@ -9,7 +10,8 @@
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Site</mat-label>
                         <mat-select [(ngModel)]="siteId" (selectionChange)="filter()">
-                            <mat-option *ngFor="let item of siteIdToNav; let i = index" [value]="item.siteId">{{item?.siteName}}</mat-option>
+                            <mat-option *ngFor="let item of siteIdToNav; let i = index"
+                                [value]="item.siteId">{{item?.siteName}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -26,13 +28,13 @@
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Action Tag</mat-label>
                         <mat-select [(ngModel)]="actionTag" (selectionChange)="filter()">
-                            <mat-option *ngFor="let item of actionTags" [value]="item?.id">{{item?.value | titlecase}}</mat-option>
+                            <mat-option *ngFor="let item of actionTags" [value]="item?.id">{{item?.value |
+                                titlecase}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
 
                 <div class="col-lg-3">
-
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Enter a date range</mat-label>
                         <mat-date-range-input [rangePicker]="rangePicker">
@@ -42,12 +44,17 @@
                         <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
                         <mat-date-range-picker #rangePicker>
                             <mat-date-range-picker-actions>
-                                <button mat-button matDateRangePickerCancel (click)="fromDate = ''; toDate = ''; filter()">Cancel</button>
+                                <button mat-button matDateRangePickerCancel
+                                    (click)="fromDate = ''; toDate = ''; filter()">Cancel</button>
                                 <button mat-raised-button color="primary" matDateRangePickerApply
                                     (click)="filter()">Apply</button>
                             </mat-date-range-picker-actions>
                         </mat-date-range-picker>
                     </mat-form-field>
+                </div>
+
+                <div class="col-lg-2">
+                    <app-pagination [totalPages]="totalPages" (emitPage)="getPaginatedData($event)"></app-pagination>
                 </div>
 
                 <!-- <div class="col-lg-2">
@@ -95,18 +102,6 @@
                             {{ item?.actionTag | titlecase }}
                         </td>
                         <td class="text-center">
-                            <!-- <span class="pointer" *ngIf="
-                item.videoFile.split('.')[item.videoFile.split('.').length - 1] === 'JPG' ||
-                item.videoFile.split('.')[item.videoFile.split('.').length - 1] === 'png' ||
-                item.videoFile.split('.')[item.videoFile.split('.').length - 1] === 'jpg' ||
-                item.videoFile.split('.')[item.videoFile.split('.').length - 1] === 'jpeg'"
-                (click)="getImageDataforMode(item)"><img src="assets/icons/image_black.svg" alt="" width="20">
-              </span>
-              <span class="pointer" *ngIf="
-                item.videoFile.split('.')[item.videoFile.split('.').length - 1] === 'mp4' ||
-                item.videoFile.split('.')[item.videoFile.split('.').length - 1] === '3gp'"
-                (click)="getImageDataforMode(item)"><img src="assets/icons/play_circle.svg" alt="" width="20">
-              </span> -->
                             <p class="text-primary pointer" (click)="openGalleryDialog(item)">View</p>
                         </td>
                         <!-- <td>
@@ -130,45 +125,11 @@
                 class="d-flex justify-content-center align-items-center bg-white w-100" style="height: 50vh;">
                 <p style="font-size: 30px;">{{ 'NO DATA!' }}</p>
             </div>
-            <!-- <div *ngIf="showLoader1" class="d-flex justify-content-center align-items-center bg-white" style="height: 50vh;">
-        <img src="assets/gif/table-loader.webp" alt="" width="75px" height="75px">
-      </div> -->
-        </div>
-
-        <div class="pagi d-flex align-content-center mx-2" *ngIf="eventData.length !== 0">
-            <!-- <div>
-        <ul class="pagination">
-          <li class="page-item" [class.disabled]="currentPage === 1">
-            <a class="page-link" (click)="setPage(currentPage - 1)">Previous</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link">{{ currentPage }} of {{ totalPages }}</a>
-          </li>
-          <li class="page-item" [class.disabled]="currentPage === totalPages">
-            <a class="page-link" (click)="setPage(currentPage + 1)">Next</a>
-          </li>
-        </ul>
-      </div> -->
-
-            <div>
-                <ul class="pagination">
-                    <a class="page-item" [class.disabled]="currentPage === 1 || currentPage === 0">
-                        <span class="page-link" (click)="filter('prev')">Previous</span>
-                    </a>
-                    <a class="page-item">
-                        <span class="page-link">{{ currentPage }} of {{ totalPages }}</span>
-                    </a>
-                    <a class="page-item" [class.disabled]="currentPage === totalPages">
-                        <span class="page-link" (click)="filter('next')">Next</span>
-                    </a>
-                </ul>
-            </div>
-
-            <div class="d-flex">
-                <input type="number" placeholder="Enter page number" class="form-control mx-2" style="height: 35px;"
-                    #goTo>
-                <button class="btn btn-primary" style="height: 35px;" (click)="filter(goTo.value)">Go</button>
-            </div>
+            
+            <!-- <div *ngIf="showLoader1" class="d-flex justify-content-center align-items-center bg-white"
+                style="height: 50vh;">
+                <img src="assets/gif/table-loader.webp" alt="" width="75px" height="75px">
+            </div> -->
         </div>
     </div>
 </div>
@@ -185,21 +146,13 @@
     <div class="dialog-content">
         <!-- <p class="file-item my-2 text-center">Do you want to delete <span class="fw-bold">{{currentDeletingFile}}</span></p> -->
 
-        <div class="text-center" *ngIf="
-      currentDeletingFile.split('.')[currentDeletingFile.split('.').length - 1] === 'mp4' ||
-      currentDeletingFile.split('.')[currentDeletingFile.split('.').length - 1] === '3gp'
-      ">
+        <div class="text-center" *ngIf="!isVid(currentDeletingFile)">
             <video
                 [src]="environment + '/downloadFile_1_0?requestName=incidents' + '&assetName=' + currentDeletingFile | image | async"
                 class="bg-dark" controls height="200px" width="200px"></video>
         </div>
 
-        <div class="text-center" *ngIf="
-      currentDeletingFile.split('.')[currentDeletingFile.split('.').length - 1] === 'JPG' ||
-      currentDeletingFile.split('.')[currentDeletingFile.split('.').length - 1] === 'png' ||
-      currentDeletingFile.split('.')[currentDeletingFile.split('.').length - 1] === 'jpg' ||
-      currentDeletingFile.split('.')[currentDeletingFile.split('.').length - 1] === 'jpeg'
-      ">
+        <div class="text-center" *ngIf="isVid(currentDeletingFile)">
             <img [src]="environment + '/downloadFile_1_0?requestName=incidents' + '&assetName=' + currentDeletingFile | image | async"
                 alt="" height="200px" width="=200px">
         </div>
@@ -217,25 +170,15 @@
     </div>
     <div class="dialog-content d-flex flex-wrap">
         <div *ngFor="let data of galleryData?.files; let i = index">
-            <div class="me-2" *ngIf="
-        data.split('.')[data.split('.').length - 1] === 'mp4' ||
-        data.split('.')[data.split('.').length - 1] === '3gp'
-        ">
-                <video
+            <div class="w-250">
+                <img *ngIf="!isVid(data)"
                     [src]="environment + '/downloadFile_1_0?requestName=incidents' + '&assetName=' + data | image | async"
-                    class="bg-dark" controls height="250px" width="250px"></video>
+                    alt="Loading..." width="100%" height="100%">
+                <video *ngIf="isVid(data)"
+                    [src]="environment + '/downloadFile_1_0?requestName=incidents' + '&assetName=' + data | image | async"
+                    class="bg-dark" controls width="100%" height="100%"></video>
             </div>
 
-            <div class="me-2" style="position: relative;" *ngIf="
-        data.split('.')[data.split('.').length - 1] === 'JPG' ||
-        data.split('.')[data.split('.').length - 1] === 'png' ||
-        data.split('.')[data.split('.').length - 1] === 'jpg' ||
-        data.split('.')[data.split('.').length - 1] === 'jpeg'
-        ">
-                <img [src]="environment + '/downloadFile_1_0?requestName=incidents' + '&assetName=' + data | image | async"
-                    alt="" width="250px" height="250px">
-                <img src="assets/icons/fullscreen.svg" class="full-screen" alt="" (click)="toggleImage(data)">
-            </div>
         </div>
     </div>
 

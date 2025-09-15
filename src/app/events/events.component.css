@@ -41,7 +41,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  width: 100%;
+  width: 90%;
 }
 
 .camera {
@@ -71,3 +71,22 @@
   font-weight: 500;
   letter-spacing: 1px;
 }
+
+.action-btn {
+  background-color: #084982;
+  color: #fff;
+  border-radius: 6px;
+  border-width: 0;
+  font-size: 12px;
+  padding: 5px;
+  border: 3px solid #ffffff;
+  width: 100%;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+/* .menu ::ng-deep .mat-mdc-menu-panel.mat-mdc-menu-panel {
+  width: 1000px !important;
+} */

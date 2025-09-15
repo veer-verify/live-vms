@@ -1,7 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import { NgxCaptureService } from 'ngx-capture';
-import { DashboardComponent } from 'src/app/dashboard/dashboard.component';
 import { AlertService } from 'src/services/alert.service';
 import { CameraService } from 'src/services/camera.service';
 
@@ -11,10 +10,11 @@ import { CameraService } from 'src/services/camera.service';
   styleUrls: ['./video-player.component.css']
 })
 export class VideoPlayerComponent {
-
+  
   @Input() videoData: any;
   @Input() camerasForPage: any;
   @Input() isMaximized: any;
+  @Input() siteData: any;
 
   // @Output() emailDataEmitter: EventEmitter<any> = new EventEmitter();
   @Output() screenshotEmitter: EventEmitter<any> = new EventEmitter();
@@ -48,8 +48,24 @@ export class VideoPlayerComponent {
   }
 
   ngAfterViewInit() {
+    if (this.siteData?.siteId === 36585 || this.siteData?.siteId === 36591) {
+      // if (this.camSer.siren_sub.getValue()) {
+      //   this.video.nativeElement.muted = false;
+      // }
+
+      this.camSer.siren_sub.subscribe((res: any) => {
+        if (res) {
+          this.video.nativeElement.muted = false;
+      } else  {
+          this.video.nativeElement.muted = true;
+        }
+      })
+    } else {
+      this.video.nativeElement.muted = true;
+    }
+
+
     this.video.nativeElement.controls = false;
-    this.video.nativeElement.muted = true;
     this.video.nativeElement.autoplay = true;
     this.video.nativeElement.playsInline = true;
   }
@@ -72,7 +88,7 @@ export class VideoPlayerComponent {
         });
         const direction = 'sendrecv';
         this.peerConnection.addTransceiver('video', { direction });
-        // this.peerConnection.addTransceiver('audio', { direction });
+        this.peerConnection.addTransceiver('audio', { direction });
         this.peerConnection.onicecandidate = (evt: RTCPeerConnectionIceEvent) => this.onLocalCandidate(evt);
         this.peerConnection.oniceconnectionstatechange = () => this.onConnectionState();
         this.peerConnection.ontrack = (evt: RTCTrackEvent) => this.onTrack(evt);
@@ -321,26 +337,24 @@ export class VideoPlayerComponent {
 
 
 
-  plainCapture(camera: any) {
+  async plainCapture(camera: any) {
     let finalWidth = 1280;
     let finalHeight = 720;
-    this.canvas.nativeElement.getContext("2d").drawImage(this.video.nativeElement, 0, 0, finalWidth, finalHeight);
-    const screenshotDataUrl = this.canvas.nativeElement.toDataURL('image/png');
+    await this.canvas.nativeElement.getContext("2d").drawImage(this.video.nativeElement, 0, 0, finalWidth, finalHeight);
+    const screenshotDataUrl = await this.canvas.nativeElement.toDataURL('image/png');
     const link = document.createElement('a');
     link.href = screenshotDataUrl;
-    link.download = `${camera?.cameraId}-${camera?.name}-${moment().tz(camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss')}.png`
+    link.download = `${camera?.cameraId}-${camera?.name}-${moment().tz(camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss:SSS')}.png`
     link.click();
   }
 
   canvasWidth: any = 1280;
   canvasHeight: any = 720;
-  capture(camera: any, color: any, imgElement: any, btnItem: any) {
+  async capture(camera: any, color: any, imgElement: any, btnItem: any) {
     let x = btnItem.x + 8;
     let y = btnItem.y + 25;
     let finalHeight = 720;
-
     let aspectRatio = btnItem.elementWidth / btnItem.elementHeight;
-
     let finalWidth = Math.round(aspectRatio * finalHeight);
     let widthScalingFactor = finalWidth / btnItem.elementWidth;
     let heightScalingFactor = finalHeight / btnItem.elementHeight;
@@ -349,21 +363,18 @@ export class VideoPlayerComponent {
     this.canvasWidth = finalWidth;
     this.canvasHeight = finalHeight;
 
-    setTimeout(() => {
-      this.canvas.nativeElement.getContext("2d").drawImage(this.video.nativeElement, 0, 0, finalWidth, finalHeight);
-      this.canvas.nativeElement.getContext("2d").drawImage(imgElement, finalX, finalY, 20, 20);
+    await this.canvas.nativeElement.getContext("2d").drawImage(this.video.nativeElement, 0, 0, finalWidth, finalHeight);
+    await this.canvas.nativeElement.getContext("2d").drawImage(imgElement, finalX, finalY, 20, 20);
+    this.canvas.nativeElement.toBlob((blob: any) => {
+      let newObj = { ...camera, color, ...btnItem }
+      this.screenshotEmitter.emit({ image: blob, camera: newObj });
+    });
 
-      this.canvas.nativeElement.toBlob((blob: any) => {
-        let newObj = { ...camera, color, ...btnItem }
-        this.screenshotEmitter.emit({ image: blob, camera: newObj });
-      });
-
-      // const screenshotDataUrl = this.canvas.nativeElement.toDataURL('image/png');
-      // const link = document.createElement('a');
-      // link.href = screenshotDataUrl;
-      // link.download = `${camera?.cameraId}-${camera?.name}-${color ?? ''}-${moment().tz(camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss')}.png`;
-      // link.click();
-    }, 500)
+    // const screenshotDataUrl = await this.canvas.nativeElement.toDataURL('image/png');
+    // const link = document.createElement('a');
+    // link.href = screenshotDataUrl;
+    // link.download = `${camera?.cameraId}-${camera?.name}-${color ?? ''}-${moment().tz(camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss:SSS')}.png`;
+    // link.click();
   }
 
   ngOnDestroy() {

@@ -13,6 +13,7 @@ import { MetadataService } from 'src/services/metadata.service';
 import { StorageService } from 'src/services/storage.service';
 import { LiveComponent } from 'src/utilities/live/live.component';
 import { Send800Component } from '../send800/send800.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-events',
@@ -29,6 +30,7 @@ export class EventsComponent {
     private alert_service: AlertService,
     private dialog: MatDialog,
     private router: Router,
+    private http: HttpClient,
   ) { }
 
   eventInterval: any;
@@ -37,32 +39,66 @@ export class EventsComponent {
   ngOnInit() {
     this.path = this.router.url.split('/').at(-1);
     this.listActionTags();
+    this.getActionTagCategories();
     this.getDispatchData();
 
     this.eventInterval = setInterval(() => {
-      if(this.eventData.length < 6) {        
+      if (this.eventData.length < 6) {
         this.event_service.getDispatchData().subscribe({
           next: (res: any) => {
             if (res.length !== 0) {
               this.storage_service.status_text = '';
+              res[0].landingTime = moment().tz(res[0].timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+              res[0].audio = false;
               this.eventData.push(...res);
-              this.eventData.forEach((item: any) => item.landingTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'))
             }
           },
         });
       }
     }, 2000);
+
   }
 
-  eventData: any = [];
+  eventData: any = [
+    // {
+    //     "siteId": 36428,
+    //     "siteName": "Albemarle Crossing",
+    //     "timezone": "America/Los_Angeles",
+    //     "httpUrl": "https://gisus7028live-repo.us2.pitunnel.com/GISUS7028C1",
+    //     "cameraId": "GISUS7028C1",
+    //     "color": "green",
+    //     "id": "68da8427-9bd3-4d25-9b9a-af1a9f38fa62",
+    //     "imageName": "GISUS7028C1_68da8427-9bd3-4d25-9b9a-af1a9f38fa62_2025-09-12_03-42-14_green.png",
+    //     "timestamp": "2025-09-12 03:42:14",
+    //     "userLevels": 0,
+    //     "actionTag": "suspicious",
+    //     "actionTime": "2025-09-12 03:42:15:088",
+    //     "eventTag": "",
+    //     "userLevelAlarmInfo": [
+    //         {
+    //             "level": 1,
+    //             "user": 1614,
+    //             "alarm": "N",
+    //             "landingTime": "2025-09-12 03:42:14",
+    //             "reviewStart": "2025-09-12 03:42:14",
+    //             "reviewEnd": "2025-09-12 03:42:14",
+    //             "actionTag": 2,
+    //             "subActionTag": 23,
+    //             "notes": ""
+    //         }
+    //     ]
+    // }
+  ];
+
   getDispatchData() {
-    this.storage_service.status_text = 'loading...'
+    this.storage_service.status_text = 'loading...';
     this.event_service.getDispatchData().subscribe({
       next: (res: any) => {
         if (res.length !== 0) {
           this.storage_service.status_text = '';
+          res[0].landingTime = moment().tz(res[0].timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+          res[0].audio = false;
           this.eventData.push(...res);
-          this.eventData.forEach((item: any) => item.landingTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'))
           this.displayCurrent(this.eventData[0]);
         } else {
           this.storage_service.status_text = 'no events!'
@@ -86,6 +122,7 @@ export class EventsComponent {
   displayCurrent(data: any) {
     this.currentItem = null;
     this.resetVals();
+    data.reviewStart = moment().tz(data?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
     this.storage_service.status_text = 'loading...'
     setTimeout(() => {
       this.storage_service.status_text = ''
@@ -102,6 +139,7 @@ export class EventsComponent {
     this.alertType = null;
     this.alertSubType = null;
     this.object = 'person';
+    this.currentActionTag = null;
   }
 
   closeEvent(data: any) {
@@ -131,10 +169,36 @@ export class EventsComponent {
     }
   }
 
+  isPlaying: boolean = false;
+  sirenTime: any;
+  audio() {
+    this.isPlaying = true;
+    this.currentItem.audio = true;
+    this.sirenTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS'),
+      this.http
+        .get(`${environment.site_url}/play_1_0/${this.currentItem.cameraId}`)
+        .subscribe({
+          next: (res: any) => {
+            this.isPlaying = false;
+            if (res.statusCode === 200) {
+              this.alert_service.snackSuccess(res.message);
+            } else {
+              this.alert_service.snackError(res.message);
+            }
+
+          },
+          error: (err) => {
+            this.isPlaying = false
+            this.alert_service.snackError('Siren not Played!');
+          }
+        }
+        );
+  }
+
   emailData: any;
   getEmailData() {
-    let day = new Date().getDay();
-    let hour = new Date().getHours();
+    let day = moment.tz(this.currentItem?.timezone).day();
+    let hour = moment.tz(this.currentItem?.timezone).hours();
 
     this.emailObject = {
       siteId: this.currentItem?.siteId,
@@ -143,7 +207,7 @@ export class EventsComponent {
       camerasList: this.currentItem?.cameraId,
       day: this.storage_service.weekdays[day],
       hour: hour,
-      currentTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss'),
+      currentTime: moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss'),
     };
 
     if (this.alertSubType != undefined && this.alertType != undefined) {
@@ -163,103 +227,215 @@ export class EventsComponent {
     }
   }
 
-  falseActivityTime: any;
-  submitTime: any;
-  suspiciousTime: any;
   sendEmail() {
     let dateObj = {
       eventFromTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'),
       eventToTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'),
       objectName: 'Person',
     };
-    // this.storage_service.show_loader = true;
     this.camera_service.email_with_incident({
       ...this.emailObject,
       ...dateObj,
       ...this.currentItem,
     }).subscribe({
       next: (res: any) => {
+        this.cancelEvent();
         if (res.statusCode === 200) {
-          // this.storage_service.show_loader = false;
           this.alert_service.snackSuccess(res.message);
-          this.cancelEvent();
         } else {
-          // this.storage_service.show_loader = false;
           this.alert_service.snackError(res.message);
         }
       },
       error: (err) => {
-        // this.storage_service.show_loader = false;
+        this.cancelEvent();
       }
     });
   }
 
-  submitFalse() {
-    this.falseActivityTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
-        // this.storage_service.show_loader = true;
+  // submitFalse() {
+  //   if (this.currentActionTag.categoryId === 2) return;
+
+  //   let user = this.storage_service.getData('userData');
+  //   let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+
+  //   this.path === 'events' ?
+  //     this.currentItem?.userLevelAlarmInfo.push(
+  //       {
+  //         level: 2,
+  //         user: user?.UserId,
+  //         alarm: this.currentItem?.audio ? 'P' : 'N',
+  //         landingTime: this.currentItem?.landingTime ?? '',
+  //         reviewStart: this.currentItem?.reviewStart ?? '',
+  //         reviewEnd: endTime ?? '',
+  //         actionTag: this.currentActionTag?.categoryId,
+  //         subActionTag: this.currentSubActionTag?.subCategoryId,
+  //         notes: ''
+  //       }
+  //     ) :
+  //     this.currentItem?.userLevelAlarmInfo.push(
+  //       {
+  //         level: 3,
+  //         user: user?.UserId,
+  //         alarm: this.currentItem?.audio ? 'P' : 'N',
+  //         landingTime: this.currentItem?.landingTime ?? '',
+  //         reviewStart: this.currentItem?.reviewStart ?? '',
+  //         reviewEnd: endTime ?? '',
+  //         actionTag: this.currentActionTag?.categoryId,
+  //         subActionTag: this.currentSubActionTag?.subCategoryId,
+  //         notes: ''
+  //       }
+  //     );
+  //   // this.storage_service.show_loader = true;
+  //   this.event_service.updateEventFullDetails({
+  //     ...this.currentItem,
+  //     actionTag: this.currentActionTag?.categoryId,
+  //     subActionTag: this.currentSubActionTag?.subCategoryId,
+  //     objectName: this.object,
+  //     falseActivityTime: this.actionTagTime,
+  //     activityDetTime: this.sirenTime ?? '',
+  //     userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
+  //   })
+  //     .subscribe({
+  //       next: () => {
+  //         // this.storage_service.show_loader = false;
+  //         this.alert_service.snackSuccess('Alert sent successfully!');
+  //         this.sirenTime = null;
+  //         this.cancelEvent();
+  //       },
+  //       error: (err) => {
+  //         // this.storage_service.show_loader = false;
+  //         this.alert_service.snackError('failed!');
+  //         this.cancelEvent();
+
+  //       }
+  //     })
+  // }
+
+  submit(type: number) {
+    if (type === 2) return;
+
+    let user = this.storage_service.getData('userData');
+    let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+    this.path === 'events' ?
+      this.currentItem?.userLevelAlarmInfo.push(
+        {
+          level: 2,
+          user: user?.UserId,
+          alarm: this.currentItem?.audio ? 'P' : 'N',
+          landingTime: this.currentItem?.landingTime ?? '',
+          reviewStart: this.currentItem?.reviewStart ?? '',
+          reviewEnd: endTime ?? '',
+          actionTag: this.currentActionTag?.categoryId,
+          subActionTag: this.currentSubActionTag?.subCategoryId,
+          notes: ''
+        }
+      ) :
+      this.currentItem?.userLevelAlarmInfo.push(
+        {
+          level: 3,
+          user: user?.UserId,
+          alarm: this.currentItem?.audio ? 'P' : 'N',
+          landingTime: this.currentItem?.landingTime ?? '',
+          reviewStart: this.currentItem?.reviewStart ?? '',
+          reviewEnd: endTime ?? '',
+          actionTag: this.currentActionTag?.categoryId,
+          subActionTag: this.currentSubActionTag?.subCategoryId,
+          notes: ''
+        }
+      );
+
+    this.storage_service.show_loader = true;
     this.event_service.updateEventFullDetails({
       ...this.currentItem,
-      actionTag: this.actionTag ? this.actionTag : 'Fasle Activity',
-      // eventStartTime: this.currentItem?.timestamp,
+      type,
+      actionTag: this.currentActionTag?.categoryId,
+      subActionTag: this.currentSubActionTag?.subCategoryId,
       objectName: this.object,
-      falseActivityTime: this.falseActivityTime
-    }).subscribe({
-      next: () => {
-                // this.storage_service.show_loader = false;
-        this.alert_service.snackSuccess('Alert sent successfully!');
-        this.cancelEvent();
-      },
-      error: (err) => {
-                // this.storage_service.show_loader = false;
-        this.alert_service.snackError('failed!');
-        this.cancelEvent();
-
-      }
+      actionTagTime: this.actionTagTime,
+      activityDetTime: this.sirenTime ?? '',
+      userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
     })
+      .subscribe({
+        next: () => {
+          this.storage_service.show_loader = false;
+          if (type === 3) {
+            this.sendEmail();
+          }
+          this.sirenTime = null;
+          this.cancelEvent();
+          this.alert_service.snackSuccess('Alert sent successfully!');
+        },
+        error: (err) => {
+          this.storage_service.show_loader = false;
+          this.cancelEvent();
+          this.alert_service.snackError('failed!');
+        }
+      })
   }
 
-  submit() {
-    this.submitTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
-    this.event_service.updateEventFullDetails({
-      ...this.currentItem,
-      actionTag: this.actionTag ? this.actionTag : 'Fasle Activity',
-      // eventStartTime: this.currentItem?.timestamp,
-      objectName: this.object,
-      suspiciousTime: this.suspiciousTime,
-      submitTime: this.submitTime,
-    }).subscribe({
-      next: () => {
-        this.alert_service.snackSuccess('Alert sent successfully!');
-        this.sendEmail();
-      },
-      error: (err) => {
-                this.cancelEvent();
-
-        this.alert_service.snackError('failed!');
-      }
-    })
-  }
-
+  actionTagTime: any;
   getTime() {
-    this.suspiciousTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+    this.actionTagTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
   }
 
   submitAndSend() {
+    let user = this.storage_service.getData('userData');
+    let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+
+    this.path === 'events' ?
+      this.currentItem?.userLevelAlarmInfo.push(
+        {
+          level: 2,
+          user: user?.UserId,
+          alarm: 'N',
+          landingTime: this.currentItem?.landingTime ?? '',
+          reviewStart: this.currentItem?.reviewStart ?? '',
+          reviewEnd: endTime ?? '',
+          actionTag: this.currentActionTag?.categoryId,
+          subActionTag: this.currentSubActionTag?.subCategoryId,
+          notes: ''
+        }
+      ) :
+      this.currentItem?.userLevelAlarmInfo.push(
+        {
+          level: 3,
+          user: user?.UserId,
+          alarm: 'N',
+          landingTime: this.currentItem?.landingTime ?? '',
+          reviewStart: this.currentItem?.reviewStart ?? '',
+          reviewEnd: endTime ?? '',
+          actionTag: this.currentActionTag?.categoryId,
+          subActionTag: this.currentSubActionTag?.subCategoryId,
+          notes: ''
+        }
+      );
+
     this.currentItem.time = this.currentItem.timestamp;
     this.event_service.write2Dispatch({
       ...this.currentItem,
       queue_name: 'dispatch-3rd-level',
+      userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
+    })
+      .subscribe({
+        next: () => {
+          this.sendEmail();
+        }
+      });
+  }
 
-    }).subscribe({
-      next: () => {
-        this.sendEmail();
-      }
-    });
+  @ViewChild('canvas') canvas!: ElementRef;
+  async downloadImg() {
+    const screenshotDataUrl = await this.canvas.nativeElement.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = screenshotDataUrl;
+    link.download = `${new Date()}.png`;
+    link.click();
   }
 
   openLiveDialog() {
     this.dialog.open(LiveComponent, {
-      data: this.currentItem
+      data: this.currentItem,
+      disableClose: false
     })
   }
 
@@ -290,8 +466,32 @@ export class EventsComponent {
     });
   }
 
-  open800(){
-    this.dialog.open(Send800Component);
+  actionTagsNew: any = [];
+  subActionTags: any = [];
+  currentActionTag: any;
+  currentSubActionTag: any;
+  getActionTagCategories() {
+    this.event_service.getActionTagCategories().subscribe({
+      next: (res: any) => {
+        if (res.statusCode === 200) {
+          this.actionTagsNew = res.actionTagCategories;
+        }
+      }
+    })
+  }
+
+  getCurrentType(type: any) {
+    this.currentSubActionTag = null;
+    this.getTime();
+    this.currentActionTag = type;
+    let filteredData = this.actionTagsNew.filter((item: any) => item.categoryId === type.categoryId);
+    this.subActionTags = filteredData.flatMap((el: any) => el.actionTagSubCategories);
+  }
+
+  open800() {
+    this.dialog.open(Send800Component, {
+      data: { ...this.currentItem, ...this.emailData }
+    });
   }
 
   ngOnDestroy() {

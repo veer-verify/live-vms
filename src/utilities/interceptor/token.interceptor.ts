@@ -27,7 +27,10 @@ export class TokenInterceptor implements HttpInterceptor {
     let token = this.storageService.getData('acTok');
 
 
-    if (token && request.url!=="https://api.800.com/message" && request.url!=="https://api.800.com/companies/138829/conversations?updated_before=&updated_after=&search=&types[]=message&types[]=call&types[]=voicemail&types[]=fax&types[]=note&type_filter_last_item=0&is_archived=0") 
+    if (
+      token &&
+      !request.url.startsWith('https://api.800.com')
+    ) 
     {
       request = this.addToken(request, token);
     }

@@ -4,7 +4,7 @@ import { StorageService } from './storage.service';
 import { DatePipe, formatDate } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import * as moment from 'moment';
-import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 
@@ -27,6 +27,8 @@ export class CameraService {
     private storageSer: StorageService,
     private datePipe: DatePipe
   ) { }
+
+  siren_sub = new BehaviorSubject<boolean>(false);
 
   incidentList(payload?: any) {
     let url = `${environment.guard_monitoring_url}/incidentList_1_0`;
@@ -230,18 +232,18 @@ export class CameraService {
 
 
   private readonly API_URL = 'https://api.800.com/message';
-  private readonly receive_URL= 'https://api.800.com/companies/138829/conversations?updated_before=&updated_after=&search=&types[]=message&types[]=call&types[]=voicemail&types[]=fax&types[]=note&type_filter_last_item=0&is_archived=0';
+  private readonly receive_URL = 'https://api.800.com/companies/138829/conversations?updated_before=&updated_after=&search=&types[]=message&types[]=call&types[]=voicemail&types[]=fax&types[]=note&type_filter_last_item=0&is_archived=0';
   private readonly COMPANY_ID = '138829';
   private readonly MAX_FILE_SIZE = 600 * 1024;  // 600kb
-  private readonly ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/gif','image/jpg'];
+  private readonly ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
 
- 
+
 
   private validateFile(file: File): boolean {
     if (file.size > this.MAX_FILE_SIZE) {
-      throw new Error(`File size exceeds ${this.MAX_FILE_SIZE / 1024 }KB limit`);
+      throw new Error(`File size exceeds ${this.MAX_FILE_SIZE / 1024}KB limit`);
     }
-    
+
     if (!this.ALLOWED_FILE_TYPES.includes(file.type)) {
       throw new Error(`File type ${file.type} not supported. Allowed types: ${this.ALLOWED_FILE_TYPES.join(', ')}`);
     }
@@ -251,28 +253,29 @@ export class CameraService {
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An error occurred';
-    
+
     if (error.error instanceof ErrorEvent) {
       // Client-side error
       errorMessage = `${error.error.message}`;
     } else {
       // Server-side error
       errorMessage = `${error.status}\nMessage: ${error.message}`;
-      
+
       // Specific 800.com error handling
       if (error.error?.error?.message) {
         errorMessage += `\n800.com Error: ${error.error.error.message}`;
       }
     }
-    
+
     console.error(errorMessage);
     return throwError(() => new Error(errorMessage));
   }
 
-  sendMessage800(payload:any, file?: File): Observable<any> {
+  sendMessage800(payload: any, file?: File): Observable<any> {
+    console.log(file)
     try {
       // Validate inputs
-      if (!payload.recipient ) {
+      if (!payload.recipient) {
         throw new Error('Recipient is required');
       }
 
@@ -282,25 +285,22 @@ export class CameraService {
       formData.append('message', payload.message);
       formData.append('company_id', this.COMPANY_ID);
 
-      // Handle file if provided
       if (file) {
         this.validateFile(file);
         formData.append('media[0]', file);
       }
 
-      // Get token from secure storage (environment variables or secure storage service)
       const token = this.getSecureToken();
-
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
       });
 
-      return this.http.post(this.API_URL, formData, { 
+      return this.http.post(this.API_URL, formData, {
         headers,
-        reportProgress: true, // Enable progress reporting
-        observe: 'events'     // Get upload progress events
+        reportProgress: true,
+        observe: 'events'
       }).pipe(
-        retry(3), // Retry failed requests up to 3 times
+        retry(3),
         catchError(this.handleError)
       );
     } catch (error) {
@@ -308,22 +308,16 @@ export class CameraService {
     }
   }
 
-  getRecievedMsg(){
-
+  getRecievedMsg() {
     const token = this.getSecureToken();
-
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
-      
     });
-
-    return this.http.get(this.receive_URL,{headers : headers});
-
+    return this.http.get(this.receive_URL, { headers: headers });
   }
 
   private getSecureToken(): string {
-   
-    const token = `${environment.API_TOKEN}`; 
+    const token = `${environment.API_TOKEN}`;
     if (!token) {
       throw new Error('API token not configured');
     }

@@ -75,7 +75,7 @@ export class DashboardComponent {
   currentTime: any;
   displayTime: any;
   intervalId: any;
-  
+
   ngOnInit() {
     this.getSites();
     this.resizeObservable = fromEvent(window, 'resize');
@@ -298,23 +298,33 @@ export class DashboardComponent {
   }
 
   audioIndex: number = -1;
-  audio(data: any, index: any) {
-    this.audioIndex = index;
-    this.http
-      .get(`${environment.site_url}/play_1_0/${data.cameraId}`)
-      .subscribe(
-        (res: any) => {
+  audio(data: any) {
+    this.audioIndex = this.getCurrentPageItems.indexOf(data);
+    this.camSer.siren_sub.next(true);
+
+    this.http.get(`${environment.site_url}/play_1_0/${data.cameraId}`)
+      .subscribe({
+        next: (res: any) => {
+          setTimeout(() => {
+            this.camSer.siren_sub.next(false);
+          }, 120000);
           this.audioIndex = -1;
           if (res.statusCode === 200) {
             this.alertSrvc.snackSuccess(res.message);
           } else {
             this.alertSrvc.snackError(res.message);
           }
+
         },
-        (err: HttpErrorResponse) => {
+        error: (err) => {
+          setTimeout(() => {
+            this.camSer.siren_sub.next(false);
+          }, 120000);
           this.audioIndex = -1;
           this.alertSrvc.snackError('Siren not Played!');
+
         }
+      }
       );
 
     // this.camSer.play(data).subscribe({
@@ -374,7 +384,7 @@ export class DashboardComponent {
   }
 
   /** drag and drop cameras */
-
+  
   actionTags: any = [];
   alertTypes: any = [];
   alertSubTypes: any = [];
@@ -413,7 +423,10 @@ export class DashboardComponent {
       const y = event.clientY - rect.top;
 
       let timeAlert;
-      if (data.siteId == 36415) {
+      if (this.listType === 6) {
+        timeAlert = { time1: 160, time2: 180, time3: 210, time4: 240, time5: 270 };
+      }
+      else if (data.siteId == 36415) {
         timeAlert = environment.kennedyAlert;
       }
       else if (data.siteId == 36444 || data?.siteId === 36446) {
@@ -442,17 +455,6 @@ export class DashboardComponent {
         height: `${this.listType === 1 ? 8 : this.listType === 2 ? 12 : 15}`,
       });
 
-      // let hourVal = formatDate(this.displayTime, 'HH:MM:SS', 'en-us').split(':')[0];
-      // this.analyticsObj = {
-      //   siteId: data?.siteId,
-      //   cameraId: data?.cameraId,
-      //   cameraTime: moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss'),
-      //   hour: parseInt(hourVal),
-      //   no_of_objects: 1,
-      //   createdBy: null
-      // }
-      // this.addVehicleCount();
-
       this.currentTime = new Date();
       this.btnInterval = setInterval(() => {
         this.currentTime = new Date();
@@ -473,7 +475,6 @@ export class DashboardComponent {
     // }
     for (let i = 0; i < x.length; i++) {
       this.selectedFiles.push(x[i]);
-      // this.emailBody.mannualEmailBody.push(item);
     }
   }
 
@@ -501,8 +502,9 @@ export class DashboardComponent {
     });
   }
 
-  getScreenshot(data: any, file: any) {
-    let time = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss')
+  postScreenshot(data: any, file: any) {
+    let user = this.storageSer.getData('userData');
+    let time = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss:SSS');
     data.time = time;
 
     this.camSer.screenshots(data, file).subscribe({
@@ -510,8 +512,31 @@ export class DashboardComponent {
         if (res.statusCode === 200) {
           if (this.listType === 6) {
             if (data.color == 'green') {
-              this.event_service.write2Dispatch({ ...data, queue_name: 'dispatch-2nd-level' }).subscribe();
+              this.event_service.write2Dispatch({
+                ...data,
+                queue_name: 'dispatch-2nd-level',
+                actionTag: 'suspicious',
+                userLevelAlarmInfo: [
+                  {
+                    level: 1,
+                    user: user?.UserId,
+                    actionTag: 2,
+                    subActionTag: 23,
+                    alarm: data?.audioUrl ? 'P' : 'N',
+                    landingTime: time,
+                    reviewStart: time,
+                    reviewEnd: time,
+                    notes: '',
+                  }
+                ]
+              }).subscribe({
+                next: (res) => {
+                  // this.closeEvent()
+                  data.buttons.splice(0, 1);
+                }
+              });
             }
+            // this.audio(data);
           } else {
             if (data.color == 'yellow' || (this.currentItem?.siteId === 36336 && data.color == 'green')) {
               if (
@@ -532,8 +557,6 @@ export class DashboardComponent {
               }
             }
           }
-
-
         }
       },
     });
@@ -666,7 +689,7 @@ export class DashboardComponent {
       hour: hour,
       currentTime: this.cameraCurrentTime,
     };
-    this.getScreenshot(data.camera, data.image);
+    this.postScreenshot(data.camera, data.image);
   }
 
   addVehicleCount() {
@@ -681,13 +704,6 @@ export class DashboardComponent {
 
   closeEvent(data: any, btnIndex: any) {
     if (this.listType === 0) {
-      // let hourVal = formatDate(data.buttons[btnIndex].dspTime, 'H:MM:SS', 'en-us').split(':')[0];
-      // this.analyticsObj.cameraId = data.cameraId;
-      // this.analyticsObj.cameraTime = formatDate(data.buttons[btnIndex].dspTime, 'yyyy-MM-dd HH:MM:SS', 'en-us'),
-      // this.analyticsObj.cameraTime = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss'),
-      // this.analyticsObj.hour = Number(hourVal),
-      // this.analyticsObj.no_of_objects = -1;
-      // this.addVehicleCount();
       data.buttons.splice(btnIndex, 1);
     }
   }
@@ -707,8 +723,6 @@ export class DashboardComponent {
     let videoComponents = this.videos.toArray();
     if (videoComponents[index]) {
       videoComponents[index].capture(camera, color, imgElement, btnItem);
-    } else {
-      console.log('No Component Found!');
     }
   }
 
@@ -733,7 +747,7 @@ export class DashboardComponent {
   }
 
 
-  
+
 
   ngOnDestroy() {
     this.resizeSubscription?.unsubscribe();

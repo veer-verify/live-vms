@@ -35,6 +35,6 @@
   padding: 0 !important;
 }
 
-::ng-deep .mat-mdc-menu-panel.mat-mdc-menu-panel {
+.user-detail ::ng-deep .mat-mdc-menu-panel.mat-mdc-menu-panel {
   max-width: 500px !important;
 }

@@ -299,23 +299,8 @@
                   >
                     <img src="assets/icons/close.svg" alt="" width="18" />
                   </button>
-                  <button
-                    class="frame-icon"
-                    *ngIf="item.audioUrl"
-                    (click)="audio(item, c)"
-                    matTooltip="Siren"
-                    [disabled]="audioIndex === c"
-                  >
-                    <img
-                      [src]="
-                        audioIndex === c
-                          ? 'assets/icons/siren-red.png'
-                          : 'assets/icons/siren-new.png'
-                      "
-                      [ngClass]="audioIndex == c ? 'blink-animation' : ''"
-                      alt=""
-                      width="15"
-                    />
+                  <button class="frame-icon" *ngIf="item.audioUrl" (click)="audio(item)" matTooltip="Siren" [disabled]="audioIndex === c">
+                    <img [src]="audioIndex === c ? 'assets/icons/siren-red.png' : 'assets/icons/siren-new.png'" [ngClass]="audioIndex == c ? 'blink-animation' : ''" alt="" width="15" />
                   </button>
                   <button
                     class="frame-icon"
@@ -355,94 +340,48 @@
             >
               <span *ngFor="let btn of item?.buttons; let b = index">
                 <img
-                  [ngClass]="
-                    currentTime > btn?.chkTime1 ? 'btn-item-active' : 'btn-item'
-                  "
+                  [ngClass]="currentTime > btn?.chkTime1 ? 'btn-item-active' : 'btn-item'"
                   [style.left.px]="btn.x"
                   [style.top.px]="btn.y"
                   [style.height.px]="btn.height"
                   [style.width.px]="btn.width"
                   [src]="
-                    currentTime > btn?.chkTime5
-                      ? 'assets/icons/violet-dot.png'
-                      : currentTime > btn?.chkTime4
-                      ? 'assets/icons/orange-dot.png'
-                      : currentTime > btn?.chkTime3
-                      ? 'assets/icons/blue-dot.png'
-                      : currentTime > btn?.chkTime2
-                      ? 'assets/icons/red-dot.png'
-                      : currentTime > btn?.chkTime1
-                      ? 'assets/icons/yellow-dot.png'
-                      : 'assets/icons/green-dot.png'
-                  "
+                    currentTime > btn?.chkTime5 ? 'assets/icons/violet-dot.png':
+                    currentTime > btn?.chkTime4 ? 'assets/icons/orange-dot.png':
+                    currentTime > btn?.chkTime3 ? 'assets/icons/blue-dot.png':
+                    currentTime > btn?.chkTime2 ? 'assets/icons/red-dot.png':
+                    currentTime > btn?.chkTime1 ? 'assets/icons/yellow-dot.png' :
+                    'assets/icons/green-dot.png'"
                   (load)="
-                    currentTime > btn?.chkTime5
-                      ? captureScreenshot(item, c, 'violet', btn, b)
-                      : currentTime > btn?.chkTime4
-                      ? captureScreenshot(item, c, 'orange', btn, b)
-                      : currentTime > btn?.chkTime3
-                      ? captureScreenshot(item, c, 'blue', btn, b)
-                      : currentTime > btn?.chkTime2
-                      ? captureScreenshot(item, c, 'red', btn, b)
-                      : currentTime > btn?.chkTime1
-                      ? captureScreenshot(item, c, 'yellow', btn, b)
-                      : captureScreenshot(item, c, 'green', btn, b)
-                  "
-                  alt=""
-                />
+                    currentTime > btn?.chkTime5 ? captureScreenshot(item, c, 'violet', btn, b) :
+                    currentTime > btn?.chkTime4 ? captureScreenshot(item, c, 'orange', btn, b) :
+                    currentTime > btn?.chkTime3 ? captureScreenshot(item, c, 'blue', btn, b) :
+                    currentTime > btn?.chkTime2 ? captureScreenshot(item, c, 'red', btn, b) :
+                    currentTime > btn?.chkTime1 ? captureScreenshot(item, c, 'yellow', btn, b) :
+                    captureScreenshot(item, c, 'green', btn, b);"
+                    alt="">
 
                 <span *ngIf="listType === 0">
                   <img
                     src="assets/icons/close-white.svg"
                     width="15"
                     class="pointer"
-                    style="opacity: 0; position: absolute"
+                    style="opacity: 0; position: absolute;"
                     [style.left.px]="btn.x"
                     [style.top.px]="btn.y"
                     (click)="closeEvent(item, b)"
-                    [matTooltip]="btn?.dspTime ?? ''"
-                  />
+                    [matTooltip]="(btn?.dspTime) ?? ''" />
                 </span>
-
-                <!-- <div class="close-event mt-1" [style.left.px]="btn.x" [style.top.px]="btn.y" *ngIf="currrentCamId == item?.cameraId && btnIndex == b">
-                    <span class="d-flex mt-3">
-                      <div class="bg-light p-1" *ngFor="let img of imgFiles">
-                        <img [src]="img" class="m-1" width="300" height="300" alt="">
-                      </div>
-                    </span>
-
-                    <button (click)="closeEvent(item, b)">Close Event</button>
-                  </div> -->
               </span>
             </div>
 
-            <!-- <iframe class="d-none" (load)="getUrl(item)"></iframe> -->
-            <!-- <ng-container *ngIf="!item.cameraId.startsWith('MLD') && item.videoUrl">
-              <app-video-player [videoData]="item?.videoUrl" [camerasForPage]="camerasForPage"
-                [isMaximized]="isMaximized" (emailDataEmitter)="getEmail($event)" #video></app-video-player>
-            </ng-container>
-            <ng-container *ngIf="!item.cameraId.startsWith('MLD') && !item.videoUrl">
-              <app-dummy-video [camerasForPage]="camerasForPage" #video></app-dummy-video>
-            </ng-container>
-
-            <ng-container *ngIf="item.cameraId.startsWith('MLD')">
-              <iframe [src]="item?.httpUrl | sanitize" width="100%"
-                [style.height]="iframeIndex === c ? '100vh' : iframeHeight" #video></iframe>
-            </ng-container> -->
-
             <ng-container>
-              <app-video-player
-                [videoData]="item?.httpUrl + '/'"
-                [camerasForPage]="camerasForPage"
-                [isMaximized]="isMaximized"
-                (screenshotEmitter)="getImageFromVideo($event)"
-                #video
-              ></app-video-player>
+              <app-video-player [siteData]="currentSite" [videoData]="item?.httpUrl + '/'" [camerasForPage]="camerasForPage"
+                [isMaximized]="isMaximized" (screenshotEmitter)="getImageFromVideo($event)" #video></app-video-player>
             </ng-container>
             <!-- <ng-container *ngIf="item.indexNo != 1 && !item.videoUrl">
               <app-dummy-video [camerasForPage]="camerasForPage" #video></app-dummy-video>
             </ng-container> -->
-
             <!-- <ng-container *ngIf="item.indexNo == 1">
               <iframe [src]="item?.httpUrl | sanitize" width="100%"
                 [style.height]="iframeIndex === c ? '100vh' : iframeHeight" #video></iframe>
@@ -625,7 +564,7 @@
   </div>
 </ng-template>
 
-<!-- 
-<ng-container *ngIf="isSidePanelOpen">
+
+<!-- <ng-container *ngIf="isSidePanelOpen">
   <app-sidepanel [isSidePanelOpen]="isSidePanelOpen" (sidePanelClosed)="onCloseSidePanel($event)"></app-sidepanel>
 </ng-container> -->

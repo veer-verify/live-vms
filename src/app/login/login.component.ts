@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import * as moment from 'moment';
 import { AlertService } from 'src/services/alert.service';
 import { LoginService } from 'src/services/login.service';
 import { MetadataService } from 'src/services/metadata.service';
@@ -31,6 +32,7 @@ export class LoginComponent {
       userName: this.fb.control('', Validators.required),
       password: this.fb.control('', Validators.required)
     });
+
   }
 
   showLoader: boolean = false;
@@ -74,7 +76,6 @@ export class LoginComponent {
   getMetadata() {
     this.metadata_service.getMetadata().subscribe({
       next: (res: any) => {
-        console.log(res);
         this.storageSer.metadat_sub = res
       }
     })
