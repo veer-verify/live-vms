@@ -10,7 +10,7 @@
 
     <div class="list-group">
       <a class="list-group-item" [routerLink]="['/user-dashboard/monitoring-info']" routerLinkActive="routeactive">
-        <img src="assets/icons/dashboard.svg" />
+        <img src="assets/icons/grip.svg" />
         <span style="font-weight: 500">Dashboard</span>
       </a>
 
@@ -20,29 +20,25 @@
           storage_service.isFirstLevel()
         ">
         <a class="list-group-item" [routerLink]="['/dashboard']" routerLinkActive="routeactive">
-          <img src="assets/icons/sites.svg" />
+          <img src="assets/icons/building.svg" />
           <span style="font-weight: 500">Sites</span>
         </a>
       </ng-container>
 
       <a class="list-group-item" [routerLink]="['/user-dashboard/alerts-info']" routerLinkActive="routeactive">
-        <img src="assets/icons/dashboard.svg" />
+        <img src="assets/icons/bell.svg" />
         <span style="font-weight: 500">Alerts</span>
       </a>
 
-      <!-- <a class="list-group-item" [routerLink]="['/user-dashboard/playback-info']" routerLinkActive="routeactive">
-        <img src="assets/icons/dashboard.svg">
-        <span style="font-weight: 500;">Playback</span>
-      </a> -->
       <a class="list-group-item " [routerLink]="['/user-dashboard/device-status']" routerLinkActive="routeactive">
-        <img src="assets\icons\sites.svg">
+        <img src="assets/icons/floppy-disk.svg">
         <span style="font-weight: 500;">Devices</span>
       </a>
 
       <ng-container
         *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || storage_service.isSecondLevel()">
         <a class="list-group-item" [routerLink]="['/user-dashboard/events']" routerLinkActive="routeactive">
-          <img src="assets/icons/dashboard.svg">
+          <img src="assets/icons/magnifying-glass.svg">
           <span style="font-weight: 500;">Reviewer</span>
         </a>
       </ng-container>
@@ -50,7 +46,7 @@
       <ng-container
         *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || storage_service.isThirdLevel()">
         <a class="list-group-item" [routerLink]="['/user-dashboard/third-level']" routerLinkActive="routeactive">
-          <img src="assets/icons/dashboard.svg">
+          <img src="assets/icons/truck-ramp-box.svg">
           <span style="font-weight: 500;">Dispatcher</span>
         </a>
       </ng-container>

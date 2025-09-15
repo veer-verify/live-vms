@@ -314,7 +314,6 @@ export class DashboardComponent {
           } else {
             this.alertSrvc.snackError(res.message);
           }
-
         },
         error: (err) => {
           setTimeout(() => {

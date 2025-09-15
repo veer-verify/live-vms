@@ -49,10 +49,6 @@ export class VideoPlayerComponent {
 
   ngAfterViewInit() {
     if (this.siteData?.siteId === 36585 || this.siteData?.siteId === 36591) {
-      // if (this.camSer.siren_sub.getValue()) {
-      //   this.video.nativeElement.muted = false;
-      // }
-
       this.camSer.siren_sub.subscribe((res: any) => {
         if (res) {
           this.video.nativeElement.muted = false;

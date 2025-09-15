@@ -16,7 +16,7 @@ import { StorageService } from 'src/services/storage.service';
   styleUrls: ['./alerts-info.component.css']
 })
 export class AlertsInfoComponent {
-constructor(
+  constructor(
     private eventSer: CameraService,
     private sanitizer: DomSanitizer,
     public matdialog: MatDialog,
@@ -24,11 +24,11 @@ constructor(
     private metadaSer: MetadataService,
     private siteSer: SiteService,
     public storage_service: StorageService
-  ) {}
+  ) { }
 
   environment = environment.download_url;
   userData: any;
-  showLoader: boolean = false;
+  // showLoader: boolean = false;
   searchText: any;
   latestIncidentTime: any;
   objectNames = ['Person', 'Vehicle'];
@@ -53,7 +53,7 @@ constructor(
   }
 
   isVid(data: string) {
-    if(!data) return;
+    if (!data) return;
     let arr = ['mp4', 'avi'];
     return arr.includes(data?.split('.')[data.split('.').length - 1])
   }
@@ -61,12 +61,10 @@ constructor(
   siteIdToNav: Array<any> = new Array();
   errInfo: any;
   getSitesListForUserName() {
-    this.showLoader = true;
-            this.storage_service.status_text = 'loading...';
+    this.storage_service.status_text = 'loading...';
     this.siteSer.getSites(this.userData).subscribe((res: any) => {
-      this.showLoader = false;
-              this.storage_service.status_text = 'loading...';
-      if(res.Status === 'Success') {
+      if (res.Status === 'Success') {
+        this.storage_service.status_text = '';
         this.siteIdToNav = res?.sites.sort((a: any, b: any) => a.siteName > b.siteName ? 1 : a.siteName < b.siteName ? -1 : 0);
         // this.camerasListForSites(this.siteIdToNav[0]);
         // this.footageList(this.siteIdToNav[0]);
@@ -74,18 +72,19 @@ constructor(
         // this.currentSite = this.siteIdToNav[0];
         this.filter();
         this.getTags();
-      } else if(res.Status === 'Failed') {
+      } else if (res.Status === 'Failed') {
+        this.storage_service.status_text = 'no data!';
         this.errInfo = res.message;
       }
     }, (err: any) => {
-      this.showLoader = false;
+      this.storage_service.status_text = 'failed to load data!';
       this.errInfo = 'CONNECTION TIMED OUT!';
     })
   }
-  
+
   camData: Array<any> = new Array();
   camerasListForSites(siteId: any) {
-    this.siteSer.getCamerasForSiteId({siteId: siteId}).subscribe((res: any) => {
+    this.siteSer.getCamerasForSiteId({ siteId: siteId }).subscribe((res: any) => {
       this.camData = res;
     });
   }
@@ -101,8 +100,8 @@ constructor(
   listActionTags(data: any) {
     this.newTags = [];
     let cam = data?.cameraId;
-    this.eventSer.listActionTags({cameraId: cam}).subscribe((res: any) => {
-      if(res.statusCode == 200) {
+    this.eventSer.listActionTags({ cameraId: cam }).subscribe((res: any) => {
+      if (res.statusCode == 200) {
         this.newTags = res.data.filter((item: any) => item.siteId == this.siteId)[0].actionTags;
       }
     })
@@ -147,8 +146,7 @@ constructor(
     this.camerasListForSites(this.siteId);
     let pageNumber;
     type == 'next' ? pageNumber = this.currentPage + 1 : type == 'prev' ? pageNumber = this.currentPage - 1 : pageNumber = type;
-    this.showLoader = true;
-        this.storage_service.status_text = 'loading...';
+    this.storage_service.status_text = 'loading...';
     this.eventSer.incidentList({
       siteId: this.siteId,
       cameraId: this.cameraId,
@@ -157,19 +155,18 @@ constructor(
       fromDate: this.fromDate,
       toDate: this.toDate,
     }).subscribe((res: any) => {
-      this.showLoader = false;
-              this.storage_service.status_text = '';
-
       this.currentPage = res.page;
       this.totalPages = res.totalPages;
-      if(res.statusCode === 200) {
+      if (res.statusCode === 200) {
+        this.storage_service.status_text = '';
         this.eventData = res.IncidentList;
         this.newEventData = [...this.eventData];
       } else {
+        this.storage_service.status_text = 'no data!';
         this.newEventData = [];
       }
     }, (err: HttpErrorResponse) => {
-      this.showLoader = false;
+      this.storage_service.status_text = 'failed to load data!';
     });
   }
 
@@ -211,9 +208,9 @@ constructor(
   isVideo: boolean = false;
   getImageDataforMode(data: any) {
     this.currentImageIndex = 0;
-    if(data?.files.length !== 0) {
+    if (data?.files.length !== 0) {
       let check = data?.files[0].split('.');
-      if(check[check.length - 1] === 'mp4' || check[check.length - 1] === '3gp') {
+      if (check[check.length - 1] === 'mp4' || check[check.length - 1] === '3gp') {
         this.isVideo = true;
       } else {
         this.isVideo = false;
@@ -224,9 +221,9 @@ constructor(
   }
 
   showPrev() {
-    if(this.currentVideoData?.files.length !== 0) {
+    if (this.currentVideoData?.files.length !== 0) {
       let check = this.currentVideoData?.files[this.currentImageIndex - 1].split('.');
-      if(check[check.length - 1] === 'mp4' || check[check.length - 1] === '3gp') {
+      if (check[check.length - 1] === 'mp4' || check[check.length - 1] === '3gp') {
         this.isVideo = true;
         this.currentImageIndex--;
       } else {
@@ -237,9 +234,9 @@ constructor(
   }
 
   showNext() {
-    if(this.currentVideoData?.files.length !== 0) {
+    if (this.currentVideoData?.files.length !== 0) {
       let check = this.currentVideoData?.files[this.currentImageIndex + 1].split('.');
-      if(check[check.length - 1] === 'mp4' || check[check.length - 1] === '3gp') {
+      if (check[check.length - 1] === 'mp4' || check[check.length - 1] === '3gp') {
         this.isVideo = true;
         this.currentImageIndex++;
       } else {
@@ -254,7 +251,7 @@ constructor(
     this.currentItem = data;
     this.matdialog.open(this.uploadFileDialog);
   }
-  
+
   uploadVideoFile() {
     // this.showLoader = true;
     // this.eventSer.uploadVideoFile({file: this.selectedFile, data: this.currentItem}).subscribe((res: any) => {
@@ -275,7 +272,7 @@ constructor(
   currentItem: any;
   openEditDialog(data: any) {
     this.listActionTags(data)
-    this.currentItem =data;
+    this.currentItem = data;
     this.matdialog.open(this.editDialog);
   }
 

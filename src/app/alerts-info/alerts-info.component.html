@@ -88,7 +88,7 @@
                 </tr>
             </thead>
 
-            <tbody *ngIf="!showLoader">
+            <tbody>
                 <tr *ngFor="let item of newEventData; let i = index">
                     <!-- <td>{{i+1}}</td> -->
                     <!-- <td>{{item?.siteName}}</td> -->
@@ -121,16 +121,6 @@
                 </tr>
             </tbody>
         </table>
-
-        <div *ngIf="newEventData.length === 0 && !showLoader"
-            class="d-flex justify-content-center align-items-center bg-white w-100" style="height: 50vh;">
-            <p style="font-size: 30px;">{{ 'NO DATA!' }}</p>
-        </div>
-        
-        <!-- <div *ngIf="showLoader1" class="d-flex justify-content-center align-items-center bg-white"
-            style="height: 50vh;">
-            <img src="assets/gif/table-loader.webp" alt="" width="75px" height="75px">
-        </div> -->
     </div>
 </ng-container>
 
