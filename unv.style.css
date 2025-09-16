@@ -1,0 +1,6 @@
+:root {
+  --background-img: linear-gradient(325deg, #1E3F73 100%, #ffffff 0%);
+  --cmn-background: linear-gradient(160deg, #1E3F73, #ffffff);
+  --card-background: #ffffff;
+  --loader-background: linear-gradient(325deg, #86a5d6, #1E3F73);
+}

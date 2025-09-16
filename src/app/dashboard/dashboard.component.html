@@ -112,8 +112,8 @@
                 <div cdkDrag [cdkDragDisabled]="checkCam(cam)">
                   <img [src]="
                       cam?.camMonitor === 'T'
-                        ? storageSer.activeLogo
-                        : storageSer.inActiveLogo
+                        ? storageSer.environment.activeLogo
+                        : storageSer.environment.inActiveLogo
                     " alt="" class="me-1" width="15px" />
 
                   <span *ngIf="cameras.length != 0">{{

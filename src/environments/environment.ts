@@ -58,4 +58,15 @@ export const environment = {
     },
 
     API_TOKEN: 'OjykxjAFrVn6KqBcppQI2ptAt4Dpf0RyWE0eUINs7WyqWXLrtUKr3iS1LPRem0TY0UtU43H3S4rtt300',
+
+    logo: 'assets/themes/logo.png',
+    headerLogo: 'assets/themes/IVISsecurity_logo.png',
+    accordianLogo: 'assets/icons/eye.svg',
+    activeLogo: 'assets/icons/eye-blue.svg',
+    inActiveLogo: 'assets/icons/eye-red.svg',
+
+    background_image: 'linear-gradient(325deg, rgba(20, 31, 77, 0.9) 18%, rgba(90, 13, 3, 0.9) 66%)',
+    common_background: 'linear-gradient(160deg, #D44124, #104b86)',
+    card_background: '#e6e8e8',
+    loader_background: 'linear-gradient(90deg, rgba(28, 74, 130, 0.9) 0%, rgba(131, 96, 110, 0.9) 50%, rgba(208, 67, 41, 0.9) 100%)',
 };

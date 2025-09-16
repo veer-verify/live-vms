@@ -6,8 +6,7 @@
   *ngIf="!isHidden"
 >
   <div class="icon d-flex align-items-center">
-    <a class="logo pointer"><img src="assets\images\logo.png" width="150px"/></a>
-    <!-- <a class="logo pointer"><img src="assets/images/Uneeviu Logo Blue png.png" width="200px"/></a> -->
+    <a class="logo pointer"><img [src]="storageSer.environment.logo" width="100px"/></a>
   </div>
 
   <div class="user-detail">

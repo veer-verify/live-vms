@@ -2,7 +2,7 @@ import { formatDate } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { AlertService } from 'src/services/alert.service';
 import { CameraService } from 'src/services/camera.service';
@@ -18,7 +18,6 @@ import { StorageService } from 'src/services/storage.service';
 export class AlertsInfoComponent {
   constructor(
     private eventSer: CameraService,
-    private sanitizer: DomSanitizer,
     public matdialog: MatDialog,
     private alertSer: AlertService,
     private metadaSer: MetadataService,
@@ -28,7 +27,6 @@ export class AlertsInfoComponent {
 
   environment = environment.download_url;
   userData: any;
-  // showLoader: boolean = false;
   searchText: any;
   latestIncidentTime: any;
   objectNames = ['Person', 'Vehicle'];
@@ -66,10 +64,7 @@ export class AlertsInfoComponent {
       if (res.Status === 'Success') {
         this.storage_service.status_text = '';
         this.siteIdToNav = res?.sites.sort((a: any, b: any) => a.siteName > b.siteName ? 1 : a.siteName < b.siteName ? -1 : 0);
-        // this.camerasListForSites(this.siteIdToNav[0]);
-        // this.footageList(this.siteIdToNav[0]);
         this.siteId = this.siteIdToNav[0].siteId;
-        // this.currentSite = this.siteIdToNav[0];
         this.filter();
         this.getTags();
       } else if (res.Status === 'Failed') {
@@ -113,30 +108,8 @@ export class AlertsInfoComponent {
 
   eventData: Array<any> = new Array();
   newEventData: Array<any> = new Array();
-  // currentSite: any;
   currentPage!: number;
   totalPages!: number;
-  // footageList(data: any) {
-  //   this.camerasListForSites(data);
-  //   this.currentSite = data;
-  //   this.showLoader = true;
-  //   this.eventSer.incidentList(data).subscribe((res: any) => {
-  //     this.showLoader = false;
-  //     this.currentPage = res.page;
-  //     this.totalPages = res.totalPages;
-  //     if(res.statusCode == 200) {
-  //       this.eventData = res.IncidentList;
-  //       this.newEventData =[...this.eventData];
-  //       this.errInfo = null;
-  //     } else {
-  //       this.newEventData = [];
-  //     }
-  //   }, (err: any) => {
-  //     this.showLoader = false;
-  //     // this.errInfo = 'CONNECTION TIMED OUT!';
-  //   })
-  // }
-
   siteId: any = '';
   cameraId: any = '';
   actionTag: any = '';

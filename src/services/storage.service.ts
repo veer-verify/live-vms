@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
 import { MetadataService } from './metadata.service';
 import { Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -9,36 +10,8 @@ import { Subject } from 'rxjs';
 })
 export class StorageService {
 
-  // themes = [
-  //   {
-  //     company: 'ivis',
-  //     logo: '/assets/images/logo.png',
-  //     headerLogo: '/assets/images/IVISsecurity_logo.png',
-  //     icon: ''
-  //   },
-  //   {
-  //     company: 'unv',
-  //     logo: '/assets/images/Uneeviu Logo Blue png.png',
-  //     headerLogo: '/assets/images/Uneeviu Logo Blue png.png',
-  //     icon: ''
-  //   }
-  // ]
-
-  //ivis
-  logo = 'assets/themes/logo.png';
-  headerLogo = 'assets/themes/IVISsecurity_logo.png';
-  accordianLogo = 'assets/icons/eye.svg';
-  activeLogo = 'assets/icons/eye-blue.svg';
-  inActiveLogo = 'assets/icons/eye-red.svg';
-
-  //unv
-  // logo = 'assets/images/UneeviuLogowhite (1).png';
-  // headerLogo = 'assets/themes/Uneeviu Logo Blue png.png';
-  // accordianLogo = 'assets/themes/CameraLogowhite.png';
-  // activeLogo = 'assets/themes/Uneeviu Logo Blue png.png';
-  // inActiveLogo = 'assets/themes/Uneeviu Logo Blue png.png';
-
   private readonly key = "verifai";
+  environment = environment;
 
   metadat_sub: any = [];
   status_text!: string;
