@@ -1,15 +1,16 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { StorageService } from './storage.service';
 import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-  
+
   constructor(
     private http: HttpClient,
     private storageSer: StorageService,
@@ -26,7 +27,7 @@ export class LoginService {
     return this.http.post(url, Object.fromEntries(credentials));
   }
 
-    manageUserSession(type: string): Observable<any> {
+  manageUserSession(type: string): Observable<any> {
     let url = environment.login_url + `/manageUserSession_1_0`;
     var user = this.storageSer.getData('userData');
     let sessionId = JSON.parse(localStorage.getItem('sId')!);
@@ -40,7 +41,7 @@ export class LoginService {
     obj.set('timeZone', timezone);
     obj.set('createdBy', user?.UserId);
     obj.set('callingSystemDetail', 'portal');
-    if(type === 'logOut') {
+    if (type === 'logOut') {
       obj.set('sessionId', sessionId);
     };
 

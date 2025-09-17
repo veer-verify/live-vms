@@ -7,6 +7,15 @@
   height: 65px;
 }
 
+.logo {
+  width: 150px;
+  height: auto;
+}
+
+.logo a {
+  cursor: pointer;
+}
+
 .user-btn {
   border: none;
   background-color: transparent;

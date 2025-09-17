@@ -272,7 +272,6 @@ export class CameraService {
   }
 
   sendMessage800(payload: any, file?: File): Observable<any> {
-    console.log(file)
     try {
       // Validate inputs
       if (!payload.recipient) {
