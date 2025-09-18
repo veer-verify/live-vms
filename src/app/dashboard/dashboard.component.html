@@ -194,7 +194,7 @@
           <div>
             <div class="btn-event" [style.cursor]="
                 listType === 0 || isMaximized ? 'default' : 'crosshair'
-              " (click)="createButton($event, item)" (dblclick)="toggleMaximize(c)" #btn>
+              " (click)="createButton($event, item)" (dblclick)="toggleMaximize(c)" #btn #createBtn>
               <span *ngFor="let btn of item?.buttons; let b = index">
                 <img [ngClass]="currentTime > btn?.chkTime1 ? 'btn-item-active' : 'btn-item'" [style.left.px]="btn.x"
                   [style.top.px]="btn.y" [style.height.px]="btn.height" [style.width.px]="btn.width" [src]="
@@ -209,7 +209,7 @@
                     currentTime > btn?.chkTime3 ? captureScreenshot(item, c, 'blue', btn, b) :
                     currentTime > btn?.chkTime2 ? captureScreenshot(item, c, 'red', btn, b) :
                     currentTime > btn?.chkTime1 ? captureScreenshot(item, c, 'yellow', btn, b) :
-                    captureScreenshot(item, c, 'green', btn, b);" alt="">
+                    captureScreenshot(item, c, 'green', btn, b);" alt="" >
 
                 <span *ngIf="listType === 0">
                   <img src="assets/icons/close-white.svg" width="15" class="pointer"

@@ -25,7 +25,7 @@
             <div style="position: relative;">
               <img [src]="environment + currentItem?.imageName" alt="LOADING..." loading="lazy"
                 onerror="this.src='assets/images/IVISsecurity_logo.png'" width="100%" height="500px"
-                class="bg-dark border rounded">
+                class="bg-dark border rounded" #image>
 
               <div style="position: absolute; top: 5px; right: 5px;">
                 <button style="border-radius: 5px; border: none; margin-right: 5px;" (click)="audio()"
@@ -33,6 +33,9 @@
                   <img [src]="isPlaying ? 'assets/icons/siren-red.png' : 'assets/icons/siren-new.png'"
                     [ngClass]="isPlaying ? 'blink-animation' : ''" alt="" width="16px" />
                 </button>
+                <!-- <button style="border-radius: 5px; border: none;" (click)="downloadImg()" matTooltip="Screenshot">
+                  <img src="assets/icons/screenshot.svg" alt="" width="16px" />
+                </button> -->
               </div>
             </div>
           </div>

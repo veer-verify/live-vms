@@ -383,7 +383,7 @@ export class DashboardComponent {
   }
 
   /** drag and drop cameras */
-  
+
   actionTags: any = [];
   alertTypes: any = [];
   alertSubTypes: any = [];
@@ -506,6 +506,15 @@ export class DashboardComponent {
     let time = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss:SSS');
     data.time = time;
 
+    this.btns.toArray().forEach((item) => {
+      item.nativeElement.style.pointerEvents = 'none';
+
+      setTimeout(() => {
+        item.nativeElement.style.pointerEvents = 'all';
+      }, 1000);
+    })
+
+
     this.camSer.screenshots(data, file).subscribe({
       next: (res: any) => {
         if (res.statusCode === 200) {
@@ -530,8 +539,11 @@ export class DashboardComponent {
                 ]
               }).subscribe({
                 next: (res) => {
-                  // this.closeEvent()
                   data.buttons.splice(0, 1);
+                  this.alertSrvc.snackSuccess('Event generated successfully!');
+                },
+                error: (err) => {
+                  this.alertSrvc.snackError('Event generated failed!');
                 }
               });
             }

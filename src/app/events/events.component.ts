@@ -14,6 +14,7 @@ import { StorageService } from 'src/services/storage.service';
 import { LiveComponent } from 'src/utilities/live/live.component';
 import { Send800Component } from '../send800/send800.component';
 import { HttpClient } from '@angular/common/http';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-events',
@@ -247,6 +248,7 @@ export class EventsComponent {
     }).subscribe({
       next: (res: any) => {
         this.cancelEvent();
+        this.displayCurrent(this.currentItem)
 
         if (res.statusCode === 200) {
           this.alert_service.snackSuccess(res.message);
@@ -256,6 +258,7 @@ export class EventsComponent {
       },
       error: (err) => {
         this.cancelEvent();
+        this.displayCurrent(this.currentItem)
       }
     });
   }
@@ -293,6 +296,7 @@ export class EventsComponent {
         }
       );
 
+    // this.currentItem.imageName = null;
     this.storage_service.show_loader = true;
     this.event_service.updateEventFullDetails({
       ...this.currentItem,
@@ -303,23 +307,25 @@ export class EventsComponent {
       actionTagTime: this.actionTagTime,
       activityDetTime: this.sirenTime ?? '',
       userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
-    })
-      .subscribe({
-        next: () => {
-          this.storage_service.show_loader = false;
-          this.sirenTime = null;
-          this.alert_service.snackSuccess('Alert sent successfully!');
-          if (type === 3) {
-            this.sendEmail();
-          } else {
-            this.cancelEvent();
-          }
-        },
-        error: (err) => {
-          this.storage_service.show_loader = false;
-          this.alert_service.snackError('failed!');
+    }).subscribe({
+      next: () => {
+        this.storage_service.show_loader = false;
+        this.sirenTime = null;
+        this.alert_service.snackSuccess('Alert sent successfully!');
+        if (type === 3) {
+          this.sendEmail();
+        } else {
+          this.cancelEvent();
+          this.displayCurrent(this.currentItem)
         }
-      })
+      },
+      error: (err) => {
+        this.storage_service.show_loader = false;
+        this.cancelEvent();
+        this.displayCurrent(this.currentItem);
+        this.alert_service.snackError('failed!');
+      }
+    })
   }
 
   actionTagTime: any;
@@ -380,13 +386,28 @@ export class EventsComponent {
       });
   }
 
-  @ViewChild('canvas') canvas!: ElementRef;
+  @ViewChild('image') image!: ElementRef;
   async downloadImg() {
-    const screenshotDataUrl = await this.canvas.nativeElement.toDataURL('image/png');
-    const link = document.createElement('a');
-    link.href = screenshotDataUrl;
-    link.download = `${new Date()}.png`;
-    link.click();
+    html2canvas(this.image.nativeElement).then((canvas) => {
+        let imageData = canvas.toDataURL("image/png");
+        let link = document.createElement('a');
+        link.href = imageData;
+        link.download = `${new Date()}.png`
+        link.click();
+    });
+
+    // const img = new Image();
+    // img.crossOrigin = 'anonymous';
+    // img.src = this.environment + this.currentItem?.imageName;
+    // img.onload = () => {
+    //     const ctx = this.image.nativeElement.getContext('2d');
+    //     ctx.drawImage(img, 0, 0);
+    //     const screenshotDataUrl = this.image.nativeElement.toDataURL('image/png');
+    //     const link = document.createElement('a');
+    //     link.href = screenshotDataUrl;
+    //     link.download = `${new Date()}.png`
+    //     link.click();
+    // };
   }
 
   openLiveDialog() {
