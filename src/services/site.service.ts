@@ -20,6 +20,8 @@ export class SiteService {
 
     params = params.set('userName', user?.UserName);
     params = params.set('siteStatus', 'Active');
+    params = params.set('monitoring', 'True');
+    
     if(payload?.page) {
       params = params.set('page', payload?.page);
     }
