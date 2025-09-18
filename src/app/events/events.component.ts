@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { fromEvent, map } from 'rxjs';
+import { debounceTime, first, fromEvent, interval, map, take, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AlertService } from 'src/services/alert.service';
 import { CameraService } from 'src/services/camera.service';
@@ -59,37 +59,36 @@ export class EventsComponent {
         });
       }
     }, 2000);
-
   }
 
   eventData: any = [
     // {
-    //     "siteId": 36428,
-    //     "siteName": "Albemarle Crossing",
-    //     "timezone": "America/Los_Angeles",
-    //     "httpUrl": "https://gisus7028live-repo.us2.pitunnel.com/GISUS7028C1",
-    //     "cameraId": "GISUS7028C1",
-    //     "color": "green",
-    //     "id": "68da8427-9bd3-4d25-9b9a-af1a9f38fa62",
-    //     "imageName": "GISUS7028C1_68da8427-9bd3-4d25-9b9a-af1a9f38fa62_2025-09-12_03-42-14_green.png",
-    //     "timestamp": "2025-09-12 03:42:14",
-    //     "userLevels": 0,
-    //     "actionTag": "suspicious",
-    //     "actionTime": "2025-09-12 03:42:15:088",
-    //     "eventTag": "",
-    //     "userLevelAlarmInfo": [
-    //         {
-    //             "level": 1,
-    //             "user": 1614,
-    //             "alarm": "N",
-    //             "landingTime": "2025-09-12 03:42:14",
-    //             "reviewStart": "2025-09-12 03:42:14",
-    //             "reviewEnd": "2025-09-12 03:42:14",
-    //             "actionTag": 2,
-    //             "subActionTag": 23,
-    //             "notes": ""
-    //         }
-    //     ]
+    //   "siteId": 36428,
+    //   "siteName": "Albemarle Crossing",
+    //   "timezone": "America/Los_Angeles",
+    //   "httpUrl": "https://gisus7028live-repo.us2.pitunnel.com/GISUS7028C1",
+    //   "cameraId": "GISUS7028C1",
+    //   "color": "green",
+    //   "id": "68da8427-9bd3-4d25-9b9a-af1a9f38fa62",
+    //   "imageName": "GISUS7028C1_68da8427-9bd3-4d25-9b9a-af1a9f38fa62_2025-09-12_03-42-14_green.png",
+    //   "timestamp": "2025-09-12 03:42:14",
+    //   "userLevels": 0,
+    //   "actionTag": "suspicious",
+    //   "actionTime": "2025-09-12 03:42:15:088",
+    //   "eventTag": "",
+    //   "userLevelAlarmInfo": [
+    //     {
+    //       "level": 1,
+    //       "user": 1614,
+    //       "alarm": "N",
+    //       "landingTime": "2025-09-12 03:42:14",
+    //       "reviewStart": "2025-09-12 03:42:14",
+    //       "reviewEnd": "2025-09-12 03:42:14",
+    //       "actionTag": 2,
+    //       "subActionTag": 23,
+    //       "notes": ""
+    //     }
+    //   ]
     // }
   ];
 
@@ -121,7 +120,7 @@ export class EventsComponent {
   alertSubType: any;
   eventIndex!: number;
 
-  @ViewChildren('currentBtn') currentBtn!: QueryList<ElementRef>;
+  @ViewChild('currentBtn') currentBtn!: ElementRef;
   displayCurrent(data: any) {
     this.currentItem = null;
     this.resetVals();
@@ -132,7 +131,6 @@ export class EventsComponent {
       this.currentItem = data;
       this.eventIndex = this.eventData.indexOf(this.currentItem);
     }, 500);
-
   }
 
   resetVals() {
@@ -262,65 +260,6 @@ export class EventsComponent {
     });
   }
 
-  // submitFalse() {
-  //   if (this.currentActionTag.categoryId === 2) return;
-
-  //   let user = this.storage_service.getData('userData');
-  //   let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
-
-  //   this.path === 'events' ?
-  //     this.currentItem?.userLevelAlarmInfo.push(
-  //       {
-  //         level: 2,
-  //         user: user?.UserId,
-  //         alarm: this.currentItem?.audio ? 'P' : 'N',
-  //         landingTime: this.currentItem?.landingTime ?? '',
-  //         reviewStart: this.currentItem?.reviewStart ?? '',
-  //         reviewEnd: endTime ?? '',
-  //         actionTag: this.currentActionTag?.categoryId,
-  //         subActionTag: this.currentSubActionTag?.subCategoryId,
-  //         notes: ''
-  //       }
-  //     ) :
-  //     this.currentItem?.userLevelAlarmInfo.push(
-  //       {
-  //         level: 3,
-  //         user: user?.UserId,
-  //         alarm: this.currentItem?.audio ? 'P' : 'N',
-  //         landingTime: this.currentItem?.landingTime ?? '',
-  //         reviewStart: this.currentItem?.reviewStart ?? '',
-  //         reviewEnd: endTime ?? '',
-  //         actionTag: this.currentActionTag?.categoryId,
-  //         subActionTag: this.currentSubActionTag?.subCategoryId,
-  //         notes: ''
-  //       }
-  //     );
-  //   // this.storage_service.show_loader = true;
-  //   this.event_service.updateEventFullDetails({
-  //     ...this.currentItem,
-  //     actionTag: this.currentActionTag?.categoryId,
-  //     subActionTag: this.currentSubActionTag?.subCategoryId,
-  //     objectName: this.object,
-  //     falseActivityTime: this.actionTagTime,
-  //     activityDetTime: this.sirenTime ?? '',
-  //     userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
-  //   })
-  //     .subscribe({
-  //       next: () => {
-  //         // this.storage_service.show_loader = false;
-  //         this.alert_service.snackSuccess('Alert sent successfully!');
-  //         this.sirenTime = null;
-  //         this.cancelEvent();
-  //       },
-  //       error: (err) => {
-  //         // this.storage_service.show_loader = false;
-  //         this.alert_service.snackError('failed!');
-  //         this.cancelEvent();
-
-  //       }
-  //     })
-  // }
-
   submit(type: number) {
     if (type === 2) return;
 
@@ -430,13 +369,13 @@ export class EventsComponent {
       .subscribe({
         next: () => {
           this.storage_service.show_loader = false;
+          // this.sendEmail();
           this.cancelEvent();
           this.alert_service.snackSuccess('Alert sent successfully!');
-          // this.sendEmail();
         },
         error: (err) => {
+          this.cancelEvent();
           this.storage_service.show_loader = false;
-
         }
       });
   }

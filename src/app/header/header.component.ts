@@ -13,7 +13,7 @@ export class HeaderComponent {
   constructor(
     private router: Router,
     private loginSer: LoginService,
-    private storageSer: StorageService
+    public storageSer: StorageService
   ) {}
 
   userData: any;

@@ -29,11 +29,6 @@ constructor(
   siteSearch1: any;
   siteslist: any[] = [];
   fields: any[] = [
-    // {
-    //   serial: 0,
-    //   label: "S.no",
-    //   showSerial: true
-    // },
     {
       serial: 1,
       label: "Site Id",

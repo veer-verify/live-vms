@@ -87,6 +87,18 @@
   }
 }
 
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 /* .menu ::ng-deep .mat-mdc-menu-panel.mat-mdc-menu-panel {
   width: 1000px !important;
 } */
