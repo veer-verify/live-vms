@@ -37,6 +37,7 @@ export class EventService {
       httpUrl: payload?.httpUrl,
       siteId: payload?.siteId,
       siteName: payload?.siteName,
+      userName: payload?.userName,
       actionTag: payload?.actionTag ?? '',
       actionTime: moment().tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS'),
       eventTag: '',
