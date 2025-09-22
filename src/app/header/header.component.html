@@ -6,19 +6,19 @@
   *ngIf="!isHidden"
 >
   <div class="logo">
-    <a><img [src]="storageSer.environment.logo" width="100%"/></a>
+    <a><img loading="lazy" [src]="storageSer.environment.logo" width="100%"/></a>
   </div>
 
   <div class="user-detail">
     <button class="user-btn p-0" [matMenuTriggerFor]="beforeMenu">
-      <img src="assets\icons\profile.svg" width="36px" />
+      <img loading="lazy" src="assets\icons\profile.svg" width="36px" />
     </button>
 
     <mat-menu #beforeMenu="matMenu" xPosition="before">
       <div class="profile">
         <div class="image">
           <div class="text-center">
-            <img src="assets/icons/user-black.svg" alt width="75px" />
+            <img loading="lazy" src="assets/icons/user-black.svg" alt width="75px" />
           </div>
           <div class="p-2">
             <p>

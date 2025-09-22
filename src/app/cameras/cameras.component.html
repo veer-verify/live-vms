@@ -21,7 +21,7 @@
     <div class="card-container" >
         <div class="card" *ngFor="let item of newCameras" [ngClass]="{'bordered': item.monitoring}">
             <div class="image_container" >
-                <img [src]="item.snapshotUrl | image | async" width="250" height="250" alt="Loading...">
+                <img loading="lazy" [src]="item.snapshotUrl | image | async" width="250" height="250" alt="Loading...">
             </div>
     
             <div class="checkbox-list">

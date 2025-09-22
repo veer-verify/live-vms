@@ -5,7 +5,7 @@
         <th scope="col" *ngFor="let field of fields">
           <div>
             <span>{{field.label}}</span>
-            <span *ngIf="field.sort" (click)="sort(field.id)"><img src="assets\icons\sorticon.svg" alt=""
+            <span *ngIf="field.sort" (click)="sort(field.id)"><img loading="lazy" src="assets\icons\sorticon.svg" alt=""
                 width="16px"></span>
           </div>
         </th>
@@ -47,12 +47,12 @@
               (click)="openPopup(field,item,'view')">View</a></span>
           <span *ngIf="field.showView"><a class="pointer" style="text-decoration: none;" matTooltip="View"
               (click)="openPopup(field,item,'view')">
-              <img src="assets\icons\eye-blue.svg" width="20" height="25" /></a></span>
+              <img loading="lazy" src="assets\icons\eye-blue.svg" width="20" height="25" /></a></span>
 
 
               <ng-container *ngIf="field?.type === 'actions'">
                 <div class="d-inline-flex">
-                  <a class="mx-1 pointer" *ngFor="let el of field.actions" (click)="field.call(item, el)" [matTooltip]="el"><img
+                  <a class="mx-1 pointer" *ngFor="let el of field.actions" (click)="field.call(item, el)" [matTooltip]="el"><img loading="lazy"
                       src="assets/icons/{{el}}.svg"></a>
 
                 </div>

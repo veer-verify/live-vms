@@ -64,7 +64,7 @@ export class EventService {
       userLevels: path === 'events' ? 2 : 3,
       falseActivityTime: payload?.type == 1 ? payload?.actionTagTime : '',
       suspiciousTime: payload?.type !== 1 ? payload?.actionTagTime : '',
-      activityDetTime: payload?.activityDetTime,
+      // activityDetTime: payload?.activityDetTime,
       callResponseTime: '',
       callNoResponseTime: '',
       eventStartTime: payload?.timestamp,

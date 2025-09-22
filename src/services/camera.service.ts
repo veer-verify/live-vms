@@ -205,7 +205,7 @@ export class CameraService {
   }
 
   getEmailData(payload: any) {
-    let url = `${environment.guard_monitoring_url}/getEmailData_1_0`;
+    let url = `${environment.guard_monitoring_url}/getEmailDataForVMSEvents_1_0`;
     let timer;
     payload?.siteId == 36444 ? timer = 10 : timer = 120;
     let params = new HttpParams();
@@ -217,6 +217,7 @@ export class CameraService {
     params = params.set('hour', payload?.hour);
     params = params.set('currentTime', payload?.currentTime);
     params = params.set('timer', timer);
+    params = params.set('imageName', payload?.imageName);
     return this.http.get(url, { params: params });
   }
 

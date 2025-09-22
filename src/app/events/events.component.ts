@@ -35,6 +35,7 @@ export class EventsComponent {
   ) { }
 
   eventInterval: any;
+  eventPolling = true;
   path: any;
   environment = environment.eventImageUrl;
   ngOnInit() {
@@ -42,11 +43,18 @@ export class EventsComponent {
     this.listActionTags();
     this.getActionTagCategories();
     this.getDispatchData();
+    this.poolEvents();
 
+  }
+
+  poolEvents() {
     this.eventInterval = setInterval(() => {
       if (this.eventData.length < 6) {
+        if (!this.eventPolling) return;
+        this.eventPolling = false;
         this.event_service.getDispatchData().subscribe({
           next: (res: any) => {
+            this.eventPolling = true;
             if (res.length !== 0) {
               this.storage_service.status_text = '';
               res[0].landingTime = moment().tz(res[0].timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
@@ -63,35 +71,35 @@ export class EventsComponent {
   }
 
   eventData: any = [
-// {
-//     "siteId": 36428,
-//     "siteName": "Albemarle Crossing",
-//     "timezone": "America/Los_Angeles",
-//     "httpUrl": "https://gisus7028live-repo.us2.pitunnel.com/GISUS7028C1",
-//     "cameraId": "GISUS7028C1",
-//     "color": "green",
-//     "id": "3b8a790d-56ea-44bd-9682-048fd01aef4c",
-//     "imageName": "GISUS7028C1_3b8a790d-56ea-44bd-9682-048fd01aef4c_2025-09-20_00-12-24_green.png",
-//     "timestamp": "2025-09-20 00:12:24:290",
-//     "userLevels": 0,
-//     "actionTag": "suspicious",
-//     "actionTime": "2025-09-20 12:12:25:193",
-//     "eventTag": "",
-//     "userLevelAlarmInfo": [
-//         {
-//             "level": 1,
-//             "user": 1626,
-//             "alarm": "N",
-//             "landingTime": "2025-09-20 00:12:24:290",
-//             "reviewStart": "2025-09-20 00:12:24:290",
-//             "reviewEnd": "2025-09-20 00:12:24:290",
-//             "actionTag": 2,
-//             "subActionTag": 23,
-//             "notes": ""
-//         }
-//     ],
-//     "userName": "ivisusnew"
-// }
+    // {
+    //     "siteId": 36428,
+    //     "siteName": "Albemarle Crossing",
+    //     "timezone": "America/Los_Angeles",
+    //     "httpUrl": "https://gisus7028live-repo.us2.pitunnel.com/GISUS7028C1",
+    //     "cameraId": "GISUS7028C1",
+    //     "color": "green",
+    //     "id": "3b8a790d-56ea-44bd-9682-048fd01aef4c",
+    //     "imageName": "GISUS7028C1_3b8a790d-56ea-44bd-9682-048fd01aef4c_2025-09-20_00-12-24_green.png",
+    //     "timestamp": "2025-09-20 00:12:24:290",
+    //     "userLevels": 0,
+    //     "actionTag": "suspicious",
+    //     "actionTime": "2025-09-20 12:12:25:193",
+    //     "eventTag": "",
+    //     "userLevelAlarmInfo": [
+    //         {
+    //             "level": 1,
+    //             "user": 1626,
+    //             "alarm": "N",
+    //             "landingTime": "2025-09-20 00:12:24:290",
+    //             "reviewStart": "2025-09-20 00:12:24:290",
+    //             "reviewEnd": "2025-09-20 00:12:24:290",
+    //             "actionTag": 2,
+    //             "subActionTag": 23,
+    //             "notes": ""
+    //         }
+    //     ],
+    //     "userName": "ivisusnew"
+    // }
   ];
 
   getDispatchData() {
@@ -217,6 +225,7 @@ export class EventsComponent {
       day: this.storage_service.weekdays[day],
       hour: hour,
       currentTime: moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss'),
+      imageName: this.currentItem?.imageName
     };
 
     if (this.alertSubType != undefined && this.alertType != undefined) {
@@ -275,6 +284,7 @@ export class EventsComponent {
           level: 2,
           user: user?.UserId,
           alarm: this.currentItem?.audio ? 'P' : 'N',
+          activityDetTime: this.sirenTime ?? '',
           landingTime: this.currentItem?.landingTime ?? '',
           reviewStart: this.currentItem?.reviewStart ?? '',
           reviewEnd: endTime ?? '',
@@ -288,6 +298,7 @@ export class EventsComponent {
           level: 3,
           user: user?.UserId,
           alarm: this.currentItem?.audio ? 'P' : 'N',
+          activityDetTime: this.sirenTime ?? '',
           landingTime: this.currentItem?.landingTime ?? '',
           reviewStart: this.currentItem?.reviewStart ?? '',
           reviewEnd: endTime ?? '',
@@ -306,7 +317,7 @@ export class EventsComponent {
       subActionTag: this.currentSubActionTag?.subCategoryId,
       objectName: this.object,
       actionTagTime: this.actionTagTime,
-      activityDetTime: this.sirenTime ?? '',
+      // activityDetTime: this.sirenTime ?? '',
       userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
     }).subscribe({
       next: () => {
@@ -390,11 +401,11 @@ export class EventsComponent {
   @ViewChild('image') image!: ElementRef;
   async downloadImg() {
     html2canvas(this.image.nativeElement).then((canvas) => {
-        let imageData = canvas.toDataURL("image/png");
-        let link = document.createElement('a');
-        link.href = imageData;
-        link.download = `${new Date()}.png`
-        link.click();
+      let imageData = canvas.toDataURL("image/png");
+      let link = document.createElement('a');
+      link.href = imageData;
+      link.download = `${new Date()}.png`
+      link.click();
     });
 
     // const img = new Image();

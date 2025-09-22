@@ -1,18 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
-@font-face {
+/* @font-face {
   font-family: SG;
   src: url(assets/font/SackersGothicStd-Light.otf) format("opentype");
-}
-
-@font-face {
-  font-family: ES;
-  src: url(assets/font/EngraversGothicRegular.otf) format("opentype");
-}
-
-@font-face {
-  font-family: TP;
-  src: url(assets/font/Typold-Book500.otf) format("opentype");
 }
 
 @font-face {
@@ -23,8 +13,17 @@
 @font-face {
   font-family: PS;
   src: url(assets/font/Poppins-SemiBold.ttf) format("truetype");
+} */
+
+@font-face {
+  font-family: ES;
+  src: url(assets/font/EngraversGothicRegular.otf) format("opentype");
 }
 
+@font-face {
+  font-family: TP;
+  src: url(assets/font/Typold-Book500.otf) format("opentype");
+}
 
 
 :root {
@@ -45,7 +44,8 @@
   font-family: 'TP', sans-serif !important;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 

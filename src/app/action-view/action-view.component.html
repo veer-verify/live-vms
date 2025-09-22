@@ -96,7 +96,7 @@
           
                     <div *ngFor="let item of templateData;let i=index" class="card ">
                           <div class="dialog-content p-3">
-                            <a class="mb-1 pointer d-flex justify-content-end" (click)="editTemplate(item,i)"><img src="assets/icons/edit.svg"></a>
+                            <a class="mb-1 pointer d-flex justify-content-end" (click)="editTemplate(item,i)"><img loading="lazy" src="assets/icons/edit.svg"></a>
                             <div class="alert-header">
                               <p *ngIf="templateindex!==i">{{item.emailSubject}}</p>
                               <textarea *ngIf="templateindex==i" [(ngModel)]="templateedititem.emailSubject" class="w-100" rows="2"></textarea>

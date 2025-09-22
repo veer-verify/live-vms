@@ -1,7 +1,7 @@
 // const dev_url: string = "";
 const dev_url: string = "https://usstaging.ivisecurity.com";
 const event_url: string = "https://stagingmq.ivisecurity.com";
-const local_url: string = "http://192.168.0.199:7667";
+const local_url: string = "http://192.168.0.155:3009";
 
 export const environment = {
     // login_url: `${dev_url}:8922/userDetails`,
@@ -15,15 +15,16 @@ export const environment = {
     // guard_monitoring_url:`${dev_url}:8015/guard_monitoring`,
     // monitoring_url:`${dev_url}:8016/monitoring`,
 
-    eventImageUrl: 'https://usstaging.ivisecurity.com/dotimages/',
     login_url: `${dev_url}/userDetails`,
     site_url: `${dev_url}/vipsites`,
     common_url: `${dev_url}/metadata`,
     download_url: `${dev_url}/common`,
-    guard_monitoring_url: `${dev_url}/guard_monitoring`,
+    guard_monitoring_url: `${local_url}/guard_monitoring`,
     monitoring_url: `${dev_url}/monitoring`,
-    events_url: `${event_url}/queueManagement`,
     event_tags_url: `${dev_url}/events_data`,
+    eventImageUrl: `${dev_url}/dotimages/`,
+
+    events_url: `${event_url}/queueManagement`,
 
     firstAlert: {
         time1: 0.5,

@@ -46,19 +46,19 @@
         <tr class="form1">
           <th>
             <span>No</span>
-            <img (click)="sort('deviceId')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
+            <img loading="lazy" (click)="sort('deviceId')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
           </th>
           <th>
             <span>UnitId</span>
-            <img (click)="sort('UnitId')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
+            <img loading="lazy" (click)="sort('UnitId')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
           </th>
           <th>
             <span>DeviceName</span>
-            <img (click)="sort('DeviceName')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
+            <img loading="lazy" (click)="sort('DeviceName')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
           </th>
           <th>
             <span>Status</span>
-            <img (click)="sort('Status')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
+            <img loading="lazy" (click)="sort('Status')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
           </th>
           <th>Reboot</th>
           <th>
@@ -84,15 +84,15 @@
           </td>
 
           <td (click)="openRebootDevice(cust)">
-            <img class="pointer" style="opacity: 0.7;" src="assets/icons/restart.svg" width="25" height="25">
+            <img loading="lazy" class="pointer" style="opacity: 0.7;" src="assets/icons/restart.svg" width="25" height="25">
           </td>
 
           <td>
             <a class="pointer mx-1" matTooltip="view" (click)="openViewPopup(cust)">
-              <img src="assets/icons/view.svg" alt="">
+              <img loading="lazy" src="assets/icons/view.svg" alt="">
             </a>
             <a class="pointer mx-1" matTooltip="Edit" (click)="openEditPopup(cust)">
-              <img src="assets/icons/edit.svg" alt="">
+              <img loading="lazy" src="assets/icons/edit.svg" alt="">
             </a>
           </td>
         </tr>

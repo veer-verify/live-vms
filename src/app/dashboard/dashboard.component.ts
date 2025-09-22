@@ -513,13 +513,14 @@ export class DashboardComponent {
         item.nativeElement.style.pointerEvents = 'all';
       }, 1000);
     })
-
-
+    
+    
     this.camSer.screenshots(data, file).subscribe({
       next: (res: any) => {
         if (res.statusCode === 200) {
           if (this.listType === 6) {
             if (data.color == 'green') {
+              this.audio(data);
               this.event_service.write2Dispatch({
                 ...data,
                 queue_name: 'dispatch-2nd-level',
@@ -531,6 +532,7 @@ export class DashboardComponent {
                     user: user?.UserId,
                     actionTag: 2,
                     subActionTag: 23,
+                    activityDetTime: time,
                     alarm: data?.audioUrl ? 'P' : 'N',
                     landingTime: time,
                     reviewStart: time,
@@ -548,7 +550,6 @@ export class DashboardComponent {
                 }
               });
             }
-            // this.audio(data);
           } else {
             if (data.color == 'yellow' || (this.currentItem?.siteId === 36336 && data.color == 'green')) {
               if (
