@@ -400,6 +400,7 @@ export class EventsComponent {
 
   @ViewChild('image') image!: ElementRef;
   async downloadImg() {
+    
     html2canvas(this.image.nativeElement).then((canvas) => {
       let imageData = canvas.toDataURL("image/png");
       let link = document.createElement('a');
@@ -421,6 +422,7 @@ export class EventsComponent {
     //     link.click();
     // };
   }
+
 
   openLiveDialog() {
     this.dialog.open(LiveComponent, {
