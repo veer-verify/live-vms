@@ -524,6 +524,7 @@ export class DashboardComponent {
                 ...data,
                 queue_name: 'dispatch-2nd-level',
                 actionTag: 'suspicious',
+                userName: user?.UserName,
                 userLevelAlarmInfo: [
                   {
                     level: 1,

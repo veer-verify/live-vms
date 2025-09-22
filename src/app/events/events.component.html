@@ -7,13 +7,14 @@
         [ngStyle]="{'border': item?.timestamp == this.currentItem?.timestamp ? '2px solid #084982' : ''}">
 
         <div class="card-content" (click)="displayCurrent(item)" #currentBtn>
+          <p class="site text-primary">{{item?.userName | uppercase}}</p>
           <div class="d-flex justify-content-between align-items-center">
             <p class="site">{{ item?.siteName }}</p>
             <a class="close-event" (click)="closeEvent(item)" matTooltip="clear">
               <img src="assets/icons/close.svg" alt="" width="20px"></a>
-          </div>
-          <p class="camera">{{ item?.cameraId }}</p>
-          <p class="date">{{ item?.timestamp | date: 'medium'}}</p>
+            </div>
+            <p class="camera">{{ item?.cameraId }}</p>
+            <p class="date">{{ item?.timestamp | date: 'medium'}}</p>
         </div>
       </div>
     </div>
