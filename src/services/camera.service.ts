@@ -204,6 +204,54 @@ export class CameraService {
     return this.http.post(url, formData, { params: params });
   }
 
+  eventsGenericEmail(payload: any) {
+    let url = `${environment.guard_monitoring_url}/eventsGenericEmail_1_0`;
+    let user = this.storageSer.getData('userData');
+    let params = new HttpParams();
+
+    // params = params.set('camerasList', payload?.camerasList);
+    // params = params.set('alertTypeId', payload?.alertTypeId);
+    // params = params.set('subTypeId', payload?.subTypeId);
+    params = params.set('siteId', payload?.siteId);
+    params = params.set('day', payload?.day);
+    params = params.set('hour', payload?.hour);
+    params = params.set('currentTime', payload?.currentTime);
+
+    let formData = new FormData();
+
+    formData.append('siteId', payload?.siteId);
+    formData.append('cameraId', payload?.cameraId);
+    formData.append('alertTypeId', payload?.alertTypeId);
+    formData.append('alertSubTypeId', payload?.subTypeId);
+    formData.append('objectName', payload?.objectName);
+    formData.append('eventTag', 'Camera-Event');
+    formData.append('eventFromTime', payload?.eventFromTime);
+    formData.append('eventToTime', payload?.eventToTime);
+    formData.append('actionTag', 'Information');
+    formData.append('createdBy', user?.UserId);
+    formData.append('subject', payload?.emailSubject);
+    formData.append('body', payload?.emailBody);
+    formData.append('fields', JSON.stringify(payload?.emailFields));
+    formData.append('footer', payload?.emailFooter);
+    // formData.append('bcc', payload?.BCC);
+    // formData.append('Cc', payload?.Cc);
+
+    for (var i = 0; i < payload?.recipientEmails.length; i++) {
+      formData.append("recipientEmails", payload?.recipientEmails[i]);
+    }
+    for (var i = 0; i < payload?.BCC.length; i++) {
+      formData.append("bcc", payload?.BCC[i]);
+    }
+    for (var i = 0; i < payload?.Cc.length; i++) {
+      formData.append("Cc", payload?.Cc[i]);
+    }
+    for (var i = 0; i < payload?.screenshots.length; i++) {
+      formData.append("files", payload?.screenshots[i]);
+    }
+
+    return this.http.post(url, formData, { params: params });
+  }
+
   getEmailData(payload: any) {
     let url = `${environment.guard_monitoring_url}/getEmailDataForVMSEvents_1_0`;
     let timer;
@@ -242,7 +290,7 @@ export class CameraService {
 
   private validateFile(file: File): boolean {
     if (file.size > this.MAX_FILE_SIZE) {
-      throw new Error(`File size exceeds ${this.MAX_FILE_SIZE / 1024}KB limit`);
+      throw new Error(`File size exceeds ${this.MAX_FILE_SIZE / 1024} KB limit`);
     }
 
     if (!this.ALLOWED_FILE_TYPES.includes(file.type)) {

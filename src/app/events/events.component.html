@@ -12,37 +12,47 @@
             <p class="site">{{ item?.siteName }}</p>
             <a class="close-event" (click)="closeEvent(item)" matTooltip="clear">
               <img loading="lazy" src="assets/icons/close.svg" alt="" width="20px"></a>
-            </div>
-            <p class="camera">{{ item?.cameraId }}</p>
-            <p class="date">{{ item?.timestamp | date: 'medium'}}</p>
+          </div>
+          <p class="camera">{{ item?.cameraId }}</p>
+          <p class="date">{{ item?.timestamp | date: 'medium'}}</p>
         </div>
       </div>
     </div>
 
+
     <ng-container *ngIf="currentItem">
+      <!-- <a class="d-block d-lg-none">menu</a> -->
       <div class="col-lg-10" style="height: calc(100vh - 90px); overflow-y: auto;">
         <div class="row">
-          <div class="col-lg-8">
-            <div style="position: relative;">
+          <div class="col-lg-6 mb-1">
+            <div [ngClass]="currentScreen === 'event-image' ? 'max-screen' : 'position-relative'">
+
+              <!-- event image -->
               <img loading="lazy" [src]="environment + currentItem?.imageName" alt="LOADING..."
                 onerror="this.src='assets/images/IVISsecurity_logo.png'" width="100%" height="500px"
-                class="bg-dark border rounded" #image   >
+                class="bg-dark border rounded" #image>
 
+              <!-- icon buttons -->
               <div style="position: absolute; top: 5px; right: 5px;">
-                <button style="border-radius: 5px; border: none; margin-right: 5px;" (click)="audio()"
-                  matTooltip="Siren">
+                <button class="icon" (click)="audio()" matTooltip="Siren">
                   <img loading="lazy" [src]="isPlaying ? 'assets/icons/siren-red.png' : 'assets/icons/siren-new.png'"
-                    [ngClass]="isPlaying ? 'blink-animation' : ''" alt="" width="16px" />
+                    [ngClass]="isPlaying ? 'blink-animation' : ''" alt="" />
                 </button>
-                <button style="border-radius: 5px; border: none;" (click)="downloadImg()" matTooltip="Screenshot">
-                  <img loading="lazy" src="assets/icons/screenshot.svg" alt="" width="16px" />
+                <button class="icon" (click)="downloadImg()" matTooltip="Screenshot">
+                  <img loading="lazy" src="assets/icons/screenshot.svg" alt="" />
+                </button>
+                <button class="icon"
+                  (click)="currentScreen === 'event-image' ? maxmizeScreen('') : maxmizeScreen('event-image')">
+                  <img
+                    [src]="currentScreen === 'event-image' ? 'assets/icons/close-black.svg' : 'assets/icons/fullscreen.svg'"
+                    alt="">
                 </button>
               </div>
             </div>
           </div>
 
-          <div class="col-lg-4">
-            <div class="mb-2 d-flex gap-2 justify-content-end menu">
+          <div class="col-lg-6">
+            <div class="d-flex gap-2 justify-content-end menu">
               <button *ngFor="let btn of actionTagsNew" type="button" class="btn btn-sm dialog-update-btn"
                 [matMenuTriggerFor]="falseMenu" (click)="getCurrentType(btn)"
                 [ngStyle]="{'background-color': btn?.categoryId === currentActionTag?.categoryId ? '#d34124' : '#084982'}">
@@ -60,7 +70,14 @@
               <button type="button" class="btn btn-sm dialog-update-btn" (click)="openLiveDialog()">Live</button>
             </div>
 
-            <div class="p-2 border rounded" *ngIf="currentActionTag?.categoryId === 2 && currentSubActionTag">
+            <div class="p-2 border rounded mb-1" [ngClass]="currentScreen === 'email' ? 'max-screen' : ''"
+              *ngIf="currentActionTag?.categoryId === 2 && currentSubActionTag">
+              <a class="d-flex justify-content-end"
+                (click)="currentScreen === 'email' ? maxmizeScreen('') : maxmizeScreen('email')">
+                <img [src]="currentScreen === 'email' ? 'assets/icons/close-black.svg' : 'assets/icons/fullscreen.svg'"
+                  alt="">
+              </a>
+
               <h4>Email Template</h4>
               <!-- <div class="w-100">
                 <mat-form-field class="w-100" appearance="outline">
@@ -71,7 +88,6 @@
                   </mat-select>
                 </mat-form-field>
               </div>
-
               <div class="w-100">
                 <mat-form-field class="w-100" appearance="outline">
                   <mat-label>Sub Action Tag</mat-label>
@@ -116,11 +132,26 @@
                 </mat-form-field>
               </div> -->
             </div>
+
+            <div class="p-2 border rounded" *ngIf="currentActionTag?.categoryId === 2 && currentSubActionTag">
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+              industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+              scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
+              electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release
+              of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
+              like Aldus PageMaker including versions of Lorem Ipsum.
+            </div>
           </div>
         </div>
 
         <ng-container *ngIf="emailData && currentActionTag?.categoryId === 2 && currentSubActionTag">
-          <div class="p-3 border rounded">
+          <div class="p-3 border rounded" [ngClass]="currentScreen === 'template' ? 'max-screen' : ''">
+            <a class="d-flex justify-content-end"
+              (click)="currentScreen === 'template' ? maxmizeScreen('') : maxmizeScreen('template')">
+              <img [src]="currentScreen === 'template' ? 'assets/icons/close-black.svg' : 'assets/icons/fullscreen.svg'"
+                alt="">
+            </a>
+
             <div class="email-subject">
               <p>{{emailData?.emailSubject}}</p>
             </div>
@@ -148,10 +179,10 @@
 
               <div class="d-flex align-items-center justify-content-end mt-2">
                 <button class="dialog-close-btn" (click)="cancelEvent()">Cancel</button>
-                <button type="button" class="btn btn-sm dialog-update-btn" (click)="open800()">800.com</button>
-                <button class="dialog-update-btn" (click)="submit(3)">Submit</button>
+                <button type="button" class="btn btn-sm dialog-update-btn" (click)="open800()">800.COM</button>
+                <button class="dialog-update-btn" (click)="submit(3)">Send Email</button>
                 <button class="dialog-update-btn" (click)="submitAndSend()" title="Submit & Send to 3rd level"
-                  *ngIf="path === 'events'">Submit & Send</button>
+                  *ngIf="path === 'events'">Send Email & Escalate</button>
               </div>
             </div>
           </div>

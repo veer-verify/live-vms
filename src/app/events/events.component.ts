@@ -251,10 +251,11 @@ export class EventsComponent {
       eventToTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'),
       objectName: 'Person',
     };
-    this.camera_service.email_with_incident({
+    this.camera_service.eventsGenericEmail({
       ...this.emailObject,
       ...dateObj,
       ...this.currentItem,
+      ...this.emailData
     }).subscribe({
       next: (res: any) => {
         this.cancelEvent();
@@ -484,6 +485,11 @@ export class EventsComponent {
     this.dialog.open(Send800Component, {
       data: { ...this.currentItem, ...this.emailData }
     });
+  }
+
+  currentScreen!: string;
+  maxmizeScreen(type: string) {
+    this.currentScreen = type;
   }
 
   ngOnDestroy() {
