@@ -236,21 +236,16 @@ export class CameraService {
     // formData.append('bcc', payload?.BCC);
     // formData.append('Cc', payload?.Cc);
 
-    for (var i = 0; i < payload?.recipientEmails.length; i++) {
-      formData.append("recipientEmails", payload?.recipientEmails[i]);
-    }
-    for (var i = 0; i < payload?.BCC.length; i++) {
-      formData.append("bcc", payload?.BCC[i]);
-    }
-    for (var i = 0; i < payload?.Cc.length; i++) {
-      formData.append("Cc", payload?.Cc[i]);
-    }
+    formData.append("recipientEmails", payload?.recipientEmails.join(', '));
+    formData.append("Bcc", payload?.BCC.join(','));
+    formData.append("Cc", payload?.Cc.join(','));
     for (var i = 0; i < payload?.screenshots.length; i++) {
-      formData.append("files", payload?.screenshots[i]);
+      formData.append("files", payload?.screenshots[i].substring(payload?.screenshots[i].lastIndexOf('/') + 1));
     }
 
     return this.http.post(url, formData, { params: params });
   }
+
 
   getEmailData(payload: any) {
     let url = `${environment.guard_monitoring_url}/getEmailDataForVMSEvents_1_0`;
