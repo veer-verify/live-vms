@@ -52,7 +52,6 @@ export class SidepanelComponent {
     ngOnInit() {
 
    
-      
       // this.getSitesforUser();
       this.getTypes();
       
@@ -535,8 +534,7 @@ if(item=="alert"){
 else if(item=="subalert"){
   this.addnew1=true;
 }
-
-
   }
+
 
 }

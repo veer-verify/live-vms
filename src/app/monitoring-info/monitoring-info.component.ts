@@ -188,4 +188,16 @@ constructor(
   onCloseSidePanel(event: boolean) {
     this.isSidePanelOpen = event;
   }
+
+  isSidePanelOpen1 = false;
+  onCloseSidePanel1(event: boolean) {
+    this.isSidePanelOpen1 = event;
+  }
+openTemplate(){
+  this.isSidePanelOpen1=true;
+}
+ 
+
+  
+
 }

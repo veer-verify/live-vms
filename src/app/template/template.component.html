@@ -1,0 +1,122 @@
+
+
+<div class="side-panel" @inOutPaneAnimation>
+  <div class="d-flex justify-content-between">
+      <button class="closebtn" (click)="closeSidePanel()">×</button>
+      <p class="header">Create Template</p>
+      <p></p>
+  </div>
+
+<div class="mt-4">
+
+    <div class="row">
+        <div class="col-lg-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Alert Type</mat-label>
+            <mat-select [(ngModel)]="alert">
+              <mat-option *ngFor="let item of alertTypes; let i=index" [value]="item.keyId"
+                (click)="getData(item)">{{item.value}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+  
+        </div>
+        <div class="col-lg-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Alert Sub Type</mat-label>
+            <mat-select [(ngModel)]="subalert">
+              
+              <mat-option *ngFor="let item of alertSubTypes; let i=index" [value]="item.keyId"
+                (click)="getData1(item)">{{item.value}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+        </div>
+        <div class="col-lg-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Fields</mat-label>
+            <mat-select [(ngModel)]="alertField" multiple >
+              <mat-option *ngFor="let item of alertFields" [value]="item.keyId">{{item.value}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+  
+        <div class="col-lg-12">
+          <div class="example-form">
+            <mat-form-field class="example-full-width">
+              <mat-label>Leave a Message</mat-label>
+              <textarea matInput placeholder="Type here..." [(ngModel)]="message"></textarea>
+            </mat-form-field>
+          </div>
+  
+        </div>
+  
+  
+        <div class="col-lg-4">
+          <div class="example-form">
+            <mat-form-field class="example-full-width">
+              <mat-label>Footer</mat-label>
+              <textarea matInput placeholder="Type here..." [(ngModel)]="footer"></textarea>
+            </mat-form-field>
+          </div>
+  
+        </div>
+  
+  
+        <div class="d-flex justify-content-start">
+          <button class="button2 me-2" (click)="openPreview()">Preview</button>
+          <button class="button2 me-2" (click)="createGuardMasterData()">Submit</button>
+          <button class="button2 me-2" (click)="clearFilledData()">Clear</button>
+        </div>
+  
+    </div>
+</div>
+  
+
+</div>
+
+
+<ng-template #emailDialog>
+  <div style="background-color: #084982;text-align: center;">
+    <p class="previewmail p-3">Preview Mail</p>
+  </div>
+
+  <div class="dialog-content p-3">
+    <div class="alert-header">
+      <p>⚠️ {{alertField1}} {{"@"}} {{subAlertfield1}} ⚠️</p>
+    </div>
+    <div class="alert-body">
+      <p class="message mt-3" style="width: 50vw;word-wrap: break-word;white-space: pre-line;">
+        {{message}}
+      </p>
+
+      <div class="vehicle-info mt-2">
+        <div  *ngFor="let item of alertField">
+          <p class="mt-2" *ngFor="let val of getValById(item)">
+            <strong>{{val.value }}</strong>
+
+            <span *ngIf="item == 1">
+             SiteName
+            </span>
+
+            <span *ngIf=" item == 2">
+              {{ date | date: 'mediumDate' }}
+            </span>
+            <span *ngIf=" item == 3">
+              {{ date | date: 'shortTime' }}
+            </span>
+            <span *ngIf="item != 1 && item != 2 && item != 3">
+              {{ deviceName }}All
+            </span>
+          </p>
+        </div>
+
+      </div>
+
+      <p class="message mt-3" style="word-wrap: break-word;white-space: pre-line;">
+        {{footer}}
+      </p>
+    </div>
+  </div>
+
+</ng-template>
