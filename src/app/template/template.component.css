@@ -98,7 +98,8 @@
   position: relative;
    
   padding: 0.7em 1.4em;
-  background-color: rgba(8,73,130,1);
+  /* background-color: rgba(8,73,130,1); */
+  background-color: #333; 
   text-decoration: none;
   border: none;
   border-radius: 0.5em;
@@ -109,13 +110,6 @@
 
 .btn-template::before {
   position: absolute;
-  content: '';
-  height: 0;
-  width: 0;
-  top: 0;
-  left: 0;
-  background: linear-gradient(135deg, white 0%, white 50%, rgba(8,73,130,1) 50%, rgba(8,73,130,1) 60%);
- 
   border-radius: 0.5em 0 0.5em 0;
   box-shadow: 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.3);
   transition: 0.3s;
@@ -129,7 +123,7 @@
 
 .btn-template:active {
   box-shadow: 0.2em 0.2em 0.3em rgba(0, 0, 0, 0.3);
-  transform: translate(0.1em, 0.1em);
+
 }
 /* template button */ 
 
@@ -302,3 +296,86 @@ font-size: 20px;
   height: 250px !important;
   padding: 12px !important;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.grid-template{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 3px;
+   max-height: 70vh;
+    overflow-y: auto;
+ 
+}
+
+.alert-header {
+    background-color: #ffecb3;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+  }
+  
+
+  .alert-header h2 {
+    color: #c34e01;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  
+  .alert-body {
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .greeting {
+    font-weight: bold;
+    margin-bottom: 10px;
+     
+  }
+  
+  .message {
+    margin-bottom: 15px;
+     
+  }
+  
+  .previewmail{
+ 
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 5px;
+    }
+
+  .vehicle-info p {
+     
+    font-size: 1rem;
+    margin: 5px 0;
+    color: #333;
+  }
+ 
+
+  .card {
+    border-radius: 10px;
+    margin-top: 10px;
+    box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+    transition:cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
+
+  .demo-chart {
+    height: 400px;
+  }
+

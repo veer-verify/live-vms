@@ -1,3 +1,4 @@
+import { SiteService } from './../../services/site.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import {
   Component,
@@ -10,7 +11,6 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from 'src/services/alert.service';
 import { MetadataService } from 'src/services/metadata.service';
-import { SiteService } from 'src/services/site.service';
 
 @Component({
   selector: 'app-template',
@@ -45,17 +45,66 @@ export class TemplateComponent {
 
   ngOnInit() {
     this.getTypes();
+    this.getSitesforUser();
+    // this.getTemplateData();
   }
 
   @Input() isSidePanelOpen: any;
 
-  // Output event to notify the parent that the side panel should be closed
   @Output() sidePanelClosed = new EventEmitter<boolean>();
 
-  // Method to close the side panel
   closeSidePanel() {
-    this.sidePanelClosed.emit(false); // Emit 'false' to close the side panel
+    this.sidePanelClosed.emit(false);
   }
+
+  siteName: any;
+  siteSearch: any;
+  siteSearch1: any;
+  siteslist: any;
+
+  getSitesforUser() {
+    this.SiteSer.getSites().subscribe((res: any) => {
+      if (res.Status === 'Success') {
+        this.siteslist = res.sites;
+      }
+    });
+  }
+  searchSites(event: any) {
+    this.siteSearch = event.target.value;
+  }
+
+isChecked(): boolean {
+  return (
+    this.siteslist?.length > 0 &&
+    this.siteslist?.length === this.siteName?.length
+  );
+}
+
+toggleSelection(): void {
+  const isAllSelected = this.isChecked();
+  if (isAllSelected) {
+    this.siteName = [];
+  } else {
+    this.siteName = this.siteslist.map((site: any) => site.siteId);
+  }
+}
+selectAll = false;
+
+  toggleSelectAll() {
+    this.templateData.map((item:any) => item.selectedtemplate = this.selectAll);
+      this.selectedGuardIds = this.templateData.filter((item: any) => item.selectedtemplate) .map((item: any) => item.guardMasterId);
+     
+  }
+selectedGuardIds:any;
+
+  updateSelectAll() {
+    this.selectAll = this.templateData.every((item:any) => item.selectedtemplate);
+ 
+   this.selectedGuardIds = this.templateData.filter((item: any) => item.selectedtemplate) .map((item: any) => item.guardMasterId);
+
+   
+  }
+
 
   getTypes() {
     this.metadaSer.getMetadata().subscribe((res: any) => {
@@ -85,7 +134,7 @@ export class TemplateComponent {
   alert: any;
   subalert: any;
   message: any;
-  alertField: any = [1,2, 3];
+  alertField: any = [1, 2, 3];
   footer: any;
   alertField1: any;
   subAlertfield1: any;
@@ -96,7 +145,7 @@ export class TemplateComponent {
   clearFilledData() {
     this.message = null;
     this.footer = null;
-    this.alertField = [1,2,3];
+    this.alertField = [1, 2, 3];
     this.alert = null;
     this.subalert = null;
     this.alertField1 = null;
@@ -108,8 +157,7 @@ export class TemplateComponent {
   openPreview() {
     this.alertField.forEach((item: any) => {
       if (item.code == 1) {
-          item.key = this.details?.item.siteName;
-
+        item.key = this.details?.item.siteName;
       }
       if (item.code == 2) {
         item.key = this.date;
@@ -136,7 +184,7 @@ export class TemplateComponent {
   }
 
   createGuardMasterData() {
-    let alertMessage = `⚠️ ${this.alertField1} @ ${this.details?.item.siteName} - ${this.subAlertfield1} ⚠️`;
+    let alertMessage = `⚠️ ${this.alertField1} @  - ${this.subAlertfield1} ⚠️`;
     let payload = {
       siteId: this.details?.item.siteId,
       guardAlertTypeId: this.alert,
@@ -149,7 +197,6 @@ export class TemplateComponent {
     };
 
     if (
-      this.details?.item.siteId &&
       this.alert &&
       this.subalert &&
       alertMessage &&
@@ -173,5 +220,82 @@ export class TemplateComponent {
     } else {
       this.alaram.snackSuccess('Please select alert,subalert & type message');
     }
+  }
+  templateData: any = [];
+  showTemplate: any = 2;
+  openTemplate(i: any) {
+    switch (i) {
+      case 1:
+        this.showTemplate = 1;
+        this.alert=null,
+        this.subalert=null;
+       
+        break;
+      case 2:
+        this.showTemplate = 2;
+        this.alert=null,
+        this.subalert=null;
+        this.templateData=[];
+        break;
+      default:
+    }
+  }
+
+  getTemplateData() {
+    let payload = {
+      alertTypeId: this.alert,
+      subTypeId: this.subalert,
+    };
+
+    this.SiteSer.listTemplatesData(payload).subscribe((res: any) => {
+      if (res.statusCode == 200) {
+        this.templateData = res.templateData;
+        this.selectAll=false;
+      } else {
+        this.templateData = [];
+
+        this.alaram.snackError(res.detail);
+      }
+    });
+  }
+
+  templateindex!: number;
+  templateedititem: any;
+  editTemplate(item: any, i: number) {
+    this.templateindex = i;
+
+    this.templateedititem = { ...item };
+  }
+
+  SaveTemplate() {
+    this.SiteSer.updatemasterTemplate({ ...this.templateedititem }).subscribe(
+      (res: any) => {
+        if (res.statusCode == 200) {
+          this.alaram.snackSuccess(res.message);
+          this.templateindex = -1;
+          this.getTemplateData();
+        }
+      }
+    );
+  }
+
+
+  mapTemplates(){
+
+    let payload={
+      guardMasterId:this.selectedGuardIds,
+      siteId:this.siteName,
+      createdBy:0
+    }
+
+    this.SiteSer.createTemplateSiteRlsp(payload).subscribe((res:any)=>{
+      if(res.statusCode==200){
+        this.alaram.snackSuccess(res.message);
+      }
+      else{
+        this.alaram.snackError(res.message);
+      }
+    })
+
   }
 }

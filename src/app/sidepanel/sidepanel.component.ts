@@ -267,6 +267,16 @@ this.alert=null;this.subalert=null;this.alertField1=null;this.currentSite=null;t
 
 }
 
+contactDetails:any=[]
+
+addcontact(){
+
+  this.contactDetails.push({contactName:this.contactName,contactNumber:this.contactNumber});
+
+  this.contactName=null;this.contactNumber=null;
+
+}
+
 createGuardEmailsData(){
 
   // this.addTimeSlot();
@@ -279,6 +289,7 @@ createGuardEmailsData(){
     "bccEmails":  `['${this.bcc.join("','")}']` ,
     "days":  `['${this.selectedDays.join("','")}']` ,
     "hours": `[${this.timeSlots.join("-")}]` ,
+    "contactDetails":this.contactDetails,
     "remarks":null,
     "createdBy": 0
   }
@@ -302,7 +313,7 @@ createGuardEmailsData(){
       this.alaram.snackSuccess(res.message);
 
       this.startTime='00:00';this.endTime='00:00';
-   
+      
 
     }
    
@@ -323,6 +334,8 @@ createGuardEmailsData(){
   ccCtrl = new FormControl('');
 
   to: string[] = [];
+  contactNumber:any;
+  contactName:any;
   bcc: string[] = [];
   cc: string[] = [];
   @ViewChild('fruitInput') fruitInput !: ElementRef<HTMLInputElement>;
@@ -351,7 +364,9 @@ createGuardEmailsData(){
     event.chipInput!.clear();
     // this.toCtrl.setValue(null);
   }
-
+deleteContact(i:any){
+ this.contactDetails.splice(i, 1);
+}
 
   onInput(event: any): void {
 

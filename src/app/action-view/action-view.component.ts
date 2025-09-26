@@ -100,7 +100,8 @@ export class ActionViewComponent {
       this.alldATA=res.cameras;
       this.escalation=res.escalation;
       this.escalation1 = res.escalation.map((item: any) => ({
-
+        contactName: item.contactName,
+        contactNumber:item.contactNumber,
         toEmails: item.toEmails ? item.toEmails.replace(/[\[\]']/g, '').split(',').map((e:any) => e.trim()).join(', ') : [],
         ccEmails: item.ccEmails ? item.ccEmails.replace(/[\[\]']/g, '').split(',').map((e:any) => e.trim()).join(', ') : [],
         bccEmails: item.bccEmails ? item.bccEmails.replace(/[\[\]']/g, '').split(',').map((e:any) => e.trim()).join(', '): [],

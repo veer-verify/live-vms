@@ -52,13 +52,7 @@ export class SiteService {
     return this.http.get(data?.httpUrl);
   }
 
-  createGuardMasterData(payload:any){
-    let url=`${environment.guard_monitoring_url}/createGuardMasterData_1_0`;
-    let user = this.storageSer.getData('userData');
-    payload.createdBy=user?.UserId;
 
-    return this.http.post(url,payload);
-  }
   createGuardEmailsData(payload:any){
 
     let url=`${environment.guard_monitoring_url}/createGuardEmailsData_1_0`;
@@ -98,8 +92,8 @@ export class SiteService {
     return this.http.post(url,payload);
   }
   updateCameraMonitoringHours(payload:any){
-    //  let url=`${environment.guard_monitoring_url}/updateCameraMonitoringHours_1_0`;
-      let url=`http://192.168.0.103:3009/updateCameraMonitoringHours_1_0`;
+     let url=`${environment.guard_monitoring_url}/updateCameraMonitoringHours_1_0`;
+  
     let user = this.storageSer.getData('userData');
     payload.modifiedBy=user?.UserId;
 
@@ -153,6 +147,32 @@ export class SiteService {
     }
     return this.http.get(url, {params: params});
   }
+// listtemplatemasterdata
+
+
+  createGuardMasterData(payload:any){
+    let url=`${environment.guard_monitoring_url}/createMasterTemplateData_1_0`;
+    let user = this.storageSer.getData('userData');
+    payload.createdBy=user?.UserId;
+
+    return this.http.post(url,payload);
+  }
+
+
+  listTemplatesData(payload:any){
+
+     let url  = `${environment.guard_monitoring_url}/listMasterTemplatesData_1_0`;
+    let params = new HttpParams();
+
+    if( payload?.alertTypeId){
+      params = params.set('alertTypeId', payload?.alertTypeId);
+    }
+    if( payload?.subTypeId){
+      params = params.set('subTypeId', payload?.subTypeId);
+    }
+    return this.http.get(url, {params: params});
+  }
+
   updateTemplate(payload:any){
     let url  = `${environment.guard_monitoring_url}/updateGuardMasterData_1_0`;
     let user = this.storageSer.getData('userData');
@@ -160,4 +180,20 @@ export class SiteService {
     return this.http.put(url, payload);
   }
 
+  createTemplateSiteRlsp(payload:any){
+    let url = `${environment.guard_monitoring_url}/createTemplateSiteRlsp_1_0`;
+    let user = this.storageSer.getData('userData');
+    payload.createdBy=user?.UserId;
+    return this.http.post(url,payload);
+  }
+
+
+ updatemasterTemplate(payload:any){
+    let url  = `${environment.guard_monitoring_url}/updateMasterTemplate_1_0`;
+    let user = this.storageSer.getData('userData');
+    payload.modifiedBy=user?.UserId;
+    return this.http.put(url, payload);
+  }
+
+// listtemplatemasterdata
 }

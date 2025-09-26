@@ -3,12 +3,16 @@
 <div class="side-panel" @inOutPaneAnimation>
   <div class="d-flex justify-content-between">
       <button class="closebtn" (click)="closeSidePanel()">×</button>
-      <p class="header">Create Template</p>
-      <p></p>
+      <div>
+
+        <button class="btn-template me-2" (click)="openTemplate(1)" [ngStyle]="showTemplate == 1 ? {'background-color': '#084982'} : {}">Create Template</button>
+        <button class="btn-template me-2" (click)="openTemplate(2)" [ngStyle]="showTemplate == 2 ? {'background-color': '#084982'} : {}">View & Update Templates</button>
+      </div>
   </div>
 
 <div class="mt-4">
-
+  <div *ngIf="showTemplate==1">
+    <p class="header mb-3">Create Template</p>
     <div class="row">
         <div class="col-lg-4">
           <mat-form-field appearance="outline" class="w-100">
@@ -45,7 +49,7 @@
           <div class="example-form">
             <mat-form-field class="example-full-width">
               <mat-label>Leave a Message</mat-label>
-              <textarea matInput placeholder="Type here..." [(ngModel)]="message"></textarea>
+              <textarea matInput placeholder="Type here..." [(ngModel)]="message" rows="3"></textarea>
             </mat-form-field>
           </div>
   
@@ -70,6 +74,105 @@
         </div>
   
     </div>
+
+  </div>
+
+  <div *ngIf="showTemplate==2">
+      <div>
+   
+       <p class="header mb-3">📧 Templates</p>
+   
+        <div class="row">
+
+           <div class="col-lg-4">
+         <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Select Sites</mat-label>
+              <mat-select [(ngModel)]="siteName"  multiple>
+                <mat-checkbox class="mat-option" color="primary" [checked]="isChecked()" (click)="$event.stopPropagation()" (change)="toggleSelection()">
+                Select All
+                </mat-checkbox>
+                <mat-option *ngFor="let item of siteslist" [value]="item.siteId" > {{ item.siteName }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+
+                <div class="col-lg-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Alert Type</mat-label>
+                      <mat-select [(ngModel)]="alert">
+                        <mat-option></mat-option> 
+                        <mat-option *ngFor="let item of alertTypes; let i=index" [value]="item.keyId"
+                          (click)="getData(item);getTemplateData()">{{item.value}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                </div>
+    
+                <div class="col-lg-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Alert Sub Type</mat-label>
+                      <mat-select [(ngModel)]="subalert">
+                        <mat-option></mat-option> 
+                        <mat-option *ngFor="let item of alertSubTypes; let i=index" [value]="item.keyId"
+                          (click)="getData1(item);getTemplateData()">{{item.value}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                </div>
+    
+                <!-- <div class="col-lg-3">
+                    <button class="btn-template" (click)="getTemplateData()">Submit</button>
+                </div> -->
+          
+
+            <div class="col-lg-12">
+
+              <div *ngIf="templateData?.length!=0">
+
+                <div> <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()"> Select All</div>
+                <div class="grid-template" >
+                    <div *ngFor="let item of templateData;let i=index" class="card ">
+                          <div class="dialog-content p-3">
+                  
+                            <input type="checkbox" [(ngModel)]="item.selectedtemplate" (change)="updateSelectAll()">
+
+                            <a class="mb-1 pointer d-flex justify-content-end" ><img loading="lazy" src="assets/icons/edit.svg" (click)="editTemplate(item,i)"></a>
+                            <div class="alert-header">
+                              <p *ngIf="templateindex!==i">{{item.emailSubject}}</p>
+                              <textarea *ngIf="templateindex==i" [(ngModel)]="templateedititem.emailSubject" class="w-100" rows="2"></textarea>
+                         
+                            </div>
+                            <div class="alert-body">
+                            
+                              <p class="message mt-3" style="word-wrap: break-word;white-space: pre-line;"  *ngIf="templateindex!==i">
+                                {{item.emailBasicContent}}
+                              </p>
+
+                               <textarea class=" mt-3 w-100 " rows="8" style="word-wrap: break-word;white-space: pre-line;" *ngIf="templateindex==i"
+                                [(ngModel)]="templateedititem.emailBasicContent"
+                              ></textarea>
+
+                              <p class="message mt-3" style="word-wrap: break-word;white-space: pre-line;"  *ngIf="templateindex!==i">
+                                {{item.emailFooter}}
+                              </p>
+
+                             
+                            </div>
+                          </div>
+                          <div class="d-flex gap-2 justify-content-end p-2" *ngIf="templateindex==i">
+
+                            <button class="btn btn-sm btn-primary" (click)="SaveTemplate()">Save</button>
+                            <button class="btn btn-sm btn-danger" (click)="templateindex=-1">Cancel</button>
+                          </div>
+                    </div>
+                </div>  
+
+                <button (click)="mapTemplates()" class="btn-template mt-2">Submit</button>
+              </div>
+
+            
+            </div>
+        </div>
+    </div>
+  </div>
 </div>
   
 

@@ -27,6 +27,7 @@
         <table class="table table-striped table-bordered table-hover" *ngIf="escalation1.length > 0">
           <thead class="table-light">
             <tr>
+              <th>contactDetails</th>
               <th>To Email</th>
               <th>CC Email</th>
               <th>BCC Email</th>
@@ -36,6 +37,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of escalation1">
+              <td>{{item?.contactName}} - {{item?.contactNumber}}</td>
               <td>{{ item?.toEmails}}</td>
               <td>{{ item?.ccEmails}}</td>
               <td>{{ item?.bccEmails }}</td>
@@ -103,7 +105,7 @@
                          
                             </div>
                             <div class="alert-body">
-                              <!-- <p class="greeting">Dear Valued Client,</p> -->
+                            
                               <p class="message mt-3" style="word-wrap: break-word;white-space: pre-line;"  *ngIf="templateindex!==i">
                                 {{item.emailBasicContent}}
                               </p>
@@ -116,9 +118,7 @@
                                 {{item.emailFooter}}
                               </p>
 
-                               <!-- <textarea class="message mt-3" style="word-wrap: break-word;white-space: pre-line;" *ngIf="templateindex==i" [(ngModel)]="templateedititem.emailFooter">
                              
-                              ></textarea> -->
                             </div>
                           </div>
                           <div class="d-flex gap-2 justify-content-end p-2" *ngIf="templateindex==i">
@@ -128,7 +128,7 @@
                           </div>
                     </div>
                 </div>  
-                <!-- <div *ngIf="templateData.length==0 || 0" class="text-center">No Data</div> -->
+               
 
             </div>
         </div>

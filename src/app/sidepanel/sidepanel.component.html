@@ -6,8 +6,8 @@
   <button class="closebtn" (click)="closeSidePanel()">×</button>
     <p class="header">{{details?.item.siteName}}</p>
     <div>
-      <button class="btn-template me-2" (click)="newTemplate()">New Template</button>
-      <button class="btn-template" (click)="Escalation()">Escalation</button>
+      <!-- <button class="btn-template me-2" (click)="newTemplate()">New Template</button> -->
+      <!-- <button class="btn-template" (click)="Escalation()">Escalation</button> -->
     </div>
   </div>
   <div class="row mt-4">
@@ -55,10 +55,10 @@
 
 
 
-  <div *ngIf="templateDisplay" class="template mt-1">
+  <!-- <div *ngIf="templateDisplay" class="template mt-1">
     <div class="d-flex justify-content-between mb-3">
       <p class="header">New Template</p>
-      <!-- <p class="header">{{details?.item.siteName}}</p> -->
+    
       <button class="template-close" (click)="clsTemplate()">×</button>
 
     </div>
@@ -70,42 +70,25 @@
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Alert Type</mat-label>
           <mat-select [(ngModel)]="alert">
-            <!-- <mat-option (click)="AddNew('alert')">Add New</mat-option> -->
+        
             <mat-option *ngFor="let item of alertTypes; let i=index" [value]="item.keyId"
               (click)="getData(item)">{{item.value}}</mat-option>
           </mat-select>
         </mat-form-field>
 
-        <!-- <div *ngIf="addnew">
-          <mat-form-field class="example-form-field" appearance="outline">
-            <mat-label>Add New Alert</mat-label>
-            <input matInput type="text" [(ngModel)]="addalert">
-            <button *ngIf="addalert" matSuffix mat-icon-button aria-label="Clear" (click)="addalert=''">
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>
-        </div> -->
+     
 
       </div>
       <div class="col-lg-4">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Alert Sub Type</mat-label>
           <mat-select [(ngModel)]="subalert">
-            <!-- <mat-option (click)="AddNew('subalert')">Add New</mat-option> -->
+          
             <mat-option *ngFor="let item of alertSubTypes; let i=index" [value]="item.keyId"
               (click)="getData1(item)">{{item.value}}</mat-option>
           </mat-select>
         </mat-form-field>
 
-        <!-- <div *ngIf="addnew1">
-          <mat-form-field class="example-form-field" appearance="outline">
-            <mat-label>Add Sub Alert</mat-label>
-            <input matInput type="text" [(ngModel)]="addsubalert">
-            <button *ngIf="addalert" matSuffix mat-icon-button aria-label="Clear" (click)="addsubalert=''">
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>
-        </div> -->
       </div>
       <div class="col-lg-4">
         <mat-form-field appearance="outline" class="w-100">
@@ -127,10 +110,6 @@
       </div>
 
 
-      <!-- <div class="col-lg-3">
-   
-        <input type="text" class="form-control" [(ngModel)]="colorpicker" placeholder="color">
-      </div> -->
 
       <div class="col-lg-4">
         <div class="example-form">
@@ -153,7 +132,7 @@
     </div>
 
 
-  </div>
+  </div>  -->
 
   <div *ngIf="templateDisplay1" class="template mt-1">
 
@@ -193,8 +172,26 @@
         </mat-form-field>
       </div>
 
-      <div class="col-lg-6">
+       <div class="col-lg-5">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Name</mat-label>
+          <input matInput [(ngModel)]="contactName"  type="text">
+        </mat-form-field>
+      
+      </div>
 
+      <div class="col-lg-5">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Contact No</mat-label>
+          <input matInput [(ngModel)]="contactNumber" appTextAndNumberOnly type="text">
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-2">
+        <button class="btn-template" (click)="addcontact()">Add</button>
+      </div>
+
+      <div class="col-lg-6">
         <mat-form-field class="example-chip-list w-100">
           <mat-label>To</mat-label>
           <mat-chip-grid #toGrid aria-label="Fruit selection">
@@ -248,6 +245,28 @@
       </div>
     </div>
   </div>
+
+<div *ngIf="contactDetails.length!=0">
+
+  <h2>Contact Details</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Contact No</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let contact of contactDetails;let i = index">
+      <td>{{ contact.contactName }}</td>
+      <td>{{ contact.contactNumber }}</td>
+      <td><button (click)="deleteContact(contact)" class="button2">delete</button></td>
+    </tr>
+  </tbody>
+</table>
+</div>
   
 </div>
 
