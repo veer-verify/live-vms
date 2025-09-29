@@ -42,8 +42,8 @@ export class EventsComponent {
     this.path = this.router.url.split('/').at(-1);
     this.listActionTags();
     this.getActionTagCategories();
-    this.getDispatchData();
-    this.poolEvents();
+    // this.getDispatchData();
+    // this.poolEvents();
 
   }
 
@@ -71,35 +71,35 @@ export class EventsComponent {
   }
 
   eventData: any = [
-    // {
-    //     "siteId": 36428,
-    //     "siteName": "Albemarle Crossing",
-    //     "timezone": "America/Los_Angeles",
-    //     "httpUrl": "https://gisus7028live-repo.us2.pitunnel.com/GISUS7028C1",
-    //     "cameraId": "GISUS7028C1",
-    //     "color": "green",
-    //     "id": "3b8a790d-56ea-44bd-9682-048fd01aef4c",
-    //     "imageName": "GISUS7028C1_3b8a790d-56ea-44bd-9682-048fd01aef4c_2025-09-20_00-12-24_green.png",
-    //     "timestamp": "2025-09-20 00:12:24:290",
-    //     "userLevels": 0,
-    //     "actionTag": "suspicious",
-    //     "actionTime": "2025-09-20 12:12:25:193",
-    //     "eventTag": "",
-    //     "userLevelAlarmInfo": [
-    //         {
-    //             "level": 1,
-    //             "user": 1626,
-    //             "alarm": "N",
-    //             "landingTime": "2025-09-20 00:12:24:290",
-    //             "reviewStart": "2025-09-20 00:12:24:290",
-    //             "reviewEnd": "2025-09-20 00:12:24:290",
-    //             "actionTag": 2,
-    //             "subActionTag": 23,
-    //             "notes": ""
-    //         }
-    //     ],
-    //     "userName": "ivisusnew"
-    // }
+    {
+        "siteId": 36428,
+        "siteName": "Albemarle Crossing",
+        "timezone": "America/Los_Angeles",
+        "httpUrl": "https://gisus7028live-repo.us2.pitunnel.com/GISUS7028C1",
+        "cameraId": "GISUS7028C1",
+        "color": "green",
+        "id": "3b8a790d-56ea-44bd-9682-048fd01aef4c",
+        "imageName": "GISUS7028C1_3b8a790d-56ea-44bd-9682-048fd01aef4c_2025-09-20_00-12-24_green.png",
+        "timestamp": "2025-09-20 00:12:24:290",
+        "userLevels": 0,
+        "actionTag": "suspicious",
+        "actionTime": "2025-09-20 12:12:25:193",
+        "eventTag": "",
+        "userLevelAlarmInfo": [
+            {
+                "level": 1,
+                "user": 1626,
+                "alarm": "N",
+                "landingTime": "2025-09-20 00:12:24:290",
+                "reviewStart": "2025-09-20 00:12:24:290",
+                "reviewEnd": "2025-09-20 00:12:24:290",
+                "actionTag": 2,
+                "subActionTag": 23,
+                "notes": ""
+            }
+        ],
+        "userName": "ivisusnew"
+    }
   ];
 
   getDispatchData() {
@@ -473,12 +473,42 @@ export class EventsComponent {
     })
   }
 
+  cameraDetails:any;
+
   getCurrentType(type: any) {
     this.currentSubActionTag = null;
     this.getTime();
     this.currentActionTag = type;
     let filteredData = this.actionTagsNew.filter((item: any) => item.categoryId === type.categoryId);
     this.subActionTags = filteredData.flatMap((el: any) => el.actionTagSubCategories);
+    this.event_service.getCameraEventDetails(this.currentItem).subscribe((res:any)=>{
+      this.cameraDetails=res;
+     
+      this.cameraDetails.escalation = this.cameraDetails.escalation.map((e: any) => ({
+       ...e,
+       toEmails: this.parseStringArray(e.toEmails),
+       ccEmails: this.parseStringArray(e.ccEmails),
+       bccEmails: this.parseStringArray(e.bccEmails),
+       days: this.parseStringArray(e.days),
+     }));
+    })
+  }
+
+   parseStringArray(val: any): string[] {
+    if (typeof val === 'string') {
+      try {
+        return JSON.parse(val.replace(/'/g, '"'));
+      } catch {
+        return [];
+      }
+    }
+    return Array.isArray(val) ? val : [];
+  }
+
+    getMonitoringHours(details: any): string {
+    return Object.entries(details)
+      .map(([day, hours]) => `${day}: ${hours}`)
+      .join(', ');
   }
 
   open800() {

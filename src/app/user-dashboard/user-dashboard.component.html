@@ -40,16 +40,16 @@
       <ng-container
         *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || storage_service.isSecondLevel()">
         <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'" [routerLink]="['/user-dashboard/events']" routerLinkActive="routeactive">
-          <img loading="lazy" src="assets/icons/magnifying-glass.svg" matTooltip="Reviewer">
-          <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Reviewer</span>
+          <img loading="lazy" src="assets/icons/magnifying-glass.svg" matTooltip="Pre-Dispatch">
+          <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Pre-Dispatch</span>
         </a>
       </ng-container>
 
       <ng-container
         *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || storage_service.isThirdLevel()">
         <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'" [routerLink]="['/user-dashboard/third-level']" routerLinkActive="routeactive">
-          <img loading="lazy" src="assets/icons/truck-ramp-box.svg" matTooltip="Dispatcher">
-          <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Dispatcher</span>
+          <img loading="lazy" src="assets/icons/truck-ramp-box.svg" matTooltip="Dispatch">
+          <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Dispatch</span>
         </a>
       </ng-container>
     </div>

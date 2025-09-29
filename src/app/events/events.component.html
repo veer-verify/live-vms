@@ -72,13 +72,13 @@
 
             <div class="p-2 border rounded mb-1" [ngClass]="currentScreen === 'email' ? 'max-screen' : ''"
               *ngIf="currentActionTag?.categoryId === 2 && currentSubActionTag">
-              <a class="d-flex justify-content-end"
+              <!-- <a class="d-flex justify-content-end"
                 (click)="currentScreen === 'email' ? maxmizeScreen('') : maxmizeScreen('email')">
                 <img [src]="currentScreen === 'email' ? 'assets/icons/close-black.svg' : 'assets/icons/fullscreen.svg'"
                   alt="">
-              </a>
+              </a> -->
 
-              <h4>Email Template</h4>
+              <!-- <h4>Email Template</h4> -->
               <!-- <div class="w-100">
                 <mat-form-field class="w-100" appearance="outline">
                   <mat-label>Email Action Tag</mat-label>
@@ -133,80 +133,74 @@
               </div> -->
             </div>
 
-            <div class="p-2 border rounded" *ngIf="currentActionTag?.categoryId === 2 && currentSubActionTag" style="overflow-y: auto;max-height: 30vh;">
-        
-        
+            <div class="p-2 border rounded" *ngIf="currentActionTag?.categoryId === 2 && currentSubActionTag && path === 'third-level'"
+              style="overflow-y: auto; height: 260px;">
 
-<h2>{{ cameraDetails.siteName }}</h2>
+              <!-- <h2>{{ cameraDetails?.siteName }}</h2> -->
 
+              <table cellpadding="8" cellspacing="0" style="border: none;">
+                <tbody>
+                  <!-- Site Name -->
+                  <tr>
+                    <th>Site Name</th>
+                    <td>{{ cameraDetails?.siteName }}</td>
+                  </tr>
 
-<table border="1" cellpadding="8" cellspacing="0" style="width: 600px; text-align: left;">
-  <tbody>
-    <!-- Site Name -->
-    <tr>
-      <th>Site Name</th>
-      <td>{{ cameraDetails.siteName }}</td>
-    </tr>
+                  <!-- Camera Details -->
+                  <tr>
+                    <th>Camera ID</th>
+                    <td>{{ cameraDetails?.cameras[0]?.cameraId }}</td>
+                  </tr>
 
-    <!-- Camera Details -->
-    <tr>
-      <th>Camera ID</th>
-      <td>{{ cameraDetails.cameras[0]?.cameraId }}</td>
-    </tr>
+                  <tr>
+                    <th>Camera Name</th>
+                    <td>{{ cameraDetails?.cameras[0]?.cameraName }}</td>
+                  </tr>
 
-    <tr>
-      <th>Camera Name</th>
-      <td>{{ cameraDetails.cameras[0]?.cameraName }}</td>
-    </tr>
+                  <tr>
+                    <th>Monitoring</th>
+                    <td>{{ cameraDetails?.cameras[0]?.monitoring ? 'Yes' : 'No' }}</td>
+                  </tr>
 
-    <tr>
-      <th>Monitoring</th>
-      <td>{{ cameraDetails.cameras[0]?.monitoring ? 'Yes' : 'No' }}</td>
-    </tr>
+                  <!-- Monitoring Hours -->
+                  <tr>
+                    <th>Monitoring Hours</th>
+                    <td>{{ getMonitoringHours(cameraDetails?.cameras[0]?.monitoringHoursDetails) }}</td>
+                  </tr>
 
-    <!-- Monitoring Hours -->
-    <tr>
-      <th>Monitoring Hours</th>
-      <td>{{ getMonitoringHours(cameraDetails.cameras[0]?.monitoringHoursDetails) }}</td>
-    </tr>
+                  <!-- Escalation Emails -->
+                  <tr>
+                    <th>To Emails</th>
+                    <td>{{ cameraDetails?.escalation[0]?.toEmails?.join(', ') || 'None' }}</td>
+                  </tr>
 
-    <!-- Escalation Emails -->
-    <tr>
-      <th>To Emails</th>
-      <td>{{ cameraDetails.escalation[0]?.toEmails?.join(', ') || 'None' }}</td>
-    </tr>
+                  <tr>
+                    <th>CC Emails</th>
+                    <td>{{ cameraDetails?.escalation[0]?.ccEmails?.join(', ') || 'None' }}</td>
+                  </tr>
 
-    <tr>
-      <th>CC Emails</th>
-      <td>{{ cameraDetails.escalation[0]?.ccEmails?.join(', ') || 'None' }}</td>
-    </tr>
+                  <tr>
+                    <th>BCC Emails</th>
+                    <td>{{ cameraDetails?.escalation[0]?.bccEmails?.join(', ') || 'None' }}</td>
+                  </tr>
 
-    <tr>
-      <th>BCC Emails</th>
-      <td>{{ cameraDetails.escalation[0]?.bccEmails?.join(', ') || 'None' }}</td>
-    </tr>
+                  <!-- Escalation Timing -->
+                  <tr>
+                    <th>Escalation Days</th>
+                    <td>{{ cameraDetails?.escalation[0]?.days?.join(', ') || 'None' }}</td>
+                  </tr>
 
-    <!-- Escalation Timing -->
-    <tr>
-      <th>Escalation Days</th>
-      <td>{{ cameraDetails.escalation[0]?.days?.join(', ') || 'None' }}</td>
-    </tr>
+                  <tr>
+                    <th>Escalation Hours</th>
+                    <td>{{ cameraDetails?.escalation[0]?.hours }}</td>
+                  </tr>
 
-    <tr>
-      <th>Escalation Hours</th>
-      <td>{{ cameraDetails.escalation[0]?.hours }}</td>
-    </tr>
-
-    <tr>
-      <th>Active</th>
-      <td>{{ cameraDetails.escalation[0]?.active === 'T' ? 'Yes' : 'No' }}</td>
-    </tr>
-  </tbody>
-</table>
-
-
-
-
+                  <tr>
+                    <th>Active</th>
+                    <td>{{ cameraDetails?.escalation[0]?.active === 'T' ? 'Yes' : 'No' }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -246,7 +240,7 @@
 
               <div class="d-flex align-items-center justify-content-end mt-2">
                 <button class="dialog-close-btn" (click)="cancelEvent()">Cancel</button>
-                <button type="button" class="btn btn-sm dialog-update-btn" (click)="open800()">800.COM</button>
+                <!-- <button type="button" class="btn btn-sm dialog-update-btn" (click)="open800()">800.COM</button> -->
                 <button class="dialog-update-btn" (click)="submit(3)">Send Email</button>
                 <button class="dialog-update-btn" (click)="submitAndSend()" title="Submit & Send to 3rd level"
                   *ngIf="path === 'events'">Send Email & Escalate</button>
