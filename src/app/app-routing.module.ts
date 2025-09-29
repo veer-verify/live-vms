@@ -22,6 +22,7 @@ const routes: Routes = [
       { path: 'device-status', component: DeviceStatusComponent },
       { path: 'events', component: EventsComponent },
       { path: 'third-level', component: EventsComponent },
+      { path: 'observer', component: EventsComponent },
       { path: '', redirectTo: '/user-dashboard/monitoring-info', pathMatch: 'full' },
     ]
   },
