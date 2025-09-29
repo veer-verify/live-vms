@@ -473,42 +473,12 @@ export class EventsComponent {
     })
   }
 
-  cameraDetails:any;
-
   getCurrentType(type: any) {
     this.currentSubActionTag = null;
     this.getTime();
     this.currentActionTag = type;
     let filteredData = this.actionTagsNew.filter((item: any) => item.categoryId === type.categoryId);
     this.subActionTags = filteredData.flatMap((el: any) => el.actionTagSubCategories);
-    this.event_service.getCameraEventDetails(this.currentItem).subscribe((res:any)=>{
-      this.cameraDetails=res;
-     
-      this.cameraDetails.escalation = this.cameraDetails.escalation.map((e: any) => ({
-       ...e,
-       toEmails: this.parseStringArray(e.toEmails),
-       ccEmails: this.parseStringArray(e.ccEmails),
-       bccEmails: this.parseStringArray(e.bccEmails),
-       days: this.parseStringArray(e.days),
-     }));
-    })
-  }
-
-   parseStringArray(val: any): string[] {
-    if (typeof val === 'string') {
-      try {
-        return JSON.parse(val.replace(/'/g, '"'));
-      } catch {
-        return [];
-      }
-    }
-    return Array.isArray(val) ? val : [];
-  }
-
-    getMonitoringHours(details: any): string {
-    return Object.entries(details)
-      .map(([day, hours]) => `${day}: ${hours}`)
-      .join(', ');
   }
 
   open800() {
