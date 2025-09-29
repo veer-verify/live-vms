@@ -98,4 +98,17 @@ export class EventService {
     return this.http.get(url, { params: params })
   }
 
+  getCameraEventDetails(payload:any){
+        let url = `${environment.guard_monitoring_url}/getCameraEventDetails_1_0`;
+        let params = new HttpParams();
+    if (payload?.siteId) {
+      params = params.set('siteId', payload?.siteId);
+    }
+     if (payload?.cameraId) {
+      params = params.set('cameraId', payload?.cameraId);
+    }
+   
+   return this.http.get(url, { params: params })
+  }
+
 }
