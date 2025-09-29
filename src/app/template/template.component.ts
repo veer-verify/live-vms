@@ -46,7 +46,7 @@ export class TemplateComponent {
   ngOnInit() {
     this.getTypes();
     this.getSitesforUser();
-    // this.getTemplateData();
+    this.getTemplateData();
   }
 
   @Input() isSidePanelOpen: any;
