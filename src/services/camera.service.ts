@@ -233,6 +233,7 @@ export class CameraService {
     formData.append('body', payload?.emailBody);
     formData.append('fields', JSON.stringify(payload?.emailFields));
     formData.append('footer', payload?.emailFooter);
+    formData.append('senderEmail', payload?.senderEmail);
     // formData.append('bcc', payload?.BCC);
     // formData.append('Cc', payload?.Cc);
 
