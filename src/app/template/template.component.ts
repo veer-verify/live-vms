@@ -229,13 +229,14 @@ selectedGuardIds:any;
         this.showTemplate = 1;
         this.alert=null,
         this.subalert=null;
+        this.templateData=[];
        
         break;
       case 2:
         this.showTemplate = 2;
         this.alert=null,
         this.subalert=null;
-        this.templateData=[];
+        this.getTemplateData();
         break;
       default:
     }
