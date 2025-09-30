@@ -55,7 +55,7 @@
 
        <ng-container
         *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || storage_service.isThirdLevel()">
-        <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'" [routerLink]="['/user-dashboard/third-level']" routerLinkActive="routeactive">
+        <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'" [routerLink]="['/user-dashboard/observer']" routerLinkActive="routeactive">
           <img loading="lazy" src="assets/icons/eye_tracking_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg" matTooltip="Observer">
           <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Observer</span>
         </a>

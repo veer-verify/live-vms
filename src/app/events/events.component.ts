@@ -40,7 +40,7 @@ export class EventsComponent {
   environment = environment.eventImageUrl;
   ngOnInit() {
     this.path = this.router.url.split('/').at(-1);
-    console.log(this.router.url)
+  
     this.listActionTags();
     this.getActionTagCategories();
     this.getDispatchData();
@@ -347,7 +347,7 @@ export class EventsComponent {
     this.actionTagTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
   }
 
-  submitAndSend() {
+  submitAndSend(type:string) {
     let user = this.storage_service.getData('userData');
     let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
 
@@ -383,7 +383,7 @@ export class EventsComponent {
     this.storage_service.show_loader = true;
     this.event_service.write2Dispatch({
       ...this.currentItem,
-      queue_name: 'dispatch-3rd-level',
+      queue_name: type,
       userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
     })
       .subscribe({

@@ -241,9 +241,10 @@
               <div class="d-flex align-items-center justify-content-end mt-2">
                 <button class="dialog-close-btn" (click)="cancelEvent()">Cancel</button>
                 <!-- <button type="button" class="btn btn-sm dialog-update-btn" (click)="open800()">800.COM</button> -->
-                <button class="dialog-update-btn" (click)="submit(3)">{{ path === 'events' ? 'Send Email' : 'Complete'}}</button>
-                <button class="dialog-update-btn" (click)="submitAndSend()" title="Submit & Send to 3rd level"
-                  *ngIf="path === 'events'">Send Email & Escalate</button>
+                <button class="dialog-update-btn" (click)="submit(3)">Send Email</button>
+                <button class="dialog-update-btn" (click)="submitAndSend('dispatch-3rd-level')" *ngIf="path === 'events'">Send Email & Escalate</button>
+                <button class="dialog-update-btn" (click)="submitAndSend('observer-wall')" *ngIf="path === 'third-level'">Send to Observer</button>
+                <button class="dialog-update-btn" (click)="submitAndSend('dispatch-2nd-level')" *ngIf="path === 'observer'">Send to SecondLevel</button>
               </div>
             </div>
           </div>

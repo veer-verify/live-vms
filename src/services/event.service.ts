@@ -21,7 +21,7 @@ export class EventService {
   getDispatchData() {
     let url = `${environment.events_url}/getVms_DispatchQueueData_1_0/`;
     let path = this.router.url.split('/').at(-1);
-    let params = new HttpParams().set('queue_name', path === 'events' ? 'dispatch-2nd-level' : 'dispatch-3rd-level');
+    let params = new HttpParams().set('queue_name', path === 'events' ? 'dispatch-2nd-level' : path==='observer'?'observer-wall': 'dispatch-3rd-level');
     return this.http.get(url, { params: params })
   }
 
