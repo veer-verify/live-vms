@@ -25,6 +25,13 @@ export class EventService {
     return this.http.get(url, { params: params })
   }
 
+  addQueusInfoRedis(payload:any){
+      let url = `${environment.events_url}/addQueusInfoRedis_1_0`;
+      let user = this.storageSer.getData('userData');
+      payload.userId= user?.UserId;
+    return this.http.post(url, payload)
+  }
+
   write2Dispatch(payload: any) {
     let url = `${environment.events_url}/write2Vms_DispatchQueue_1_0/`;
     let obj = {
