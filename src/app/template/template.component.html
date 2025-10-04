@@ -91,7 +91,7 @@
                 <mat-checkbox class="mat-option" color="primary" [checked]="isChecked()" (click)="$event.stopPropagation()" (change)="toggleSelection()">
                 Select All
                 </mat-checkbox>
-                <mat-option *ngFor="let item of siteslist" [value]="item.siteId" > {{ item.siteName }}</mat-option>
+                <mat-option *ngFor="let item of siteslist" [value]="item.siteId" > {{ item?.siteName }}</mat-option>
               </mat-select>
             </mat-form-field>
         </div>
@@ -102,7 +102,7 @@
                       <mat-select [(ngModel)]="alert">
                         <mat-option></mat-option> 
                         <mat-option *ngFor="let item of alertTypes; let i=index" [value]="item.keyId"
-                          (click)="getData(item);getTemplateData()">{{item.value}}</mat-option>
+                          (click)="getData(item);getTemplateData()">{{item?.value}}</mat-option>
                       </mat-select>
                     </mat-form-field>
                 </div>
@@ -113,7 +113,7 @@
                       <mat-select [(ngModel)]="subalert">
                         <mat-option></mat-option> 
                         <mat-option *ngFor="let item of alertSubTypes; let i=index" [value]="item.keyId"
-                          (click)="getData1(item);getTemplateData()">{{item.value}}</mat-option>
+                          (click)="getData1(item);getTemplateData()">{{item?.value}}</mat-option>
                       </mat-select>
                     </mat-form-field>
                 </div>
