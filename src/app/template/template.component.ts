@@ -230,12 +230,12 @@ selectedGuardIds:any;
         this.alert=null,
         this.subalert=null;
         this.templateData=[];
-       
         break;
       case 2:
         this.showTemplate = 2;
         this.alert=null,
         this.subalert=null;
+        this.siteName=null;
         this.getTemplateData();
         break;
       default:
