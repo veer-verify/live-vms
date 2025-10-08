@@ -11,6 +11,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from 'src/services/alert.service';
 import { MetadataService } from 'src/services/metadata.service';
+import { StorageService } from 'src/services/storage.service';
 
 @Component({
   selector: 'app-template',
@@ -40,7 +41,8 @@ export class TemplateComponent {
     private matDialog: MatDialog,
     private SiteSer: SiteService,
     private metadaSer: MetadataService,
-    private alaram: AlertService
+    private alaram: AlertService,
+    public storage:StorageService
   ) {}
 
   ngOnInit() {
@@ -280,7 +282,7 @@ selectedGuardIds:any;
     );
   }
 
-
+  showLoader: boolean = false;
   mapTemplates(){
 
     let payload={
@@ -288,13 +290,16 @@ selectedGuardIds:any;
       siteId:this.siteName,
       createdBy:0
     }
-
+      this.showLoader=true;
     this.SiteSer.createTemplateSiteRlsp(payload).subscribe((res:any)=>{
+   
       if(res.statusCode==200){
         this.alaram.success(res.message);
+        this.showLoader=false;
       }
       else{
         this.alaram.snackError(res.message);
+       this.showLoader=false;
       }
     })
 
