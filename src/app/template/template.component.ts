@@ -291,7 +291,7 @@ selectedGuardIds:any;
 
     this.SiteSer.createTemplateSiteRlsp(payload).subscribe((res:any)=>{
       if(res.statusCode==200){
-        this.alaram.snackSuccess(res.message);
+        this.alaram.success(res.message);
       }
       else{
         this.alaram.snackError(res.message);

@@ -23,7 +23,24 @@ export class AlertService {
       this.snackbar.open(message, "x", config);
     });
   }
+  error(message: any) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Failed!',
+      text: message,
+      showCloseButton: true
+    })
+  }
 
+  success(message: any) {
+    Swal.fire({
+      icon: 'success',
+      title: `Done!`,
+      text: `${message}`,
+      showCloseButton: true,
+      timer: 2000
+    })
+  }
 
   snackSuccess(message: any) {
     this.config.panelClass = ["success", "snackbar-container"];

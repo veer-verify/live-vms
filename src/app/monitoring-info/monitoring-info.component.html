@@ -1,5 +1,9 @@
   <div class="main-container">
+   
     <p class="title" style="font-size: 22px; color: #3d3934; font-weight: 700;">MONITORING DASHBOARD</p>
+
+      
+    
 
     <!-- count -->
     <div class="d-flex my-2 justify-content-between align-items-center srch">
@@ -21,7 +25,11 @@
       </div>
 
 
-      <div class="d-flex">
+      <div class="d-flex align-items-baseline">
+        <div class="mx-2">
+
+          <button (click)="openTemplate()"  class="btn btn-sm text-light" style="background-color: #084982;" >Template</button>
+        </div>
         <div class="me-2">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Site</mat-label>
@@ -74,9 +82,5 @@
         [devicesList]="cameraList" [details]="currentItem"></app-template>
     </ng-container>
 
-    <ng-container>
-      <div class="d-flex justify-content-end mt-5">
-        <button (click)="openTemplate()"  class="btn btn-sm text-light" style="background-color: #084982;" >Template</button>
-      </div>
-    </ng-container>
+ 
   </div>
