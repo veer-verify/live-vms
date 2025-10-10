@@ -32,8 +32,19 @@ export class SiteService {
   }
 
   public getCamerasForSiteId(payload: any): any {
-    let url  = `${environment.site_url}/getCamerasForSiteId_1_0/${payload?.siteId}`;
-    return this.http.get(url);
+    let url  = `${environment.site_url}/getLiveForEvents_1_0`;
+    //  let url  = `http://192.168.0.126:3009/getLiveForEvents_1_0`;
+    let params = new HttpParams();
+
+    if(payload?.siteId){
+
+      params = params.set('siteId', payload?.siteId);
+    }
+    if(payload?.cameraId && payload.liveControl==1){
+      params = params.set('cameraId', payload?.cameraId);
+    }
+
+    return this.http.get(url,{params});
   }
 
   getCamerasForForPortal(payload: any) {

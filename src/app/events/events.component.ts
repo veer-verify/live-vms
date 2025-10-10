@@ -456,11 +456,18 @@ export class EventsComponent {
   }
 
 
-  openLiveDialog() {
+  openLiveDialog(i:any) {
+
+  
+
+  this.currentItem.liveControl=i;
+    
+
     this.dialog.open(LiveComponent, {
       data: this.currentItem,
       disableClose: false
     })
+    
   }
 
   listActionTags() {

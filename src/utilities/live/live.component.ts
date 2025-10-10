@@ -16,7 +16,8 @@ export class LiveComponent {
   ) { }
 
   ngOnInit() {
-    this.getCamerasForSiteId(this.data);
+    this.getCamerasForSiteId(this.data); 
+    
   }
 
   liveData: any = [];

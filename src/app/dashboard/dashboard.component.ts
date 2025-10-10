@@ -310,9 +310,9 @@ export class DashboardComponent {
           }, 120000);
           this.audioIndex = -1;
           if (res.statusCode === 200) {
-            this.alertSrvc.snackSuccess(res.message);
+            this.alertSrvc.success(res.message);
           } else {
-            this.alertSrvc.snackError(res.message);
+            this.alertSrvc.error(res.message);
           }
         },
         error: (err) => {
@@ -520,7 +520,7 @@ export class DashboardComponent {
         if (res.statusCode === 200) {
           if (this.listType === 6) {
             if (data.color == 'green') {
-              this.audio(data);
+              // this.audio(data);
               this.event_service.write2Dispatch({
                 ...data,
                 queue_name: 'dispatch-2nd-level',

@@ -40,7 +40,7 @@
       <ng-container
         *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || storage_service.isSecondLevel()">
         <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'" [routerLink]="['/user-dashboard/events']" routerLinkActive="routeactive">
-          <img loading="lazy" src="assets/icons/magnifying-glass.svg" matTooltip="Pre-Dispatch">
+          <img loading="lazy" src="assets/icons/outgoing_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg" matTooltip="Pre-Dispatch">
           <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Pre-Dispatch</span>
         </a>
       </ng-container>

@@ -15,6 +15,7 @@ export class VideoPlayerComponent {
   @Input() camerasForPage: any;
   @Input() isMaximized: any;
   @Input() siteData: any;
+  @Input() liveControl:any
 
   // @Output() emailDataEmitter: EventEmitter<any> = new EventEmitter();
   @Output() screenshotEmitter: EventEmitter<any> = new EventEmitter();
@@ -45,6 +46,7 @@ export class VideoPlayerComponent {
 
     this.hitStream = true;
     this.requestICEServers();
+    console.log(this.liveControl)
   }
 
   ngAfterViewInit() {
