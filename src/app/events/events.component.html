@@ -114,7 +114,7 @@
                   <mat-label>Alert Type</mat-label>
                   <mat-select [(ngModel)]="alertType">
                     <mat-option *ngFor="let item of alertTypes; let i=index"
-                      [value]="item.keyId">{{item.value}}</mat-option>
+                      [value]="item.guardAlertTypeId" (click)="onAlertChange(item.guardAlertTypeId)">{{item.guardAlertType}}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
