@@ -15,6 +15,7 @@ import { LiveComponent } from 'src/utilities/live/live.component';
 import { Send800Component } from '../send800/send800.component';
 import { HttpClient } from '@angular/common/http';
 import html2canvas from 'html2canvas';
+import { SiteService } from 'src/services/site.service';
 
 @Component({
   selector: 'app-events',
@@ -32,6 +33,7 @@ export class EventsComponent {
     private dialog: MatDialog,
     private router: Router,
     private http: HttpClient,
+    private siteser:SiteService
   ) { }
 
   eventInterval: any;
@@ -135,6 +137,7 @@ export class EventsComponent {
 
   @ViewChild('currentBtn') currentBtn!: ElementRef;
   displayCurrent(data: any) {
+
     this.currentItem = null;
     this.resetVals();
     data.reviewStart = moment().tz(data?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
@@ -143,7 +146,23 @@ export class EventsComponent {
       this.storage_service.status_text = ''
       this.currentItem = data;
       this.eventIndex = this.eventData.indexOf(this.currentItem);
+      this.getCurrentSiteAlerts(data)
     }, 500);
+
+  
+  }
+
+  getCurrentSiteAlerts(data:any){
+
+    this.siteser.getAlertCategoriesForSiteId(data).subscribe((res:any)=>{
+     this.alertTypes=res;
+    })
+  }
+
+    onAlertChange(alertId: string) {
+    
+    const selectedAlert = this.alertTypes.find((a:any) => a.guardAlertTypeId === this.alertType);
+    this.alertSubTypes = selectedAlert ? selectedAlert.subAlerts : [];
   }
 
   resetVals() {
@@ -475,7 +494,7 @@ export class EventsComponent {
       .listActionTags({ siteId: 36416 })
       .subscribe((res: any) => {
         if (res.statusCode === 200) {
-          this.getTypes();
+          // this.getTypes();
           this.actionTags = res.data[0].actionTags;
         }
       });
@@ -484,18 +503,18 @@ export class EventsComponent {
   actionTags: any = [];
   alertTypes: any = [];
   alertSubTypes: any = [];
-  getTypes() {
-    this.metadata_service.getMetadata().subscribe((res: any) => {
-      res.forEach((item: any) => {
-        if (item.type === 98) {
-          this.alertTypes = item.metadata;
-        }
-        if (item.type === 99) {
-          this.alertSubTypes = item.metadata;
-        }
-      });
-    });
-  }
+  // getTypes() {
+  //   this.metadata_service.getMetadata().subscribe((res: any) => {
+  //     res.forEach((item: any) => {
+  //       if (item.type === 98) {
+  //         this.alertTypes = item.metadata;
+  //       }
+  //       if (item.type === 99) {
+  //         this.alertSubTypes = item.metadata;
+  //       }
+  //     });
+  //   });
+  // }
 
   actionTagsNew: any = [];
   subActionTags: any = [];

@@ -205,6 +205,16 @@ export class SiteService {
     payload.modifiedBy=user?.UserId;
     return this.http.put(url, payload);
   }
+getAlertCategoriesForSiteId(payload:any){
 
-// listtemplatemasterdata
+    let url  = `${environment.guard_monitoring_url}/getAlertCategoriesForSiteId_1_0`;
+    let params = new HttpParams();
+
+    if( payload?.siteId ){
+      params = params.set('siteId', payload?.siteId );
+    }
+  
+    return this.http.get(url, {params});
+
+}
 }

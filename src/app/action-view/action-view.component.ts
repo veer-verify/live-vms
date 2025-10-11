@@ -82,7 +82,8 @@ export class ActionViewComponent {
    templateData:any = [];
 
    ngOnInit(){
-    this.getTypes();
+    // this.getTypes();
+    this.getCurrentSiteAlerts();
 
     this.getOverAllView();
     //  this.getTemplateData();
@@ -117,25 +118,39 @@ export class ActionViewComponent {
     })
    }
 
-   getTypes() {
+   getCurrentSiteAlerts(){
 
-    this.metadaSer.getMetadata().subscribe((res: any) => {
-
-      res.forEach((item: any) => {
-
-        if (item.typeName === "GuardAlertType") {
-          this.alertTypes = item.metadata;
-          
-        }
-        if (item.typeName === "GuardSubTypeId") {
-          this.alertSubTypes = item.metadata;
-          
-        }
-        
-      });
-    });
-
+    this.siteser.getAlertCategoriesForSiteId(this.currentItem?.item).subscribe((res:any)=>{
+     this.alertTypes=res;
+    })
   }
+
+    onAlertChange(alertId: string) {
+    
+    const selectedAlert = this.alertTypes.find((a:any) => a.guardAlertTypeId === this.alert);
+    this.alertSubTypes = selectedAlert ? selectedAlert.subAlerts : [];
+  }
+
+
+  //  getTypes() {
+
+  //   this.metadaSer.getMetadata().subscribe((res: any) => {
+
+  //     res.forEach((item: any) => {
+
+  //       if (item.typeName === "GuardAlertType") {
+  //         this.alertTypes = item.metadata;
+          
+  //       }
+  //       if (item.typeName === "GuardSubTypeId") {
+  //         this.alertSubTypes = item.metadata;
+          
+  //       }
+        
+  //     });
+  //   });
+
+  // }
 
 alertField1:any;
 subAlertfield1:any;
