@@ -247,8 +247,24 @@ export class CameraService {
     return this.http.post(url, formData, { params: params });
   }
 
+    getEmailData(payload: any) {
+    let url = `${environment.guard_monitoring_url}/getEmailData_1_0`;
+    let timer;
+    payload?.siteId == 36444 ? timer = 10 : timer = 120;
+    let params = new HttpParams();
+    params = params.set('siteId', payload?.siteId);
+    params = params.set('camerasList', payload?.camerasList);
+    params = params.set('alertTypeId', payload?.alertTypeId);
+    params = params.set('subTypeId', payload?.subTypeId);
+    params = params.set('day', payload?.day);
+    params = params.set('hour', payload?.hour);
+    params = params.set('currentTime', payload?.currentTime);
+    params = params.set('timer', timer);
+    return this.http.get(url, { params: params });
+  }
 
-  getEmailData(payload: any) {
+
+  getEmailDataForVMSEvents(payload: any) {
     let url = `${environment.guard_monitoring_url}/getEmailDataForVMSEvents_1_0`;
     let timer;
     payload?.siteId == 36444 ? timer = 10 : timer = 120;

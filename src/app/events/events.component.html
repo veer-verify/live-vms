@@ -124,7 +124,7 @@
                   <mat-label>Alert Sub Type</mat-label>
                   <mat-select [(ngModel)]="alertSubType">
                     <mat-option *ngFor="let item of alertSubTypes; let i=index" [value]="item.keyId"
-                      (click)="getEmailData()">{{item.value}}</mat-option>
+                      (click)="getEmailDataForVMSEvents()">{{item.value}}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>

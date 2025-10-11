@@ -216,7 +216,7 @@ export class EventsComponent {
   }
 
   emailData: any;
-  getEmailData() {
+  getEmailDataForVMSEvents() {
     let day = moment.tz(this.currentItem?.timezone).day();
     let hour = moment.tz(this.currentItem?.timezone).hours();
 
@@ -232,7 +232,7 @@ export class EventsComponent {
     };
 
     if (this.alertSubType != undefined && this.alertType != undefined) {
-      this.camera_service.getEmailData(this.emailObject).subscribe({
+      this.camera_service.getEmailDataForVMSEvents(this.emailObject).subscribe({
         next: (res: any) => {
           if (res.statusCode === 200) {
             this.emailData = res.emailDetails;
