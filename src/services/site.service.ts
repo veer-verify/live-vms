@@ -33,7 +33,7 @@ export class SiteService {
 
   public getCamerasForSiteId(payload: any): any {
     let url  = `${environment.site_url}/getLiveForEvents_1_0`;
-    //  let url  = `http://192.168.0.126:3009/getLiveForEvents_1_0`;
+   
     let params = new HttpParams();
 
     if(payload?.siteId){
