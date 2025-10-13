@@ -4,7 +4,7 @@
     <a mat-dialog-close><img loading="lazy" src="assets/icons/close.svg" width="20" alt=""></a>
   </div>
 
-  <div [ngClass]="data.liveControl === 2 ? 'gridcontainer' : ''">
+  <div [ngClass]="data.liveControl === 2 ? 'gridcontainer' : 'singlelive'">
     <div class="border" *ngFor="let item of liveData">
       <app-video-player [videoData]="item.httpUrl + '/'" [liveControl]="data.liveControl"></app-video-player>
     </div>
