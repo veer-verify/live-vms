@@ -293,6 +293,7 @@ export class EventsComponent {
   
           if (res.statusCode === 200) {
             this.alert_service.snackSuccess(res.message);
+            
           } else {
             this.alert_service.snackError(res.message);
           }
@@ -372,9 +373,13 @@ export class EventsComponent {
       next: () => {
         this.storage_service.show_loader = false;
         this.sirenTime = null;
-        // this.alert_service.snackSuccess('Alert sent successfully!');
+         if(this.toEmails?.length || this.ccEmails?.length || this.bccEmails?.length){
+
+           this.alert_service.snackSuccess('Alert sent successfully!');
+         }
         if (type === 3) {
           this.sendEmail();
+      
         } else {
           this.cancelEvent();
           this.displayCurrent(this.currentItem)
