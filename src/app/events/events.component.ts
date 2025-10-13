@@ -536,13 +536,24 @@ export class EventsComponent {
     this.event_service.getCameraEventDetails(this.currentItem).subscribe((res: any) => {
       this.cameraDetails = res;
 
-      this.cameraDetails.escalation = this.cameraDetails.escalation.map((e: any) => ({
-        ...e,
-        toEmails: this.parseStringArray(e.toEmails),
-        ccEmails: this.parseStringArray(e.ccEmails),
-        bccEmails: this.parseStringArray(e.bccEmails),
-        days: this.parseStringArray(e.days),
-      }));
+  const escalation = this.cameraDetails.escalation;
+
+  if (Array.isArray(escalation)) {
+    this.cameraDetails.escalation = escalation.map((e: any) => ({
+      ...e,
+      toEmails: this.parseStringArray(e.toEmails),
+      ccEmails: this.parseStringArray(e.ccEmails),
+      bccEmails: this.parseStringArray(e.bccEmails),
+    }));
+  } else if (escalation && typeof escalation === 'object') {
+    // ✅ Convert object → array of one object
+    this.cameraDetails.escalation = [{
+      ...escalation,
+      toEmails: this.parseStringArray(escalation.toEmails),
+      ccEmails: this.parseStringArray(escalation.ccEmails),
+      bccEmails: this.parseStringArray(escalation.bccEmails),
+    }];
+  }
     })
   }
 
