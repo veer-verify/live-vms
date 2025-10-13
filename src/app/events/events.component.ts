@@ -45,8 +45,8 @@ export class EventsComponent {
 
     this.listActionTags();
     this.getActionTagCategories();
-    this.getDispatchData();
-    this.poolEvents();
+    // this.getDispatchData();
+    // this.poolEvents();
 
   }
 
@@ -75,35 +75,35 @@ export class EventsComponent {
   }
 
   eventData: any = [
-    // {
-    //     "siteId": 36428,
-    //     "siteName": "Albemarle Crossing",
-    //     "timezone": "America/Los_Angeles",
-    //     "httpUrl": "https://gisus7028live-repo.us2.pitunnel.com/GISUS7028C1",
-    //     "cameraId": "GISUS7028C1",
-    //     "color": "green",
-    //     "id": "3b8a790d-56ea-44bd-9682-048fd01aef4c",
-    //     "imageName": "GISUS7028C1_3b8a790d-56ea-44bd-9682-048fd01aef4c_2025-09-20_00-12-24_green.png",
-    //     "timestamp": "2025-09-20 00:12:24:290",
-    //     "userLevels": 0,
-    //     "actionTag": "suspicious",
-    //     "actionTime": "2025-09-20 12:12:25:193",
-    //     "eventTag": "",
-    //     "userLevelAlarmInfo": [
-    //         {
-    //             "level": 1,
-    //             "user": 1626,
-    //             "alarm": "N",
-    //             "landingTime": "2025-09-20 00:12:24:290",
-    //             "reviewStart": "2025-09-20 00:12:24:290",
-    //             "reviewEnd": "2025-09-20 00:12:24:290",
-    //             "actionTag": 2,
-    //             "subActionTag": 23,
-    //             "notes": ""
-    //         }
-    //     ],
-    //     "userName": "ivisusnew"
-    // }
+    {
+        "siteId": 36428,
+        "siteName": "Albemarle Crossing",
+        "timezone": "America/Los_Angeles",
+        "httpUrl": "https://gisus7028live-repo.us2.pitunnel.com/GISUS7028C1",
+        "cameraId": "GISUS7028C1",
+        "color": "green",
+        "id": "3b8a790d-56ea-44bd-9682-048fd01aef4c",
+        "imageName": "GISUS7028C1_3b8a790d-56ea-44bd-9682-048fd01aef4c_2025-09-20_00-12-24_green.png",
+        "timestamp": "2025-09-20 00:12:24:290",
+        "userLevels": 0,
+        "actionTag": "suspicious",
+        "actionTime": "2025-09-20 12:12:25:193",
+        "eventTag": "",
+        "userLevelAlarmInfo": [
+            {
+                "level": 1,
+                "user": 1626,
+                "alarm": "N",
+                "landingTime": "2025-09-20 00:12:24:290",
+                "reviewStart": "2025-09-20 00:12:24:290",
+                "reviewEnd": "2025-09-20 00:12:24:290",
+                "actionTag": 2,
+                "subActionTag": 23,
+                "notes": ""
+            }
+        ],
+        "userName": "ivisusnew"
+    }
   ];
 
   getDispatchData() {
@@ -137,7 +137,6 @@ export class EventsComponent {
 
   @ViewChild('currentBtn') currentBtn!: ElementRef;
   displayCurrent(data: any) {
-
     this.currentItem = null;
     this.resetVals();
     data.reviewStart = moment().tz(data?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
@@ -148,19 +147,15 @@ export class EventsComponent {
       this.eventIndex = this.eventData.indexOf(this.currentItem);
       this.getCurrentSiteAlerts(data)
     }, 500);
-
-  
   }
 
   getCurrentSiteAlerts(data:any){
-
     this.siteser.getAlertCategoriesForSiteId(data).subscribe((res:any)=>{
      this.alertTypes=res;
     })
   }
 
-    onAlertChange(alertId: string) {
-    
+  onAlertChange(alertId: string) {
     const selectedAlert = this.alertTypes.find((a:any) => a.guardAlertTypeId === this.alertType);
     this.alertSubTypes = selectedAlert ? selectedAlert.subAlerts : [];
   }

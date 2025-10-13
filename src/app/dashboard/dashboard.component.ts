@@ -428,14 +428,14 @@ export class DashboardComponent {
       else if (data.siteId == 36415) {
         timeAlert = environment.kennedyAlert;
       }
-      else if (data.siteId == 36444 || data?.siteId === 36446) {
-        timeAlert = environment.oneWatchAlert;
-      }
       else if (data.siteId == 36562) {
         timeAlert = environment.springAlert;
       }
-            else if (data.siteId == 36587) {
+      else if (data.siteId == 36587) {
         timeAlert = environment.shopAlert;
+      }
+      else if (data.siteId == 36444 || data?.siteId === 36446) {
+        timeAlert = environment.oneWatchAlert;
       }
       else {
         timeAlert = environment.firstAlert;

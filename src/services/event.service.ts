@@ -106,7 +106,7 @@ export class EventService {
   }
 
   getCameraEventDetails(payload:any){
-        let url = `${environment.guard_monitoring_url}/getCameraEventDetails_1_0`;
+        let url = `${environment.guard_monitoring_url}/getMonitoringInfoForSiteAndCamera_1_0`;
         let params = new HttpParams();
     if (payload?.siteId) {
       params = params.set('siteId', payload?.siteId);
