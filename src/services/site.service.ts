@@ -32,7 +32,7 @@ export class SiteService {
   }
 
   public getCamerasForSiteId(payload: any): any {
-    let url  = `${environment.site_url}/getLiveForEvents_1_0`;
+    let url  = `${environment.site_url}/getLiveInfoForSiteAndCamera_1_0`;
    
     let params = new HttpParams();
 
