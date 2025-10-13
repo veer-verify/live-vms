@@ -62,7 +62,7 @@ export class EventsComponent {
               this.storage_service.status_text = '';
               res[0].landingTime = moment().tz(res[0].timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
               res[0].audio = false;
-               this.event_service.addQueusInfoRedis({userId:0,queueInfo:this.eventData[0]}).subscribe((res:any)=>{})
+              //  this.event_service.addQueusInfoRedis({userId:0,queueInfo:this.eventData[0]}).subscribe((res:any)=>{})
               this.eventData.push(...res);
               if (this.eventData.length === 1) {
                 this.displayCurrent(this.eventData[0]);
@@ -116,7 +116,7 @@ export class EventsComponent {
           res[0].audio = false;
           this.eventData.push(...res);
           this.displayCurrent(this.eventData[0]);
-          this.event_service.addQueusInfoRedis({userId:0,queueInfo:{additionalProp1:this.eventData[0]}}).subscribe((res:any)=>{console.log(res)})
+          // this.event_service.addQueusInfoRedis({userId:0,queueInfo:{additionalProp1:this.eventData[0]}}).subscribe((res:any)=>{console.log(res)})
         } else {
           this.storage_service.status_text = 'no events!'
         }
