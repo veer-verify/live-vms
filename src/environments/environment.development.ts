@@ -26,7 +26,6 @@ export const environment = {
     monitoring_url: `${dev_url}/monitoring`,
     event_tags_url: `${dev_url}/events_data`,
     eventImageUrl: `${dev_url}/dotimages/`,
-
     events_url: `${event_url}/queueManagement`,
 
     firstAlert: {
@@ -61,9 +60,15 @@ export const environment = {
         time5: 210
     },
 
-    
-    API_TOKEN: 'OjykxjAFrVn6KqBcppQI2ptAt4Dpf0RyWE0eUINs7WyqWXLrtUKr3iS1LPRem0TY0UtU43H3S4rtt300',
+    shopAlert: {
+        time1: 100,
+        time2: 120,
+        time3: 150,
+        time4: 180,
+        time5: 210
+    },
 
+    API_TOKEN: 'OjykxjAFrVn6KqBcppQI2ptAt4Dpf0RyWE0eUINs7WyqWXLrtUKr3iS1LPRem0TY0UtU43H3S4rtt300',
 
     logo: 'assets/themes/logo.png',
     headerLogo: 'assets/themes/IVISsecurity_logo.png',

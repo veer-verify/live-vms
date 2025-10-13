@@ -24,7 +24,7 @@ export class LiveComponent {
   statusTxt!: string;
   getCamerasForSiteId(data: any) {
     this.statusTxt = 'loading...';
-    this.siteSer.getCamerasForSiteId(data).subscribe({
+    this.siteSer.getLiveCams(data).subscribe({
       next: (res: any) => {
         if(res.length === 0) {
           this.statusTxt = 'no cameras found!';

@@ -434,6 +434,9 @@ export class DashboardComponent {
       else if (data.siteId == 36562) {
         timeAlert = environment.springAlert;
       }
+            else if (data.siteId == 36587) {
+        timeAlert = environment.shopAlert;
+      }
       else {
         timeAlert = environment.firstAlert;
       }
@@ -635,7 +638,7 @@ export class DashboardComponent {
   dialogLoader: boolean = false;
   getEmailData() {
     this.dialogLoader = true;
-    this.emailObject.camerasList.push(this.selectedCameras);
+    this.emailObject.camerasList = this.selectedCameras;
     this.emailObject.alertTypeId = this.mannualEmailBody.alertType;
     this.emailObject.subTypeId = this.mannualEmailBody.alertSubType;
     this.camSer.getEmailData(this.emailObject).subscribe({
