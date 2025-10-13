@@ -230,6 +230,10 @@ export class EventsComponent {
   }
 
   emailData: any;
+  toEmails:any;
+  ccEmails:any;
+  bccEmails:any;
+
   getEmailDataForVMSEvents() {
     let day = moment.tz(this.currentItem?.timezone).day();
     let hour = moment.tz(this.currentItem?.timezone).hours();
@@ -250,6 +254,12 @@ export class EventsComponent {
         next: (res: any) => {
           if (res.statusCode === 200) {
             this.emailData = res.emailDetails;
+            const emails = this.emailData;
+             this.toEmails = (emails.recipientEmails || []).filter((e:any) => e && e.trim() !== '');
+             this.ccEmails = (emails.Cc || []).filter( (e:any)=> e && e.trim() !== '');
+             this.bccEmails = (emails.BCC || []).filter( (e:any)=> e && e.trim() !== '');
+
+          
           } else {
             this.emailData = null;
             this.alert_service.snackError(res.message)
@@ -268,27 +278,34 @@ export class EventsComponent {
       eventToTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'),
       objectName: 'Person',
     };
-    this.camera_service.eventsGenericEmail({
-      ...this.emailObject,
-      ...dateObj,
-      ...this.currentItem,
-      ...this.emailData
-    }).subscribe({
-      next: (res: any) => {
-        this.cancelEvent();
-        this.displayCurrent(this.currentItem)
 
-        if (res.statusCode === 200) {
-          this.alert_service.snackSuccess(res.message);
-        } else {
-          this.alert_service.snackError(res.message);
+    if(this.toEmails?.length || this.ccEmails?.length || this.bccEmails?.length){
+
+      this.camera_service.eventsGenericEmail({
+        ...this.emailObject,
+        ...dateObj,
+        ...this.currentItem,
+        ...this.emailData
+      }).subscribe({
+        next: (res: any) => {
+          this.cancelEvent();
+          this.displayCurrent(this.currentItem)
+  
+          if (res.statusCode === 200) {
+            this.alert_service.snackSuccess(res.message);
+          } else {
+            this.alert_service.snackError(res.message);
+          }
+        },
+        error: (err) => {
+          this.cancelEvent();
+          this.displayCurrent(this.currentItem)
         }
-      },
-      error: (err) => {
-        this.cancelEvent();
-        this.displayCurrent(this.currentItem)
-      }
-    });
+      });
+    }
+    else{
+      this.alert_service.error("email data not Found")
+    }
   }
 
   submit(type: number) {
@@ -355,7 +372,7 @@ export class EventsComponent {
       next: () => {
         this.storage_service.show_loader = false;
         this.sirenTime = null;
-        this.alert_service.snackSuccess('Alert sent successfully!');
+        // this.alert_service.snackSuccess('Alert sent successfully!');
         if (type === 3) {
           this.sendEmail();
         } else {
