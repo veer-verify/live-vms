@@ -46,7 +46,7 @@ export class LoginService {
     };
 
     let payload = Object.fromEntries(obj);
-    return this.http.post(url, payload);
+    return this.http.post(url, payload) ;
   }
 
 
