@@ -1,6 +1,6 @@
 const prod_url: string = "https://prod.ivisecurity.com";
 const event_url: string = "https://stagingmq.ivisecurity.com";
-// const dev_url: string = "http://usstaging.ivisecurity.com";
+const dev_url: string = "http://usstaging.ivisecurity.com";
 
 export const environment = {
 
@@ -15,7 +15,6 @@ export const environment = {
     // guard_monitoring_url:`${dev_url}:8015/guard_monitoring`,
     // monitoring_url:`${dev_url}:8016/monitoring`,
 
-    eventImageUrl: 'https://prod.ivisecurity.com/dotimages/',
     login_url: `${prod_url}/userDetails`,
     site_url: `${prod_url}/vipsites`,
     common_url: `${prod_url}/metadata`,
@@ -24,6 +23,7 @@ export const environment = {
     monitoring_url: `${prod_url}/monitoring`,
     // events_url: 'https://stagingmq.ivisecurity.com',
     events_url: `https://stagingmq.ivisecurity.com/queueManagement`,
+    eventImageUrl: `${prod_url}/dotimages/`,
     event_tags_url: `${prod_url}/events_data`,
 
     firstAlert: {
