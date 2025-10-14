@@ -34,7 +34,7 @@
       </a> -->
 
       <ng-container
-        *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || user?.userLevel === 2">
+        *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || user?.userLevel === 2 || user?.userLevel === 0">
         <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'" [routerLink]="['/user-dashboard/pre-dispatch']" routerLinkActive="routeactive">
           <img loading="lazy" src="assets/icons/outgoing_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg" matTooltip="Pre-Dispatch">
           <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Pre-Dispatch</span>
@@ -42,7 +42,7 @@
       </ng-container>
 
       <ng-container
-        *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || user?.userLevel === 3">
+        *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || user?.userLevel === 3 || user?.userLevel === 0">
         <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'" [routerLink]="['/user-dashboard/dispatch']" routerLinkActive="routeactive">
           <img loading="lazy" src="assets/icons/truck-ramp-box.svg" matTooltip="Dispatch">
           <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Dispatch</span>
@@ -50,7 +50,7 @@
       </ng-container>
 
        <ng-container
-        *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || user?.userLevel === 4">
+        *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || user?.userLevel === 4 || user?.userLevel === 0">
         <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'" [routerLink]="['/user-dashboard/observer']" routerLinkActive="routeactive">
           <img loading="lazy" src="assets/icons/eye_tracking_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg" matTooltip="Observer">
           <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Observer</span>
