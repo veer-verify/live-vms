@@ -21,7 +21,7 @@ export class EventService {
   getDispatchData() {
     let url = `${environment.events_url}/getVms_DispatchQueueData_1_0/`;
     let path = this.router.url.split('/').at(-1);
-    let params = new HttpParams().set('queue_name', path === 'events' ? 'dispatch-2nd-level' : path==='observer'?'observer-wall': 'dispatch-3rd-level');
+    let params = new HttpParams().set('queue_name', path === 'pre-dispatch' ? 'dispatch-2nd-level' : path === 'observer' ? 'observer-wall' : 'dispatch-3rd-level');
     return this.http.get(url, { params: params })
   }
 
@@ -68,7 +68,7 @@ export class EventService {
       cameraId: payload?.cameraId,
       eventTag: 'LIVE-VMS',
       actionTag: payload?.actionTag,
-      userLevels: path === 'events' ? 2 : 3,
+      userLevels: path === 'pre-dispatch' ? 2 : 3,
       falseActivityTime: payload?.type == 1 ? payload?.actionTagTime : '',
       suspiciousTime: payload?.type !== 1 ? payload?.actionTagTime : '',
       // activityDetTime: payload?.activityDetTime,
@@ -96,18 +96,16 @@ export class EventService {
     let url = `${environment.event_tags_url}/getActionTagCategories_1_0`;
     let path = this.router.url.split('/').at(-1);
     let params = new HttpParams();
+    params = params.set('userLevel',  path === 'pre-dispatch' ? 2 : 3)
     if (payload?.actionTagId) {
       params = params.set('actionTagId', payload?.actionTagId)
     }
-    // if (payload?.userLevel) {
-      params = params.set('userLevel',  path === 'events' ? 2 : 3,)
-    // }
     return this.http.get(url, { params: params })
   }
 
   getCameraEventDetails(payload:any){
-        let url = `${environment.guard_monitoring_url}/getMonitoringInfoForSiteAndCamera_1_0`;
-        let params = new HttpParams();
+    let url = `${environment.guard_monitoring_url}/getMonitoringInfoForSiteAndCamera_1_0`;
+    let params = new HttpParams();
     if (payload?.siteId) {
       params = params.set('siteId', payload?.siteId);
     }

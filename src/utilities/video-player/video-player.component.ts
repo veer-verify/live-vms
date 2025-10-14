@@ -10,12 +10,12 @@ import { CameraService } from 'src/services/camera.service';
   styleUrls: ['./video-player.component.css']
 })
 export class VideoPlayerComponent {
-  
+
   @Input() videoData: any;
   @Input() camerasForPage: any;
   @Input() isMaximized: any;
   @Input() siteData: any;
-  @Input() liveControl:any
+  @Input() liveControl: any
 
   // @Output() emailDataEmitter: EventEmitter<any> = new EventEmitter();
   @Output() screenshotEmitter: EventEmitter<any> = new EventEmitter();
@@ -46,7 +46,7 @@ export class VideoPlayerComponent {
 
     this.hitStream = true;
     this.requestICEServers();
-    console.log(this.liveControl)
+    // console.log(this.liveControl)
   }
 
   ngAfterViewInit() {
@@ -54,7 +54,7 @@ export class VideoPlayerComponent {
       this.camSer.siren_sub.subscribe((res: any) => {
         if (res) {
           this.video.nativeElement.muted = false;
-      } else  {
+        } else {
           this.video.nativeElement.muted = true;
         }
       })
@@ -361,18 +361,21 @@ export class VideoPlayerComponent {
     this.canvasWidth = finalWidth;
     this.canvasHeight = finalHeight;
 
-    await this.canvas.nativeElement.getContext("2d").drawImage(this.video.nativeElement, 0, 0, finalWidth, finalHeight);
-    await this.canvas.nativeElement.getContext("2d").drawImage(imgElement, finalX, finalY, 20, 20);
-    this.canvas.nativeElement.toBlob((blob: any) => {
-      let newObj = { ...camera, color, ...btnItem }
-      this.screenshotEmitter.emit({ image: blob, camera: newObj });
-    });
+    setTimeout(() => {
+      this.canvas.nativeElement.getContext("2d").drawImage(this.video.nativeElement, 0, 0, finalWidth, finalHeight);
+      this.canvas.nativeElement.getContext("2d").drawImage(imgElement, finalX, finalY, 20, 20);
+      this.canvas.nativeElement.toBlob((blob: any) => {
+        let newObj = { ...camera, color, ...btnItem }
+        this.screenshotEmitter.emit({ image: blob, camera: newObj });
 
-    // const screenshotDataUrl = await this.canvas.nativeElement.toDataURL('image/png');
-    // const link = document.createElement('a');
-    // link.href = screenshotDataUrl;
-    // link.download = `${camera?.cameraId}-${camera?.name}-${color ?? ''}-${moment().tz(camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss:SSS')}.png`;
-    // link.click();
+        const screenshotDataUrl = this.canvas.nativeElement.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = screenshotDataUrl;
+        link.download = `${camera?.cameraId}-${camera?.name}-${color ?? ''}-${moment().tz(camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss:SSS')}.png`;
+        link.click();
+      });
+    }, 500)
+
   }
 
   ngOnDestroy() {

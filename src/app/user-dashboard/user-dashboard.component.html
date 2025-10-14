@@ -16,11 +16,7 @@
         <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Dashboard</span>
       </a>
 
-      <ng-container *ngIf="
-          storage_service.isSuperAdmin() ||
-          storage_service.isAdmin() ||
-          storage_service.isFirstLevel()
-        ">
+      <ng-container>
         <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'" [routerLink]="['/dashboard']" routerLinkActive="routeactive">
           <img loading="lazy" src="assets/icons/building.svg" matTooltip="Sites" />
           <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Sites</span>
@@ -38,23 +34,23 @@
       </a> -->
 
       <ng-container
-        *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || storage_service.isSecondLevel()">
-        <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'" [routerLink]="['/user-dashboard/events']" routerLinkActive="routeactive">
+        *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || user?.userLevel === 2">
+        <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'" [routerLink]="['/user-dashboard/pre-dispatch']" routerLinkActive="routeactive">
           <img loading="lazy" src="assets/icons/outgoing_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg" matTooltip="Pre-Dispatch">
           <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Pre-Dispatch</span>
         </a>
       </ng-container>
 
       <ng-container
-        *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || storage_service.isThirdLevel()">
-        <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'" [routerLink]="['/user-dashboard/third-level']" routerLinkActive="routeactive">
+        *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || user?.userLevel === 3">
+        <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'" [routerLink]="['/user-dashboard/dispatch']" routerLinkActive="routeactive">
           <img loading="lazy" src="assets/icons/truck-ramp-box.svg" matTooltip="Dispatch">
           <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Dispatch</span>
         </a>
       </ng-container>
 
        <ng-container
-        *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || storage_service.isThirdLevel()">
+        *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || user?.userLevel === 4">
         <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'" [routerLink]="['/user-dashboard/observer']" routerLinkActive="routeactive">
           <img loading="lazy" src="assets/icons/eye_tracking_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg" matTooltip="Observer">
           <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Observer</span>

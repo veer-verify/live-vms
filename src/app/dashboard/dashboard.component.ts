@@ -676,7 +676,7 @@ export class DashboardComponent {
 
   downloadImg(url: string) {
     this.http.get(url).subscribe((res) => {
-      console.log(res);
+      // console.log(res);
     });
   }
 
@@ -733,12 +733,14 @@ export class DashboardComponent {
 
   @ViewChildren('video') videos!: QueryList<any>;
   @ViewChildren('btn') btns!: QueryList<any>;
-  captureScreenshot(camera: any, index: any, color: any, btnItem: any, btnIndex: any) {
-    let a = this.btns.toArray()[index].nativeElement.children[btnIndex];
-    let imgElement = a.firstChild;
+  async captureScreenshot(camera: any, index: any, color: any, btnItem: any, btnIndex: any) {
+    let btnEl = await this.btns.toArray()[index].nativeElement.children[btnIndex];
+    let imgEl = await btnEl.firstChild;
     let videoComponents = this.videos.toArray();
     if (videoComponents[index]) {
-      videoComponents[index].capture(camera, color, imgElement, btnItem);
+      videoComponents[index].capture(camera, color, imgEl, btnItem);
+    } else {
+      console.log('no component!')
     }
   }
 

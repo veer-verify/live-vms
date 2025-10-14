@@ -23,7 +23,6 @@ export class Send800Component {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data);
     this.getUrl();
     this.message = this.data?.emailBody
   }
@@ -95,13 +94,11 @@ export class Send800Component {
       const reader = new FileReader();
       reader.readAsDataURL(blob);
       reader.onload = (event: any) => {
-        console.log(event.target.result);
         observer.next(event.target.result);
         observer.complete();
       };
 
       reader.onerror = (event: any) => {
-        console.log(event.target.error.code);
         observer.next(event.target.error.code);
         observer.complete();
       };

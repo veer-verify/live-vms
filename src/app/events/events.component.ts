@@ -314,7 +314,7 @@ export class EventsComponent {
 
     let user = this.storage_service.getData('userData');
     let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
-    this.path === 'events' ?
+    this.path === 'pre-dispatch' ?
       this.currentItem?.userLevelAlarmInfo.push(
         {
           level: 2,
@@ -329,7 +329,7 @@ export class EventsComponent {
           notes: ''
         }
       ) :
-      this.path === 'third-level' ?
+      this.path === 'dispatch' ?
         this.currentItem?.userLevelAlarmInfo.push(
           {
             level: 3,
@@ -403,7 +403,7 @@ export class EventsComponent {
     let user = this.storage_service.getData('userData');
     let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
 
-    this.path === 'events' ?
+    this.path === 'pre-dispatch' ?
       this.currentItem?.userLevelAlarmInfo.push(
         {
           level: 2,
@@ -417,7 +417,7 @@ export class EventsComponent {
           notes: ''
         }
       ) :
-      this.path === 'third-level' ?
+      this.path === 'dispatch' ?
         this.currentItem?.userLevelAlarmInfo.push(
           {
             level: 3,
@@ -455,7 +455,6 @@ export class EventsComponent {
       .subscribe({
         next: () => {
           this.storage_service.show_loader = false;
-          // this.sendEmail();
           this.cancelEvent();
           this.alert_service.snackSuccess('Alert sent successfully!');
         },
@@ -464,6 +463,10 @@ export class EventsComponent {
           this.storage_service.show_loader = false;
         }
       });
+
+      if(type !== 'observer') {
+        this.sendEmail();
+      }
   }
 
   @ViewChild('image') image!: ElementRef;

@@ -357,8 +357,7 @@ export class CameraService {
 
       return this.http.post(this.API_URL, formData, {
         headers,
-        reportProgress: true,
-        observe: 'events'
+        reportProgress: true
       }).pipe(
         retry(3),
         catchError(this.handleError)

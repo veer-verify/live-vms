@@ -137,7 +137,7 @@
               </div> -->
             </div>
 
-            <div class="p-2 border rounded" *ngIf="currentActionTag?.categoryId === 2 && currentSubActionTag && (path == 'events' || path =='third-level')"
+            <div class="p-2 border rounded" *ngIf="currentActionTag?.categoryId === 2 && currentSubActionTag && (path == 'pre-dispatch' || path =='dispatch')"
               >
 
               <!-- <h2>{{ cameraDetails?.siteName }}</h2> -->
@@ -243,12 +243,19 @@
               </div>
 
               <div class="d-flex align-items-center justify-content-end mt-2">
-                <button class="dialog-close-btn" (click)="cancelEvent()">Cancel</button>
                 <!-- <button type="button" class="btn btn-sm dialog-update-btn" (click)="open800()">800.COM</button> -->
+                <button class="dialog-close-btn" (click)="cancelEvent()">Cancel</button>
                 <button class="dialog-update-btn" (click)="submit(3)">Send Email</button>
-                <button class="dialog-update-btn" (click)="submitAndSend('dispatch-3rd-level')" *ngIf="path === 'events'">Escalate</button>
-                <button class="dialog-update-btn" (click)="submitAndSend('observer-wall')" *ngIf="path === 'third-level'">Send to Observer</button>
-                <button class="dialog-update-btn" (click)="submitAndSend('dispatch-2nd-level')" *ngIf="path === 'observer'">Send to SecondLevel</button>
+
+                <button class="dialog-update-btn" (click)="submitAndSend('dispatch-3rd-level')" *ngIf="path === 'pre-dispatch'" title="Send to Dispatch">
+                  Escalate
+                </button>
+                <button class="dialog-update-btn" (click)="submitAndSend('observer-wall')" *ngIf="path === 'dispatch'" title="Send to Observer">
+                  Escalate
+                </button>
+                <button class="dialog-update-btn" (click)="submitAndSend('dispatch-2nd-level')" *ngIf="path === 'observer'" title="Send to Second Level">
+                  Escalate
+                </button>
               </div>
             </div>
           </div>

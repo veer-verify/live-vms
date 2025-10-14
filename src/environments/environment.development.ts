@@ -27,7 +27,7 @@ export const environment = {
     events_url: `${event_url}/queueManagement`,
 
     firstAlert: {
-        time1: 0.5,
+        time1: 1,
         time2: 2,
         time3: 3,
         time4: 4,

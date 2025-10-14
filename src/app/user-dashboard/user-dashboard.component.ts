@@ -13,9 +13,12 @@ import { StorageService } from 'src/services/storage.service';
 export class UserDashboardComponent {
 
   showSidenav = false;
+  user: any;
   constructor(
     public storage_service: StorageService
-  ) {}
+  ) {
+    this.user = this.storage_service.getData('userData');
+  }
 
   collap_nav(){
     this.showSidenav =! this.showSidenav;
