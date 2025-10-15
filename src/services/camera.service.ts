@@ -236,11 +236,10 @@ export class CameraService {
     formData.append('senderEmail', payload?.senderEmail);
     // formData.append('bcc', payload?.BCC);
     // formData.append('Cc', payload?.Cc);
-
-    formData.append("recipientEmails", payload?.recipientEmails.join(', '));
-    formData.append("Bcc", payload?.BCC.join(','));
-    formData.append("Cc", payload?.Cc.join(','));
-    for (var i = 0; i < payload?.screenshots.length; i++) {
+    formData.append("recipientEmails", payload?.recipientEmails?.join(', '));
+    formData.append("Bcc", payload?.BCC?.join(','));
+    formData.append("Cc", payload?.Cc?.join(','));
+    for (var i = 0; i < payload?.screenshots?.length; i++) {
       formData.append("files", payload?.screenshots[i].substring(payload?.screenshots[i].lastIndexOf('/') + 1));
     }
 

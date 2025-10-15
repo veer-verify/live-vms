@@ -342,7 +342,7 @@ export class VideoPlayerComponent {
     const screenshotDataUrl = await this.canvas.nativeElement.toDataURL('image/png');
     const link = document.createElement('a');
     link.href = screenshotDataUrl;
-    link.download = `${camera?.cameraId}-${camera?.name}-${moment().tz(camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss:SSS')}.png`
+    link.download = `${camera?.cameraId}-${camera?.name}-${moment().tz(camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss')}.png`
     link.click();
   }
 
@@ -371,7 +371,7 @@ export class VideoPlayerComponent {
         const screenshotDataUrl = this.canvas.nativeElement.toDataURL('image/png');
         const link = document.createElement('a');
         link.href = screenshotDataUrl;
-        link.download = `${camera?.cameraId}-${camera?.name}-${color ?? ''}-${moment().tz(camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss:SSS')}.png`;
+        link.download = `${camera?.cameraId}-${camera?.name}-${color ?? ''}-${moment().tz(camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss')}.png`;
         link.click();
       });
     }, 500)

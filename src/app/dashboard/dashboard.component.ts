@@ -416,7 +416,7 @@ export class DashboardComponent {
   createButton(event: any, data: any) {
     this.currentItem = data;
     if (this.listType !== 0 && !this.isMaximized) {
-      this.displayTime = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss:SSS');
+      this.displayTime = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss');
       const rect = (event.target as HTMLImageElement).getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
@@ -506,7 +506,7 @@ export class DashboardComponent {
 
   postScreenshot(data: any, file: any) {
     let user = this.storageSer.getData('userData');
-    let time = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss:SSS');
+    let time = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss');
     data.time = time;
 
     this.btns.toArray().forEach((item) => {

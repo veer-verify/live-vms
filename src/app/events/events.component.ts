@@ -33,7 +33,7 @@ export class EventsComponent {
     private dialog: MatDialog,
     private router: Router,
     private http: HttpClient,
-    private siteser:SiteService
+    private siteser: SiteService
   ) { }
 
   eventInterval: any;
@@ -47,7 +47,6 @@ export class EventsComponent {
     this.getActionTagCategories();
     this.getDispatchData();
     this.poolEvents();
-
   }
 
   poolEvents() {
@@ -60,7 +59,7 @@ export class EventsComponent {
             this.eventPolling = true;
             if (res.length !== 0) {
               this.storage_service.status_text = '';
-              res[0].landingTime = moment().tz(res[0].timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+              res[0].landingTime = moment().tz(res[0].timezone)?.format('YYYY-MM-DD hh:mm:ss');
               res[0].audio = false;
               //  this.event_service.addQueusInfoRedis({userId:0,queueInfo:this.eventData[0]}).subscribe((res:any)=>{})
               this.eventData.push(...res);
@@ -75,35 +74,36 @@ export class EventsComponent {
   }
 
   eventData: any = [
-    // {
-    //     "siteId": 36428,
-    //     "siteName": "Albemarle Crossing",
-    //     "timezone": "America/Los_Angeles",
-    //     "httpUrl": "https://gisus7028live-repo.us2.pitunnel.com/GISUS7028C1",
-    //     "cameraId": "GISUS7028C1",
-    //     "color": "green",
-    //     "id": "3b8a790d-56ea-44bd-9682-048fd01aef4c",
-    //     "imageName": "GISUS7028C1_3b8a790d-56ea-44bd-9682-048fd01aef4c_2025-09-20_00-12-24_green.png",
-    //     "timestamp": "2025-09-20 00:12:24:290",
-    //     "userLevels": 0,
-    //     "actionTag": "suspicious",
-    //     "actionTime": "2025-09-20 12:12:25:193",
-    //     "eventTag": "",
-    //     "userLevelAlarmInfo": [
-    //         {
-    //             "level": 1,
-    //             "user": 1626,
-    //             "alarm": "N",
-    //             "landingTime": "2025-09-20 00:12:24:290",
-    //             "reviewStart": "2025-09-20 00:12:24:290",
-    //             "reviewEnd": "2025-09-20 00:12:24:290",
-    //             "actionTag": 2,
-    //             "subActionTag": 23,
-    //             "notes": ""
-    //         }
-    //     ],
-    //     "userName": "ivisusnew"
-    // }
+// {
+//     "siteId": 36347,
+//     "siteName": "Barbee Pharmacy & Gifts",
+//     "timezone": "America/New_York",
+//     "httpUrl": "https://gisusorin1017live-repo.us1.pitunnel.com/GISUSORIN1017C1",
+//     "cameraId": "GISUSORIN1017C1",
+//     "color": "green",
+//     "id": "603101a8-694a-4585-b430-737c31ca3771",
+//     "imageName": "GISUSORIN1017C1_603101a8-694a-4585-b430-737c31ca3771_2025-10-15_08-29-36_green.png",
+//     "timestamp": "2025-10-15 08:29:36",
+//     "userLevels": 0,
+//     "actionTag": "suspicious",
+//     "actionTime": "2025-10-15 08:29:38",
+//     "eventTag": "",
+//     "userLevelAlarmInfo": [
+//         {
+//             "level": 1,
+//             "user": 1614,
+//             "alarm": "N",
+//             "landingTime": "2025-10-15 08:29:36",
+//             "reviewStart": "2025-10-15 08:29:36",
+//             "reviewEnd": "2025-10-15 08:29:36",
+//             "actionTag": 2,
+//             "subActionTag": 23,
+//             "notes": "",
+//             "activityDetTime": "2025-10-15 08:29:36"
+//         }
+//     ],
+//     "userName": "vamsiv@ivisecurity.com"
+// }
   ];
 
   getDispatchData() {
@@ -112,7 +112,7 @@ export class EventsComponent {
       next: (res: any) => {
         if (res.length !== 0) {
           this.storage_service.status_text = '';
-          res[0].landingTime = moment().tz(res[0].timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+          res[0].landingTime = moment().tz(res[0].timezone)?.format('YYYY-MM-DD hh:mm:ss');
           res[0].audio = false;
           this.eventData.push(...res);
           this.displayCurrent(this.eventData[0]);
@@ -139,7 +139,7 @@ export class EventsComponent {
   displayCurrent(data: any) {
     this.currentItem = null;
     this.resetVals();
-    data.reviewStart = moment().tz(data?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+    data.reviewStart = moment().tz(data?.timezone)?.format('YYYY-MM-DD hh:mm:ss');
     this.storage_service.status_text = 'loading...'
     setTimeout(() => {
       this.storage_service.status_text = ''
@@ -149,19 +149,19 @@ export class EventsComponent {
     }, 500);
   }
 
-  getCurrentSiteAlerts(data:any){
-    this.siteser.getAlertCategoriesForSiteId(data).subscribe((res:any)=>{
-     this.alertTypes=res;
+  getCurrentSiteAlerts(data: any) {
+    this.siteser.getAlertCategoriesForSiteId(data).subscribe((res: any) => {
+      this.alertTypes = res;
     })
   }
 
   onAlertChange(alertId: string) {
-    const selectedAlert = this.alertTypes.find((a:any) => a.guardAlertTypeId === this.alertType);
+    const selectedAlert = this.alertTypes.find((a: any) => a.guardAlertTypeId === this.alertType);
     this.alertSubTypes = selectedAlert ? selectedAlert.subAlerts : [];
   }
 
   resetVals() {
-    this.emailData = null;
+    // this.emailData = null;
     this.actionTag = null;
     this.alertType = null;
     this.alertSubType = null;
@@ -208,7 +208,7 @@ export class EventsComponent {
   audio() {
     this.isPlaying = true;
     this.currentItem.audio = true;
-    this.sirenTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS'),
+    this.sirenTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss'),
       this.http
         .get(`${environment.site_url}/play_1_0/${this.currentItem.cameraId}`)
         .subscribe({
@@ -230,9 +230,9 @@ export class EventsComponent {
   }
 
   emailData: any;
-  toEmails:any;
-  ccEmails:any;
-  bccEmails:any;
+  // toEmails: any;
+  // ccEmails: any;
+  // bccEmails: any;
 
   getEmailDataForVMSEvents() {
     let day = moment.tz(this.currentItem?.timezone).day();
@@ -245,7 +245,8 @@ export class EventsComponent {
       camerasList: this.currentItem?.cameraId,
       day: this.storage_service.weekdays[day],
       hour: hour,
-      currentTime: moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss'),
+      // currentTime: moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD HH:mm:ss'),
+      currentTime: this.currentItem?.timestamp,
       imageName: this.currentItem?.imageName
     };
 
@@ -254,15 +255,10 @@ export class EventsComponent {
         next: (res: any) => {
           if (res.statusCode === 200) {
             this.emailData = res.emailDetails;
-            const emails = this.emailData;
-             this.toEmails = (emails.recipientEmails || []).filter((e:any) => e && e.trim() !== '');
-             this.ccEmails = (emails.Cc || []).filter( (e:any)=> e && e.trim() !== '');
-             this.bccEmails = (emails.BCC || []).filter( (e:any)=> e && e.trim() !== '');
-
-          
-          } else {
-            this.emailData = null;
-            this.alert_service.snackError(res.message)
+            // const emails = this.emailData;
+            // this.toEmails = (emails.recipientEmails || []).filter((e: any) => e && e.trim() !== '');
+            // this.ccEmails = (emails.Cc || []).filter((e: any) => e && e.trim() !== '');
+            // this.bccEmails = (emails.BCC || []).filter((e: any) => e && e.trim() !== '');
           }
         },
         error: (err) => [
@@ -274,13 +270,12 @@ export class EventsComponent {
 
   sendEmail() {
     let dateObj = {
-      eventFromTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'),
-      eventToTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS'),
+      eventFromTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss'),
+      eventToTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss'),
       objectName: 'Person',
     };
 
-    if(this.toEmails?.length || this.ccEmails?.length || this.bccEmails?.length){
-
+    if (this.emailData?.recipientEmails?.length) {
       this.camera_service.eventsGenericEmail({
         ...this.emailObject,
         ...dateObj,
@@ -288,23 +283,22 @@ export class EventsComponent {
         ...this.emailData
       }).subscribe({
         next: (res: any) => {
-          this.cancelEvent();
-          this.displayCurrent(this.currentItem)
-  
+          // this.cancelEvent();
+          // this.displayCurrent(this.currentItem)
           if (res.statusCode === 200) {
             this.alert_service.snackSuccess(res.message);
-            
+
           } else {
             this.alert_service.snackError(res.message);
           }
         },
         error: (err) => {
-          this.cancelEvent();
-          this.displayCurrent(this.currentItem)
+          // this.cancelEvent();
+          // this.displayCurrent(this.currentItem)
         }
       });
     }
-    else{
+    else {
       this.alert_service.error("email data not Found")
     }
   }
@@ -313,7 +307,7 @@ export class EventsComponent {
     if (type === 2) return;
 
     let user = this.storage_service.getData('userData');
-    let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+    let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss');
     this.path === 'pre-dispatch' ?
       this.currentItem?.userLevelAlarmInfo.push(
         {
@@ -373,17 +367,12 @@ export class EventsComponent {
       next: () => {
         this.storage_service.show_loader = false;
         this.sirenTime = null;
-         if(this.toEmails?.length || this.ccEmails?.length || this.bccEmails?.length){
-
-           this.alert_service.snackSuccess('Alert sent successfully!');
-         }
         if (type === 3) {
           this.sendEmail();
-      
-        } else {
-          this.cancelEvent();
-          this.displayCurrent(this.currentItem)
         }
+        this.cancelEvent();
+        this.displayCurrent(this.currentItem);
+        this.alert_service.snackSuccess('Alert sent successfully!');
       },
       error: (err) => {
         this.storage_service.show_loader = false;
@@ -396,12 +385,12 @@ export class EventsComponent {
 
   actionTagTime: any;
   getTime() {
-    this.actionTagTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+    this.actionTagTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss');
   }
 
   submitAndSend(type: string) {
     let user = this.storage_service.getData('userData');
-    let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+    let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss');
 
     this.path === 'pre-dispatch' ?
       this.currentItem?.userLevelAlarmInfo.push(
@@ -456,6 +445,9 @@ export class EventsComponent {
         next: () => {
           this.storage_service.show_loader = false;
           this.cancelEvent();
+          if (type !== 'dispatch-2nd-level') {
+            this.sendEmail();
+          }
           this.alert_service.snackSuccess('Alert sent successfully!');
         },
         error: (err) => {
@@ -464,14 +456,10 @@ export class EventsComponent {
         }
       });
 
-      if(type !== 'observer') {
-        this.sendEmail();
-      }
   }
 
   @ViewChild('image') image!: ElementRef;
   async downloadImg() {
-
     html2canvas(this.image.nativeElement).then((canvas) => {
       let imageData = canvas.toDataURL("image/png");
       let link = document.createElement('a');
@@ -495,18 +483,12 @@ export class EventsComponent {
   }
 
 
-  openLiveDialog(i:any) {
-
-  
-
-  this.currentItem.liveControl=i;
-    
-
+  openLiveDialog(i: any) {
+    this.currentItem.liveControl = i;
     this.dialog.open(LiveComponent, {
       data: this.currentItem,
       disableClose: false
     })
-    
   }
 
   listActionTags() {
@@ -561,24 +543,22 @@ export class EventsComponent {
     this.event_service.getCameraEventDetails(this.currentItem).subscribe((res: any) => {
       this.cameraDetails = res;
 
-  const escalation = this.cameraDetails.escalation;
-
-  if (Array.isArray(escalation)) {
-    this.cameraDetails.escalation = escalation.map((e: any) => ({
-      ...e,
-      toEmails: this.parseStringArray(e.toEmails),
-      ccEmails: this.parseStringArray(e.ccEmails),
-      bccEmails: this.parseStringArray(e.bccEmails),
-    }));
-  } else if (escalation && typeof escalation === 'object') {
-    // ✅ Convert object → array of one object
-    this.cameraDetails.escalation = [{
-      ...escalation,
-      toEmails: this.parseStringArray(escalation.toEmails),
-      ccEmails: this.parseStringArray(escalation.ccEmails),
-      bccEmails: this.parseStringArray(escalation.bccEmails),
-    }];
-  }
+      // const escalation = this.cameraDetails.escalation;
+      // if (Array.isArray(escalation)) {
+      //   this.cameraDetails.escalation = escalation.map((e: any) => ({
+      //     ...e,
+      //     toEmails: this.parseStringArray(e.toEmails),
+      //     ccEmails: this.parseStringArray(e.ccEmails),
+      //     bccEmails: this.parseStringArray(e.bccEmails),
+      //   }));
+      // } else if (escalation && typeof escalation === 'object') {
+      //   this.cameraDetails.escalation = [{
+      //     ...escalation,
+      //     toEmails: this.parseStringArray(escalation.toEmails),
+      //     ccEmails: this.parseStringArray(escalation.ccEmails),
+      //     bccEmails: this.parseStringArray(escalation.bccEmails),
+      //   }];
+      // }
     })
   }
 

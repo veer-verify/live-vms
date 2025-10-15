@@ -46,7 +46,7 @@ export class EventService {
       siteName: payload?.siteName,
       userName: payload?.userName,
       actionTag: payload?.actionTag ?? '',
-      actionTime: moment().tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS'),
+      actionTime: moment().tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss'),
       eventTag: '',
       userLevelAlarmInfo: payload?.userLevelAlarmInfo,
       userLevels: 0
@@ -58,8 +58,8 @@ export class EventService {
     let url = `${environment.event_tags_url}/updateEventFullDetails_1_0/`;
     let user = this.storageSer.getData('userData');
     let path = this.router.url.split('/').at(-1);
-    // let eventStart = this.datePipe.transform(new Date(payload?.timestamp), 'yyyy-MM-dd hh:mm:ss:SSS');
-    let currentTime = moment().tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss:SSS');
+    // let eventStart = this.datePipe.transform(new Date(payload?.timestamp), 'yyyy-MM-dd hh:mm:ss');
+    let currentTime = moment().tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss');
 
     let obj = {
       siteName: payload?.siteName,
