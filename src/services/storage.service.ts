@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
@@ -13,6 +14,7 @@ export class StorageService {
   environment = environment;
 
   metadat_sub: any = [];
+  events_sub: BehaviorSubject<any> = new BehaviorSubject(0);
   status_text!: string;
   show_loader: boolean = false;
 

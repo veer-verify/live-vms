@@ -14,7 +14,8 @@ export class LoginService {
   constructor(
     private http: HttpClient,
     private storageSer: StorageService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private router: Router
   ) { }
 
   login(payload: any): Observable<any> {
@@ -25,6 +26,11 @@ export class LoginService {
     credentials.set('password', this.storageSer.encrypt(payload?.password));
     credentials.set('callingSystemDetail', 'vms');
     return this.http.post(url, Object.fromEntries(credentials));
+  }
+
+  logout() {
+    this.storageSer.clearData();
+    this.router.navigate(['./login']);
   }
 
   manageUserSession(type: string): Observable<any> {

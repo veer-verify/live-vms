@@ -1,5 +1,6 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertService } from 'src/services/alert.service';
 import { LoginService } from 'src/services/login.service';
 import { StorageService } from 'src/services/storage.service';
 
@@ -13,7 +14,8 @@ export class HeaderComponent {
   constructor(
     private router: Router,
     private loginSer: LoginService,
-    public storageSer: StorageService
+    public storageSer: StorageService,
+    private alert_service: AlertService
   ) {}
 
   userData: any;
@@ -38,6 +40,8 @@ export class HeaderComponent {
 
   showLoader: boolean = false;
   logout() {
+    const length = this.storageSer.events_sub.getValue();
+    if(length !== 0) return this.alert_service.warn('Please clear the events before logout!');
     this.showLoader = true;
     this.loginSer.manageUserSession('logOut').subscribe({
       error: (err: any) => {

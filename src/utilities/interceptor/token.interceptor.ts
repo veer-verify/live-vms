@@ -26,7 +26,6 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let token = this.storageService.getData('acTok');
 
-
     if (
       token &&
       !request.url.startsWith('https://api.800.com')
@@ -40,8 +39,7 @@ export class TokenInterceptor implements HttpInterceptor {
           return this.handle401Error(request, next);
         } else {
           return throwError(() => {
-            // this.authSer.logout();
-            console.log(error)
+            this.authSer.logout();
           });
         }
       })
@@ -78,7 +76,7 @@ export class TokenInterceptor implements HttpInterceptor {
         catchError((err) => {
           // this.storageService.loader_sub.next(false);
           this.isRefreshing = false;
-          // this.authSer.logout();
+          this.authSer.logout();
           return throwError(() => err);
         })
       );

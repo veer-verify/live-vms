@@ -70,8 +70,6 @@ export class VideoPlayerComponent {
 
   showLoader: boolean = false;
   requestICEServers() {
-
-
     if (this.hitStream) {
       this.showLoader = true;
       fetch(this.videoData + "whep", {
@@ -172,7 +170,7 @@ export class VideoPlayerComponent {
     this.peerConnection!.createOffer()
       .then((offer: RTCSessionDescriptionInit) => {
         this.showLoader = false;
-        // this.editOffer(offer);
+        this.editOffer(offer);
         this.offerData = this.parseOffer(offer.sdp!);
         this.peerConnection!.setLocalDescription(offer);
         this.sendOffer(offer);
@@ -181,16 +179,16 @@ export class VideoPlayerComponent {
       });
   };
 
-  // editOffer(offer: RTCSessionDescriptionInit) {
-  //   const sections = offer.sdp!.split('m=');
-  //   for (let i = 0; i < sections.length; i++) {
-  //     const section = sections[i];
-  //     if (section.startsWith('audio')) {
-  //       sections[i] = this.enableStereoOpus(section);
-  //     }
-  //   }
-  //   offer.sdp = sections.join('m=');
-  // };
+  editOffer(offer: RTCSessionDescriptionInit) {
+    const sections = offer.sdp!.split('m=');
+    for (let i = 0; i < sections.length; i++) {
+      const section = sections[i];
+      if (section.startsWith('audio')) {
+        sections[i] = this.enableStereoOpus(section);
+      }
+    }
+    offer.sdp = sections.join('m=');
+  };
 
   parseOffer(offer: string) {
     const ret: any = {
@@ -211,34 +209,34 @@ export class VideoPlayerComponent {
     return ret;
   };
 
-  // enableStereoOpus(section: any) {
-  //   let opusPayloadFormat = '';
-  //   let lines = section.split('\r\n');
+  enableStereoOpus(section: any) {
+    let opusPayloadFormat = '';
+    let lines = section.split('\r\n');
 
-  //   for (let i = 0; i < lines.length; i++) {
-  //     if (lines[i].startsWith('a=rtpmap:') && lines[i].toLowerCase().includes('opus/')) {
-  //       opusPayloadFormat = lines[i].slice('a=rtpmap:'.length).split(' ')[0];
-  //       break;
-  //     }
-  //   }
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].startsWith('a=rtpmap:') && lines[i].toLowerCase().includes('opus/')) {
+        opusPayloadFormat = lines[i].slice('a=rtpmap:'.length).split(' ')[0];
+        break;
+      }
+    }
 
-  //   if (opusPayloadFormat === '') {
-  //     return section;
-  //   }
+    if (opusPayloadFormat === '') {
+      return section;
+    }
 
-  //   for (let i = 0; i < lines.length; i++) {
-  //     if (lines[i].startsWith('a=fmtp:' + opusPayloadFormat + ' ')) {
-  //       if (!lines[i].includes('stereo')) {
-  //         lines[i] += ';stereo=1';
-  //       }
-  //       if (!lines[i].includes('sprop-stereo')) {
-  //         lines[i] += ';sprop-stereo=1';
-  //       }
-  //     }
-  //   }
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].startsWith('a=fmtp:' + opusPayloadFormat + ' ')) {
+        if (!lines[i].includes('stereo')) {
+          lines[i] += ';stereo=1';
+        }
+        if (!lines[i].includes('sprop-stereo')) {
+          lines[i] += ';sprop-stereo=1';
+        }
+      }
+    }
 
-  //   return lines.join('\r\n');
-  // };
+    return lines.join('\r\n');
+  };
 
   sendOffer(offer: RTCSessionDescriptionInit) {
     this.showLoader = true;

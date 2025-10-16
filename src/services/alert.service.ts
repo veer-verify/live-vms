@@ -23,10 +23,20 @@ export class AlertService {
       this.snackbar.open(message, "x", config);
     });
   }
+
   error(message: any) {
     Swal.fire({
       icon: 'error',
       title: 'Failed!',
+      text: message,
+      showCloseButton: true
+    })
+  }
+
+  warn(message: any) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Warning!',
       text: message,
       showCloseButton: true
     })

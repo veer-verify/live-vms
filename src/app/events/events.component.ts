@@ -64,12 +64,14 @@ export class EventsComponent {
               //  this.event_service.addQueusInfoRedis({userId:0,queueInfo:this.eventData[0]}).subscribe((res:any)=>{})
               this.eventData.push(...res);
               if (this.eventData.length === 1) {
-                this.displayCurrent(this.eventData[0]);
+                const [event] = this.eventData;
+                this.displayCurrent(event);
               }
             }
           },
         });
       }
+      this.storage_service.events_sub.next(this.eventData.length);
     }, 2000);
   }
 
@@ -116,6 +118,7 @@ export class EventsComponent {
           res[0].audio = false;
           this.eventData.push(...res);
           this.displayCurrent(this.eventData[0]);
+          this.storage_service.events_sub.next(this.eventData.length);
           // this.event_service.addQueusInfoRedis({userId:0,queueInfo:{additionalProp1:this.eventData[0]}}).subscribe((res:any)=>{console.log(res)})
         } else {
           this.storage_service.status_text = 'no events!'
@@ -184,6 +187,7 @@ export class EventsComponent {
     if (this.eventData.length === 0) {
       this.storage_service.status_text = 'no events!';
     }
+    // this.storage_service.events_sub.next(this.eventData.length);
   }
 
   cancelEvent() {
@@ -201,6 +205,7 @@ export class EventsComponent {
     if (this.eventData.length === 0) {
       this.storage_service.status_text = 'no events!';
     }
+    // this.storage_service.events_sub.next(this.eventData.length);
   }
 
   isPlaying: boolean = false;
@@ -289,7 +294,7 @@ export class EventsComponent {
             this.alert_service.snackSuccess(res.message);
 
           } else {
-            this.alert_service.snackError(res.message);
+            this.alert_service.error(res.message);
           }
         },
         error: (err) => {
