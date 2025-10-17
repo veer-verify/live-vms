@@ -39,7 +39,7 @@ export class TokenInterceptor implements HttpInterceptor {
           return this.handle401Error(request, next);
         } else {
           return throwError(() => {
-            this.authSer.logout();
+            console.log('error')
           });
         }
       })

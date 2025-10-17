@@ -1,6 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, ViewChild, ViewChildren, QueryList } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
@@ -23,6 +22,7 @@ import { SiteService } from 'src/services/site.service';
   styleUrls: ['./events.component.css'],
 })
 export class EventsComponent {
+
   constructor(
     public storage_service: StorageService,
     private metadata_service: MetadataService,
@@ -39,9 +39,11 @@ export class EventsComponent {
   eventInterval: any;
   eventPolling = true;
   path: any;
+  user: any;
   environment = environment.eventImageUrl;
   ngOnInit() {
     this.path = this.router.url.split('/').at(-1);
+    this.user = this.storage_service.getUser();
 
     this.listActionTags();
     this.getActionTagCategories();
@@ -60,7 +62,7 @@ export class EventsComponent {
             if (res.length !== 0) {
               this.storage_service.status_text = '';
               res[0].landingTime = moment().tz(res[0].timezone)?.format('YYYY-MM-DD hh:mm:ss');
-              res[0].audio = false;
+              res[0].audioPlayed = false;
               //  this.event_service.addQueusInfoRedis({userId:0,queueInfo:this.eventData[0]}).subscribe((res:any)=>{})
               this.eventData.push(...res);
               if (this.eventData.length === 1) {
@@ -115,7 +117,7 @@ export class EventsComponent {
         if (res.length !== 0) {
           this.storage_service.status_text = '';
           res[0].landingTime = moment().tz(res[0].timezone)?.format('YYYY-MM-DD hh:mm:ss');
-          res[0].audio = false;
+          res[0].audioPlayed = false;
           this.eventData.push(...res);
           this.displayCurrent(this.eventData[0]);
           this.storage_service.events_sub.next(this.eventData.length);
@@ -140,6 +142,7 @@ export class EventsComponent {
 
   @ViewChild('currentBtn') currentBtn!: ElementRef;
   displayCurrent(data: any) {
+    if(!data) return;
     this.currentItem = null;
     this.resetVals();
     data.reviewStart = moment().tz(data?.timezone)?.format('YYYY-MM-DD hh:mm:ss');
@@ -173,6 +176,7 @@ export class EventsComponent {
   }
 
   closeEvent(data: any) {
+    if(!data) return;
     this.currentItem = data;
     let index = this.eventData.indexOf(this.currentItem);
 
@@ -187,7 +191,6 @@ export class EventsComponent {
     if (this.eventData.length === 0) {
       this.storage_service.status_text = 'no events!';
     }
-    // this.storage_service.events_sub.next(this.eventData.length);
   }
 
   cancelEvent() {
@@ -205,14 +208,13 @@ export class EventsComponent {
     if (this.eventData.length === 0) {
       this.storage_service.status_text = 'no events!';
     }
-    // this.storage_service.events_sub.next(this.eventData.length);
   }
 
   isPlaying: boolean = false;
   sirenTime: any;
   audio() {
     this.isPlaying = true;
-    this.currentItem.audio = true;
+    this.currentItem.audioPlayed = true;
     this.sirenTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss'),
       this.http
         .get(`${environment.site_url}/play_1_0/${this.currentItem.cameraId}`)
@@ -273,7 +275,7 @@ export class EventsComponent {
     }
   }
 
-  sendEmail() {
+  eventsGenericEmail() {
     let dateObj = {
       eventFromTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss'),
       eventToTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss'),
@@ -299,16 +301,17 @@ export class EventsComponent {
         },
         error: (err) => {
           // this.cancelEvent();
-          // this.displayCurrent(this.currentItem)
+          // this.displayCurrent(this.currentItem);
+          this.alert_service.error('Sending Email Failed!')
         }
       });
     }
     else {
-      this.alert_service.error("email data not Found")
+      this.alert_service.error("Email data not Found")
     }
   }
 
-  submit(type: number) {
+  updateEventFullDetails(type: number | string) {
     if (type === 2) return;
 
     let user = this.storage_service.getData('userData');
@@ -318,7 +321,7 @@ export class EventsComponent {
         {
           level: 2,
           user: user?.UserId,
-          alarm: this.currentItem?.audio ? 'P' : 'N',
+          alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
           activityDetTime: this.sirenTime ?? '',
           landingTime: this.currentItem?.landingTime ?? '',
           reviewStart: this.currentItem?.reviewStart ?? '',
@@ -333,7 +336,7 @@ export class EventsComponent {
           {
             level: 3,
             user: user?.UserId,
-            alarm: this.currentItem?.audio ? 'P' : 'N',
+            alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
             activityDetTime: this.sirenTime ?? '',
             landingTime: this.currentItem?.landingTime ?? '',
             reviewStart: this.currentItem?.reviewStart ?? '',
@@ -346,7 +349,7 @@ export class EventsComponent {
           {
             level: 4,
             user: user?.UserId,
-            alarm: this.currentItem?.audio ? 'P' : 'N',
+            alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
             activityDetTime: this.sirenTime ?? '',
             landingTime: this.currentItem?.landingTime ?? '',
             reviewStart: this.currentItem?.reviewStart ?? '',
@@ -372,18 +375,18 @@ export class EventsComponent {
       next: () => {
         this.storage_service.show_loader = false;
         this.sirenTime = null;
-        if (type === 3) {
-          this.sendEmail();
-        }
         this.cancelEvent();
         this.displayCurrent(this.currentItem);
-        this.alert_service.snackSuccess('Alert sent successfully!');
+        this.alert_service.snackSuccess('Event Updated successfully!');
+        if (type === 'second-level') {
+          this.eventsGenericEmail();
+        }
       },
       error: (err) => {
         this.storage_service.show_loader = false;
         this.cancelEvent();
         this.displayCurrent(this.currentItem);
-        this.alert_service.snackError('failed!');
+        this.alert_service.snackError('Failed!');
       }
     })
   }
@@ -393,7 +396,7 @@ export class EventsComponent {
     this.actionTagTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss');
   }
 
-  submitAndSend(type: string) {
+  write2Dispatch(queue_name: string) {
     let user = this.storage_service.getData('userData');
     let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss');
 
@@ -443,17 +446,17 @@ export class EventsComponent {
     this.storage_service.show_loader = true;
     this.event_service.write2Dispatch({
       ...this.currentItem,
-      queue_name: type,
+      queue_name: queue_name,
       userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
     })
       .subscribe({
         next: () => {
           this.storage_service.show_loader = false;
           this.cancelEvent();
-          if (type !== 'dispatch-2nd-level') {
-            this.sendEmail();
+          this.alert_service.snackSuccess('Event Sent successfully!');
+          if (this.path !== 'dispatch') {
+            this.eventsGenericEmail();
           }
-          this.alert_service.snackSuccess('Alert sent successfully!');
         },
         error: (err) => {
           this.cancelEvent();
@@ -538,9 +541,12 @@ export class EventsComponent {
   }
 
   cameraDetails: any;
-
   getCurrentType(type: any) {
     this.currentSubActionTag = null;
+
+    this.alertType = null;
+    this.alertSubType = null;
+    this.emailData = null;
     this.getTime();
     this.currentActionTag = type;
     let filteredData = this.actionTagsNew.filter((item: any) => item.categoryId === type.categoryId);
@@ -548,22 +554,22 @@ export class EventsComponent {
     this.event_service.getCameraEventDetails(this.currentItem).subscribe((res: any) => {
       this.cameraDetails = res;
 
-      // const escalation = this.cameraDetails.escalation;
-      // if (Array.isArray(escalation)) {
-      //   this.cameraDetails.escalation = escalation.map((e: any) => ({
-      //     ...e,
-      //     toEmails: this.parseStringArray(e.toEmails),
-      //     ccEmails: this.parseStringArray(e.ccEmails),
-      //     bccEmails: this.parseStringArray(e.bccEmails),
-      //   }));
-      // } else if (escalation && typeof escalation === 'object') {
-      //   this.cameraDetails.escalation = [{
-      //     ...escalation,
-      //     toEmails: this.parseStringArray(escalation.toEmails),
-      //     ccEmails: this.parseStringArray(escalation.ccEmails),
-      //     bccEmails: this.parseStringArray(escalation.bccEmails),
-      //   }];
-      // }
+      const escalation = this.cameraDetails.escalation;
+      if (Array.isArray(escalation)) {
+        this.cameraDetails.escalation = escalation.map((e: any) => ({
+          ...e,
+          toEmails: this.parseStringArray(e.toEmails),
+          ccEmails: this.parseStringArray(e.ccEmails),
+          bccEmails: this.parseStringArray(e.bccEmails),
+        }));
+      } else if (escalation && typeof escalation === 'object') {
+        this.cameraDetails.escalation = [{
+          ...escalation,
+          toEmails: this.parseStringArray(escalation.toEmails),
+          ccEmails: this.parseStringArray(escalation.ccEmails),
+          bccEmails: this.parseStringArray(escalation.bccEmails),
+        }];
+      }
     })
   }
 

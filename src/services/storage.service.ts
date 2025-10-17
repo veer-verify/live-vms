@@ -65,6 +65,10 @@ export class StorageService {
 
   router = inject(Router);
 
+  public getUser(): any {
+    return this.getData('userData');
+  }
+
   public isSuperAdmin(): boolean {
     const user = this.getData('userData');
     if (!user) this.router.navigate(['/login']);

@@ -46,13 +46,11 @@ export class HeaderComponent {
     this.loginSer.manageUserSession('logOut').subscribe({
       error: (err: any) => {
         this.showLoader = false;
-        this.router.navigateByUrl('/login');
-        localStorage.clear();
+        this.loginSer.logout();
       },
       complete: () => {
         this.showLoader = false;
-        this.router.navigateByUrl('/login');
-        localStorage.clear();
+        this.loginSer.logout();
       }
     })
   }

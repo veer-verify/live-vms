@@ -24,7 +24,7 @@ export class LoginComponent {
 
   loginForm!: FormGroup;
   ngOnInit() {
-    this.storageSer.clearData();
+    // this.storageSer.clearData();
     this.loginForm = this.fb.group({
       userName: this.fb.control('', Validators.required),
       password: this.fb.control('', Validators.required)

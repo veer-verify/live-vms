@@ -36,7 +36,7 @@ export class LoginService {
   manageUserSession(type: string): Observable<any> {
     let url = environment.login_url + `/manageUserSession_1_0`;
     var user = this.storageSer.getData('userData');
-    let sessionId = JSON.parse(localStorage.getItem('sId')!);
+    let sessionId = this.storageSer.getData('sId');
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     let obj = new Map();
@@ -57,7 +57,7 @@ export class LoginService {
 
 
   isLoggedin() {
-    let user = this.storageSer.getData('userData');
+    let user = this.storageSer.getUser();
     return user !== null ? true : false
   }
 

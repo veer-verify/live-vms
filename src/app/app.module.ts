@@ -29,7 +29,6 @@ import { ActiontagComponent } from './actiontag/actiontag.component';
 import { ActionViewComponent } from './action-view/action-view.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { DayRangeSliderComponent } from './day-range-slider/day-range-slider.component';
-import { TokenInterceptor } from 'src/utilities/interceptor/token.interceptor';
 import { ImagePipe } from 'src/utilities/pipes/image.pipe';
 import { PaginationComponent } from 'src/utilities/pagination/pagination.component';
 import { MonitoringInfoComponent } from './monitoring-info/monitoring-info.component';
@@ -43,6 +42,7 @@ import { Send800Component } from './send800/send800.component';
 import { TableComponent } from '../utilities/table/table.component';
 import { TemplateComponent } from './template/template.component';
 import { TextAndNumberOnlyDirective } from 'src/utilities/pipes/text-and-number-only.directive';
+import { TokenInterceptor } from 'src/utilities/token.interceptor';
 
 
 @NgModule({
