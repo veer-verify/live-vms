@@ -1,5 +1,4 @@
-import { Component, HostListener, isDevMode, QueryList, ViewChildren } from '@angular/core';
-import { environment } from 'src/environments/environment';
+import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -8,10 +7,9 @@ import { environment } from 'src/environments/environment';
 })
 export class AppComponent {
 
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
+  // @HostListener('window:beforeunload')
+  // onBeforeUnload() {
+  //   return false;
+  // }
 
 }

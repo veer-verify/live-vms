@@ -29,19 +29,19 @@ export class StorageService {
   ];
 
   public saveData(name: any, data: any) {
-    localStorage.setItem(name, JSON.stringify(data));
+    sessionStorage.setItem(name, JSON.stringify(data));
   }
 
   public getData(data: any) {
-    return JSON.parse(localStorage.getItem(data)!);
+    return JSON.parse(sessionStorage.getItem(data)!);
   }
 
   public removeData(key: string) {
-    localStorage.removeItem(key);
+    sessionStorage.removeItem(key);
   }
 
   public clearData() {
-    localStorage.clear();
+    sessionStorage.clear();
   }
 
   public encrypt(txt: string): string {

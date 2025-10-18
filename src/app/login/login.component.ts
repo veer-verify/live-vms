@@ -24,7 +24,9 @@ export class LoginComponent {
 
   loginForm!: FormGroup;
   ngOnInit() {
-    // this.storageSer.clearData();
+    // const user = this.storageSer.getData('userData');
+    // if(user) this.router.navigate(['/user-dashboard']);
+    
     this.loginForm = this.fb.group({
       userName: this.fb.control('', Validators.required),
       password: this.fb.control('', Validators.required)
@@ -33,8 +35,8 @@ export class LoginComponent {
 
   showLoader: boolean = false;
   login() {
-    const localData = this.storageSer.getData('userData');
-    if(localData) return this.alertSer.warn('You have already opened the same application in another tab please open in New Window or Browser!');
+    // const localData = this.storageSer.getData('userData');
+    // if(localData) return this.alertSer.warn('You have already opened the same application in another tab please open in New Window or Browser!');
     
     if (!this.loginForm.valid) return;
     this.showLoader = true;
@@ -60,7 +62,7 @@ export class LoginComponent {
   manageUserSession() {
     this.loginSer.manageUserSession('logIn').subscribe({
       next: (res) => {
-        localStorage.setItem('sId', JSON.stringify(res.sessionId ?? ''))
+        sessionStorage.setItem('sId', JSON.stringify(res.sessionId ?? ''))
       }
     })
   }
