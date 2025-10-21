@@ -205,6 +205,7 @@ export class CameraService {
   }
 
   eventsGenericEmail(payload: any) {
+    console.log(payload)
     let url = `${environment.guard_monitoring_url}/eventsGenericEmail_1_0`;
     let user = this.storageSer.getData('userData');
     let params = new HttpParams();

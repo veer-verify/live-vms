@@ -13,3 +13,32 @@ video {
     transform: translate(50%, -50%);
     /* background-size: cover; */
 }
+
+.tile-active {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 999;
+  background-color: #000000;
+  border-radius: 5px;
+}
+
+.h2 {
+    height: 70vh;
+}
+
+.h6 {
+    height: 49.3vh;
+    margin: 0 !important;
+}
+
+.h9 {
+    height: 33vh;
+}
+
+.h20 {
+    height: 24.7vh;
+}

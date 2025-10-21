@@ -13,22 +13,19 @@ export class VideoPlayerComponent {
 
   @Input() videoData: any;
   @Input() camerasForPage: any;
-  @Input() isMaximized: any;
   @Input() siteData: any;
-  @Input() liveControl: any
 
-  // @Output() emailDataEmitter: EventEmitter<any> = new EventEmitter();
   @Output() screenshotEmitter: EventEmitter<any> = new EventEmitter();
 
   constructor(
     private captureService: NgxCaptureService,
-    private camSer: CameraService,
-    private alertSrvc: AlertService,
+    private camSer: CameraService
   ) { }
 
   @ViewChild('video') video!: ElementRef;
   @ViewChild('canvas') canvas!: ElementRef;
   @ViewChild('image') image!: ElementRef;
+  @ViewChild('videParent') videParent!: ElementRef;
 
   peerConnection!: RTCPeerConnection;
   restartTimeout: any = null;
@@ -46,7 +43,6 @@ export class VideoPlayerComponent {
 
     this.hitStream = true;
     this.requestICEServers();
-    // console.log(this.liveControl)
   }
 
   ngAfterViewInit() {
@@ -62,10 +58,26 @@ export class VideoPlayerComponent {
       this.video.nativeElement.muted = true;
     }
 
-
     this.video.nativeElement.controls = false;
     this.video.nativeElement.autoplay = true;
     this.video.nativeElement.playsInline = true;
+  }
+
+  toggleMaximize() {
+    if (this.camerasForPage === 2) {
+      this.videParent.nativeElement.classList.add('h2');
+    }
+    else if (this.camerasForPage === 6) {
+      this.videParent.nativeElement.classList.add('h6');
+    }
+    else if (this.camerasForPage === 9 || this.camerasForPage === 12) {
+      this.videParent.nativeElement.classList.add('h9');
+    }
+    else {
+      this.videParent.nativeElement.classList.add('h20');
+    }
+
+    this.videParent.nativeElement.classList.remove('tile-active');
   }
 
   showLoader: boolean = false;

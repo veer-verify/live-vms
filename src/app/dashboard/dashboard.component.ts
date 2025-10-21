@@ -192,6 +192,8 @@ export class DashboardComponent {
     this.camerasForPage = count;
     this.gridCount = rows;
     this.gridList.nativeElement.style.gridTemplateColumns = `repeat(${rows}, 1fr)`;
+
+
     // this.resizeSubscription = this.resizeObservable.subscribe((evt: any) => {
     //   if(evt.target.innerWidth < 768) {
     //     this.gridList.nativeElement.style.gridTemplateColumns = `repeat(1, 1fr)`;
@@ -199,7 +201,6 @@ export class DashboardComponent {
     //     this.gridList.nativeElement.style.gridTemplateColumns = `repeat(${rows}, 1fr)`;
     //   }
     // });
-
     // switch (count) {
     //   case 16:
     //     this.iframeHeight = '24.7vh';
@@ -289,12 +290,23 @@ export class DashboardComponent {
     this.selector();
   }
 
-  isMaximized: boolean = false;
-  maxWidth: boolean = false;
-  iframeIndex: number = -1;
-  toggleMaximize(index: any) {
-    this.isMaximized = !this.isMaximized;
-    this.isMaximized ? (this.iframeIndex = index) : (this.iframeIndex = -1);
+  cameraIndex: number = -1;
+  toggleMaximize(index: number) {
+    if (this.camerasForPage === 2) {
+      this.streamEl.toArray()[index].video.nativeElement.parentElement.classList.remove('h2');
+    }
+    else if (this.camerasForPage === 6) {
+      this.streamEl.toArray()[index].video.nativeElement.parentElement.classList.remove('h6');
+    }
+    else if (this.camerasForPage === 9 || this.camerasForPage === 12) {
+      this.streamEl.toArray()[index].video.nativeElement.parentElement.classList.remove('h9');
+    }
+    else {
+      this.streamEl.toArray()[index].video.nativeElement.parentElement.classList.remove('h20');
+    }
+
+    this.streamEl.toArray()[index].video.nativeElement.parentElement.classList.add('tile-active');
+    this.cameraIndex = index;
   }
 
   audioIndex: number = -1;
@@ -415,7 +427,7 @@ export class DashboardComponent {
   analyticsObj: any = {};
   createButton(event: any, data: any) {
     this.currentItem = data;
-    if (this.listType !== 0 && !this.isMaximized) {
+    if (this.listType !== 0 && this.cameraIndex === -1) {
       this.displayTime = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss');
       const rect = (event.target as HTMLImageElement).getBoundingClientRect();
       const x = event.clientX - rect.left;
@@ -509,15 +521,15 @@ export class DashboardComponent {
     let time = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss');
     data.time = time;
 
-    this.btns.toArray().forEach((item) => {
+    this.createBtnEl.toArray().forEach((item) => {
       item.nativeElement.style.pointerEvents = 'none';
 
       setTimeout(() => {
         item.nativeElement.style.pointerEvents = 'all';
       }, 1000);
     })
-    
-    
+
+
     this.camSer.screenshots(data, file).subscribe({
       next: (res: any) => {
         if (res.statusCode === 200) {
@@ -725,18 +737,19 @@ export class DashboardComponent {
   }
 
   normalCapture(camera: any, index: any) {
-    let videoComponents = this.videos.toArray();
+    let videoComponents = this.streamEl.toArray();
     if (videoComponents[index]) {
       videoComponents[index].plainCapture(camera);
     }
   }
 
-  @ViewChildren('video') videos!: QueryList<any>;
-  @ViewChildren('btn') btns!: QueryList<any>;
+  @ViewChildren('streamEl') streamEl!: QueryList<any>;
+  @ViewChildren('createBtnEl') createBtnEl!: QueryList<any>;
   async captureScreenshot(camera: any, index: any, color: any, btnItem: any, btnIndex: any) {
-    let btnEl = await this.btns.toArray()[index].nativeElement.children[btnIndex];
+    let btnEl = await this.createBtnEl.toArray()[index].nativeElement.children[btnIndex];
     let imgEl = await btnEl.firstChild;
-    let videoComponents = this.videos.toArray();
+    let videoComponents = this.streamEl.toArray();
+
     if (videoComponents[index]) {
       videoComponents[index].capture(camera, color, imgEl, btnItem);
     } else {

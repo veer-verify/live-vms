@@ -139,31 +139,29 @@
     <!-- grid container -->
     <div #dropListContainer class="grid-container" #gridList cdkDropListGroup>
       <div *ngFor="let item of getCurrentPageItems; let c = index" cdkDropList [cdkDropListData]="c">
-        <div [ngClass]="iframeIndex === c ? 'tile-active' : 'tile'" [cdkDragData]="c"
-          (cdkDragEntered)="dragEntered($event)" (cdkDragMoved)="dragMoved()" (cdkDragDropped)="dragDropped()"
-          [cdkDragDisabled]="isMaximized" cdkDrag>
+        <div class="tile" [cdkDragData]="c" (cdkDragEntered)="dragEntered($event)" (cdkDragMoved)="dragMoved()" (cdkDragDropped)="dragDropped()" [cdkDragDisabled]="cameraIndex === 1" cdkDrag>
           <div class="cam-detail">
             <div class="">
               <a class="cam-name ms-1"><span *ngIf="item?.showSiteName">{{ item?.siteName }}-</span>{{ item?.name }}</a>
 
               <span style="position: absolute; right: 0">
-                <!-- <a class="frame-icon" *ngIf="iframeIndex == -1" matTooltip="Generate Event" (click)="openuserActionDialog(item)">
+                <!-- <a class="frame-icon" *ngIf="cameraIndex == -1" matTooltip="Generate Event" (click)="openuserActionDialog(item)">
                   <img loading="lazy" src="assets/icons/event.svg" alt="" width="18">
                 </a> -->
 
                 <button class="frame-icon" matTooltip="Screenshot" (click)="normalCapture(item, c)">
                   <img loading="lazy" src="assets/icons/screenshot.svg" alt="" width="16" />
                 </button>
-                <ng-container *ngIf="iframeIndex === -1">
+                <ng-container>
                   <button class="frame-icon" matTooltip="Email" (click)="openEmaiDialog(item)">
                     <img loading="lazy" src="assets/icons/mail.svg" alt="" width="16" />
                   </button>
                   <button class="frame-icon" matTooltip="Full Screen" (click)="toggleMaximize(c)">
                     <img loading="lazy" src="assets/icons/fullscreen.svg" alt="" width="18" />
                   </button>
-                  <button class="frame-icon" *ngIf="iframeIndex === c" matTooltip="Close" (click)="toggleMaximize(c)">
+                  <!-- <button class="frame-icon" matTooltip="Close" (click)="toggleMaximize(-1)">
                     <img loading="lazy" src="assets/icons/close.svg" alt="" width="18" />
-                  </button>
+                  </button> -->
                   <button class="frame-icon" *ngIf="item.audioUrl" (click)="audio(item)" matTooltip="Siren"
                     [disabled]="audioIndex === c">
                     <img loading="lazy" [src]="audioIndex === c ? 'assets/icons/siren-red.png' : 'assets/icons/siren-new.png'"
@@ -181,29 +179,29 @@
                 (click)="normalCapture(item, c)">
                 <img loading="lazy" src="assets/icons/screenshot.svg" alt="" width="16" [hidden]="!item?.videoUrl" />
               </a>
-              <a class="frame-icon" *ngIf="iframeIndex == -1" matTooltip="Email" (click)="openEmaiDialog(item)">
+              <a class="frame-icon" *ngIf="cameraIndex == -1" matTooltip="Email" (click)="openEmaiDialog(item)">
                 <img loading="lazy" src="assets/icons/mail.svg" alt="" width="16" [hidden]="!item?.videoUrl" />
               </a>
-              <a class="frame-icon" *ngIf="iframeIndex == -1" (click)="clearCams(item)" matTooltip="Close">
+              <a class="frame-icon" *ngIf="cameraIndex == -1" (click)="clearCams(item)" matTooltip="Close">
                 <img loading="lazy" src="assets/icons/close.svg" alt="" width="15" />
               </a>
-              
             </div> -->
           </div>
 
           <div>
-            <div class="btn-event" [style.cursor]="
-                listType === 0 || isMaximized ? 'default' : 'crosshair'
-              " (click)="createButton($event, item)" (dblclick)="toggleMaximize(c)" #btn #createBtn>
+            <div class="btn-event" [style.cursor]="listType === 0 || cameraIndex === 1 ? 'default' : 'crosshair'"
+              (click)="createButton($event, item)" (dblclick)="toggleMaximize(c)" #createBtnEl>
               <span *ngFor="let btn of item?.buttons; let b = index">
-                <img loading="lazy" [ngClass]="currentTime > btn?.chkTime1 ? 'btn-item-active' : 'btn-item'" [style.left.px]="btn.x"
-                  [style.top.px]="btn.y" [style.height.px]="btn.height" [style.width.px]="btn.width" [src]="
+                <img loading="lazy" [ngClass]="currentTime > btn?.chkTime1 ? 'btn-item-active' : 'btn-item'"
+                  [style.left.px]="btn.x" [style.top.px]="btn.y" [style.height.px]="btn.height" [style.width.px]="btn.width"
+                  [src]="
                     currentTime > btn?.chkTime5 ? 'assets/icons/violet-dot.png':
                     currentTime > btn?.chkTime4 ? 'assets/icons/orange-dot.png':
                     currentTime > btn?.chkTime3 ? 'assets/icons/blue-dot.png':
                     currentTime > btn?.chkTime2 ? 'assets/icons/red-dot.png':
                     currentTime > btn?.chkTime1 ? 'assets/icons/yellow-dot.png' :
-                    'assets/icons/green-dot.png'" (load)="
+                    'assets/icons/green-dot.png'"
+                  (load)="
                     currentTime > btn?.chkTime5 ? captureScreenshot(item, c, 'violet', btn, b) :
                     currentTime > btn?.chkTime4 ? captureScreenshot(item, c, 'orange', btn, b) :
                     currentTime > btn?.chkTime3 ? captureScreenshot(item, c, 'blue', btn, b) :
@@ -219,17 +217,15 @@
               </span>
             </div>
 
-            <ng-container>
-              <app-video-player [siteData]="currentSite" [videoData]="item?.httpUrl + '/'"
-                [camerasForPage]="camerasForPage" [isMaximized]="isMaximized"
-                (screenshotEmitter)="getImageFromVideo($event)" #video></app-video-player>
-            </ng-container>
+            <app-video-player [siteData]="currentSite" [videoData]="item?.httpUrl + '/'"
+              [camerasForPage]="camerasForPage" (screenshotEmitter)="getImageFromVideo($event)" #streamEl></app-video-player>
+
             <!-- <ng-container *ngIf="item.indexNo != 1 && !item.videoUrl">
               <app-dummy-video [camerasForPage]="camerasForPage" #video></app-dummy-video>
             </ng-container> -->
             <!-- <ng-container *ngIf="item.indexNo == 1">
               <iframe [src]="item?.httpUrl | sanitize" width="100%"
-                [style.height]="iframeIndex === c ? '100vh' : iframeHeight" #video></iframe>
+                [style.height]="cameraIndex === c ? '100vh' : iframeHeight" #video></iframe>
             </ng-container> -->
           </div>
         </div>
