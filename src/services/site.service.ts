@@ -15,6 +15,7 @@ export class SiteService {
 
   public getSites(payload?: any): any {
     let url = `${environment.site_url}/getSitesListForUserName_1_0/`;
+    
     let user = this.storageSer.getData('userData');
     let params = new HttpParams();
 
@@ -25,9 +26,7 @@ export class SiteService {
     if (payload?.page) {
       params = params.set('page', payload?.page);
     }
-    // if(payload?.siteStatus) {
-    //   params = params.set('siteStatus', payload?.siteStatus);
-    // }
+ 
     return this.http.get(url, { params: params });
   }
 

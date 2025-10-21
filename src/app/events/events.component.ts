@@ -310,7 +310,7 @@ export class EventsComponent {
       this.alert_service.error("Email data not Found")
     }
   }
-
+notes:string="";
   updateEventFullDetails(type: number | string) {
     if (type === 2) return;
 
@@ -328,7 +328,7 @@ export class EventsComponent {
           reviewEnd: endTime ?? '',
           actionTag: this.currentActionTag?.categoryId,
           subActionTag: this.currentSubActionTag?.subCategoryId,
-          notes: ''
+          notes: this.notes
         }
       ) :
       this.path === 'dispatch' ?
@@ -343,7 +343,7 @@ export class EventsComponent {
             reviewEnd: endTime ?? '',
             actionTag: this.currentActionTag?.categoryId,
             subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: ''
+            notes: this.notes
           }) :
         this.currentItem?.userLevelAlarmInfo.push(
           {
@@ -356,7 +356,7 @@ export class EventsComponent {
             reviewEnd: endTime ?? '',
             actionTag: this.currentActionTag?.categoryId,
             subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: ''
+            notes: this.notes
           }
         );
 
@@ -376,11 +376,13 @@ export class EventsComponent {
         this.storage_service.show_loader = false;
         this.sirenTime = null;
         this.cancelEvent();
-        this.displayCurrent(this.currentItem);
+        
         this.alert_service.snackSuccess('Event Updated successfully!');
         if (type === 'second-level') {
           this.eventsGenericEmail();
         }
+      this.displayCurrent(this.currentItem);
+        
       },
       error: (err) => {
         this.storage_service.show_loader = false;
@@ -411,7 +413,7 @@ export class EventsComponent {
           reviewEnd: endTime ?? '',
           actionTag: this.currentActionTag?.categoryId,
           subActionTag: this.currentSubActionTag?.subCategoryId,
-          notes: ''
+          notes: this.notes
         }
       ) :
       this.path === 'dispatch' ?
@@ -425,7 +427,7 @@ export class EventsComponent {
             reviewEnd: endTime ?? '',
             actionTag: this.currentActionTag?.categoryId,
             subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: ''
+            notes: this.notes
           }
         ) :
         this.currentItem?.userLevelAlarmInfo.push(
@@ -438,7 +440,7 @@ export class EventsComponent {
             reviewEnd: endTime ?? '',
             actionTag: this.currentActionTag?.categoryId,
             subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: ''
+            notes: this.notes
           }
         );
 
@@ -547,6 +549,7 @@ export class EventsComponent {
     this.alertType = null;
     this.alertSubType = null;
     this.emailData = null;
+    this.notes="";
     this.getTime();
     this.currentActionTag = type;
     let filteredData = this.actionTagsNew.filter((item: any) => item.categoryId === type.categoryId);
