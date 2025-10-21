@@ -404,12 +404,21 @@ export class DashboardComponent {
   listTypes = [
     { id: 0, label: 'None' },
     { id: 6, label: 'Event' },
-    { id: 1, label: 'Small' },
-    { id: 2, label: 'Medium' },
+    { id: 1, label: 'Small' } ,
+    { id: 2, label: 'Medium'} ,
     { id: 3, label: 'Large' },
-    { id: 4, label: 'Person' },
-    { id: 5, label: 'Vehicle' },
+    { id: 4, label: 'Person'} ,
+    { id: 5, label: 'Vehicle'} ,
   ];
+
+
+  filteredListTypes() {
+
+   return this.currentSite?.manualEvents === 'T'
+    ? this.listTypes.filter((type:any) => type.label === 'Event' || type.label === 'None')
+    : this.listTypes;
+
+} 
 
   btnInterval: any;
   analyticsObj: any = {};

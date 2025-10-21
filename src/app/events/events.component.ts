@@ -290,8 +290,8 @@ export class EventsComponent {
         ...this.emailData
       }).subscribe({
         next: (res: any) => {
-          // this.cancelEvent();
-          // this.displayCurrent(this.currentItem)
+          this.cancelEvent();
+          this.displayCurrent(this.currentItem)
           if (res.statusCode === 200) {
             this.alert_service.snackSuccess(res.message);
 
@@ -310,7 +310,7 @@ export class EventsComponent {
       this.alert_service.error("Email data not Found")
     }
   }
-
+notes:string="";
   updateEventFullDetails(type: number | string) {
     if (type === 2) return;
 
@@ -328,7 +328,7 @@ export class EventsComponent {
           reviewEnd: endTime ?? '',
           actionTag: this.currentActionTag?.categoryId,
           subActionTag: this.currentSubActionTag?.subCategoryId,
-          notes: ''
+          notes: this.notes
         }
       ) :
       this.path === 'dispatch' ?
@@ -343,7 +343,7 @@ export class EventsComponent {
             reviewEnd: endTime ?? '',
             actionTag: this.currentActionTag?.categoryId,
             subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: ''
+            notes: this.notes
           }) :
         this.currentItem?.userLevelAlarmInfo.push(
           {
@@ -356,7 +356,7 @@ export class EventsComponent {
             reviewEnd: endTime ?? '',
             actionTag: this.currentActionTag?.categoryId,
             subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: ''
+            notes: this.notes
           }
         );
 
@@ -375,11 +375,13 @@ export class EventsComponent {
       next: () => {
         this.storage_service.show_loader = false;
         this.sirenTime = null;
-        this.cancelEvent();
-        this.displayCurrent(this.currentItem);
+        
         this.alert_service.snackSuccess('Event Updated successfully!');
         if (type === 'second-level') {
           this.eventsGenericEmail();
+        }else{
+          this.cancelEvent();
+          this.displayCurrent(this.currentItem);
         }
       },
       error: (err) => {
@@ -411,7 +413,7 @@ export class EventsComponent {
           reviewEnd: endTime ?? '',
           actionTag: this.currentActionTag?.categoryId,
           subActionTag: this.currentSubActionTag?.subCategoryId,
-          notes: ''
+          notes: this.notes
         }
       ) :
       this.path === 'dispatch' ?
@@ -425,7 +427,7 @@ export class EventsComponent {
             reviewEnd: endTime ?? '',
             actionTag: this.currentActionTag?.categoryId,
             subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: ''
+            notes: this.notes
           }
         ) :
         this.currentItem?.userLevelAlarmInfo.push(
@@ -438,7 +440,7 @@ export class EventsComponent {
             reviewEnd: endTime ?? '',
             actionTag: this.currentActionTag?.categoryId,
             subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: ''
+            notes: this.notes
           }
         );
 
