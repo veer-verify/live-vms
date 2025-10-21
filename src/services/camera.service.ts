@@ -221,7 +221,7 @@ export class CameraService {
     let formData = new FormData();
 
     formData.append('siteId', payload?.siteId);
-    formData.append('cameraId', payload?.cameraId);
+    formData.append('cameraId', payload?.camerasList);
     formData.append('alertTypeId', payload?.alertTypeId);
     formData.append('alertSubTypeId', payload?.subTypeId);
     formData.append('objectName', payload?.objectName);

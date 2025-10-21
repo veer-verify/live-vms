@@ -290,8 +290,8 @@ export class EventsComponent {
         ...this.emailData
       }).subscribe({
         next: (res: any) => {
-          this.cancelEvent();
-          this.displayCurrent(this.currentItem)
+          // this.cancelEvent();
+          // this.displayCurrent(this.currentItem)
           if (res.statusCode === 200) {
             this.alert_service.snackSuccess(res.message);
 
@@ -375,14 +375,14 @@ notes:string="";
       next: () => {
         this.storage_service.show_loader = false;
         this.sirenTime = null;
+        this.cancelEvent();
         
         this.alert_service.snackSuccess('Event Updated successfully!');
         if (type === 'second-level') {
           this.eventsGenericEmail();
-        }else{
-          this.cancelEvent();
-          this.displayCurrent(this.currentItem);
         }
+      this.displayCurrent(this.currentItem);
+        
       },
       error: (err) => {
         this.storage_service.show_loader = false;
