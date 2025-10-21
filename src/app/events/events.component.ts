@@ -549,6 +549,7 @@ notes:string="";
     this.alertType = null;
     this.alertSubType = null;
     this.emailData = null;
+    this.notes="";
     this.getTime();
     this.currentActionTag = type;
     let filteredData = this.actionTagsNew.filter((item: any) => item.categoryId === type.categoryId);
