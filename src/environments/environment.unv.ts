@@ -1,5 +1,5 @@
-const prod_url: string = "https://prod.ivisecurity.com";
-// const dev_url: string = "http://usstaging.ivisecurity.com";
+// const base_url: string = "https://prod.ivisecurity.com";
+const base_url: string = "https://usstaging.ivisecurity.com";
 
 export const environment = {
 
@@ -14,16 +14,15 @@ export const environment = {
     // guard_monitoring_url:`${dev_url}:8015/guard_monitoring`,
     // monitoring_url:`${dev_url}:8016/monitoring`,
 
-    eventImageUrl: 'https://prod.ivisecurity.com/dotimages/',
-    login_url: `${prod_url}/userDetails`,
-    site_url: `${prod_url}/vipsites`,
-    common_url: `${prod_url}/metadata`,
-    download_url: `${prod_url}/common`,
-    guard_monitoring_url: `${prod_url}/guard_monitoring`,
-    monitoring_url: `${prod_url}/monitoring`,
-    // events_url: 'https://stagingmq.ivisecurity.com',
+    eventImageUrl: `${base_url}/dotimages`,
+    login_url: `${base_url}/userDetails`,
+    site_url: `${base_url}/vipsites`,
+    common_url: `${base_url}/metadata`,
+    download_url: `${base_url}/common`,
+    guard_monitoring_url: `${base_url}/guard_monitoring`,
+    monitoring_url: `${base_url}/monitoring`,
     events_url: `https://stagingmq.ivisecurity.com/queueManagement`,
-    event_tags_url: `${prod_url}/events_data`,
+    event_tags_url: `${base_url}/events_data`,
 
     firstAlert: {
         time1: 160,
@@ -67,11 +66,10 @@ export const environment = {
 
     API_TOKEN: 'OjykxjAFrVn6KqBcppQI2ptAt4Dpf0RyWE0eUINs7WyqWXLrtUKr3iS1LPRem0TY0UtU43H3S4rtt300',
 
-    logo: 'assets/themes/logo.png',
-    headerLogo: 'assets/themes/IVISsecurity_logo.png',
-    accordianLogo: 'assets/icons/eye.svg',
-    activeLogo: 'assets/icons/eye-blue.svg',
-    inActiveLogo: 'assets/icons/eye-red.svg',
+    logo: 'assets/images/unv_logo_white.png',
+    headerLogo: 'assets/images/unv_logo_white.png',
+    activeLogo: 'assets/images/unv_logo_blue.png',
+    inActiveLogo: 'assets/images/unv_logo_blue.png',
 
     background_image: 'linear-gradient(325deg, rgba(20, 31, 77, 0.9) 18%, rgba(90, 13, 3, 0.9) 66%)',
     common_background: 'linear-gradient(160deg, #D44124, #104b86)',

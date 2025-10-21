@@ -70,7 +70,6 @@ export const environment = {
 
     logo: 'assets/themes/logo.png',
     headerLogo: 'assets/themes/IVISsecurity_logo.png',
-    accordianLogo: 'assets/icons/eye.svg',
     activeLogo: 'assets/icons/eye-blue.svg',
     inActiveLogo: 'assets/icons/eye-red.svg',
 
