@@ -11,10 +11,10 @@
             <p class="site">{{ item?.siteName }}</p>
             <a class="close-event" (click)="closeEvent(item)" matTooltip="clear">
               <img loading="lazy" src="assets/icons/close.svg" alt="" width="20px"></a>
-            </div>
-            <p class="camera">{{ item?.cameraId }}</p>
-            <p class="date">{{ item?.timestamp | date: 'medium'}}</p>
-            <p class="site text-primary">{{item?.userName | uppercase}}</p>
+          </div>
+          <p class="camera">{{ item?.cameraId }}</p>
+          <p class="date">{{ item?.timestamp | date: 'medium'}}</p>
+          <p class="site text-primary">{{item?.userName | uppercase}}</p>
         </div>
       </div>
     </div>
@@ -67,11 +67,11 @@
                 <!-- <p *ngIf="subActionTags.length === 0" class="text-center p-5">Loading...</p> -->
               </mat-menu>
 
-              <button type="button" class="btn btn-sm dialog-update-btn"  [matMenuTriggerFor]="menu">Live</button>
-            <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="openLiveDialog(1)">Current Camera</button>
-            <button mat-menu-item (click)="openLiveDialog(2)">Total Cameras</button>
-            </mat-menu>
+              <button type="button" class="btn btn-sm dialog-update-btn" [matMenuTriggerFor]="menu">Live</button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openLiveDialog(1)">Current Camera</button>
+                <button mat-menu-item (click)="openLiveDialog(2)">Total Cameras</button>
+              </mat-menu>
             </div>
 
             <div class="p-2 border rounded mb-1" [ngClass]="currentScreen === 'email' ? 'max-screen' : ''"
@@ -113,8 +113,8 @@
                 <mat-form-field class="w-100" appearance="outline">
                   <mat-label>Alert Type</mat-label>
                   <mat-select [(ngModel)]="alertType">
-                    <mat-option *ngFor="let item of alertTypes; let i=index"
-                      [value]="item.guardAlertTypeId" (click)="onAlertChange(item.guardAlertTypeId)">{{item.guardAlertType}}</mat-option>
+                    <mat-option *ngFor="let item of alertTypes; let i=index" [value]="item.guardAlertTypeId"
+                      (click)="onAlertChange(item.guardAlertTypeId)">{{item.guardAlertType}}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -130,15 +130,15 @@
               </div>
 
               <div class="w-100">
-                <mat-form-field class="w-100" >
+                <mat-form-field class="w-100">
                   <mat-label>Notes</mat-label>
-                  <textarea matInput [(ngModel)]="notes"></textarea>
+                  <textarea matInput [(ngModel)]="notes" [rows]="(path == 'pre-dispatch'?2:7)"></textarea>
                 </mat-form-field>
               </div>
             </div>
 
-            <div class="p-2 border rounded" *ngIf="currentActionTag?.categoryId === 2 && currentSubActionTag && (path == 'pre-dispatch' || path =='dispatch')"
-              >
+            <div class="p-2 border rounded"
+              *ngIf="currentActionTag?.categoryId === 2 && currentSubActionTag && (path == 'pre-dispatch' || path =='dispatch')">
 
               <!-- <h2>{{ cameraDetails?.siteName }}</h2> -->
 
@@ -160,7 +160,7 @@
                     <th>Camera Name</th>
                     <td>{{ cameraDetails?.cameras[0]?.cameraName }}</td>
                   </tr>
-<!-- 
+                  <!-- 
                   <tr>
                     <th>Monitoring</th>
                     <td>{{ cameraDetails?.cameras[0]?.monitoring ? 'Yes' : 'No' }}</td>
@@ -209,7 +209,7 @@
           </div>
         </div>
 
-        <ng-container *ngIf="emailData && currentActionTag?.categoryId === 2">
+        <ng-container *ngIf="emailData && currentActionTag?.categoryId === 2 && path === 'pre-dispatch'">
           <div class="p-3 border rounded" [ngClass]="currentScreen === 'template' ? 'max-screen' : ''">
             <a class="d-flex justify-content-end"
               (click)="currentScreen === 'template' ? maxmizeScreen('') : maxmizeScreen('template')">
@@ -242,25 +242,33 @@
                 {{emailData?.emailFooter}}
               </div>
 
-              <div class="d-flex align-items-center justify-content-end gap-1 mt-2">
-                <ng-container *ngIf="path === 'pre-dispatch'">
-                  <button class="btn-secondary" (click)="updateEventFullDetails('second-level')" title="Send Email & Close">Complete</button>
-                  <button class="btn-secondary" (click)="write2Dispatch('dispatch-3rd-level')" title="Send to Dispatch">Escalate</button>
-                </ng-container>
 
-                <ng-container *ngIf="path === 'dispatch'">
-                  <button class="btn-secondary" (click)="updateEventFullDetails('third-level')" title="Close">Complete</button>
-                  <button class="btn-secondary" (click)="write2Dispatch('observer-wall')" title="Send to Observer">Escalate</button>
-                </ng-container>
-
-                <ng-container *ngIf="path === 'observer'">
-                  <button class="btn-secondary" (click)="updateEventFullDetails('fourth-level')" title="Send Email & Close">Complete</button>
-                  <button class="btn-secondary" (click)="write2Dispatch('dispatch-3rd-level')" title="Send to Second Level">Escalate</button>
-                </ng-container>
-              </div>
             </div>
           </div>
         </ng-container>
+
+        <div class="d-flex align-items-center justify-content-end gap-1 mt-2" *ngIf="emailData && currentActionTag?.categoryId === 2">
+          <ng-container *ngIf="path === 'pre-dispatch'">
+            <button class="btn-secondary" (click)="updateEventFullDetails('second-level')"
+              title="Send Email & Close">Complete</button>
+            <button class="btn-secondary" (click)="write2Dispatch('dispatch-3rd-level')"
+              title="Send to Dispatch">Escalate</button>
+          </ng-container>
+
+          <ng-container *ngIf="path === 'dispatch'" class="mt-5">
+            <button class="btn-secondary" (click)="updateEventFullDetails('third-level')"
+              title="Close">Complete</button>
+            <button class="btn-secondary" (click)="write2Dispatch('observer-wall')"
+              title="Send to Observer">Escalate</button>
+          </ng-container>
+
+          <ng-container *ngIf="path === 'observer'" class="mt-5">
+            <button class="btn-secondary" (click)="updateEventFullDetails('fourth-level')"
+              title="Send Email & Close">Complete</button>
+            <button class="btn-secondary" (click)="write2Dispatch('dispatch-3rd-level')"
+              title="Send to Second Level">Escalate</button>
+          </ng-container>
+        </div>
       </div>
     </ng-container>
   </div>
