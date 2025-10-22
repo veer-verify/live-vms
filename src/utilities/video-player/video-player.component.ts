@@ -14,6 +14,7 @@ export class VideoPlayerComponent {
   @Input() videoData: any;
   @Input() camerasForPage: any;
   @Input() siteData: any;
+  @Input() liveControl:any;
 
   @Output() screenshotEmitter: EventEmitter<any> = new EventEmitter();
 

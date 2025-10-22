@@ -6,7 +6,7 @@
 
   <div [ngClass]="data.liveControl === 2 ? 'gridcontainer' : 'singlelive'">
     <div class="border" *ngFor="let item of liveData">
-      <app-video-player [videoData]="item.httpUrl + '/'"></app-video-player>
+      <app-video-player [videoData]="item.httpUrl + '/'" [liveControl]="data.liveControl"></app-video-player>
     </div>
 
     <ng-container>
