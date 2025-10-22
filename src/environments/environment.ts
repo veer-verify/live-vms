@@ -66,8 +66,6 @@ export const environment = {
         time5: 210
     },
 
-    API_TOKEN: 'OjykxjAFrVn6KqBcppQI2ptAt4Dpf0RyWE0eUINs7WyqWXLrtUKr3iS1LPRem0TY0UtU43H3S4rtt300',
-
     logo: 'assets/themes/logo.png',
     headerLogo: 'assets/themes/IVISsecurity_logo.png',
     activeLogo: 'assets/icons/eye-blue.svg',

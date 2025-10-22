@@ -193,7 +193,6 @@ export class DashboardComponent {
     this.gridCount = rows;
     this.gridList.nativeElement.style.gridTemplateColumns = `repeat(${rows}, 1fr)`;
 
-
     // this.resizeSubscription = this.resizeObservable.subscribe((evt: any) => {
     //   if(evt.target.innerWidth < 768) {
     //     this.gridList.nativeElement.style.gridTemplateColumns = `repeat(1, 1fr)`;
@@ -359,43 +358,6 @@ export class DashboardComponent {
     this.showActionDialog = data;
   }
 
-
-  /** drag and drop cameras */
-
-  @ViewChild('dropListContainer') dropListContainer!: ElementRef;
-  dropListReceiverElement: any;
-  dragDropInfo: any;
-  dragEntered(event: CdkDragEnter<number>) {
-    const drag = event.item;
-    const dropList = event.container;
-    this.dragDropInfo = { dragIndex: drag?.data, dropIndex: dropList?.data };
-    const phContainer = dropList.element.nativeElement;
-    const phElement = phContainer.querySelector('.cdk-drag-placeholder');
-    if (phElement) {
-      phContainer.removeChild(phElement);
-      phContainer.parentElement?.insertBefore(phElement, phContainer);
-      moveItemInArray(this.gridListItems, drag?.data, dropList?.data);
-    }
-  }
-
-  dragMoved() {
-    if (!this.dropListContainer) return;
-    const placeholderEl = this.dropListContainer.nativeElement.querySelector('.cdk-drag-placeholder');
-    const receiverEl = this.dragDropInfo?.dragIndex > this.dragDropInfo?.dropIndex ? placeholderEl?.nextElementSibling : placeholderEl?.previousElementSibling;
-    if (!receiverEl) return;
-    receiverEl.style.display = 'none';
-    this.dropListReceiverElement = receiverEl;
-  }
-
-  dragDropped() {
-    if (!this.dropListReceiverElement) return;
-    this.dropListReceiverElement.style.removeProperty('display');
-    this.dropListReceiverElement = undefined;
-    this.dragDropInfo = undefined;
-  }
-
-  /** drag and drop cameras */
-
   actionTags: any = [];
   alertTypes: any = [];
   alertSubTypes: any = [];
@@ -535,9 +497,8 @@ export class DashboardComponent {
 
       setTimeout(() => {
         item.nativeElement.style.pointerEvents = 'all';
-      }, 1000);
+      }, 1500);
     })
-
 
     this.camSer.screenshots(data, file).subscribe({
       next: (res: any) => {
@@ -784,8 +745,39 @@ export class DashboardComponent {
     })
   }
 
+  /** drag and drop cameras */
+  
+  @ViewChild('dropListContainer') dropListContainer!: ElementRef;
+  dropListReceiverElement: any;
+  dragDropInfo: any;
+  dragEntered(event: CdkDragEnter<number>) {
+    const drag = event.item;
+    const dropList = event.container;
+    this.dragDropInfo = { dragIndex: drag?.data, dropIndex: dropList?.data };
+    const phContainer = dropList.element.nativeElement;
+    const phElement = phContainer.querySelector('.cdk-drag-placeholder');
+    if (phElement) {
+      phContainer.removeChild(phElement);
+      phContainer.parentElement?.insertBefore(phElement, phContainer);
+      moveItemInArray(this.gridListItems, drag?.data, dropList?.data);
+    }
+  }
 
+  dragMoved() {
+    if (!this.dropListContainer) return;
+    const placeholderEl = this.dropListContainer.nativeElement.querySelector('.cdk-drag-placeholder');
+    const receiverEl = this.dragDropInfo?.dragIndex > this.dragDropInfo?.dropIndex ? placeholderEl?.nextElementSibling : placeholderEl?.previousElementSibling;
+    if (!receiverEl) return;
+    receiverEl.style.display = 'none';
+    this.dropListReceiverElement = receiverEl;
+  }
 
+  dragDropped() {
+    if (!this.dropListReceiverElement) return;
+    this.dropListReceiverElement.style.removeProperty('display');
+    this.dropListReceiverElement = undefined;
+    this.dragDropInfo = undefined;
+  }
 
   ngOnDestroy() {
     this.resizeSubscription?.unsubscribe();

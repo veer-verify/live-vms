@@ -29,7 +29,7 @@
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Action Tag</mat-label>
                     <mat-select [(ngModel)]="actionTag" (selectionChange)="filter()">
-                        <mat-option *ngFor="let item of actionTags" [value]="item?.id">{{item?.value |
+                        <mat-option *ngFor="let item of actionTags" [value]="item?.value">{{item?.value |
                             titlecase}}</mat-option>
                     </mat-select>
                 </mat-form-field>

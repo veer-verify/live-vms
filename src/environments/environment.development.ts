@@ -1,7 +1,5 @@
-// const dev_url: string = "";
 const dev_url: string = "https://usstaging.ivisecurity.com";
 const event_url: string = "https://stagingmq.ivisecurity.com";
-const local_url: string = "http://192.168.0.155:3009";
 
 export const environment = {
     // login_url: `${dev_url}:8922/userDetails`,
@@ -65,8 +63,6 @@ export const environment = {
         time4: 180,
         time5: 210
     },
-
-    API_TOKEN: 'OjykxjAFrVn6KqBcppQI2ptAt4Dpf0RyWE0eUINs7WyqWXLrtUKr3iS1LPRem0TY0UtU43H3S4rtt300',
 
     logo: 'assets/themes/logo.png',
     headerLogo: 'assets/themes/IVISsecurity_logo.png',

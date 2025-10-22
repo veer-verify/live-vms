@@ -16,32 +16,29 @@ export class HeaderComponent {
     private loginSer: LoginService,
     public storageSer: StorageService,
     private alert_service: AlertService
-  ) {}
+  ) { }
 
   userData: any;
+  isMenuOpen: boolean = false;
   ngOnInit() {
     this.userData = this.storageSer.getData('userData');
+    this.storageSer.saveData('menu', this.isMenuOpen);
   }
 
-  isHidden: boolean = false;
-  lastScrollTop: number = 0;
+  onMenuOpened() {
+    this.isMenuOpen = true;
+    this.storageSer.saveData('menu', this.isMenuOpen);
+  }
 
-  // @HostListener('window:scroll', [])
-  // onWindowScroll() {
-  //   const currentScroll = window.scrollY || document.documentElement.scrollTop;
-  //   console.log(currentScroll)
-  //   if (currentScroll > this.lastScrollTop) {
-  //     this.isHidden = true; // Scrolling down, hide the header
-  //   } else {
-  //     this.isHidden = false; // Scrolling up, show the header
-  //   }
-  //   this.lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
-  // }
+  onMenuClosed() {
+    this.isMenuOpen = false;
+    this.storageSer.saveData('menu', this.isMenuOpen);
+  }
 
   showLoader: boolean = false;
   logout() {
     const length = this.storageSer.events_sub.getValue();
-    if(length !== 0) return this.alert_service.warn('Please clear the events before logout!');
+    if (length !== 0) return this.alert_service.warn('Please clear the events before logout!');
     this.showLoader = true;
     this.loginSer.manageUserSession('logOut').subscribe({
       error: (err: any) => {

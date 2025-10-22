@@ -220,7 +220,7 @@ export class CameraService {
     let formData = new FormData();
 
     formData.append('siteId', payload?.siteId);
-    formData.append('cameraId', payload?.camerasList);
+    formData.append('cameraId', payload?.cameraId);
     formData.append('alertTypeId', payload?.alertTypeId);
     formData.append('alertSubTypeId', payload?.subTypeId);
     formData.append('objectName', payload?.objectName);
@@ -289,28 +289,6 @@ export class CameraService {
     return this.http.get(url, { params: params });
   }
 
-
-
-  private readonly API_URL = 'https://api.800.com/message';
-  private readonly receive_URL = 'https://api.800.com/companies/138829/conversations?updated_before=&updated_after=&search=&types[]=message&types[]=call&types[]=voicemail&types[]=fax&types[]=note&type_filter_last_item=0&is_archived=0';
-  private readonly COMPANY_ID = '138829';
-  private readonly MAX_FILE_SIZE = 600 * 1024;  // 600kb
-  private readonly ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
-
-
-
-  private validateFile(file: File): boolean {
-    if (file.size > this.MAX_FILE_SIZE) {
-      throw new Error(`File size exceeds ${this.MAX_FILE_SIZE / 1024} KB limit`);
-    }
-
-    if (!this.ALLOWED_FILE_TYPES.includes(file.type)) {
-      throw new Error(`File type ${file.type} not supported. Allowed types: ${this.ALLOWED_FILE_TYPES.join(', ')}`);
-    }
-
-    return true;
-  }
-
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An error occurred';
 
@@ -329,57 +307,6 @@ export class CameraService {
 
     console.error(errorMessage);
     return throwError(() => new Error(errorMessage));
-  }
-
-  sendMessage800(payload: any, file?: File): Observable<any> {
-    try {
-      // Validate inputs
-      if (!payload.recipient) {
-        throw new Error('Recipient is required');
-      }
-
-      const formData = new FormData();
-      formData.append('sender', payload.sender);
-      formData.append('recipient', payload.recipient);
-      formData.append('message', payload.message);
-      formData.append('company_id', this.COMPANY_ID);
-
-      if (file) {
-        this.validateFile(file);
-        formData.append('media[0]', file);
-      }
-
-      const token = this.getSecureToken();
-      const headers = new HttpHeaders({
-        Authorization: `Bearer ${token}`,
-      });
-
-      return this.http.post(this.API_URL, formData, {
-        headers,
-        reportProgress: true
-      }).pipe(
-        retry(3),
-        catchError(this.handleError)
-      );
-    } catch (error) {
-      return throwError(() => error);
-    }
-  }
-
-  getRecievedMsg() {
-    const token = this.getSecureToken();
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-    return this.http.get(this.receive_URL, { headers: headers });
-  }
-
-  private getSecureToken(): string {
-    const token = `${environment.API_TOKEN}`;
-    if (!token) {
-      throw new Error('API token not configured');
-    }
-    return token;
   }
 
 }

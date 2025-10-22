@@ -11,7 +11,6 @@ import { EventService } from 'src/services/event.service';
 import { MetadataService } from 'src/services/metadata.service';
 import { StorageService } from 'src/services/storage.service';
 import { LiveComponent } from 'src/utilities/live/live.component';
-import { Send800Component } from '../send800/send800.component';
 import { HttpClient } from '@angular/common/http';
 import html2canvas from 'html2canvas';
 import { SiteService } from 'src/services/site.service';
@@ -53,7 +52,8 @@ export class EventsComponent {
 
   poolEvents() {
     this.eventInterval = setInterval(() => {
-      if (this.eventData.length < 6) {
+      let menu = this.storage_service.getData('menu');
+      if (this.eventData.length < 6 && !menu) {
         if (!this.eventPolling) return;
         this.eventPolling = false;
         this.event_service.getDispatchData().subscribe({
@@ -78,36 +78,36 @@ export class EventsComponent {
   }
 
   eventData: any = [
-// {
-//     "siteId": 36347,
-//     "siteName": "Barbee Pharmacy & Gifts",
-//     "timezone": "America/New_York",
-//     "httpUrl": "https://gisusorin1017live-repo.us1.pitunnel.com/GISUSORIN1017C1",
-//     "cameraId": "GISUSORIN1017C1",
-//     "color": "green",
-//     "id": "603101a8-694a-4585-b430-737c31ca3771",
-//     "imageName": "GISUSORIN1017C1_603101a8-694a-4585-b430-737c31ca3771_2025-10-15_08-29-36_green.png",
-//     "timestamp": "2025-10-15 08:29:36",
-//     "userLevels": 0,
-//     "actionTag": "suspicious",
-//     "actionTime": "2025-10-15 08:29:38",
-//     "eventTag": "",
-//     "userLevelAlarmInfo": [
-//         {
-//             "level": 1,
-//             "user": 1614,
-//             "alarm": "N",
-//             "landingTime": "2025-10-15 08:29:36",
-//             "reviewStart": "2025-10-15 08:29:36",
-//             "reviewEnd": "2025-10-15 08:29:36",
-//             "actionTag": 2,
-//             "subActionTag": 23,
-//             "notes": "",
-//             "activityDetTime": "2025-10-15 08:29:36"
-//         }
-//     ],
-//     "userName": "vamsiv@ivisecurity.com"
-// }
+    // {
+    //     "siteId": 36347,
+    //     "siteName": "Barbee Pharmacy & Gifts",
+    //     "timezone": "America/New_York",
+    //     "httpUrl": "https://gisusorin1017live-repo.us1.pitunnel.com/GISUSORIN1017C1",
+    //     "cameraId": "GISUSORIN1017C1",
+    //     "color": "green",
+    //     "id": "603101a8-694a-4585-b430-737c31ca3771",
+    //     "imageName": "GISUSORIN1017C1_603101a8-694a-4585-b430-737c31ca3771_2025-10-15_08-29-36_green.png",
+    //     "timestamp": "2025-10-15 08:29:36",
+    //     "userLevels": 0,
+    //     "actionTag": "suspicious",
+    //     "actionTime": "2025-10-15 08:29:38",
+    //     "eventTag": "",
+    //     "userLevelAlarmInfo": [
+    //         {
+    //             "level": 1,
+    //             "user": 1614,
+    //             "alarm": "N",
+    //             "landingTime": "2025-10-15 08:29:36",
+    //             "reviewStart": "2025-10-15 08:29:36",
+    //             "reviewEnd": "2025-10-15 08:29:36",
+    //             "actionTag": 2,
+    //             "subActionTag": 23,
+    //             "notes": "",
+    //             "activityDetTime": "2025-10-15 08:29:36"
+    //         }
+    //     ],
+    //     "userName": "vamsiv@ivisecurity.com"
+    // }
   ];
 
   getDispatchData() {
@@ -142,7 +142,7 @@ export class EventsComponent {
 
   @ViewChild('currentBtn') currentBtn!: ElementRef;
   displayCurrent(data: any) {
-    if(!data) return;
+    if (!data) return;
     this.currentItem = null;
     this.resetVals();
     data.reviewStart = moment().tz(data?.timezone)?.format('YYYY-MM-DD hh:mm:ss');
@@ -176,7 +176,7 @@ export class EventsComponent {
   }
 
   closeEvent(data: any) {
-    if(!data) return;
+    if (!data) return;
     this.currentItem = data;
     let index = this.eventData.indexOf(this.currentItem);
 
@@ -310,9 +310,12 @@ export class EventsComponent {
       this.alert_service.error("Email data not Found")
     }
   }
-notes:string="";
+  notes: string = "";
   updateEventFullDetails(type: number | string) {
     if (type === 2) return;
+    if (type === 'second-level') {
+      this.eventsGenericEmail();
+    }
 
     let user = this.storage_service.getData('userData');
     let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss');
@@ -375,14 +378,11 @@ notes:string="";
       next: () => {
         this.storage_service.show_loader = false;
         this.sirenTime = null;
+
         this.cancelEvent();
-        
+        this.displayCurrent(this.currentItem);
         this.alert_service.snackSuccess('Event Updated successfully!');
-        if (type === 'second-level') {
-          this.eventsGenericEmail();
-        }
-      this.displayCurrent(this.currentItem);
-        
+
       },
       error: (err) => {
         this.storage_service.show_loader = false;
@@ -399,9 +399,12 @@ notes:string="";
   }
 
   write2Dispatch(queue_name: string) {
+    if (this.path === 'pre-dispatch') {
+      this.eventsGenericEmail();
+    }
+
     let user = this.storage_service.getData('userData');
     let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss');
-
     this.path === 'pre-dispatch' ?
       this.currentItem?.userLevelAlarmInfo.push(
         {
@@ -456,9 +459,6 @@ notes:string="";
           this.storage_service.show_loader = false;
           this.cancelEvent();
           this.alert_service.snackSuccess('Event Sent successfully!');
-          if (this.path !== 'dispatch') {
-            this.eventsGenericEmail();
-          }
         },
         error: (err) => {
           this.cancelEvent();
@@ -549,7 +549,7 @@ notes:string="";
     this.alertType = null;
     this.alertSubType = null;
     this.emailData = null;
-    this.notes="";
+    this.notes = "";
     this.getTime();
     this.currentActionTag = type;
     let filteredData = this.actionTagsNew.filter((item: any) => item.categoryId === type.categoryId);
@@ -593,18 +593,14 @@ notes:string="";
       .join(', ');
   }
 
-  open800() {
-    this.dialog.open(Send800Component, {
-      data: { ...this.currentItem, ...this.emailData }
-    });
-  }
-
   currentScreen!: string;
   maxmizeScreen(type: string) {
     this.currentScreen = type;
   }
 
   ngOnDestroy() {
+    this.eventData = [];
+    this.storage_service.events_sub.next(this.eventData.length);
     clearInterval(this.eventInterval)
   }
 }

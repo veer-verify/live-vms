@@ -14,7 +14,7 @@ export const environment = {
     // guard_monitoring_url:`${dev_url}:8015/guard_monitoring`,
     // monitoring_url:`${dev_url}:8016/monitoring`,
 
-    eventImageUrl: `${base_url}/dotimages`,
+    eventImageUrl: `${base_url}/dotimages/`,
     login_url: `${base_url}/userDetails`,
     site_url: `${base_url}/vipsites`,
     common_url: `${base_url}/metadata`,
@@ -63,8 +63,6 @@ export const environment = {
         time4: 180,
         time5: 210
     },
-
-    API_TOKEN: 'OjykxjAFrVn6KqBcppQI2ptAt4Dpf0RyWE0eUINs7WyqWXLrtUKr3iS1LPRem0TY0UtU43H3S4rtt300',
 
     logo: 'assets/images/unv_logo_white.png',
     headerLogo: 'assets/images/unv_logo_white.png',

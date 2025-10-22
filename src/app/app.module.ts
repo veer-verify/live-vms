@@ -38,7 +38,6 @@ import { CommonModule } from '@angular/common';
 import { EventsComponent } from './events/events.component';
 import { LiveComponent } from 'src/utilities/live/live.component';
 import { StatusComponent } from 'src/utilities/status/status.component';
-import { Send800Component } from './send800/send800.component';
 import { TableComponent } from '../utilities/table/table.component';
 import { TemplateComponent } from './template/template.component';
 import { TextAndNumberOnlyDirective } from 'src/utilities/pipes/text-and-number-only.directive';
@@ -77,7 +76,6 @@ import { TokenInterceptor } from 'src/utilities/token.interceptor';
     EventsComponent,
     LiveComponent,
     StatusComponent,
-    Send800Component,
     TemplateComponent,
     TextAndNumberOnlyDirective
   ],
