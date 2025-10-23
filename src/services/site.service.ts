@@ -16,7 +16,7 @@ export class SiteService {
   public getSites(payload?: any): any {
     let url = `${environment.site_url}/getSitesListForUserName_1_0/`;
     
-    let user = this.storageSer.getData('userData');
+    let user = this.storageSer.getData('session');
     let params = new HttpParams();
 
     params = params.set('userName', user?.UserName);
@@ -70,7 +70,7 @@ export class SiteService {
   createGuardEmailsData(payload: any) {
 
     let url = `${environment.guard_monitoring_url}/createGuardEmailsData_1_0`;
-    let user = this.storageSer.getData('userData');
+    let user = this.storageSer.getData('session');
     payload.createdBy = user?.UserId;
 
     return this.http.post(url, payload);
@@ -100,7 +100,7 @@ export class SiteService {
   createCameraMonitoringHours_1_0(payload: any) {
 
     let url = `${environment.guard_monitoring_url}/createCameraMonitoringHours_1_0`;
-    let user = this.storageSer.getData('userData');
+    let user = this.storageSer.getData('session');
     payload.createdBy = user?.UserId;
 
     return this.http.post(url, payload);
@@ -108,7 +108,7 @@ export class SiteService {
   updateCameraMonitoringHours(payload: any) {
     let url = `${environment.guard_monitoring_url}/updateCameraMonitoringHours_1_0`;
 
-    let user = this.storageSer.getData('userData');
+    let user = this.storageSer.getData('session');
     payload.modifiedBy = user?.UserId;
 
     return this.http.put(url, payload);
@@ -116,14 +116,14 @@ export class SiteService {
 
   // getSiteCameraCountsForUserName(): any {
   //   let url  = `${environment.site_url}/getSiteCameraCountsForUserName_1_0`;
-  //   let user = this.storageSer.getData('userData');
+  //   let user = this.storageSer.getData('session');
   //   let params = new HttpParams().set('username', user?.UserName);
   //   return this.http.get(url, {params: params});
   // }
 
   createActionTag(payload: any) {
     let url = `${environment.guard_monitoring_url}/createActionTag_1_0`;
-    let user = this.storageSer.getData('userData');
+    let user = this.storageSer.getData('session');
     payload.createdBy = user?.UserId;
     return this.http.post(url, payload);
   }
@@ -166,7 +166,7 @@ export class SiteService {
 
   createGuardMasterData(payload: any) {
     let url = `${environment.guard_monitoring_url}/createMasterTemplateData_1_0`;
-    let user = this.storageSer.getData('userData');
+    let user = this.storageSer.getData('session');
     payload.createdBy = user?.UserId;
 
     return this.http.post(url, payload);
@@ -189,14 +189,14 @@ export class SiteService {
 
   updateTemplate(payload: any) {
     let url = `${environment.guard_monitoring_url}/updateGuardMasterData_1_0`;
-    let user = this.storageSer.getData('userData');
+    let user = this.storageSer.getData('session');
     payload.modifiedBy = user?.UserId;
     return this.http.put(url, payload);
   }
 
   createTemplateSiteRlsp(payload: any) {
     let url = `${environment.guard_monitoring_url}/createTemplateSiteRlsp_1_0`;
-    let user = this.storageSer.getData('userData');
+    let user = this.storageSer.getData('session');
     payload.createdBy = user?.UserId;
     return this.http.post(url, payload);
   }
@@ -204,7 +204,7 @@ export class SiteService {
 
   updatemasterTemplate(payload: any) {
     let url = `${environment.guard_monitoring_url}/updateMasterTemplate_1_0`;
-    let user = this.storageSer.getData('userData');
+    let user = this.storageSer.getData('session');
     payload.modifiedBy = user?.UserId;
     return this.http.put(url, payload);
   }

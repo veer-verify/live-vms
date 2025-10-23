@@ -76,7 +76,7 @@ export class DashboardComponent {
   displayTime: any;
   intervalId: any;
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getSites();
     this.resizeObservable = fromEvent(window, 'resize');
     this.resizeSubscription = this.resizeObservable.subscribe((evt: any) => {
@@ -90,6 +90,17 @@ export class DashboardComponent {
     //   this.intervalId = setInterval(() => {
     //  this.openChatbot1()
     //   }, 60000);
+  }
+
+  ngDoCheck(): void {
+    let user = this.storageSer.getData('session');
+    let tempUser = this.storageSer.session_sub.getValue();
+    if (!user) {
+      this.storageSer.saveData('session', this.storageSer.session_sub.getValue());
+    }
+    if (!tempUser) {
+      this.storageSer.session_sub.next(this.storageSer.getData('session'));
+    };
   }
 
   // getUrl(data: any) {
@@ -378,21 +389,21 @@ export class DashboardComponent {
   listTypes = [
     { id: 0, label: 'None' },
     { id: 6, label: 'Event' },
-    { id: 1, label: 'Small' } ,
-    { id: 2, label: 'Medium'} ,
+    { id: 1, label: 'Small' },
+    { id: 2, label: 'Medium' },
     { id: 3, label: 'Large' },
-    { id: 4, label: 'Person'} ,
-    { id: 5, label: 'Vehicle'} ,
+    { id: 4, label: 'Person' },
+    { id: 5, label: 'Vehicle' },
   ];
 
 
   filteredListTypes() {
 
-   return this.currentSite?.manualEvents === 'T'
-    ? this.listTypes.filter((type:any) => type.label === 'Event' || type.label === 'None')
-    : this.listTypes;
+    return this.currentSite?.manualEvents === 'T'
+      ? this.listTypes.filter((type: any) => type.label === 'Event' || type.label === 'None')
+      : this.listTypes;
 
-} 
+  }
 
   btnInterval: any;
   analyticsObj: any = {};
@@ -488,7 +499,7 @@ export class DashboardComponent {
   }
 
   postScreenshot(data: any, file: any) {
-    let user = this.storageSer.getData('userData');
+    let user = this.storageSer.getData('session');
     let time = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss');
     data.time = time;
 
@@ -746,7 +757,7 @@ export class DashboardComponent {
   }
 
   /** drag and drop cameras */
-  
+
   @ViewChild('dropListContainer') dropListContainer!: ElementRef;
   dropListReceiverElement: any;
   dragDropInfo: any;

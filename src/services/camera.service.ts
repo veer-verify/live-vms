@@ -97,7 +97,7 @@ export class CameraService {
 
   addVehicleCount(payload: any) {
     let url: string = `${environment.guard_monitoring_url}/addVehicleCount_1_0`;
-    let user = this.storageSer.getData('userData');
+    let user = this.storageSer.getData('session');
     payload.createdBy = user?.UserId;
     return this.http.post(url, payload);
   }
@@ -132,7 +132,7 @@ export class CameraService {
 
   send_guard_email(payload: any) {
     let url = `${environment.guard_monitoring_url}/send_guard_email_1_0`;
-    let user = this.storageSer.getData('userData');
+    let user = this.storageSer.getData('session');
     let formData = new FormData();
 
     let actag = 'Information';
@@ -177,7 +177,7 @@ export class CameraService {
     params = params.set('hour', payload?.hour);
     params = params.set('currentTime', payload?.currentTime);
 
-    let user = this.storageSer.getData('userData');
+    let user = this.storageSer.getData('session');
     let formData = new FormData();
 
     formData.append('siteId', payload?.siteId);
@@ -206,7 +206,7 @@ export class CameraService {
 
   eventsGenericEmail(payload: any) {
     let url = `${environment.guard_monitoring_url}/eventsGenericEmail_1_0`;
-    let user = this.storageSer.getData('userData');
+    let user = this.storageSer.getData('session');
     let params = new HttpParams();
 
     // params = params.set('camerasList', payload?.camerasList);

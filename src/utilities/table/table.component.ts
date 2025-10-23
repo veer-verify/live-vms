@@ -19,6 +19,10 @@ export class TableComponent {
 
   @Output() childEvent = new EventEmitter<any>(); 
 
+  // ngOnInit() {
+  //   console.log(this.data)
+  // }
+
   isSort:boolean=false;
 
   sort(label:any){

@@ -10,12 +10,12 @@ import { SiteService } from 'src/services/site.service';
   styleUrls: ['./monitoring-info.component.css']
 })
 export class MonitoringInfoComponent {
-constructor(
+  constructor(
     private matDialog: MatDialog,
     private SiteSer: SiteService,
     private metadaSer: MetadataService,
     private alaram: AlertService
-  ) {}
+  ) { }
 
   sitesForSearch: any = [];
   ngOnInit() {
@@ -193,11 +193,11 @@ constructor(
   onCloseSidePanel1(event: boolean) {
     this.isSidePanelOpen1 = event;
   }
-openTemplate(){
-  this.isSidePanelOpen1=true;
-}
- 
+  openTemplate() {
+    this.isSidePanelOpen1 = true;
+  }
 
-  
+
+
 
 }

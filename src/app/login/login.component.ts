@@ -24,9 +24,11 @@ export class LoginComponent {
 
   loginForm!: FormGroup;
   ngOnInit() {
-    // const user = this.storageSer.getData('userData');
-    // if(user) this.router.navigate(['/user-dashboard']);
-    
+    this.storageSer.session_sub.next(null);
+
+    const user = this.storageSer.getData('session');
+    if (user) this.router.navigate(['/user-dashboard']);
+
     this.loginForm = this.fb.group({
       userName: this.fb.control('', Validators.required),
       password: this.fb.control('', Validators.required)
@@ -35,20 +37,27 @@ export class LoginComponent {
 
   showLoader: boolean = false;
   login() {
-    // const localData = this.storageSer.getData('userData');
+    // const localData = this.storageSer.getData('session');
     // if(localData) return this.alertSer.warn('You have already opened the same application in another tab please open in New Window or Browser!');
-    
+
     if (!this.loginForm.valid) return;
     this.showLoader = true;
     this.loginSer.login(this.loginForm.value).subscribe({
       next: (res) => {
-        this.showLoader = false;
         if (res.Status === 'Success') {
-          this.storageSer.saveData('userData', res);
-          this.storageSer.saveData('acTok', res.AccessToken ?? '');
-          this.manageUserSession();
-          this.router.navigate(['/user-dashboard']);
-        } else if (res?.Status == 'Failed') {
+          this.storageSer.saveData('session', res);
+          
+          this.loginSer.manageUserSession('logIn').subscribe({
+            next: (response) => {
+              this.showLoader = false;
+              let temp = this.storageSer.getData('session');
+              this.storageSer.saveData('session', {...temp, ...response});
+              this.storageSer.session_sub.next({ ...res, ...response})
+              this.router.navigate(['/user-dashboard']);
+            }
+          })
+        } else {
+          this.showLoader = false;
           this.alertSer.snackError(res.message);
         }
       },
@@ -59,13 +68,14 @@ export class LoginComponent {
     })
   }
 
-  manageUserSession() {
-    this.loginSer.manageUserSession('logIn').subscribe({
-      next: (res) => {
-        sessionStorage.setItem('sId', JSON.stringify(res.sessionId ?? ''))
-      }
-    })
-  }
+  // manageUserSession() {
+  //   this.loginSer.manageUserSession('logIn').subscribe({
+  //     next: (res) => {
+  //       sessionStorage.setItem('sId', JSON.stringify(res.sessionId ?? ''));
+  //       this.storageSer.session_sub.next(res.sessionId ?? '');
+  //     }
+  //   })
+  // }
 
   showPassword: boolean = false;
   togglePasswordVisibility() {

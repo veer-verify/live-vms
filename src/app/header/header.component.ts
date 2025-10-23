@@ -21,7 +21,7 @@ export class HeaderComponent {
   userData: any;
   isMenuOpen: boolean = false;
   ngOnInit() {
-    this.userData = this.storageSer.getData('userData');
+    this.userData = this.storageSer.getData('session');
     this.storageSer.saveData('menu', this.isMenuOpen);
   }
 

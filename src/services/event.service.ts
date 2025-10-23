@@ -27,7 +27,7 @@ export class EventService {
 
   addQueusInfoRedis(payload:any){
       let url = `${environment.events_url}/addQueusInfoRedis_1_0`;
-      let user = this.storageSer.getData('userData');
+      let user = this.storageSer.getData('session');
       payload.userId= user?.UserId;
     return this.http.post(url, payload)
   }
@@ -56,7 +56,7 @@ export class EventService {
 
   updateEventFullDetails(payload: any) {
     let url = `${environment.event_tags_url}/updateEventFullDetails_1_0/`;
-    let user = this.storageSer.getData('userData');
+    let user = this.storageSer.getData('session');
     let path = this.router.url.split('/').at(-1);
     // let eventStart = this.datePipe.transform(new Date(payload?.timestamp), 'yyyy-MM-dd hh:mm:ss');
     let currentTime = moment().tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss');

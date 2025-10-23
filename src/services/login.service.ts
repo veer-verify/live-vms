@@ -35,24 +35,23 @@ export class LoginService {
 
   manageUserSession(type: string): Observable<any> {
     let url = environment.login_url + `/manageUserSession_1_0`;
-    var user = this.storageSer.getData('userData');
-    let sessionId = this.storageSer.getData('sId');
+    let  session = this.storageSer.getData('session');
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     let obj = new Map();
-    obj.set('userName', user?.UserName);
-    obj.set('UidToken', user?.UidToken);
+    obj.set('userName', session?.UserName);
+    obj.set('UidToken', session?.UidToken);
     obj.set('type', type);
     obj.set('time', this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss', timezone));
     obj.set('timeZone', timezone);
-    obj.set('createdBy', user?.UserId);
+    obj.set('createdBy', session?.UserId);
     obj.set('callingSystemDetail', 'portal');
     if (type === 'logOut') {
-      obj.set('sessionId', sessionId);
+      obj.set('sessionId', session?.sessionId);
     };
 
     let payload = Object.fromEntries(obj);
-    return this.http.post(url, payload) ;
+    return this.http.post(url, payload);
   }
 
 

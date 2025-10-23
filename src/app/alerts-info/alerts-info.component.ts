@@ -31,7 +31,7 @@ export class AlertsInfoComponent {
   latestIncidentTime: any;
   objectNames = ['Person', 'Vehicle'];
   ngOnInit() {
-    this.userData = JSON.parse(sessionStorage.getItem('user')!);
+    this.userData = JSON.parse(sessionStorage.getItem('session')!);
     let d1 = new Date();
     let d2 = new Date(d1);
     d2.setMinutes(d1.getMinutes() - 360);

@@ -24,14 +24,14 @@ export class TokenInterceptor implements HttpInterceptor {
   ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    let token = this.storageService.getData('acTok');
+    let session = this.storageService.getData('session');
 
     if (
-      token &&
+      session?.AccessToken &&
       !request.url.startsWith('https://api.800.com')
     ) 
     {
-      request = this.addToken(request, token);
+      request = this.addToken(request, session.AccessToken);
     }
 
     return next.handle(request).pipe(catchError(error => {
@@ -58,17 +58,18 @@ export class TokenInterceptor implements HttpInterceptor {
 
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
-    let currentUser = this.storageService.getData('userData');
+    let session = this.storageService.getData('session');
 
     if (!this.isRefreshing) {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);
 
       // this.storageService.loader_sub.next(true);
-      return this.authSer.getAccessforRefreshToken(currentUser).pipe(
+      return this.authSer.getAccessforRefreshToken(session).pipe(
         switchMap((res: any) => {
           // this.storageService.loader_sub.next(false);
-          this.storageService.saveData('acTok', res.access_token);
+          session.AccessToken = res.access_token;
+          this.storageService.saveData('session', session);
           this.isRefreshing = false;
           this.refreshTokenSubject.next(res.access_token);
           return next.handle(this.addToken(request, res.access_token));

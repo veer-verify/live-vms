@@ -317,7 +317,7 @@ export class EventsComponent {
       this.eventsGenericEmail();
     }
 
-    let user = this.storage_service.getData('userData');
+    let user = this.storage_service.getData('session');
     let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss');
     this.path === 'pre-dispatch' ?
       this.currentItem?.userLevelAlarmInfo.push(
@@ -403,7 +403,7 @@ export class EventsComponent {
       this.eventsGenericEmail();
     }
 
-    let user = this.storage_service.getData('userData');
+    let user = this.storage_service.getData('session');
     let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss');
     this.path === 'pre-dispatch' ?
       this.currentItem?.userLevelAlarmInfo.push(

@@ -1,4 +1,4 @@
-<section>
+<section *ngIf="noOfPages.length">
     <mat-form-field appearance="outline" class="w-100">
         <mat-label>Page</mat-label>
         <mat-select [(ngModel)]="page" (selectionChange)="changePage()">

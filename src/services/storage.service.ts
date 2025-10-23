@@ -3,6 +3,7 @@ import * as CryptoJS from 'crypto-js';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { LoginService } from './login.service';
 
 
 @Injectable({
@@ -13,6 +14,11 @@ export class StorageService {
   private readonly key = "verifai";
   environment = environment;
 
+  // session_sub: BehaviorSubject<any> = new BehaviorSubject(null);
+  // token_sub: BehaviorSubject<any> = new BehaviorSubject(null);
+  session_sub: BehaviorSubject<any> = new BehaviorSubject(null);
+
+  
   metadat_sub: any = [];
   events_sub: BehaviorSubject<any> = new BehaviorSubject(0);
   status_text!: string;
@@ -64,49 +70,44 @@ export class StorageService {
   /** level of users */
 
   router = inject(Router);
+  login_service = inject(LoginService);
 
   public getUser(): any {
-    return this.getData('userData');
+    return this.getData('session');
   }
 
   public isSuperAdmin(): boolean {
-    const user = this.getData('userData');
-    if (!user) this.router.navigate(['/login']);
+    let user = this.getData('session');
     let a: Array<any> = Array.from(user?.roleList, (item: any) => item.category);
     return a.includes('SuperAdmin') ? true : false;
   }
 
   public isAdmin(): boolean {
-    const user = this.getData('userData');
-    if (!user) this.router.navigate(['/login']);
+    let user = this.getData('session');
     let a: Array<any> = Array.from(user?.roleList, (item: any) => item.category);
     return a.includes('Admin') ? true : false;
   }
 
   public isUser(): boolean {
-    const user = this.getData('userData');
-    if (!user) this.router.navigate(['/login']);
+    let user = this.getData('session');
     let a: Array<any> = Array.from(user?.roleList, (item: any) => item.department);
     return (a.includes('Client') || a.includes('Site')) ? true : false;
   }
 
   public isFirstLevel(): boolean {
-    const user = this.getData('userData');
-    if (!user) this.router.navigate(['/login']);
+    let user = this.getData('session');
     let a: Array<any> = Array.from(user?.roleList, (item: any) => item.category);
     return a.includes('Member-1st-Level') ? true : false;
   }
 
   public isSecondLevel(): boolean {
-    const user = this.getData('userData');
-    if (!user) this.router.navigate(['/login']);
+    let user = this.getData('session');
     let a: Array<any> = Array.from(user?.roleList, (item: any) => item.category);
     return a.includes('TeamLead-2nd-Level') ? true : false;
   }
 
   public isThirdLevel(): boolean {
-    const user = this.getData('userData');
-    if (!user) this.router.navigate(['/login']);
+    let user = this.getData('session');
     let a: Array<any> = Array.from(user?.roleList, (item: any) => item.category);
     return a.includes('Dispatch-3rd-Level') ? true : false;
   }

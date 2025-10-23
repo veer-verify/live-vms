@@ -346,14 +346,18 @@ export class VideoPlayerComponent {
 
 
 
-  async plainCapture(camera: any) {
+  async plainCapture(camera?: any) {
     let finalWidth = 1280;
     let finalHeight = 720;
     await this.canvas.nativeElement.getContext("2d").drawImage(this.video.nativeElement, 0, 0, finalWidth, finalHeight);
     const screenshotDataUrl = await this.canvas.nativeElement.toDataURL('image/png');
     const link = document.createElement('a');
     link.href = screenshotDataUrl;
-    link.download = `${camera?.cameraId}-${camera?.name}-${moment().tz(camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss')}.png`
+    if(camera) {
+      link.download = `${camera?.cameraId}-${camera?.name}-${moment().tz(camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss')}.png`;
+    } else {
+      link.download = `${new Date().toString()}.png`;
+    }
     link.click();
   }
 
