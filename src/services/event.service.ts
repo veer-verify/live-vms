@@ -4,7 +4,6 @@ import { environment } from 'src/environments/environment';
 import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +45,7 @@ export class EventService {
       siteName: payload?.siteName,
       userName: payload?.userName,
       actionTag: payload?.actionTag ?? '',
-      actionTime: moment().tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss'),
+      actionTime: this.storageSer.getTimeWithTimezone(payload?.timezone),
       eventTag: '',
       userLevelAlarmInfo: payload?.userLevelAlarmInfo,
       userLevels: 0
@@ -59,7 +58,7 @@ export class EventService {
     let user = this.storageSer.getData('session');
     let path = this.router.url.split('/').at(-1);
     // let eventStart = this.datePipe.transform(new Date(payload?.timestamp), 'yyyy-MM-dd hh:mm:ss');
-    let currentTime = moment().tz(payload?.timezone)?.format('YYYY-MM-DD hh:mm:ss');
+    let currentTime = this.storageSer.getTimeWithTimezone(payload?.timezone);
 
     let obj = {
       siteName: payload?.siteName,

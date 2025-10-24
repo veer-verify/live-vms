@@ -48,6 +48,7 @@
 
 <div class="d-flex">
   <div class="side-nav" [style.left]="showSidenav ? '0px' : '-300px'">
+    
     <!-- pagination -->
     <div class="pagination-container p-2" *ngIf="sitesList.length != 0">
       <div class="row text-center">
@@ -100,7 +101,6 @@
             <mat-panel-title>
               <div [title]="site?.siteName" cdkDrag>
                 {{ site?.siteName }}
-                <!-- <img loading="lazy" class="settings" src="assets/icons/settings_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg"  alt="" width="16px" (click)="Settings(site,$event)"> -->
               </div>
             </mat-panel-title>
           </mat-expansion-panel-header>
@@ -140,10 +140,19 @@
   </div>
 
   <div class="main-container" [style.marginLeft]="showSidenav ? '300px' : '40px'">
+
     <!-- grid container -->
     <div #dropListContainer class="grid-container" #gridList cdkDropListGroup>
       <div *ngFor="let item of getCurrentPageItems; let c = index" cdkDropList [cdkDropListData]="c">
-        <div class="tile" [cdkDragData]="c" (cdkDragEntered)="dragEntered($event)" (cdkDragMoved)="dragMoved()" (cdkDragDropped)="dragDropped()" [cdkDragDisabled]="cameraIndex === 1" cdkDrag>
+        <div
+          class="tile"
+          [cdkDragData]="c"
+          (cdkDragEntered)="dragEntered($event)"
+          (cdkDragMoved)="dragMoved()"
+          (cdkDragDropped)="dragDropped()"
+          [cdkDragDisabled]="cameraIndex !== -1" 
+          cdkDrag
+        >
           <div class="cam-detail">
             <div class="">
               <a class="cam-name ms-1"><span *ngIf="item?.showSiteName">{{ item?.siteName }}-</span>{{ item?.name }}</a>
@@ -222,7 +231,7 @@
             </div>
 
             <app-video-player [siteData]="currentSite" [videoData]="item?.httpUrl + '/'"
-              [camerasForPage]="camerasForPage" (screenshotEmitter)="getImageFromVideo($event)" #streamEl></app-video-player>
+              [camerasForPage]="camerasForPage" (screenshotEmitter)="getImageFromVideo($event)" (camIndexEmitter)="cameraIndex = $event" #streamEl></app-video-player>
 
             <!-- <ng-container *ngIf="item.indexNo != 1 && !item.videoUrl">
               <app-dummy-video [camerasForPage]="camerasForPage" #video></app-dummy-video>
@@ -350,8 +359,3 @@
     </button>
   </div>
 </ng-template>
-
-
-<!-- <ng-container *ngIf="isSidePanelOpen">
-  <app-sidepanel [isSidePanelOpen]="isSidePanelOpen" (sidePanelClosed)="onCloseSidePanel($event)"></app-sidepanel>
-</ng-container> -->

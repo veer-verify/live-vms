@@ -1,8 +1,8 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import * as moment from 'moment';
 import { NgxCaptureService } from 'ngx-capture';
 import { AlertService } from 'src/services/alert.service';
 import { CameraService } from 'src/services/camera.service';
+import { StorageService } from 'src/services/storage.service';
 
 @Component({
   selector: 'app-video-player',
@@ -17,10 +17,12 @@ export class VideoPlayerComponent {
   @Input() liveControl:any;
 
   @Output() screenshotEmitter: EventEmitter<any> = new EventEmitter();
+  @Output() camIndexEmitter: EventEmitter<any> = new EventEmitter();
 
   constructor(
     private captureService: NgxCaptureService,
-    private camSer: CameraService
+    private camSer: CameraService,
+    public storage_service: StorageService
   ) { }
 
   @ViewChild('video') video!: ElementRef;
@@ -65,6 +67,7 @@ export class VideoPlayerComponent {
   }
 
   toggleMaximize() {
+    this.setCamIndex();
     if (this.camerasForPage === 2) {
       this.videParent.nativeElement.classList.add('h2');
     }
@@ -79,6 +82,10 @@ export class VideoPlayerComponent {
     }
 
     this.videParent.nativeElement.classList.remove('tile-active');
+  }
+
+  setCamIndex() {
+    this.camIndexEmitter.emit(-1);
   }
 
   showLoader: boolean = false;
@@ -354,7 +361,7 @@ export class VideoPlayerComponent {
     const link = document.createElement('a');
     link.href = screenshotDataUrl;
     if(camera) {
-      link.download = `${camera?.cameraId}-${camera?.name}-${moment().tz(camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss')}.png`;
+      link.download = `${camera?.cameraId}-${camera?.name}-${this.storage_service.getTimeWithTimezone(camera?.timezone)}.png`;
     } else {
       link.download = `${new Date().toString()}.png`;
     }
@@ -386,7 +393,7 @@ export class VideoPlayerComponent {
         const screenshotDataUrl = this.canvas.nativeElement.toDataURL('image/png');
         const link = document.createElement('a');
         link.href = screenshotDataUrl;
-        link.download = `${camera?.cameraId}-${camera?.name}-${color ?? ''}-${moment().tz(camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss')}.png`;
+        link.download = `${camera?.cameraId}-${camera?.name}-${color ?? ''}-${this.storage_service.getTimeWithTimezone(camera?.timezone)}.png`;
         link.click();
       });
     }, 500)

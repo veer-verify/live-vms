@@ -6,7 +6,6 @@ import { CdkDragEnter, moveItemInArray, } from '@angular/cdk/drag-drop';
 import { Observable, Subscription, fromEvent, tap, } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from 'src/services/alert.service';
-import * as moment from 'moment-timezone';
 import { HttpClient, HttpErrorResponse, HttpEventType, } from '@angular/common/http';
 import { SiteService } from 'src/services/site.service';
 import { v4 as uuid } from 'uuid';
@@ -410,7 +409,7 @@ export class DashboardComponent {
   createButton(event: any, data: any) {
     this.currentItem = data;
     if (this.listType !== 0 && this.cameraIndex === -1) {
-      this.displayTime = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss');
+      this.displayTime = this.storageSer.getTimeWithTimezone(data?.timezone);
       const rect = (event.target as HTMLImageElement).getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
@@ -481,8 +480,8 @@ export class DashboardComponent {
   //** for instant email and incident */
   emailLimited(data: any) {
     let dateObj = {
-      eventFromTime: moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss'),
-      eventToTime: moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss'),
+      eventFromTime: this.storageSer.getTimeWithTimezone(data?.timezone),
+      eventToTime: this.storageSer.getTimeWithTimezone(data?.timezone),
       objectName: 'Person',
       alertTypeId: '1',
       subTypeId: '10',
@@ -500,7 +499,7 @@ export class DashboardComponent {
 
   postScreenshot(data: any, file: any) {
     let user = this.storageSer.getData('session');
-    let time = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss');
+    let time = this.storageSer.getTimeWithTimezone(data?.timezone);
     data.time = time;
 
     this.createBtnEl.toArray().forEach((item) => {
@@ -612,8 +611,9 @@ export class DashboardComponent {
     this.mannualEmailBody.siteId = data.siteId;
     this.mannualEmailBody.cameraId = data.cameraId;
     this.mannualEmailBody.eventFromTime = data.dspTime;
-    this.mannualEmailBody.eventToTime = moment().tz(data.timezone)?.format('YYYY-MM-DD HH:mm:ss');
-    this.cameraCurrentTime = moment().tz(data?.timezone)?.format('YYYY-MM-DD HH:mm:ss');
+    this.mannualEmailBody.eventToTime = this.storageSer.getTimeWithTimezone(data?.timezone);
+    this.cameraCurrentTime = this.storageSer.getTimeWithTimezone(data?.timezone);
+    console.log(this.cameraCurrentTime)
 
     this.siteSrvc.getCamerasForSiteId(data).subscribe((res: any) => {
       this.eventCameras = res;
@@ -668,34 +668,19 @@ export class DashboardComponent {
   }
 
   downloadImg(url: string) {
-    this.http.get(url).subscribe((res) => {
-      // console.log(res);
-    });
+    this.http.get(url).subscribe();
   }
 
   emailObject: any;
   emailCurrentItem: any;
   getImageFromVideo(data: any) {
-    const weekday = [
-      'Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-    ];
-    this.cameraCurrentTime = moment().tz(data.camera?.timezone)?.format('YYYY-MM-DD HH:mm:ss');
-    let day = new Date(this.cameraCurrentTime).getDay();
-    let hour = new Date(this.cameraCurrentTime).getHours();
-
     this.emailObject = {
       siteId: this.currentItem?.siteId,
       camerasList: [],
       alertTypeId: this.mannualEmailBody.alertType,
       subTypeId: this.mannualEmailBody.alertSubType,
-      day: weekday[day],
-      hour: hour,
+      day: this.storageSer.weekdays[this.storageSer.getDay(data?.camera?.timezone)],
+      hour: this.storageSer.getHour(data?.camera?.timezone),
       currentTime: this.cameraCurrentTime,
     };
     this.postScreenshot(data.camera, data.image);

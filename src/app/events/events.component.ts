@@ -2,7 +2,6 @@ import { DatePipe } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import * as moment from 'moment';
 import { debounceTime, first, fromEvent, interval, map, take, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AlertService } from 'src/services/alert.service';
@@ -61,7 +60,7 @@ export class EventsComponent {
             this.eventPolling = true;
             if (res.length !== 0) {
               this.storage_service.status_text = '';
-              res[0].landingTime = moment().tz(res[0].timezone)?.format('YYYY-MM-DD hh:mm:ss');
+              res[0].landingTime = this.storage_service.getTimeWithTimezone(res[0].timezone);
               res[0].audioPlayed = false;
               //  this.event_service.addQueusInfoRedis({userId:0,queueInfo:this.eventData[0]}).subscribe((res:any)=>{})
               this.eventData.push(...res);
@@ -116,7 +115,7 @@ export class EventsComponent {
       next: (res: any) => {
         if (res.length !== 0) {
           this.storage_service.status_text = '';
-          res[0].landingTime = moment().tz(res[0].timezone)?.format('YYYY-MM-DD hh:mm:ss');
+          res[0].landingTime = this.storage_service.getTimeWithTimezone(res[0].timezone);
           res[0].audioPlayed = false;
           this.eventData.push(...res);
           this.displayCurrent(this.eventData[0]);
@@ -134,7 +133,7 @@ export class EventsComponent {
 
   currentItem: any;
   object: string = 'person';
-  actionTag: any;
+  selectedActionTag: any;
   emailObject: any;
   alertType: any;
   alertSubType: any;
@@ -145,7 +144,7 @@ export class EventsComponent {
     if (!data) return;
     this.currentItem = null;
     this.resetVals();
-    data.reviewStart = moment().tz(data?.timezone)?.format('YYYY-MM-DD hh:mm:ss');
+    data.reviewStart = this.storage_service.getTimeWithTimezone(data.timezone);
     this.storage_service.status_text = 'loading...'
     setTimeout(() => {
       this.storage_service.status_text = ''
@@ -168,7 +167,7 @@ export class EventsComponent {
 
   resetVals() {
     // this.emailData = null;
-    this.actionTag = null;
+    this.selectedActionTag = null;
     this.alertType = null;
     this.alertSubType = null;
     this.object = 'person';
@@ -215,7 +214,7 @@ export class EventsComponent {
   audio() {
     this.isPlaying = true;
     this.currentItem.audioPlayed = true;
-    this.sirenTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss'),
+    this.sirenTime = this.storage_service.getTimeWithTimezone(this.currentItem?.timezone),
       this.http
         .get(`${environment.site_url}/play_1_0/${this.currentItem.cameraId}`)
         .subscribe({
@@ -242,17 +241,13 @@ export class EventsComponent {
   // bccEmails: any;
 
   getEmailDataForVMSEvents() {
-    let day = moment.tz(this.currentItem?.timezone).day();
-    let hour = moment.tz(this.currentItem?.timezone).hours();
-
     this.emailObject = {
       siteId: this.currentItem?.siteId,
       alertTypeId: this.alertType,
       subTypeId: this.alertSubType,
       camerasList: this.currentItem?.cameraId,
-      day: this.storage_service.weekdays[day],
-      hour: hour,
-      // currentTime: moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD HH:mm:ss'),
+      day: this.storage_service.weekdays[this.storage_service.getDay(this.currentItem?.timezone)],
+      hour: this.storage_service.getHour(this.currentItem?.timezone),
       currentTime: this.currentItem?.timestamp,
       imageName: this.currentItem?.imageName
     };
@@ -276,18 +271,14 @@ export class EventsComponent {
   }
 
   eventsGenericEmail() {
-    let dateObj = {
-      eventFromTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss'),
-      eventToTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss'),
-      objectName: 'Person',
-    };
-
     if (this.emailData?.recipientEmails?.length) {
       this.camera_service.eventsGenericEmail({
         ...this.emailObject,
-        ...dateObj,
         ...this.currentItem,
-        ...this.emailData
+        ...this.emailData,
+        ...this.currentSubActionTag,
+        ...{ objectName: this.object },
+        ...{selectedAction: this.selectedActionTag}
       }).subscribe({
         next: (res: any) => {
           // this.cancelEvent();
@@ -318,7 +309,7 @@ export class EventsComponent {
     }
 
     let user = this.storage_service.getData('session');
-    let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss');
+    let endTime = this.storage_service.getTimeWithTimezone(this.currentItem?.timezone);
     this.path === 'pre-dispatch' ?
       this.currentItem?.userLevelAlarmInfo.push(
         {
@@ -395,7 +386,7 @@ export class EventsComponent {
 
   actionTagTime: any;
   getTime() {
-    this.actionTagTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss');
+    this.actionTagTime = this.storage_service.getTimeWithTimezone(this.currentItem?.timezone);
   }
 
   write2Dispatch(queue_name: string) {
@@ -404,7 +395,7 @@ export class EventsComponent {
     }
 
     let user = this.storage_service.getData('session');
-    let endTime = moment().tz(this.currentItem?.timezone)?.format('YYYY-MM-DD hh:mm:ss');
+    let endTime = this.storage_service.getTimeWithTimezone(this.currentItem?.timezone);
     this.path === 'pre-dispatch' ?
       this.currentItem?.userLevelAlarmInfo.push(
         {
@@ -507,7 +498,7 @@ export class EventsComponent {
       .subscribe((res: any) => {
         if (res.statusCode === 200) {
           // this.getTypes();
-          this.actionTags = res.data[0].actionTags;
+          this.actionTags = res.data.flatMap((item: any) => item.actionTags);
         }
       });
   }

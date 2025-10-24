@@ -3,10 +3,8 @@ import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 import { DatePipe, formatDate } from '@angular/common';
 import { environment } from 'src/environments/environment';
-import * as moment from 'moment';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-
 
 
 interface MessagePayload {
@@ -107,7 +105,6 @@ export class CameraService {
     let formData = new FormData();
 
     formData.append('screenshot', file);
-    // formData.append('screenShotName', `${payload?.cameraId}-${payload?.name}-${moment().tz(payload?.timezone)?.format('YYYY-MM-DD HH:mm:ss')}.png`);
     formData.append('color', payload?.color);
     formData.append('id', payload?.id);
     formData.append('cameraId', payload?.cameraId);
@@ -207,8 +204,8 @@ export class CameraService {
   eventsGenericEmail(payload: any) {
     let url = `${environment.guard_monitoring_url}/eventsGenericEmail_1_0`;
     let user = this.storageSer.getData('session');
-    let params = new HttpParams();
 
+    let params = new HttpParams();
     // params = params.set('camerasList', payload?.camerasList);
     // params = params.set('alertTypeId', payload?.alertTypeId);
     // params = params.set('subTypeId', payload?.subTypeId);
@@ -218,16 +215,15 @@ export class CameraService {
     params = params.set('currentTime', payload?.currentTime);
 
     let formData = new FormData();
-
     formData.append('siteId', payload?.siteId);
     formData.append('cameraId', payload?.cameraId);
     formData.append('alertTypeId', payload?.alertTypeId);
     formData.append('alertSubTypeId', payload?.subTypeId);
     formData.append('objectName', payload?.objectName);
     formData.append('eventTag', 'Camera-Event');
-    formData.append('eventFromTime', payload?.eventFromTime);
-    formData.append('eventToTime', payload?.eventToTime);
-    formData.append('actionTag', 'Information');
+    formData.append('eventFromTime', this.storageSer.getTimeWithTimezone(payload?.timezone));
+    formData.append('eventToTime', this.storageSer.getTimeWithTimezone(payload?.timezone));
+    formData.append('actionTag', payload?.selectedAction);
     formData.append('createdBy', user?.UserId);
     formData.append('subject', payload?.emailSubject);
     formData.append('body', payload?.emailBody);
@@ -246,7 +242,7 @@ export class CameraService {
     return this.http.post(url, formData, { params: params });
   }
 
-    getEmailData(payload: any) {
+  getEmailData(payload: any) {
     let url = `${environment.guard_monitoring_url}/getEmailData_1_0`;
     let timer;
     payload?.siteId == 36444 ? timer = 10 : timer = 120;

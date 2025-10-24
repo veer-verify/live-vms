@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -19,7 +20,7 @@ export class LoginComponent {
     private router: Router,
     public storageSer: StorageService,
     private alertSer: AlertService,
-    private metadata_service: MetadataService
+    private metadata_service: MetadataService,
   ) { }
 
   loginForm!: FormGroup;
@@ -33,7 +34,18 @@ export class LoginComponent {
       userName: this.fb.control('', Validators.required),
       password: this.fb.control('', Validators.required)
     });
+
+    const formatter = new Intl.DateTimeFormat([], {
+      timeZone: 'America/New_York',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+    });
   }
+
 
   showLoader: boolean = false;
   login() {
@@ -46,13 +58,13 @@ export class LoginComponent {
       next: (res) => {
         if (res.Status === 'Success') {
           this.storageSer.saveData('session', res);
-          
+
           this.loginSer.manageUserSession('logIn').subscribe({
             next: (response) => {
               this.showLoader = false;
               let temp = this.storageSer.getData('session');
-              this.storageSer.saveData('session', {...temp, ...response});
-              this.storageSer.session_sub.next({ ...res, ...response})
+              this.storageSer.saveData('session', { ...temp, ...response });
+              this.storageSer.session_sub.next({ ...res, ...response })
               this.router.navigate(['/user-dashboard']);
             }
           })

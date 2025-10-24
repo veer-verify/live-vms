@@ -3,7 +3,6 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, ElementRef, inject, Input, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { weekdays } from 'moment-timezone';
 import { AlertService } from 'src/services/alert.service';
 import { MetadataService } from 'src/services/metadata.service';
 import { SiteService } from 'src/services/site.service';

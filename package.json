@@ -28,7 +28,7 @@
     "crypto-js": "^4.2.0",
     "echarts": "^5.6.0",
     "html2canvas": "^1.4.1",
-    "moment-timezone": "^0.5.45",
+    "moment-timezone": "^0.6.0",
     "ngx-capture": "^0.13.0",
     "ngx-echarts": "^19.0.0",
     "ngx-mat-timepicker": "^16.2.0",

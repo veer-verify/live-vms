@@ -4,6 +4,8 @@ import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { LoginService } from './login.service';
+import { DatePipe } from '@angular/common';
+import * as moment from 'moment-timezone';
 
 
 @Injectable({
@@ -14,11 +16,8 @@ export class StorageService {
   private readonly key = "verifai";
   environment = environment;
 
-  // session_sub: BehaviorSubject<any> = new BehaviorSubject(null);
-  // token_sub: BehaviorSubject<any> = new BehaviorSubject(null);
-  session_sub: BehaviorSubject<any> = new BehaviorSubject(null);
 
-  
+  session_sub: BehaviorSubject<any> = new BehaviorSubject(null);
   metadat_sub: any = [];
   events_sub: BehaviorSubject<any> = new BehaviorSubject(0);
   status_text!: string;
@@ -33,6 +32,35 @@ export class StorageService {
     'Friday',
     'Saturday',
   ];
+
+  private date_pipe = inject(DatePipe);
+  getTimeWithTimezone(timezone: string, options?: any): any {
+    // const formatter = new Intl.DateTimeFormat([], {
+    //   timeZone: timezone,
+    //   year: 'numeric',
+    //   month: 'numeric',
+    //   day: 'numeric',
+    //   hour: 'numeric',
+    //   minute: 'numeric',
+    //   second: 'numeric',
+    // });
+    // const date = formatter.format(options?.time ? new Date(options?.time) : new Date());
+    // return this.date_pipe.transform(date, options?.format === 12 ? 'yyyy-MM-dd hh:mm:ss' : 'yyyy-MM-dd HH:mm:ss');
+    // if(options?.format === 12) {
+    //   return moment().tz(timezone).format('YYYY-MM-DD hh:mm:ss')
+    // } else {
+    //   return moment().tz(timezone).format('YYYY-MM-DD HH:mm:ss')
+    // }
+    return moment().tz(timezone).format('YYYY-MM-DD HH:mm:ss')
+  }
+
+  getDay(timezone: string) {
+    return moment().tz(timezone).day();
+  }
+
+  getHour(timezone: string) {
+    return moment().tz(timezone).hours();
+  }
 
   public saveData(name: any, data: any) {
     sessionStorage.setItem(name, JSON.stringify(data));

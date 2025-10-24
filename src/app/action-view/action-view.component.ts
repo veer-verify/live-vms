@@ -1,7 +1,5 @@
 import { Component, Inject, Input, inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { color } from 'echarts/core';
-import { weekdays } from 'moment-timezone';
 import { AlertService } from 'src/services/alert.service';
 import { MetadataService } from 'src/services/metadata.service';
 import { SiteService } from 'src/services/site.service';
