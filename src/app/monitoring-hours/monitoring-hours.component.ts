@@ -137,21 +137,7 @@ export class MonitoringHoursComponent {
   }
 
 
-  // onChangeHour(event: any) {
-  
-  //   this.startTime=event.hour;
-  //   this.timeSlots.push(
-  //     this.startTime
-  //    );
-  // }
 
-  // onChangeHour1(event: any) {
-
-  //   this.endTime=event.hour;
-  //   this.timeSlots.push(
-  //   this.endTime
-  //    );
-  // }
 
 startTime1:any;
 endTime1:any;
@@ -201,24 +187,7 @@ endTime1:any;
   }
 
 
-  // eventChange(event:any,timeType: string){
-//   if (timeType === 'start') {
-//     this.startTime=event;
-//     this.startTime1 = this.formatTime(event);
-//   } 
-//   else if (timeType === 'end') {
-    
-//     if(event == '00:00') {
-//       this.endTime = '23:59';
-//       this.endTime1 = this.endTime;
-//       // this.endTime1 = '23:59';
-//     } else {
-//       const [hours, minutes] = event.split(':');
-//       this.endTime = `${hours}:00`;
-//       this.endTime1 = this.formatTime(this.endTime);
-//     }
-//   }
-// }
+
 
   private formatTime(time: string): string {
     // const hours = time.split(':')[0]; // Extract just the hour part
@@ -250,17 +219,6 @@ endTime1:any;
       return;
     }
 
-    // const newStart = Number(this.startTime1);
-    // const newEnd = Number(this.endTime1);
-    // console.log(newEnd)
-    // if (isNaN(newStart) || isNaN(newEnd)) {
-    //   this.alert.snackError('Invalid time values.');
-    //   return;
-    // }
-
-    // console.log(this.cameraTimeSlots)
-
-// Check for a redundant time slot.
 
 for (const slot of this.cameraTimeSlots) {
 
@@ -299,13 +257,8 @@ for (const slot of this.cameraTimeSlots) {
       ]
     };
 
-    // console.log(timeSlot)
-
-    // Push the time slot data for all selected cameras
     this.cameraTimeSlots.push(timeSlot);
-    
     this.groupCameras();
-    // this.selectedDays = [];
     this.startTime = '00:00'
     this.endTime ='00:00';
     this.startTime1 = null;
@@ -368,7 +321,7 @@ for (const slot of this.cameraTimeSlots) {
 
   
     this.groupedCameras = Object.values(groups);
-    console.log("Grouped Cameras: ", this.groupedCameras);
+   
   }
 
 createCameraMonitoringHours(){
@@ -408,18 +361,7 @@ getMonitoringHoursForSite(){
 }
 
 allSelected: boolean = false; 
-// isChecked(): boolean {
-//   return  this.monitoringCameras?.length && this.deviceName?.length === this.monitoringCameras?.length;
-// }
 
-// toggleSelection(): void {
-//   if (this.allSelected) {
-//     this.deviceName = [];
-//   } else {
-//     this.deviceName = this.monitoringCameras.map((camera:any) => camera.cameraId);
-//   }
-//   this.allSelected = !this.allSelected;
-// }
 isChecked(): boolean {
   return (
     this.monitoringCameras?.length > 0 &&
