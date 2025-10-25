@@ -578,7 +578,8 @@ export class EventsComponent {
     return Array.isArray(val) ? val : [];
   }
 
-  getMonitoringHours(details: any): string {
+  getMonitoringHours(details: any): any {
+    if(!details) return;
     return Object.entries(details)
       .map(([day, hours]) => `${day}: ${hours}`)
       .join(', ');

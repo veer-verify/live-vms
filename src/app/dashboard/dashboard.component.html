@@ -202,7 +202,7 @@
           </div>
 
           <div>
-            <div class="btn-event" [style.cursor]="listType === 0 || cameraIndex === 1 ? 'default' : 'crosshair'"
+            <div class="btn-event" [style.cursor]="listType === 0 ? 'default' : 'crosshair'"
               (click)="createButton($event, item)" (dblclick)="toggleMaximize(c)" #createBtnEl>
               <span *ngFor="let btn of item?.buttons; let b = index">
                 <img loading="lazy" [ngClass]="currentTime > btn?.chkTime1 ? 'btn-item-active' : 'btn-item'"

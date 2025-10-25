@@ -67,7 +67,7 @@ export class VideoPlayerComponent {
   }
 
   toggleMaximize() {
-    this.setCamIndex();
+    this.camIndexEmitter.emit(-1);
     if (this.camerasForPage === 2) {
       this.videParent.nativeElement.classList.add('h2');
     }
@@ -82,10 +82,6 @@ export class VideoPlayerComponent {
     }
 
     this.videParent.nativeElement.classList.remove('tile-active');
-  }
-
-  setCamIndex() {
-    this.camIndexEmitter.emit(-1);
   }
 
   showLoader: boolean = false;
@@ -397,7 +393,6 @@ export class VideoPlayerComponent {
         link.click();
       });
     }, 500)
-
   }
 
   ngOnDestroy() {

@@ -14,7 +14,7 @@ export class SiteService {
   ) { }
 
   public getSites(payload?: any): any {
-    let url = `${environment.site_url}/getSitesListForUserName_1_0/`;
+    let url = `${environment.site_url}/getSitesListForUserName_2_0/`;
     
     let user = this.storageSer.getData('session');
     let params = new HttpParams();

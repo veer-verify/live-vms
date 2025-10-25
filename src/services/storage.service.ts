@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import * as CryptoJS from 'crypto-js';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { LoginService } from './login.service';
 import { DatePipe } from '@angular/common';
-import * as moment from 'moment-timezone';
+import CryptoJS from 'crypto-js';
+import moment from 'moment-timezone';
 
 
 @Injectable({
@@ -51,7 +51,7 @@ export class StorageService {
     // } else {
     //   return moment().tz(timezone).format('YYYY-MM-DD HH:mm:ss')
     // }
-    return moment().tz(timezone).format('YYYY-MM-DD HH:mm:ss')
+    return moment().tz(timezone).format('YYYY-MM-DD HH:mm:ss');
   }
 
   getDay(timezone: string) {

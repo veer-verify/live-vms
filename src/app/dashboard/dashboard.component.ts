@@ -416,6 +416,14 @@ export class DashboardComponent {
 
       let timeAlert;
       if (this.listType === 6) {
+        this.createBtnEl.toArray().forEach((item) => {
+          item.nativeElement.style.pointerEvents = 'none';
+
+          setTimeout(() => {
+            item.nativeElement.style.pointerEvents = 'all';
+          }, 1500);
+        })
+
         timeAlert = { time1: 160, time2: 180, time3: 210, time4: 240, time5: 270 };
       }
       else if (data.siteId == 36415) {
@@ -502,13 +510,7 @@ export class DashboardComponent {
     let time = this.storageSer.getTimeWithTimezone(data?.timezone);
     data.time = time;
 
-    this.createBtnEl.toArray().forEach((item) => {
-      item.nativeElement.style.pointerEvents = 'none';
 
-      setTimeout(() => {
-        item.nativeElement.style.pointerEvents = 'all';
-      }, 1500);
-    })
 
     this.camSer.screenshots(data, file).subscribe({
       next: (res: any) => {
