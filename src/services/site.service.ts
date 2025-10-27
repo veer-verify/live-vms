@@ -220,4 +220,16 @@ getAlertCategoriesForSiteId(payload:any){
   
     return this.http.get(url, {params});
   }
+
+
+  deleteMonitoringhoursforSite(payload:any){
+  let url  = `${environment.guard_monitoring_url}/deleteMonitoringHoursForSiteId_1_0`;
+  let params = new HttpParams();
+
+    if(payload){
+      params = params.set('siteId', payload );
+    }
+     return this.http.delete(url, {params});
+
+  }
 }

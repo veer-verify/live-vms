@@ -125,6 +125,10 @@
   <p>{{details?.item.siteName}} - Monitoring Hours</p>
   <button mat-dialog-close class="closebtn">x</button>
 </div>
+
+<div class="d-flex justify-content-end align-items-center p-1">
+  <button class="btn btn-sm btn-outline-danger" (click)="deleteMonitoringhours()">Delete</button>
+</div>
   
 <div class="p-3">
     <app-table [fields]="fields" [data]="monhrCamera" [index]="monhoursindex"></app-table>

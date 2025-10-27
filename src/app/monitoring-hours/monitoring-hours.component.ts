@@ -50,32 +50,32 @@ export class MonitoringHoursComponent {
       loop: ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'],
       weekdays: true
     },
-    {     
-      serial:4,
-      key: 'actions',
-      label: 'Actions',
-      actions: ['delete'],
-      type: 'actions',
-      sort: false,
-      call: (data: any, type: string) => {
-        switch(type) {
-          case 'view':
-          //   this.openViewPopup(data);
-            break;
-          case 'edit':
-            this.openEditPopup(data);
-            break;
-             case 'save':
-            this.saveEditPopup();
-            break;
-             case 'cancel':
-           this.cancelEditPopup();
-            break;
-          default:
-            break;
-        }
-      }
-    }
+    // {     
+    //   serial:4,
+    //   key: 'actions',
+    //   label: 'Actions',
+    //   actions: ['delete'],
+    //   type: 'actions',
+    //   sort: false,
+    //   call: (data: any, type: string) => {
+    //     switch(type) {
+    //       case 'view':
+    //       //   this.openViewPopup(data);
+    //         break;
+    //       case 'edit':
+    //         this.openEditPopup(data);
+    //         break;
+    //          case 'save':
+    //         this.saveEditPopup();
+    //         break;
+    //          case 'cancel':
+    //        this.cancelEditPopup();
+    //         break;
+    //       default:
+    //         break;
+    //     }
+    //   }
+    // }
   ]
 
   constructor( private SiteSer : SiteService,
@@ -392,5 +392,24 @@ toggleSelection1(): void {
   }
 }
 
+deleteMonitoringhours(){
+
+  this.alert.confirm("do you want to delete ?").then((res:any)=>{
+
+    if(res?.isConfirmed){
+
+      this.SiteSer.deleteMonitoringhoursforSite(this.details?.item.siteId).subscribe((res:any)=>{
+        if(res.statusCode==200){
+          this.alert.snackSuccess(res.message);
+          this.getMonitoringHoursForSite();
+        }
+        else{
+          this.alert.snackError(res.message);
+        }
+      })
+    }
+  })
+
+}
 
 }
