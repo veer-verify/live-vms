@@ -14,6 +14,7 @@ export class SiteService {
   ) { }
 
   public getSites(payload?: any): any {
+    
     let url = `${environment.site_url}/getSitesListForUserName_2_0/`;
     
     let user = this.storageSer.getData('session');
@@ -23,8 +24,11 @@ export class SiteService {
     params = params.set('siteStatus', 'Active');
     params = params.set('monitoring', 'True');
 
-    if (payload?.page) {
+    if (payload?.page && !payload?.search) {
       params = params.set('page', payload?.page);
+    }
+      if (payload?.search) {
+      params = params.set('search', payload?.search);
     }
  
     return this.http.get(url, { params: params });

@@ -34,19 +34,24 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Site</mat-label>
             <input matInput #siteIdInput [matAutocomplete]="site" [(ngModel)]="siteName"
-              (keyup)="searchSites($event); siteSearch1 = null">
-            <button matSuffix mat-icon-button>
-              <mat-icon>arrow_drop_down</mat-icon>
+              (keyup)="searchSites($event); siteSearch1 = null" (keyup.enter)="getSitesforUser()">
+                <button matSuffix mat-icon-button *ngIf="!siteName">
+                  <mat-icon >arrow_drop_down</mat-icon>
+                </button>
+            <button matSuffix mat-icon-button (click)="$event.preventDefault(); getSitesforUser()" *ngIf="siteName">
+              <mat-icon  >search</mat-icon>
             </button>
             <mat-autocomplete #site="matAutocomplete">
-              <mat-option [value]="null" (click)="siteSearch1 = null">All</mat-option>
+              <mat-option [value]="null" (click)="currentPage=1;siteSearch1 = null;getSitesforUser();siteName='';">All</mat-option>
               <mat-option *ngFor="let item of siteslist | search: siteSearch" [value]="item.siteId"
                 (click)="this.siteSearch1 = item.siteName">{{ item.siteName }}</mat-option>
             </mat-autocomplete>
           </mat-form-field>
-        </div>
+  
+        </div> 
+        
         <div>
-          <app-pagination [totalPages]="totalPages" (emitPage)="getPaginatedData($event)"></app-pagination>
+          <app-pagination [totalPages]="totalPages" [currentPage]="currentPage" (emitPage)="getPaginatedData($event)"></app-pagination>
         </div>
       </div>
     </div>

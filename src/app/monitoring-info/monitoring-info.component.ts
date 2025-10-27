@@ -24,7 +24,7 @@ export class MonitoringInfoComponent {
     // this.SiteSer.getSites().subscribe((res: any) => { this.sitesForSearch = res.sites });
   }
 
-  siteName: any;
+  siteName: any=""
   siteSearch: any;
   siteSearch1: any;
   siteslist: any[] = [];
@@ -93,7 +93,7 @@ export class MonitoringInfoComponent {
   totalPages: any;
   getSitesforUser() {
     this.showLoader = true;
-    this.SiteSer.getSites({ page: this.currentPage ?? 1 }).subscribe((res: any) => {
+    this.SiteSer.getSites({ page: this.currentPage ?? 1,search:this.siteName }).subscribe((res: any) => {
       this.showLoader = false;
       if (res.Status === 'Success') {
         this.count = res;
@@ -105,6 +105,7 @@ export class MonitoringInfoComponent {
 
   currentPage: any;
   getPaginatedData(data: number) {
+
     this.currentPage = data + 1;
     this.getSitesforUser();
   }
