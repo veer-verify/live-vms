@@ -160,6 +160,9 @@ export class SiteService {
     if (payload?.alertTypeId) {
       params = params.set('alertTypeId', payload?.alertTypeId);
     }
+    
+      params = params.set('active',"T");
+    
     if (payload?.subTypeId) {
       params = params.set('subTypeId', payload?.subTypeId);
     }
@@ -236,4 +239,39 @@ getAlertCategoriesForSiteId(payload:any){
      return this.http.delete(url, {params});
 
   }
+
+  deletetemplate(payload:any){
+
+  let url  = `${environment.guard_monitoring_url}/inactiveTemplateForSite_1_0`;
+  let params = new HttpParams();
+
+    if(payload){
+      params = params.set('siteId', payload?.siteId);
+      params = params.set('guardMasterId', payload?.guardMasterId);
+    }
+    let user = this.storageSer.getData('session');
+    payload.modifiedBy = user?.UserId;
+    params = params.set('modifiedBy', payload?.modifiedBy);
+
+  return this.http.delete(url,{params});
+
+  }
+
+  deleteEmails(payload:any){
+
+  let url  = `${environment.guard_monitoring_url}/inactiveGuardEmailsDataForSiteId_1_0`;
+  let params = new HttpParams();
+
+    if(payload){
+      params = params.set('siteId', payload?.siteId);
+      params = params.set('guardSiteEmailId', payload?.guardSiteEmailId);
+    }
+    let user = this.storageSer.getData('session');
+    payload.modifiedBy = user?.UserId;
+    params = params.set('modifiedBy', payload?.modifiedBy);
+
+   return this.http.delete(url,{params});
+
+  }
+ 
 }

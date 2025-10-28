@@ -99,6 +99,7 @@ export class ActionViewComponent {
       this.alldATA=res.cameras;
       this.escalation=res.escalation;
       this.escalation1 = res.escalation.map((item: any) => ({
+        ...item,
         contactName: item.contactName,
         contactNumber:item.contactNumber,
         toEmails: item.toEmails ? item.toEmails.replace(/[\[\]']/g, '').split(',').map((e:any) => e.trim()).join(', ') : [],
@@ -209,6 +210,44 @@ SaveTemplate(){
       this.getTemplateData();
     }
   })
+}
+
+deleteTemplate(item:any){ 
+
+  
+  this.alaram.confirm("Do you want to delete ?").then((res:any)=>{
+    if(res.isConfirmed){
+      this.siteser.deletetemplate({guardMasterId:item.guardMasterId,siteId:this.currentItem?.item.siteId,modifiedBy:0}).subscribe((res:any)=>{
+      if(res.statusCode==200){
+        this.alaram.snackSuccess(res.message);
+        this.getTemplateData();
+      }
+      else{
+        this.alaram.snackError(res.message);
+      }
+
+      })
+      }
+  })
+}
+
+deleteMails(item:any){
+
+  this.alaram.confirm("Do you want to delete mails ?").then((res:any)=>{
+    if(res.isConfirmed){
+      this.siteser.deleteEmails({guardSiteEmailId:item.guardSiteEmailId,siteId:this.currentItem?.item.siteId,modifiedBy:0}).subscribe((res:any)=>{
+      if(res.statusCode==200){
+        this.getOverAllView();
+        this.alaram.snackSuccess(res.message);
+      }
+      else{
+        this.alaram.snackError(res.message);
+      }
+
+      })
+      }
+  })
+
 }
    
 }
