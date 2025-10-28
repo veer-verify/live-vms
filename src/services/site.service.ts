@@ -242,7 +242,7 @@ getAlertCategoriesForSiteId(payload:any){
 
   deletetemplate(payload:any){
 
-  let url  = `${environment.guard_monitoring_url}/inactiveTemplateForSite_1_0`;
+  let url  = `${environment.guard_monitoring_url}/inactiveTemplateForSiteId_1_0`;
   let params = new HttpParams();
 
     if(payload){
