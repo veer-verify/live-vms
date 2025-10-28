@@ -133,8 +133,11 @@
                           <div class="dialog-content p-3">
                   
                             <input type="checkbox" [(ngModel)]="item.selectedtemplate" (change)="updateSelectAll()">
+                            <div class="d-flex justify-content-end align-items-center gap-2">
 
-                            <a class="mb-1 pointer d-flex justify-content-end" ><img loading="lazy" src="assets/icons/edit.svg" (click)="editTemplate(item,i)"></a>
+                              <a class="mb-1 pointer d-flex justify-content-end" ><img loading="lazy" src="assets/icons/delete.svg" (click)="deleteTemplate(item)"></a>
+                              <a class="mb-1 pointer d-flex justify-content-end" ><img loading="lazy" src="assets/icons/edit.svg" (click)="editTemplate(item,i)"></a>
+                            </div>
                             <div class="alert-header">
                               <p *ngIf="templateindex!==i">{{item.emailSubject}}</p>
                               <textarea *ngIf="templateindex==i" [(ngModel)]="templateedititem.emailSubject" class="w-100" rows="2"></textarea>

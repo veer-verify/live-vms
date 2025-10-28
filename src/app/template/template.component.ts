@@ -304,5 +304,19 @@ selectedGuardIds:any;
     })
 
   }
+  deleteTemplate(item:any){
+   
+    this.SiteSer.deleteoverallTemplate({modifiedBy:0,guardMasterId:item.guardMasterId}).subscribe((res:any)=>{
+       if(res.statusCode==200){
+        this.alaram.success(res.message);
+        this.getTemplateData();
+      }
+      else{
+        this.alaram.snackError(res.message);
+      
+      }
+    })
+
+  }
 
 }

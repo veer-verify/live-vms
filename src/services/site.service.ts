@@ -4,19 +4,14 @@ import { StorageService } from './storage.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SiteService {
-
-  constructor(
-    private http: HttpClient,
-    private storageSer: StorageService
-  ) { }
+  constructor(private http: HttpClient, private storageSer: StorageService) {}
 
   public getSites(payload?: any): any {
-    
     let url = `${environment.site_url}/getSitesListForUserName_2_0/`;
-    
+
     let user = this.storageSer.getData('session');
     let params = new HttpParams();
 
@@ -27,10 +22,10 @@ export class SiteService {
     if (payload?.page && !payload?.search) {
       params = params.set('page', payload?.page);
     }
-      if (payload?.search) {
+    if (payload?.search) {
       params = params.set('search', payload?.search);
     }
- 
+
     return this.http.get(url, { params: params });
   }
 
@@ -40,7 +35,9 @@ export class SiteService {
   }
 
   getCamerasForForPortal(payload: any) {
-    let url = environment.site_url + `/getCamerasForSiteIdForPortal_1_0/${payload?.siteId}`;
+    let url =
+      environment.site_url +
+      `/getCamerasForSiteIdForPortal_1_0/${payload?.siteId}`;
     return this.http.get(url);
   }
 
@@ -49,7 +46,6 @@ export class SiteService {
     let params = new HttpParams();
 
     if (payload?.siteId) {
-
       params = params.set('siteId', payload?.siteId);
     }
     if (payload?.cameraId && payload.liveControl == 1) {
@@ -65,44 +61,37 @@ export class SiteService {
     return this.http.get(url, { params: params });
   }
 
-
   getUrl(data: any) {
     return this.http.get(data?.httpUrl);
   }
 
-
   createGuardEmailsData(payload: any) {
-
     let url = `${environment.guard_monitoring_url}/createGuardEmailsData_1_0`;
     let user = this.storageSer.getData('session');
     payload.createdBy = user?.UserId;
 
     return this.http.post(url, payload);
-
   }
 
   updateMonitoringStatus_1_0(payload: any) {
-
     let url = `${environment.site_url}/updateMonitoringStatus_1_0`;
 
-    const data = payload.map((item: any) => ({ cameraId: item.cameraId, monitoring: item.monitoring }));
+    const data = payload.map((item: any) => ({
+      cameraId: item.cameraId,
+      monitoring: item.monitoring,
+    }));
 
     return this.http.put(url, { cameras: data });
   }
 
-
-
   getMonitoringStatus_cameras(payload: any) {
-
     let url = `${environment.site_url}/getMonitoringCameras_1_0`;
 
     let params = new HttpParams().set('siteId', payload?.siteId);
     return this.http.get(url, { params: params });
-
   }
 
   createCameraMonitoringHours_1_0(payload: any) {
-
     let url = `${environment.guard_monitoring_url}/createCameraMonitoringHours_1_0`;
     let user = this.storageSer.getData('session');
     payload.createdBy = user?.UserId;
@@ -133,7 +122,6 @@ export class SiteService {
   }
 
   getMonitoringHoursForSite(payload: any) {
-
     let url = `${environment.guard_monitoring_url}/getMonitoringHoursForSite_1_0`;
     let params = new HttpParams().set('siteId', payload);
     return this.http.get(url, { params: params });
@@ -160,16 +148,15 @@ export class SiteService {
     if (payload?.alertTypeId) {
       params = params.set('alertTypeId', payload?.alertTypeId);
     }
-    
-      params = params.set('active',"T");
-    
+
+    params = params.set('active', 'T');
+
     if (payload?.subTypeId) {
       params = params.set('subTypeId', payload?.subTypeId);
     }
     return this.http.get(url, { params: params });
   }
   // listtemplatemasterdata
-
 
   createGuardMasterData(payload: any) {
     let url = `${environment.guard_monitoring_url}/createMasterTemplateData_1_0`;
@@ -179,9 +166,7 @@ export class SiteService {
     return this.http.post(url, payload);
   }
 
-
   listTemplatesData(payload: any) {
-
     let url = `${environment.guard_monitoring_url}/listMasterTemplatesData_1_0`;
     let params = new HttpParams();
 
@@ -208,6 +193,16 @@ export class SiteService {
     return this.http.post(url, payload);
   }
 
+  deleteoverallTemplate(payload: any) {
+    let url = `${environment.guard_monitoring_url}/deleteMasterTemplateData_1_0`;
+    let params = new HttpParams();
+    params = params.set('guardMasterId', payload?.guardMasterId);
+
+    // let user = this.storageSer.getData('session');
+    // payload.modifiedBy = user?.UserId;
+    // params = params.set('modifiedBy', payload?.modifiedBy);
+    return this.http.delete(url, { params });
+  }
 
   updatemasterTemplate(payload: any) {
     let url = `${environment.guard_monitoring_url}/updateMasterTemplate_1_0`;
@@ -216,36 +211,32 @@ export class SiteService {
     return this.http.put(url, payload);
   }
 
-getAlertCategoriesForSiteId(payload:any){
-
-    let url  = `${environment.guard_monitoring_url}/getAlertCategoriesForSiteId_1_0`;
+  getAlertCategoriesForSiteId(payload: any) {
+    let url = `${environment.guard_monitoring_url}/getAlertCategoriesForSiteId_1_0`;
     let params = new HttpParams();
 
-    if( payload?.siteId ){
-      params = params.set('siteId', payload?.siteId );
+    if (payload?.siteId) {
+      params = params.set('siteId', payload?.siteId);
     }
-  
-    return this.http.get(url, {params});
+
+    return this.http.get(url, { params });
   }
 
+  deleteMonitoringhoursforSite(payload: any) {
+    let url = `${environment.guard_monitoring_url}/deleteMonitoringHoursForSiteId_1_0`;
+    let params = new HttpParams();
 
-  deleteMonitoringhoursforSite(payload:any){
-  let url  = `${environment.guard_monitoring_url}/deleteMonitoringHoursForSiteId_1_0`;
-  let params = new HttpParams();
-
-    if(payload){
-      params = params.set('siteId', payload );
+    if (payload) {
+      params = params.set('siteId', payload);
     }
-     return this.http.delete(url, {params});
-
+    return this.http.delete(url, { params });
   }
 
-  deletetemplate(payload:any){
+  deletetemplate(payload: any) {
+    let url = `${environment.guard_monitoring_url}/inactiveTemplateForSiteId_1_0`;
+    let params = new HttpParams();
 
-  let url  = `${environment.guard_monitoring_url}/inactiveTemplateForSiteId_1_0`;
-  let params = new HttpParams();
-
-    if(payload){
+    if (payload) {
       params = params.set('siteId', payload?.siteId);
       params = params.set('guardMasterId', payload?.guardMasterId);
     }
@@ -253,16 +244,14 @@ getAlertCategoriesForSiteId(payload:any){
     payload.modifiedBy = user?.UserId;
     params = params.set('modifiedBy', payload?.modifiedBy);
 
-  return this.http.delete(url,{params});
-
+    return this.http.delete(url, { params });
   }
 
-  deleteEmails(payload:any){
+  deleteEmails(payload: any) {
+    let url = `${environment.guard_monitoring_url}/inactiveGuardEmailsDataForSiteId_1_0`;
+    let params = new HttpParams();
 
-  let url  = `${environment.guard_monitoring_url}/inactiveGuardEmailsDataForSiteId_1_0`;
-  let params = new HttpParams();
-
-    if(payload){
+    if (payload) {
       params = params.set('siteId', payload?.siteId);
       params = params.set('guardSiteEmailId', payload?.guardSiteEmailId);
     }
@@ -270,8 +259,6 @@ getAlertCategoriesForSiteId(payload:any){
     payload.modifiedBy = user?.UserId;
     params = params.set('modifiedBy', payload?.modifiedBy);
 
-   return this.http.delete(url,{params});
-
+    return this.http.delete(url, { params });
   }
- 
 }

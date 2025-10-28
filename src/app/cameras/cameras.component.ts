@@ -63,8 +63,9 @@ selectAll = false;
   }
 
  uploadCameradetails(){
+ 
 
-    this.siteser.updateMonitoringStatus_1_0(this.cameras).subscribe((res:any)=>{
+    this.siteser.updateMonitoringStatus_1_0(this.newCameras).subscribe((res:any)=>{
     
     if(res.statusCode==200){
       this.selectAll=false;

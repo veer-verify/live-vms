@@ -214,6 +214,8 @@ endTime1:any;
 
   addTimeSlot() {
 
+ 
+
     if (this.deviceName?.length ==0 || this.selectedDays?.length === 0 || !this.startTime1 || !this.endTime1) {
       this.alert.snackError('Please select cameras, days and time  before adding.');
       return;
@@ -263,7 +265,7 @@ for (const slot of this.cameraTimeSlots) {
     this.endTime ='00:00';
     this.startTime1 = null;
     this.endTime1 = null;
-    
+    this.selectedDays=[];
    
   }
 
