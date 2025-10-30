@@ -365,6 +365,7 @@ createGuardEmailsData(){
     // this.toCtrl.setValue(null);
   }
 deleteContact(i:any){
+
  this.contactDetails.splice(i, 1);
 }
 

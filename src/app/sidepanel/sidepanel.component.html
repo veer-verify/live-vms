@@ -262,7 +262,7 @@
     <tr *ngFor="let contact of contactDetails;let i = index">
       <td>{{ contact.contactName }}</td>
       <td>{{ contact.contactNumber }}</td>
-      <td><button (click)="deleteContact(contact)" class="button2">delete</button></td>
+      <td><button (click)="deleteContact(i)" class="button2">delete</button></td>
     </tr>
   </tbody>
 </table>
