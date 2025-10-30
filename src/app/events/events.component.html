@@ -93,7 +93,7 @@
                 <div class="w-100">
                   <mat-form-field class="w-100" appearance="outline">
                     <mat-label>Action Tag</mat-label>
-                    <mat-select [(ngModel)]="selectedActionTag">
+                    <mat-select [(ngModel)]="selectedActionTag" >
                       <mat-option *ngFor="let item of actionTags" [value]="item.value">{{item.value}}</mat-option>
                     </mat-select>
                   </mat-form-field>

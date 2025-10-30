@@ -416,12 +416,16 @@ export class DashboardComponent {
 
       let timeAlert;
       if (this.listType === 6) {
+        // this.createBtnEl.toArray().forEach((item) => {
+        //   item.nativeElement.style.pointerEvents = 'none';
+
+        //   setTimeout(() => {
+        //     item.nativeElement.style.pointerEvents = 'all';
+        //   }, 1500);
+        // })
+
         this.createBtnEl.toArray().forEach((item) => {
           item.nativeElement.style.pointerEvents = 'none';
-
-          setTimeout(() => {
-            item.nativeElement.style.pointerEvents = 'all';
-          }, 1500);
         })
 
         timeAlert = { time1: 160, time2: 180, time3: 210, time4: 240, time5: 270 };
@@ -510,8 +514,6 @@ export class DashboardComponent {
     let time = this.storageSer.getTimeWithTimezone(data?.timezone);
     data.time = time;
 
-
-
     this.camSer.screenshots(data, file).subscribe({
       next: (res: any) => {
         if (res.statusCode === 200) {
@@ -540,9 +542,16 @@ export class DashboardComponent {
               }).subscribe({
                 next: (res) => {
                   data.buttons.splice(0, 1);
+                  this.createBtnEl.toArray().forEach((item) => {
+                    item.nativeElement.style.pointerEvents = 'all';
+                  });
                   this.alertSrvc.snackSuccess('Event generated successfully!');
                 },
                 error: (err) => {
+                  data.buttons.splice(0, 1);
+                  this.createBtnEl.toArray().forEach((item) => {
+                    item.nativeElement.style.pointerEvents = 'all';
+                  });
                   this.alertSrvc.snackError('Event generated failed!');
                 }
               });

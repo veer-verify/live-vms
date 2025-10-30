@@ -43,7 +43,6 @@ export class EventsComponent {
     this.path = this.router.url.split('/').at(-1);
     this.user = this.storage_service.getUser();
 
-    this.listActionTags();
     this.getActionTagCategories();
     this.getDispatchData();
     this.poolEvents();
@@ -150,7 +149,8 @@ export class EventsComponent {
       this.storage_service.status_text = ''
       this.currentItem = data;
       this.eventIndex = this.eventData.indexOf(this.currentItem);
-      this.getCurrentSiteAlerts(data)
+      this.getCurrentSiteAlerts(data);
+      this.listActionTags(data);
     }, 500);
   }
 
@@ -492,9 +492,9 @@ export class EventsComponent {
     })
   }
 
-  listActionTags() {
+  listActionTags(data: any) {
     this.camera_service
-      .listActionTags({ siteId: 36416 })
+      .listActionTags(data)
       .subscribe((res: any) => {
         if (res.statusCode === 200) {
           // this.getTypes();
