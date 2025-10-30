@@ -175,7 +175,7 @@
        <div class="col-lg-5">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Name</mat-label>
-          <input matInput [(ngModel)]="contactName"  type="text">
+          <input matInput [(ngModel)]="contactName" appTextonly type="text">
         </mat-form-field>
       
       </div>
@@ -262,7 +262,7 @@
     <tr *ngFor="let contact of contactDetails;let i = index">
       <td>{{ contact.contactName }}</td>
       <td>{{ contact.contactNumber }}</td>
-      <td><button (click)="deleteContact(contact)" class="button2">delete</button></td>
+      <td><button (click)="deleteContact(i)" class="button2">delete</button></td>
     </tr>
   </tbody>
 </table>
