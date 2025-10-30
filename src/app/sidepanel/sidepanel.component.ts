@@ -271,7 +271,12 @@ contactDetails:any=[]
 
 addcontact(){
 
+  if (!this.contactName && !this.contactNumber) {
+    return this.alaram.error("Enter contact name and contact number");
+  }
+
   this.contactDetails.push({contactName:this.contactName,contactNumber:this.contactNumber});
+
 
   this.contactName=null;this.contactNumber=null;
 
@@ -305,7 +310,7 @@ createGuardEmailsData(){
   //   "createdBy": 0
   // }
 
-  if(this.details?.item.siteName && this.timeSlots.length!=0 && this.selectedDays.length!=0 && this.to.length !== 0){
+  if(this.details?.item.siteName && this.timeSlots.length!=0 && this.selectedDays.length!=0 && this.to.length !== 0 ){
 
     this.SiteSer.createGuardEmailsData(payload).subscribe((res:any)=>{
     if(res.statusCode== 200){

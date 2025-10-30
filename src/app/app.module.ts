@@ -42,6 +42,7 @@ import { TableComponent } from '../utilities/table/table.component';
 import { TemplateComponent } from './template/template.component';
 import { TextAndNumberOnlyDirective } from 'src/utilities/pipes/text-and-number-only.directive';
 import { TokenInterceptor } from 'src/utilities/token.interceptor';
+import { TextonlyDirective } from 'src/utilities/pipes/textonly.directive';
 
 
 @NgModule({
@@ -77,7 +78,8 @@ import { TokenInterceptor } from 'src/utilities/token.interceptor';
     LiveComponent,
     StatusComponent,
     TemplateComponent,
-    TextAndNumberOnlyDirective
+    TextAndNumberOnlyDirective,
+    TextonlyDirective
   ],
   imports: [
     BrowserModule,
