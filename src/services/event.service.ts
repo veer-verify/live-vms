@@ -25,10 +25,12 @@ export class EventService {
   }
 
   addQueusInfoRedis(payload:any){
-      let url = `${environment.events_url}/addQueusInfoRedis_1_0`;
+
+      let url = `${environment.events_url}/addConsoleEvents_1_0`;
       let user = this.storageSer.getData('session');
       payload.userId= user?.UserId;
-    return this.http.post(url, payload)
+      payload.level=user?.userLevel;
+      return this.http.post(url, payload)
   }
 
   write2Dispatch(payload: any) {
