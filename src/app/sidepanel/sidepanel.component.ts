@@ -341,7 +341,7 @@ createGuardEmailsData(){
   to: string[] = [];
   contactNumber:any;
   contactName:any;
-  bcc: string[] = ["vamsiv@ivisecurity.com","danielh@ivisecurity.com","nathanm@ivisecurity.com","dominicp@ivisecurity.com","pavank@ivisecurity.com","guard@ivisecurity.com"];
+  bcc: string[] = ["vamsiv@ivisecurity.com","danielh@ivisecurity.com","nathanm@ivisecurity.com","dominicp@ivisecurity.com","guard@ivisecurity.com"];
   cc: string[] = [];
   @ViewChild('fruitInput') fruitInput !: ElementRef<HTMLInputElement>;
   @ViewChild('bccInput') bccInput !: ElementRef<HTMLInputElement>;
