@@ -20,13 +20,13 @@ export class EventService {
   getDispatchData() {
     let url = `${environment.events_url}/getVms_DispatchQueueData_1_0/`;
     let path = this.router.url.split('/').at(-1);
-    let params = new HttpParams().set('queue_name', path === 'pre-dispatch' ? 'dispatch-2nd-level' : path === 'observer' ? 'observer-wall' : 'dispatch-3rd-level');
+    let params = new HttpParams().set('queue_name', path === 'pre-dispatch' ? 'staging-dispatch-2nd-level' : path === 'observer' ? 'staging-observer-wall' : 'staging-dispatch-3rd-level');
     return this.http.get(url, { params: params })
   }
 
   addQueusInfoRedis(payload:any){
 
-      let url = `${environment.events_url}/addConsoleEvents_1_0`;
+      let url = `${environment.event_tags_url}/addConsoleEvents_1_0`;
       let user = this.storageSer.getData('session');
       payload.userId= user?.UserId;
       payload.level=user?.userLevel;
