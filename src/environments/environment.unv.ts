@@ -1,5 +1,5 @@
-// const base_url: string = "https://prod.ivisecurity.com";
-const base_url: string = "https://usstaging.ivisecurity.com";
+const base_url: string = "https://prod.ivisecurity.com";
+// const base_url: string = "https://usstaging.ivisecurity.com";
 
 export const environment = {
 
