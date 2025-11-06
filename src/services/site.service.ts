@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class SiteService {
-  constructor(private http: HttpClient, private storageSer: StorageService) {}
+  constructor(private http: HttpClient, private storageSer: StorageService) { }
 
   public getSites(payload?: any): any {
     let url = `${environment.site_url}/getSitesListForUserName_2_0/`;
@@ -260,5 +260,19 @@ export class SiteService {
     params = params.set('modifiedBy', payload?.modifiedBy);
 
     return this.http.delete(url, { params });
+  }
+
+  nvrList(payload: any) {
+    let url = `${environment.guard_monitoring_url}/NVRList_1_0`;
+    let params = new HttpParams();
+    if (payload?.siteId) {
+      params = params.set('siteId', payload?.siteId)
+    }
+    return this.http.get(url, { params: params });
+  }
+
+  updateNVRDetails(payload: any) {
+    let url = `${environment.guard_monitoring_url}/updateNVRDetails_1_0/${payload?.id}`;
+    return this.http.put(url, payload);
   }
 }

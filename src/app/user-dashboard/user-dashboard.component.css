@@ -4,6 +4,7 @@
 }
 
 .left-content {
+  background-color: var(--cmn-background);
   color: #fff;
   background-size: cover;
   width: 300px;

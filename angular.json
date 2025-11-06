@@ -73,6 +73,30 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.unv.ts"
                 }
+              ],
+              "styles": [
+                "src/styles.unv.css",
+                "@angular/material/prebuilt-themes/indigo-pink.css",
+                "node_modules/bootstrap/dist/css/bootstrap.min.css"
+              ]
+            },
+            "verifai": {
+              "buildOptimizer": false,
+              "optimization": true,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.verifai.ts"
+                }
+              ],
+              "styles": [
+                "src/styles.verifai.css",
+                "@angular/material/prebuilt-themes/indigo-pink.css",
+                "node_modules/bootstrap/dist/css/bootstrap.min.css"
               ]
             }
           },
@@ -89,6 +113,9 @@
             },
             "unv": {
               "browserTarget": "liveVms:build:unv"
+            },
+            "verifai": {
+              "browserTarget": "liveVms:build:verifai"
             }
           },
           "defaultConfiguration": "development"

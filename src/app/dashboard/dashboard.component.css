@@ -114,6 +114,11 @@
   transition: 100ms ease-in-out;
 }
 
+.grid-btn-active {
+  background-color: var(--cmn-background);
+  color: var(--secondary);
+}
+
 .main-container {
   height: 100vh;
   padding: 5px;

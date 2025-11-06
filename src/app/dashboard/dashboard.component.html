@@ -30,9 +30,7 @@
     <mat-radio-group [(ngModel)]="listType" class="d-flex flex-column py-2">
       <div class="row m-0">
         <ng-container *ngFor="let season of filteredListTypes()">
-
-          <mat-radio-button class="col-lg-6"  [value]="season.id" >
-            
+          <mat-radio-button class="col-lg-6"  [value]="season.id">
               {{ season.label }}
           </mat-radio-button>
         </ng-container>
@@ -53,11 +51,7 @@
     <div class="pagination-container p-2" *ngIf="sitesList.length != 0">
       <div class="row text-center">
         <div class="col-lg-4 mb-2" *ngFor="let item of gridBtnTypes">
-          <button class="grid-btn" [ngStyle]="{
-              'background-color':
-                camerasForPage == item.items ? '#084982' : '#ffffff',
-              color: camerasForPage == item.items ? '#fff' : '#000'
-            }" (click)="adjustGrid(item.items, item.rows)">
+          <button class="grid-btn" [ngClass]="camerasForPage == item.items ? 'grid-btn-active' : ''" (click)="adjustGrid(item.items, item.rows)">
             {{ item.label }}
           </button>
         </div>
@@ -116,8 +110,8 @@
                 <div cdkDrag [cdkDragDisabled]="checkCam(cam)">
                   <img loading="lazy" [src]="
                       cam?.camMonitor === 'T'
-                        ? storageSer.environment.activeLogo
-                        : storageSer.environment.inActiveLogo
+                        ? storageSer.getFile('eye-active.svg')
+                        : storageSer.getFile('eye-inactive.svg')
                     " alt="" class="me-1" width="15px" />
 
                   <span *ngIf="cameras.length != 0">{{

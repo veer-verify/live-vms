@@ -1,11 +1,11 @@
 <div class="logo">
-  <img loading="lazy" [src]="storageSer.environment.logo" width="200px">
+  <img loading="lazy" [src]="storageSer.getFile('logo-white.png')" width="100%">
 </div>
 
 <div class="signin-content">
   <mat-card>
     <mat-card-content>
-      <p class="login-text text-center mb-3">welcome</p>
+      <p class="login-text">welcome</p>
 
       <form [formGroup]="loginForm">
         <div class="row">

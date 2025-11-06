@@ -1,0 +1,189 @@
+<!-- <app-loader *ngIf="showLoader"></app-loader> -->
+
+<div class="">
+
+  <!-- count -->
+  <div class="d-flex my-2 justify-content-between align-items-center srch">
+    <div class="d-flex">
+      <div class=" d-flex justify-content-start">
+        <div class="vl-blue"></div>
+        <div class="mx-2">
+          <div class="status">Active</div>
+          <div class="count">{{paginatedData | count:"status": 'Active'}}</div>
+        </div>
+      </div>
+      <div class=" d-flex justify-content-start">
+        <div class="vl-green"></div>
+        <div class="mx-2">
+          <div class="status">Inactive</div>
+          <div class="count">{{paginatedData | count:"status": 'Inactive'}}</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- <div class="d-flex align-items-center">
+      <div class="mx-2">
+        <button (click)="openTemplate()" class="btn btn-sm text-light">Template</button>
+      </div>
+      <div class="me-2">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Site</mat-label>
+          <input matInput #siteIdInput [matAutocomplete]="site" [(ngModel)]="siteName"
+            (keyup)="searchSites($event); siteSearch1 = null" (keyup.enter)="getSitesforUser()">
+          <button matSuffix mat-icon-button *ngIf="!siteName">
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+          <button matSuffix mat-icon-button (click)="$event.preventDefault(); getSitesforUser()" *ngIf="siteName">
+            <mat-icon>search</mat-icon>
+          </button>
+          <mat-autocomplete #site="matAutocomplete">
+            <mat-option [value]="null"
+              (click)="currentPage=1;siteSearch1 = null;getSitesforUser();siteName='';">All</mat-option>
+            <mat-option *ngFor="let item of siteslist | search: siteSearch" [value]="item.siteId"
+              (click)="this.siteSearch1 = item.siteName">{{ item.siteName }}</mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+      </div>
+
+      <div>
+        <app-pagination [totalPages]="totalPages" [currentPage]="currentPage"
+          (emitPage)="getPaginatedData($event)"></app-pagination>
+      </div>
+    </div> -->
+  </div>
+
+
+  <div class="" *ngIf="siteIdToNav.length !== 0">
+
+    <div class="table-resp mt-2">
+      <table class="table">
+        <thead>
+          <tr class="tab">
+            <th>Site / NVR Name</th>
+            <th scope="col">NVR Serial No</th>
+            <th scope="col">User Id</th>
+            <th scope="col">Password</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody *ngIf="!showLoader1">
+          <tr *ngFor="let item of paginatedData; let i = index">
+            <td>{{item?.siteName}}</td>
+            <td>
+              <a [href]="item.nvrSno" target="_blank">{{item?.nvrSno}} <img src="assets/icons/redirect.svg" width="14px"></a>
+            </td>
+            <td>{{item?.userId}}</td>
+            <td>{{item?.password}}</td>
+            <td>
+              <p [style.color]="item?.status == 'Active' ? 'green' : 'red'">{{item?.status}}</p>
+            </td>
+            <td>
+              <img src="assets/icons/edit.svg" class="pointer" alt="" width="16" (click)="openEditDialog(item)"
+                matTooltip="Edit">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="newEventData.length === 0 && !showLoader1"
+        class="d-flex justify-content-center align-items-center bg-white w-100" style="height: 50vh;">
+        <p style="font-size: 30px;">{{ 'NO DATA!' }}</p>
+      </div>
+
+      <div *ngIf="showLoader1" class="d-flex justify-content-center align-items-center bg-white" style="height: 50vh;">
+        <p>LOADING...</p>
+      </div>
+    </div>
+
+    <div class="pagi d-flex align-content-center mx-2" *ngIf="eventData.length > 0">
+      <div>
+        <ul class="pagination">
+          <li class="page-item pointer" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="setPage(currentPage - 1)">Previous</a>
+          </li>
+          <li class="page-item pointer">
+            <a class="page-link">{{ currentPage }} of {{ totalPages }}</a>
+          </li>
+          <li class="page-item pointer" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" (click)="setPage(currentPage + 1)">Next</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- <div class="d-flex">
+        <input type="number" placeholder="Enter page number" class="form-control mx-2" style="height: 35px;"
+          [(ngModel)]="gotoPage">
+        <button class="btn btn-primary" style="height: 35px;" (click)="setPage(gotoPage)">Go</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<div class="err-info" *ngIf="errInfo">
+  <p>{{ errInfo }}</p>
+</div>
+
+<ng-template #editDialog>
+  <div style="background-color: #084982;">
+    <p class="text-white p-1">MODIFY NVR{{ currentItem?.siteName }}</p>
+  </div>
+
+  <div class="dialog-content">
+    <div class="row m-0">
+      <!-- <div class="col-md-6 mb-3">
+          <span class="label">Site</span>
+          <select class="form-select" [(ngModel)]="currentItem.siteId" disabled>
+            <option value="" disabled>Select Site</option>
+            <option *ngFor="let site of siteIdToNav" [value]="site?.siteId">{{site?.siteName}}</option>
+          </select>
+        </div> -->
+      <div class="col-md-6 mb-3">
+        <span class="label">siteId</span>
+        <input type="text" class="form-control" placeholder="siteId" [(ngModel)]="currentItem.siteId" disabled>
+      </div>
+      <div class="col-md-6 mb-3">
+        <span class="label">nvrSno</span>
+        <input type="text" class="form-control" placeholder="nvrSno" [(ngModel)]="currentItem.nvrSno">
+      </div>
+      <div class="col-md-6 mb-3">
+        <span class="label">userId</span>
+        <input type="text" class="form-control" placeholder="userId" [(ngModel)]="currentItem.userId">
+      </div>
+      <div class="col-md-6 mb-3">
+        <span class="label">password</span>
+        <input type="text" class="form-control" placeholder="password" [(ngModel)]="currentItem.password">
+      </div>
+      <!-- <div class="col-md-6 mb-3">
+            <span class="label">status</span>
+            <input type="text" class="form-control" placeholder="status" [(ngModel)]="currentItem.status">
+          </div> -->
+      <div class="col-md-6 mb-3">
+        <span class="label">status</span>
+        <select class="form-select" [(ngModel)]="currentItem.status">
+          <!-- <option value="" disabled>Select Site</option> -->
+          <option *ngFor="let item of nvrStatus" [value]="item">{{item}}</option>
+        </select>
+      </div>
+      <div class="col-md-6 mb-3">
+        <span class="label">Remarks</span>
+        <input type="text" class="form-control" placeholder="Remarks" [(ngModel)]="currentItem.remarks">
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center justify-content-end">
+    <button class="dialog-close-btn" mat-dialog-close>Close</button>
+    <button class="dialog-update-btn" mat-dialog-close (click)="updateIncidents()">Update</button>
+  </div>
+</ng-template>
+
+
+
+<!-- <div *ngIf="showAddRequest">
+  <app-add-nvr [currentSite]="currentSite"
+    (newItemEvent)="close(); footageList(currentSite, navActive)"></app-add-nvr>
+</div> -->

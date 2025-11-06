@@ -1,20 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-/* @font-face {
-  font-family: SG;
-  src: url(assets/font/SackersGothicStd-Light.otf) format("opentype");
-}
-
-@font-face {
-  font-family: MS;
-  src: url(assets/font/Montserrat-ExtraLight.ttf) format("truetype");
-}
-
-@font-face {
-  font-family: PS;
-  src: url(assets/font/Poppins-SemiBold.ttf) format("truetype");
-} */
-
 @font-face {
   font-family: ES;
   src: url(assets/font/EngraversGothicRegular.otf) format("opentype");
@@ -27,14 +12,10 @@
 
 
 :root {
-  --background: linear-gradient(325deg, rgba(20, 31, 77, 0.9) 18%, rgba(90, 13, 3, 0.9) 66%);
-  --header-background: #ffffff;
-  --table-background: #084982;
-  --cmn-background: #e6e8e8;
-  --primary: #084982;
-  --secondary: #ff0000;
-  --loader-background: linear-gradient(90deg, rgba(28, 74, 130, 0.9) 0%, rgba(131, 96, 110, 0.9) 50%, rgba(208, 67, 41, 0.9) 100%);
-  --route-color: #084982;
+  --background: linear-gradient(325deg, #1E3F73 100%, #ffffff 0%);
+  --cmn-background: #ffffff;
+  --loader-background: rgba(72, 116, 182, 0.8);
+  --route-color: #7d8d9b;
 }
 
 *:not(.material-icons) {
@@ -76,6 +57,7 @@ a {
 .pointer {
   cursor: pointer;
 }
+
 
 .w-250 {
   width: 250px;
@@ -122,20 +104,24 @@ a {
   height: 40px;
 }
 
+/* width */
 ::-webkit-scrollbar {
   width: 3px;
   height: 3px;
 }
 
+/* Track */
 ::-webkit-scrollbar-track {
   background: #e7dcdc;
 }
 
+/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #084982;
   border-radius: 5px;
 }
 
+/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #084982ef;
 }
@@ -165,9 +151,12 @@ a {
   overflow-y: auto;
 }
 
+/*Dialog update-btn*/
 .dialog-update-btn {
   background-color: #084982;
   color: #fff;
+  /* width: 70px; */
+  /* padding: 6px 0; */
   border-radius: 16px;
   border-width: 0;
   font-size: 12px;
@@ -190,9 +179,12 @@ a {
   opacity: 0.8;
 }
 
+/*Dialog close-btn*/
 .dialog-close-btn {
   background-color: #d34124;
   color: #fff;
+  /* width: 70px; */
+  /* padding: 5px; */
   border-radius: 16px;
   border-width: 0;
   font-size: 12px;

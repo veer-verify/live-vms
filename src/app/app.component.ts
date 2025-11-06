@@ -1,10 +1,11 @@
-import { Component, HostListener, inject } from '@angular/core';
+import { Component, HostListener, inject, ViewEncapsulation } from '@angular/core';
 import { StorageService } from 'src/services/storage.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  // encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
 

@@ -13,8 +13,13 @@ import moment from 'moment-timezone';
 })
 export class StorageService {
 
+  
   private readonly key = "verifai";
   environment = environment;
+
+  getFile(file: string) {
+    return `/assets/themes/${environment.env}/${file}`;
+  }
 
 
   session_sub: BehaviorSubject<any> = new BehaviorSubject(null);

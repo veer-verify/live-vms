@@ -43,6 +43,8 @@ import { TemplateComponent } from './template/template.component';
 import { TextAndNumberOnlyDirective } from 'src/utilities/pipes/text-and-number-only.directive';
 import { TokenInterceptor } from 'src/utilities/token.interceptor';
 import { TextonlyDirective } from 'src/utilities/pipes/textonly.directive';
+import { NvrComponent } from './nvr/nvr.component';
+import { CountPipe } from 'src/utilities/pipes/count.pipe';
 
 
 @NgModule({
@@ -79,7 +81,9 @@ import { TextonlyDirective } from 'src/utilities/pipes/textonly.directive';
     StatusComponent,
     TemplateComponent,
     TextAndNumberOnlyDirective,
-    TextonlyDirective
+    TextonlyDirective,
+    NvrComponent,
+    CountPipe
   ],
   imports: [
     BrowserModule,

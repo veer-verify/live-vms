@@ -1,10 +1,11 @@
 .header {
-  background-color: #084982;
+  background-color: var(--header-background);
   position: sticky;
   width: 100%;
   top: 0px;
   z-index: 99;
   height: 65px;
+box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 .logo {

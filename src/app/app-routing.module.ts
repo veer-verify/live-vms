@@ -9,6 +9,7 @@ import { MonitoringInfoComponent } from './monitoring-info/monitoring-info.compo
 import { AlertsInfoComponent } from './alerts-info/alerts-info.component';
 import { PlaybackInfoComponent } from './playback-info/playback-info.component';
 import { EventsComponent } from './events/events.component';
+import { NvrComponent } from './nvr/nvr.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -20,10 +21,11 @@ const routes: Routes = [
       { path: 'alerts-info', component: AlertsInfoComponent },
       { path: 'playback-info', component: PlaybackInfoComponent },
       { path: 'device-status', component: DeviceStatusComponent },
+      { path: 'nvr', component: NvrComponent },
       { path: 'pre-dispatch', component: EventsComponent },
       { path: 'dispatch', component: EventsComponent },
       { path: 'observer', component: EventsComponent },
-      { path: '', redirectTo: '/user-dashboard/monitoring-info', pathMatch: 'full' },
+      { path: '', redirectTo: '/user-dashboard/nvr', pathMatch: 'full' },
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

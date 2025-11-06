@@ -39,5 +39,5 @@
   }
 
   .table-dark {
-    --bs-table-bg:  #084982 !important;
+    --bs-table-bg: var(--cmn-background) !important;
   }

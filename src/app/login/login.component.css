@@ -9,6 +9,13 @@
   position: absolute;
   top: 20px;
   left: 20px;
+  width: 200px;
+  height: 200px;
+}
+
+.logo img {
+  background-position: center;
+  background-size: cover;
 }
 
 .pointer {
@@ -16,16 +23,17 @@
 }
 
 .login-text {
-   
+   text-align: center;
   font-weight: 600;
   font-size: 16px;
   color: #392222;
   text-transform: uppercase;
+  margin-bottom: 16px !important;
 }
 
 
 .signin-content ::ng-deep .mat-mdc-raised-button:not(:disabled) {
-  background-color: #084982 !important;
+  background-color: var(--cmn-background) !important;
   border-radius: 50px !important;
 }
 

@@ -89,7 +89,7 @@ mat-accordion {
     margin-top: 10px;
      
     padding: 0.7em 1.4em;
-    background-color: rgba(8,73,130,1);
+    background-color: var(--cmn-background);
     text-decoration: none;
     border: none;
     border-radius: 0.5em;

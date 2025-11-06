@@ -65,7 +65,7 @@ export class LoginComponent {
               let temp = this.storageSer.getData('session');
               this.storageSer.saveData('session', { ...temp, ...response });
               this.storageSer.session_sub.next({ ...res, ...response })
-              this.router.navigate(['/user-dashboard']);
+              this.router.navigate(['/nvr']);
             }
           })
         } else {

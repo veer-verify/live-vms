@@ -1,7 +1,23 @@
-const base_url: string = "https://prod.ivisecurity.com";
-// const base_url: string = "https://usstaging.ivisecurity.com";
+// const base_url: string = "http://prod.ivisecurity.com";
+const base_url: string = "https://usstaging.ivisecurity.com";
 
 export const environment = {
+    env: 'verifai',
+
+    // site_url: `${base_url}:3004/vipsites`,
+    // guard_monitoring_url: `${base_url}:3009/guard_monitoring`,
+    // monitoring_url: `${base_url}:8016/monitoring`,
+
+    // event_tags_url: `${base_url}:0000/events_data`,
+    // events_url: `http://stagingmq.ivisecurity.com:0000/queueManagement`,
+    // eventImageUrl: `${base_url}:0000/dotimages/`,
+    // download_url: `${base_url}:3001/common`,
+
+    // login_url: `${base_url}:3002/userDetails`,
+    // common_url: `${base_url}:3005`,
+    // metadataUrl: `${base_url}:3005/metadata`,
+    // sitesUrl: `${base_url}:3004`,
+    // incidentsUrl: `${base_url}:8945`,
 
     eventImageUrl: `${base_url}/dotimages/`,
     login_url: `${base_url}/userDetails`,

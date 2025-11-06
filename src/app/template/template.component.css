@@ -99,7 +99,7 @@
    
   padding: 0.7em 1.4em;
   /* background-color: rgba(8,73,130,1); */
-  background-color: #333; 
+    background-color: var(--cmn-background);
   text-decoration: none;
   border: none;
   border-radius: 0.5em;
@@ -278,7 +278,7 @@ font-size: 20px;
 }
 .header{
 
-  color:rgba(8,73,130,1);
+  color: var(--cmn-background);
   font-size: 20px;
 }
 

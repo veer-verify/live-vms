@@ -21,7 +21,7 @@
 /* From Uiverse.io by krlozCJ */ 
 .btn-template{
   border-radius: 5px;
-  background-color: rgb(8, 69, 122);
+    background-color: var(--cmn-background);
   color: white;
   border: none;
 }
