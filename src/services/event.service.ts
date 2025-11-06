@@ -26,7 +26,7 @@ export class EventService {
 
   addQueusInfoRedis(payload:any){
 
-      let url = `${environment.events_url}/addConsoleEvents_1_0`;
+      let url = `${environment.event_tags_url}/addConsoleEvents_1_0`;
       let user = this.storageSer.getData('session');
       payload.userId= user?.UserId;
       payload.level=user?.userLevel;
