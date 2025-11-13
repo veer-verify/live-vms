@@ -76,6 +76,10 @@
       <app-action-view [cameraList]="cameraList" [currentItem]="currentItem"></app-action-view>
     </ng-template>
 
+     <ng-template #planned>
+      <app-plannedsite [cameraList]="cameraList" [currentItem]="currentItem"></app-plannedsite>
+    </ng-template>
+
     <ng-container *ngIf="isSidePanelOpen">
       <app-sidepanel [isSidePanelOpen]="isSidePanelOpen" (sidePanelClosed)="onCloseSidePanel($event)"
         [devicesList]="cameraList" [details]="currentItem"></app-sidepanel>

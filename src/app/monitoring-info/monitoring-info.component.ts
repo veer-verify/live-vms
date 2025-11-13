@@ -69,6 +69,7 @@ export class MonitoringInfoComponent {
       showunikView: false,
       showView: false
     },
+
     {
       serial: 6,
       label: "Action Tags",
@@ -78,8 +79,17 @@ export class MonitoringInfoComponent {
       showunikView: true,
       showView: false
     },
-    {
+     {
       serial: 7,
+      label: "Planned site Activity",
+      id: "planned",
+      sort: false,
+      showCreate: true,
+      showunikView: true,
+      showView: false
+    },
+    {
+      serial: 8,
       label: "Actions",
       id: "Action",
       sort: false,
@@ -139,6 +149,7 @@ export class MonitoringInfoComponent {
   @ViewChild('email') emailTemplate!: TemplateRef<any>;
   @ViewChild('actionTag') actionTemplate!: TemplateRef<any>;
   @ViewChild('action') action!: TemplateRef<any>;
+    @ViewChild('planned') planned!: TemplateRef<any>;
 
   handleChildEvent(item: any) {
 
@@ -172,7 +183,13 @@ export class MonitoringInfoComponent {
       this.getCamerasForSiteId(this.siteId);
       this.matDialog.open(this.actionTemplate);
     }
-    if (item?.field.serial == 7) {
+     if (item?.field.serial == 7) {
+      this.currentItem = item;
+      this.siteId = item?.item.siteId;
+      this.getCamerasForSiteId(this.siteId);
+      this.matDialog.open(this.planned);
+    }
+    if (item?.field.serial == 8) {
       this.currentItem = item;
       this.siteId = item?.item.siteId;
       this.getCamerasForSiteId(this.siteId);
