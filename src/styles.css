@@ -34,7 +34,7 @@
   --primary: #084982;
   --secondary: #ff0000;
   --loader-background: linear-gradient(90deg, rgba(28, 74, 130, 0.9) 0%, rgba(131, 96, 110, 0.9) 50%, rgba(208, 67, 41, 0.9) 100%);
-  --route-color: #084982;
+  --route-color: #5584ad;
 }
 
 *:not(.material-icons) {

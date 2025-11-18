@@ -164,6 +164,8 @@ export class PlannedsiteComponent {
 
           this.alert.success(res.message);
           this.myForm.reset();
+        }else{
+           this.alert.error(res.message);
         }
       },
       error: (err) => {

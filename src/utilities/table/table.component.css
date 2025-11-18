@@ -11,8 +11,7 @@
     position: sticky;
     top: 0;
     font-weight: 500;
-    background-color: var(--table-background);
-
+    /* background-color: var(--table-background); */
   }
   
   thead tr th p {
@@ -20,7 +19,7 @@
   }
   
   thead tr th {
-    color: #fff;
+    /* color: #fff; */
     font-size: 12px;
     vertical-align: middle;
     text-transform:capitalize;
