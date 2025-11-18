@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "dev": "ng serve",
-    "unv": "ng serve --configuration unv --host 0.0.0.0",
+    "dev": "ng serve --host 0.0.0.0",
+    "unv": "ng serve --configuration unv",
     "verifai": "ng serve --configuration verifai --host 0.0.0.0",
     "prod": "ng serve --configuration production --host 0.0.0.0",
     "build": "ng build",

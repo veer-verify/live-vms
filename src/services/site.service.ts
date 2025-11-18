@@ -275,4 +275,43 @@ export class SiteService {
     let url = `${environment.guard_monitoring_url}/updateNVRDetails_1_0/${payload?.id}`;
     return this.http.put(url, payload);
   }
+
+  addPlannedSiteActivity(payload:any){
+    let url=`${environment.guard_monitoring_url}/addPlannedSiteActivity_1_0`;
+    let user = this.storageSer.getData('session');
+    payload.createdBy = user?.UserId;
+    return this.http.post(url, payload);
+
+  }
+
+  updatePlannedSiteActivity(payload:any){
+    let url=`${environment.guard_monitoring_url}/updatePlannedSiteActivity_1_0`;
+     let user = this.storageSer.getData('session');
+    payload.modifiedBy = user?.UserId;
+    return this.http.put(url, payload);
+  }
+  getPlannedSiteActivity(payload:any){
+      let url=`${environment.guard_monitoring_url}/getPlannedSiteActivity_1_0`;
+       let params = new HttpParams();
+    if (payload?.siteId) {
+      params = params.set('siteId', payload?.siteId)
+    }
+    if (payload?.status) {
+      params = params.set('status', payload?.status)
+    }
+     return this.http.get(url,{params});
+  }
+InActive_ActivityStatus(payload:any){
+
+  let url=`${environment.guard_monitoring_url}/inActivatePlannedSiteActivity_1_0`;
+
+   let user = this.storageSer.getData('session');
+      let params = new HttpParams();
+      params = params.set('id', payload?.id);
+      params = params.set('modifiedBy', user?.UserId);
+
+  return this.http.delete(url,{params});
 }
+
+
+  }

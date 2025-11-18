@@ -34,6 +34,7 @@ export class EventsComponent {
     private siteser: SiteService
   ) { }
 
+  intervalId: any;
   eventInterval: any;
   eventPolling = true;
   path: any;
@@ -43,10 +44,26 @@ export class EventsComponent {
     this.path = this.router.url.split('/').at(-1);
     this.user = this.storage_service.getUser();
 
+
+ this.event_service.consumeConsoleEvents({userId: 0,consoleType:'',consumeType:'refresh'}).subscribe((res:any)=>{
+    })
+
     this.getActionTagCategories();
     this.getDispatchData();
     this.poolEvents();
+
+      this.aliveUser();
+
+    this.intervalId = setInterval(() => {
+      this.aliveUser();
+    }, 60000);
   }
+
+
+  aliveUser() {
+   this.event_service.aliveUser().subscribe((res:any)=>{})
+  }
+
 
   poolEvents() {
     this.eventInterval = setInterval(() => {
@@ -61,7 +78,7 @@ export class EventsComponent {
               this.storage_service.status_text = '';
               res[0].landingTime = this.storage_service.getTimeWithTimezone(res[0].timezone);
               res[0].audioPlayed = false;
-               this.event_service.addQueusInfoRedis({userId:0,level:"",queueInfo:{...this.eventData[0]}}).subscribe((res:any)=> {})
+               this.event_service.addQueusInfoRedis({userId:0,level:"",queueInfo:{...res[0]},queueName:'',consoleType:''}).subscribe((res:any)=> {})
               this.eventData.push(...res);
               if (this.eventData.length === 1) {
                 const [event] = this.eventData;
@@ -119,7 +136,7 @@ export class EventsComponent {
           this.eventData.push(...res);
           this.displayCurrent(this.eventData[0]);
           this.storage_service.events_sub.next(this.eventData.length);
-          this.event_service.addQueusInfoRedis({userId:0,level:"",queueInfo:{...this.eventData[0]}}).subscribe((res:any)=>{})
+        this.event_service.addQueusInfoRedis({userId:0,level:"",queueInfo:{...res[0]},queueName:'',consoleType:''}).subscribe((res:any)=> {})
         } else {
           this.storage_service.status_text = 'no events!'
         }
@@ -355,6 +372,10 @@ export class EventsComponent {
         );
 
     // this.currentItem.imageName = null;
+
+    this.event_service.consumeConsoleEvents({userId: 0,eventTime:[this.currentItem.timestamp],consoleType:'',consumeType:''}).subscribe((res:any)=>{
+    })
+
     this.storage_service.show_loader = true;
     this.event_service.updateEventFullDetails({
       ...this.currentItem,
@@ -382,6 +403,7 @@ export class EventsComponent {
         this.alert_service.snackError('Failed!');
       }
     })
+
   }
 
   actionTagTime: any;
@@ -393,6 +415,10 @@ export class EventsComponent {
     if (this.path === 'pre-dispatch') {
       this.eventsGenericEmail();
     }
+
+ this.event_service.consumeConsoleEvents({userId: 0,eventTime:[this.currentItem.timestamp],consoleType:'',consumeType:''}).subscribe((res:any)=>{
+    })
+
 
     let user = this.storage_service.getData('session');
     let endTime = this.storage_service.getTimeWithTimezone(this.currentItem?.timezone);
@@ -594,5 +620,10 @@ export class EventsComponent {
     this.eventData = [];
     this.storage_service.events_sub.next(this.eventData.length);
     clearInterval(this.eventInterval)
+    if (this.intervalId) {
+       clearInterval(this.intervalId);
+     }
+
   }
+
 }

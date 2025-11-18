@@ -6,31 +6,38 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EventService {
-
   constructor(
     private http: HttpClient,
     private storageSer: StorageService,
     private router: Router,
     private datePipe: DatePipe
-  ) { }
+  ) {}
 
   getDispatchData() {
     let url = `${environment.events_url}/getVms_DispatchQueueData_1_0/`;
     let path = this.router.url.split('/').at(-1);
-    let params = new HttpParams().set('queue_name', path === 'pre-dispatch' ? 'dispatch-2nd-level' : path === 'observer' ? 'observer-wall' : 'dispatch-3rd-level');
-    return this.http.get(url, { params: params })
+    let params = new HttpParams().set(
+      'queue_name',
+      path === 'pre-dispatch'
+        ? 'dispatch-2nd-level'
+        : path === 'observer'
+        ? 'observer-wall'
+        : 'dispatch-3rd-level'
+    );
+    return this.http.get(url, { params: params });
   }
 
-  addQueusInfoRedis(payload:any){
-
-      let url = `${environment.event_tags_url}/addConsoleEvents_1_0`;
-      let user = this.storageSer.getData('session');
-      payload.userId= user?.UserId;
-      payload.level=user?.userLevel;
-      return this.http.post(url, payload)
+  addQueusInfoRedis(payload: any) {
+    let url = `${environment.event_tags_url}/addConsoleEvents_1_0`;
+    let user = this.storageSer.getData('session');
+    payload.userId = user?.UserId;
+    payload.level = `Level${user?.userLevel}`;
+  payload.consoleType='manual-console';
+  payload.queueName=user?.queueName;
+    return this.http.post(url, payload);
   }
 
   write2Dispatch(payload: any) {
@@ -50,8 +57,8 @@ export class EventService {
       actionTime: this.storageSer.getTimeWithTimezone(payload?.timezone),
       eventTag: '',
       userLevelAlarmInfo: payload?.userLevelAlarmInfo,
-      userLevels: 0
-    }
+      userLevels: 0,
+    };
     return this.http.post(url, obj);
   }
 
@@ -87,7 +94,7 @@ export class EventService {
       eventType: 'Manual_Wall',
       timezone: payload?.timezone,
       subActionTag: payload?.subActionTag,
-      userLevelAlarmInfo: payload?.userLevelAlarmInfo
+      userLevelAlarmInfo: payload?.userLevelAlarmInfo,
     };
 
     return this.http.post(url, obj);
@@ -97,24 +104,64 @@ export class EventService {
     let url = `${environment.event_tags_url}/getActionTagCategories_1_0`;
     let path = this.router.url.split('/').at(-1);
     let params = new HttpParams();
-    params = params.set('userLevel',  path === 'pre-dispatch' ? 2 : 3)
+    params = params.set('userLevel', path === 'pre-dispatch' ? 2 : 3);
     if (payload?.actionTagId) {
-      params = params.set('actionTagId', payload?.actionTagId)
+      params = params.set('actionTagId', payload?.actionTagId);
     }
-    return this.http.get(url, { params: params })
+    return this.http.get(url, { params: params });
   }
 
-  getCameraEventDetails(payload:any){
+  getCameraEventDetails(payload: any) {
     let url = `${environment.guard_monitoring_url}/getMonitoringInfoForSiteAndCamera_1_0`;
     let params = new HttpParams();
     if (payload?.siteId) {
       params = params.set('siteId', payload?.siteId);
     }
-     if (payload?.cameraId) {
+    if (payload?.cameraId) {
       params = params.set('cameraId', payload?.cameraId);
     }
-   
-   return this.http.get(url, { params: params })
+
+    return this.http.get(url, { params: params });
   }
 
+  userLogin() {
+    const url = `${environment.event_tags_url}/userLogin`;
+    let user = this.storageSer.getData('session');
+    let payload = {
+      userId: 0,
+      userLevel: '',
+    };
+    payload.userId = user?.UserId;
+    payload.userLevel = `Level${user?.userLevel}`;
+    return this.http.post(url, payload);
+  }
+
+   aliveUser() {
+    const url = `${environment.event_tags_url}/userActiveStatus_1_0`;
+    let user = this.storageSer.getData('session');
+    let payload = {
+      userId: 0,
+    };
+    payload.userId = user?.UserId;
+    return this.http.post(url, payload);
+  }
+
+   refreshUser() {
+    const url = `${environment.event_tags_url}/refresh`;
+    let user = this.storageSer.getData('session');
+    let payload = {
+      userId: 0,
+    };
+    payload.userId = user?.UserId;
+    return this.http.post(url, payload);
+  }
+
+  consumeConsoleEvents(payload: any) {
+    const url = `${environment.event_tags_url}/consumeConsoleEvents_1_0`;
+    let user = this.storageSer.getData('session');
+
+    payload.userId = user?.UserId;
+    payload.consoleType = 'manual-console';
+    return this.http.put(url, payload);
+  }
 }

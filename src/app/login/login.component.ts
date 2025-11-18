@@ -6,6 +6,7 @@ import { AlertService } from 'src/services/alert.service';
 import { LoginService } from 'src/services/login.service';
 import { MetadataService } from 'src/services/metadata.service';
 import { StorageService } from 'src/services/storage.service';
+import { EventService } from 'src/services/event.service';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ export class LoginComponent {
     public storageSer: StorageService,
     private alertSer: AlertService,
     private metadata_service: MetadataService,
+    private event : EventService
   ) { }
 
   loginForm!: FormGroup;

@@ -45,6 +45,7 @@ import { TokenInterceptor } from 'src/utilities/token.interceptor';
 import { TextonlyDirective } from 'src/utilities/pipes/textonly.directive';
 import { NvrComponent } from './nvr/nvr.component';
 import { CountPipe } from 'src/utilities/pipes/count.pipe';
+import { PlannedsiteComponent } from './plannedsite/plannedsite.component';
 
 
 @NgModule({
@@ -83,7 +84,8 @@ import { CountPipe } from 'src/utilities/pipes/count.pipe';
     TextAndNumberOnlyDirective,
     TextonlyDirective,
     NvrComponent,
-    CountPipe
+    CountPipe,
+    PlannedsiteComponent
   ],
   imports: [
     BrowserModule,
