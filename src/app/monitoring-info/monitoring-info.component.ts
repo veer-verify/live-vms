@@ -187,7 +187,7 @@ export class MonitoringInfoComponent {
       this.currentItem = item;
       this.siteId = item?.item.siteId;
       this.getCamerasForSiteId(this.siteId);
-      this.matDialog.open(this.planned);
+      this.matDialog.open(this.planned,{disableClose:true});
     }
     if (item?.field.serial == 8) {
       this.currentItem = item;

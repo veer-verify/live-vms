@@ -1,0 +1,78 @@
+/* Form container */
+form {
+  /* max-width: 600px; */
+  margin: 30px auto;
+  padding: 25px;
+  border-radius: 12px;
+  transition: 0.3s ease;
+
+}
+
+/* Form group styling */
+.form-group {
+  margin-bottom: 10px;
+}
+
+/* Labels */
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+  font-size: 14px;
+}
+
+/* Input, Select, Textarea styling */
+.form-control {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 15px;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+}
+
+/* Textarea */
+textarea.form-control {
+  resize: vertical;
+}
+
+/* Submit Button */
+button[type="submit"] {
+  width: 10%;
+  padding: 5px 0;
+  font-size: 16px;
+  border-radius: 8px;
+  transition: 0.2s;
+  background-color: #084982;
+  color:#ffff;
+  border: none;
+}
+
+button[type="submit"]:hover {
+  background-color: #2c363f !important;
+}
+
+
+
+
+
+
+ .headingp {
+    margin: 0;  /* Remove default margin */
+
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .closebtn {
+
+    background-color: transparent;
+    border-radius: 50%;
+    color: #000;
+  }
