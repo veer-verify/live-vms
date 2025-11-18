@@ -17,20 +17,20 @@
 
 @font-face {
   font-family: ES;
-  src: url(assets/font/EngraversGothicRegular.otf) format("opentype");
+  src: url('assets/font/EngraversGothicRegular.otf') format("opentype");
 }
 
 @font-face {
   font-family: TP;
-  src: url(assets/font/Typold-Book500.otf) format("opentype");
+  src: url('assets/font/Typold-Book500.otf') format("opentype");
 }
 
 
 :root {
   --background: linear-gradient(325deg, rgba(20, 31, 77, 0.9) 18%, rgba(90, 13, 3, 0.9) 66%);
   --header-background: #ffffff;
-  --table-background: #084982;
-  --cmn-background: #e6e8e8;
+  --table-background: #ffffff;
+  --cmn-background: #084982;
   --primary: #084982;
   --secondary: #ff0000;
   --loader-background: linear-gradient(90deg, rgba(28, 74, 130, 0.9) 0%, rgba(131, 96, 110, 0.9) 50%, rgba(208, 67, 41, 0.9) 100%);
@@ -63,6 +63,7 @@ a {
 
 .btn {
   background-color: var(--cmn-background) !important;
+  color: #ffffff;
 }
 
 .title {

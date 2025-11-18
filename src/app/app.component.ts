@@ -23,7 +23,7 @@ export class AppComponent {
     //   next: (res) => {
     //     console.log(res);
     //   }
-    // })
+    // });
   }
 
 }

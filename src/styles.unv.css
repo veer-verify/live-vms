@@ -2,18 +2,19 @@
 
 @font-face {
   font-family: ES;
-  src: url(assets/font/EngraversGothicRegular.otf) format("opentype");
+  src: url('assets/font/EngraversGothicRegular.otf') format("opentype");
 }
 
 @font-face {
   font-family: TP;
-  src: url(assets/font/Typold-Book500.otf) format("opentype");
+  src: url('assets/font/Typold-Book500.otf') format("opentype");
 }
 
 
 :root {
   --background: linear-gradient(325deg, #1E3F73 100%, #ffffff 0%);
   --cmn-background: #ffffff;
+  --table-background: #ffffff;
   --loader-background: rgba(72, 116, 182, 0.8);
   --route-color: #7d8d9b;
 }
