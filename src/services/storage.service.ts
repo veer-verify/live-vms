@@ -18,7 +18,7 @@ export class StorageService {
   environment = environment;
 
   getFile(file: string) {
-    return `/assets/themes/${environment.env}/${file}`;
+    return `assets/themes/${environment.env}/${file}`;
   }
 
 
