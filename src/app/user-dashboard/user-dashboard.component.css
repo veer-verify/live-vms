@@ -4,7 +4,7 @@
 }
 
 .left-content {
-  background-color: var(--cmn-background);
+  background-color: var(--background);
   color: #fff;
   background-size: cover;
   width: 300px;
@@ -74,12 +74,12 @@
 }
 
 .list-group :hover {
-  background-color: var(--route-color);
+  background-color: var(--primary);
   border-radius: 5px;
 }
 
 .routeactive {
-  background-color: var(--route-color);
+  background-color: var(--primary);
   border-radius: 5px;
   text-align: center;
 }
