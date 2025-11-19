@@ -77,6 +77,7 @@
                     <th scope="col">Camera</th>
                     <!-- <th scope="col">User Level</th> -->
                     <th scope="col">Event ID</th>
+                    <th scope="col">Date</th>
                     <th scope="col">From Time</th>
                     <th scope="col">To Time</th>
                     <th scope="col">Duration</th>
@@ -94,9 +95,11 @@
                     <!-- <td>{{item?.siteName}}</td> -->
                     <td>{{item?.name}}</td>
                     <td>{{item?.eventId}}</td>
-                    <td>{{item?.eventFromTime | date: 'short'}}</td>
-                    <td>{{item?.eventToTime | date: 'short'}}</td>
-                    <td>{{ getTimeDifference(item?.eventFromTime, item?.eventToTime) }}</td>
+                    <td>{{item?.eventDate | date: 'mediumDate'}}</td>
+                    <td>{{item?.eventFromTime }}</td>
+                    <td>{{item?.eventToTime }}</td>
+                    <!-- <td>{{ getTimeDifference(item?.eventFromTime, item?.eventToTime) }}</td> -->
+                     <td>{{item?.duration}}</td>
                     <td>{{item?.objectName | titlecase}}</td>
                     <td
                         [style.color]="item?.actionTag == 'suspicious' ? 'red' : item?.actionTag == 'Police Visit' ? 'blue' : 'green'">
