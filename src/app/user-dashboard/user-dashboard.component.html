@@ -10,9 +10,9 @@
       </button>
     </div>
 
-    
+
     <div class="list-group">
-      
+
       <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
       [routerLink]="['/user-dashboard/monitoring-info']" routerLinkActive="routeactive">
       <img loading="lazy" src="assets/icons/grip.svg" matTooltip="Dashboard" />
@@ -45,7 +45,7 @@
       </a> -->
 
       <ng-container
-        *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || user?.userLevel === 2 || user?.userLevel === 0">
+        *ngIf=" user?.userLevel === 2">
         <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
           [routerLink]="['/user-dashboard/pre-dispatch']" routerLinkActive="routeactive">
           <img loading="lazy" src="assets/icons/outgoing_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg"
@@ -55,7 +55,7 @@
       </ng-container>
 
       <ng-container
-        *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || user?.userLevel === 3 || user?.userLevel === 0">
+        *ngIf=" user?.userLevel === 3">
         <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
           [routerLink]="['/user-dashboard/dispatch']" routerLinkActive="routeactive">
           <img loading="lazy" src="assets/icons/truck-ramp-box.svg" matTooltip="Dispatch">
@@ -64,14 +64,14 @@
       </ng-container>
 
       <ng-container
-        *ngIf="storage_service.isSuperAdmin() || storage_service.isAdmin() || user?.userLevel === 4 || user?.userLevel === 0">
+        *ngIf=" user?.userLevel === 4">
         <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
           [routerLink]="['/user-dashboard/observer']" routerLinkActive="routeactive">
           <img loading="lazy" src="assets/icons/eye_tracking_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg"
             matTooltip="Observer">
           <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Observer</span>
         </a>
-      </ng-container> 
+      </ng-container>
     </div>
   </div>
 
