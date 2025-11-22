@@ -185,9 +185,6 @@ getMonitoringInfo(payload:any){
 
 }
 
-
-
-
 getVMSEventFlow_1_0(){
  const url= `${environment.event_tags_url}/getVmsEventFlow_1_0`;
   let params = new HttpParams();
