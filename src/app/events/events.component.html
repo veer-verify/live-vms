@@ -150,7 +150,7 @@
                     <th>Camera Name</th>
                     <td>{{ cameraDetails?.cameras[0]?.cameraName }}</td>
                   </tr>
-                  <!-- 
+                  <!--
                   <tr>
                     <th>Monitoring</th>
                     <td>{{ cameraDetails?.cameras[0]?.monitoring ? 'Yes' : 'No' }}</td>
@@ -240,21 +240,21 @@
           <ng-container *ngIf="path === 'pre-dispatch'">
             <button class="btn-secondary" (click)="updateEventFullDetails('second-level')"
               title="Send Email & Close">Complete</button>
-            <button class="btn-secondary" (click)="write2Dispatch('dispatch-3rd-level')"
+            <button class="btn-secondary" (click)="write2Dispatch(this.storage_service.getData(3))"
               title="Send to Dispatch">Escalate</button>
           </ng-container>
 
           <ng-container *ngIf="path === 'dispatch'" class="mt-5">
             <button class="btn-secondary" (click)="updateEventFullDetails('third-level')"
               title="Close">Complete</button>
-            <button class="btn-secondary" (click)="write2Dispatch('observer-wall')"
+            <button class="btn-secondary" (click)="write2Dispatch(this.storage_service.getData(4))"
               title="Send to Observer">Escalate</button>
           </ng-container>
 
           <ng-container *ngIf="path === 'observer'" class="mt-5">
             <button class="btn-secondary" (click)="updateEventFullDetails('fourth-level')"
               title="Send Email & Close">Complete</button>
-            <button class="btn-secondary" (click)="write2Dispatch('dispatch-3rd-level')"
+            <button class="btn-secondary" (click)="write2Dispatch(this.storage_service.getData(3))"
               title="Send to Second Level">Escalate</button>
           </ng-container>
         </div>

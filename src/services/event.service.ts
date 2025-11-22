@@ -22,10 +22,10 @@ export class EventService {
     let params = new HttpParams().set(
       'queue_name',
       path === 'pre-dispatch'
-        ? 'dispatch-2nd-level'
+        ? this.storageSer.getData(2)
         : path === 'observer'
-        ? 'observer-wall'
-        : 'dispatch-3rd-level'
+        ? this.storageSer.getData(4)
+        : this.storageSer.getData(3)
     );
     return this.http.get(url, { params: params });
   }
@@ -164,4 +164,38 @@ export class EventService {
     payload.consoleType = 'manual-console';
     return this.http.put(url, payload);
   }
+getMonitoringInfo(payload:any){
+
+  let url=`${environment.guard_monitoring_url}/getMonitoringInfo_1_0`;
+
+   let user = this.storageSer.getData('session');
+
+
+  let params = new HttpParams();
+
+  if(payload?.siteId){
+    params = params.set('siteId',payload?.siteId);
+  }
+   if(payload?.cameraId){
+    params = params.set('cameraId',payload?.cameraId);
+  }
+  params = params.set('level',user?.userLevel);
+
+  return this.http.get(url,{params});
+
+}
+
+
+
+
+getVMSEventFlow_1_0(){
+ const url= `${environment.event_tags_url}/getVmsEventFlow_1_0`;
+  let params = new HttpParams();
+  params = params.set('callingSystemDetail','vms');
+  return this.http.get(url,{params});
+
+}
+
+
+
 }

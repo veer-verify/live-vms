@@ -412,6 +412,7 @@ export class EventsComponent {
   }
 
   write2Dispatch(queue_name: string) {
+
     if (this.path === 'pre-dispatch') {
       this.eventsGenericEmail();
     }

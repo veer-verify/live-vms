@@ -29,6 +29,7 @@ export class LoginComponent {
   ngOnInit() {
     this.storageSer.session_sub.next(null);
 
+
     const user = this.storageSer.getData('session');
     if (user) this.router.navigate(['/user-dashboard']);
 
@@ -46,6 +47,17 @@ export class LoginComponent {
       minute: 'numeric',
       second: 'numeric',
     });
+
+  }
+
+
+  eventsFlow(){
+
+    this.event.getVMSEventFlow_1_0().subscribe((res:any)=>{
+      res.map((item:any)=>{
+         this.storageSer.saveData(item?.levelId,item?.queueName);
+      })
+    })
   }
 
 
@@ -60,7 +72,7 @@ export class LoginComponent {
       next: (res) => {
         if (res.Status === 'Success') {
           this.storageSer.saveData('session', res);
-
+           this.eventsFlow();
           this.loginSer.manageUserSession('logIn').subscribe({
             next: (response) => {
               this.showLoader = false;
