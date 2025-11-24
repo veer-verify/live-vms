@@ -236,7 +236,7 @@
         </ng-container>
 
         <div class="d-flex align-items-center justify-content-end gap-1 mt-2"
-          *ngIf="currentActionTag?.categoryId === 2">
+          *ngIf="currentActionTag?.categoryId === 2 && emailData">
           <ng-container *ngIf="path === 'pre-dispatch'">
             <button class="btn-secondary" (click)="updateEventFullDetails('second-level')"
               title="Send Email & Close">Complete</button>
