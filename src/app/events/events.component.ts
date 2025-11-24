@@ -554,7 +554,9 @@ export class EventsComponent {
     this.event_service.getActionTagCategories().subscribe({
       next: (res: any) => {
         if (res.statusCode === 200) {
-          this.actionTagsNew = res.actionTagCategories;
+          this.actionTagsNew = res.actionTagCategories.filter((item:any)=>item.categoryId !==3
+          )
+
         }
       }
     })
