@@ -244,14 +244,14 @@
               title="Send to Dispatch">Escalate</button>
           </ng-container>
 
-          <ng-container *ngIf="path === 'dispatch'" class="mt-5">
+          <ng-container *ngIf="path === 'dispatch' && currentSubActionTag" class="mt-5">
             <button class="btn-secondary" (click)="updateEventFullDetails('third-level')"
               title="Close">Complete</button>
             <button class="btn-secondary" (click)="write2Dispatch(this.storage_service.getData(4))"
               title="Send to Observer">Escalate</button>
           </ng-container>
 
-          <ng-container *ngIf="path === 'observer'" class="mt-5">
+          <ng-container *ngIf="path === 'observer' && currentSubActionTag" class="mt-5">
             <button class="btn-secondary" (click)="updateEventFullDetails('fourth-level')"
               title="Send Email & Close">Complete</button>
             <button class="btn-secondary" (click)="write2Dispatch(this.storage_service.getData(3))"
