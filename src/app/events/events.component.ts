@@ -565,7 +565,7 @@ export class EventsComponent {
   cameraDetails: any;
   getCurrentType(type: any) {
     this.currentSubActionTag = null;
-
+    this.cameraDetails=null;
     this.alertType = null;
     this.alertSubType = null;
     this.emailData = null;
@@ -574,45 +574,26 @@ export class EventsComponent {
     this.currentActionTag = type;
     let filteredData = this.actionTagsNew.filter((item: any) => item.categoryId === type.categoryId);
     this.subActionTags = filteredData.flatMap((el: any) => el.actionTagSubCategories);
-    this.event_service.getCameraEventDetails(this.currentItem).subscribe((res: any) => {
-      this.cameraDetails = res;
+    this.event_service.getMonitoringInfo(this.currentItem).subscribe((res: any) => {
 
-      const escalation = this.cameraDetails.escalation;
-      if (Array.isArray(escalation)) {
-        this.cameraDetails.escalation = escalation.map((e: any) => ({
-          ...e,
-          toEmails: this.parseStringArray(e.toEmails),
-          ccEmails: this.parseStringArray(e.ccEmails),
-          bccEmails: this.parseStringArray(e.bccEmails),
-        }));
-      } else if (escalation && typeof escalation === 'object') {
-        this.cameraDetails.escalation = [{
-          ...escalation,
-          toEmails: this.parseStringArray(escalation.toEmails),
-          ccEmails: this.parseStringArray(escalation.ccEmails),
-          bccEmails: this.parseStringArray(escalation.bccEmails),
-        }];
+      if(res.statusCode==200){
+
+        this.cameraDetails = res;
       }
     })
   }
 
-  parseStringArray(val: any): string[] {
-    if (typeof val === 'string') {
-      try {
-        return JSON.parse(val.replace(/'/g, '"'));
-      } catch {
-        return [];
-      }
-    }
-    return Array.isArray(val) ? val : [];
-  }
+getDays(obj: any) {
+  if (!obj) return [];
+  return Object.keys(obj).map(key => ({
+    key,
+    value: obj[key]
+  }));
+}
 
-  getMonitoringHours(details: any): any {
-    if(!details) return;
-    return Object.entries(details)
-      .map(([day, hours]) => `${day}: ${hours}`)
-      .join(', ');
-  }
+getValidEmails(list: string[]) {
+  return list?.filter(e => e && e.trim() !== '') || [];
+}
 
   currentScreen!: string;
   maxmizeScreen(type: string) {
