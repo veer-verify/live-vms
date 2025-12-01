@@ -186,6 +186,21 @@
 
                 <hr>
 
+                <!-- sms DETAILS -->
+                <h3>800.Com Details</h3>
+                <table border="1" cellpadding="6" width="100%">
+                  <tr>
+                    <th>Contact</th>
+                    <th>Priority</th>
+                  </tr>
+                  <tr *ngFor="let contact of cameraDetails?.smsDetails">
+                    <td>{{ contact.sms800dotComNo }}</td>
+                    <td>{{ contact.smsPriority }}</td>
+                  </tr>
+                </table>
+
+                <hr>
+
                 <!-- EMAIL DETAILS -->
                 <h3>Email Details</h3>
                 <table border="1" cellpadding="6" width="100%">

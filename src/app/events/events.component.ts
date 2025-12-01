@@ -253,6 +253,7 @@ export class EventsComponent {
   }
 
   emailData: any;
+  smsDetails:any;
   // toEmails: any;
   // ccEmails: any;
   // bccEmails: any;
@@ -274,6 +275,7 @@ export class EventsComponent {
         next: (res: any) => {
           if (res.statusCode === 200) {
             this.emailData = res.emailDetails;
+            this.smsDetails=res.smsDetails;
             // const emails = this.emailData;
             // this.toEmails = (emails.recipientEmails || []).filter((e: any) => e && e.trim() !== '');
             // this.ccEmails = (emails.Cc || []).filter((e: any) => e && e.trim() !== '');
@@ -295,7 +297,8 @@ export class EventsComponent {
         ...this.emailData,
         ...this.currentSubActionTag,
         ...{ objectName: this.object },
-        ...{selectedAction: this.selectedActionTag}
+        ...{selectedAction: this.selectedActionTag},
+        textDetails:this.smsDetails
       }).subscribe({
         next: (res: any) => {
           // this.cancelEvent();
