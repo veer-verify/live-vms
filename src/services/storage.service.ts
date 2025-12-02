@@ -13,7 +13,7 @@ import moment from 'moment-timezone';
 })
 export class StorageService {
 
-  
+
   private readonly key = "verifai";
   environment = environment;
 
@@ -57,6 +57,11 @@ export class StorageService {
     //   return moment().tz(timezone).format('YYYY-MM-DD HH:mm:ss')
     // }
     return moment().tz(timezone).format('YYYY-MM-DD HH:mm:ss');
+  }
+
+    getTimeWithTime(timezone: string, options?: any): any {
+
+    return moment().tz(timezone).format('HH:mm:ss');
   }
 
   getDay(timezone: string) {
