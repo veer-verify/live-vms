@@ -342,7 +342,8 @@ export class EventsComponent {
           reviewEnd: endTime ?? '',
           actionTag: this.currentActionTag?.categoryId,
           subActionTag: this.currentSubActionTag?.subCategoryId,
-          notes: this.notes
+          notes: this.notes,
+          userName:user?.UserName
         }
       ) :
       this.path === 'dispatch' ?
@@ -357,7 +358,8 @@ export class EventsComponent {
             reviewEnd: endTime ?? '',
             actionTag: this.currentActionTag?.categoryId,
             subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: this.notes
+            notes: this.notes,
+            userName:user?.UserName
           }) :
         this.currentItem?.userLevelAlarmInfo.push(
           {
@@ -370,7 +372,8 @@ export class EventsComponent {
             reviewEnd: endTime ?? '',
             actionTag: this.currentActionTag?.categoryId,
             subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: this.notes
+            notes: this.notes,
+            userName:user?.UserName
           }
         );
 
@@ -437,7 +440,8 @@ export class EventsComponent {
           reviewEnd: endTime ?? '',
           actionTag: this.currentActionTag?.categoryId,
           subActionTag: this.currentSubActionTag?.subCategoryId,
-          notes: this.notes
+          notes: this.notes,
+          userName:user?.UserName
         }
       ) :
       this.path === 'dispatch' ?
@@ -451,7 +455,8 @@ export class EventsComponent {
             reviewEnd: endTime ?? '',
             actionTag: this.currentActionTag?.categoryId,
             subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: this.notes
+            notes: this.notes,
+            userName:user?.UserName
           }
         ) :
         this.currentItem?.userLevelAlarmInfo.push(
@@ -464,7 +469,8 @@ export class EventsComponent {
             reviewEnd: endTime ?? '',
             actionTag: this.currentActionTag?.categoryId,
             subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: this.notes
+            notes: this.notes,
+            userName:user?.UserName
           }
         );
 

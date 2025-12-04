@@ -37,6 +37,7 @@ export class EventService {
     payload.level = `Level${user?.userLevel}`;
   payload.consoleType='manual-console';
   payload.queueName=user?.queueName;
+  payload.sessionId=user?.sessionId;
     return this.http.post(url, payload);
   }
 
@@ -141,8 +142,10 @@ export class EventService {
     let user = this.storageSer.getData('session');
     let payload = {
       userId: 0,
+      sessionId:0
     };
     payload.userId = user?.UserId;
+    payload.sessionId=user?.sessionId;
     return this.http.post(url, payload);
   }
 
@@ -161,6 +164,7 @@ export class EventService {
     let user = this.storageSer.getData('session');
 
     payload.userId = user?.UserId;
+     payload.sessionId=user?.sessionId;
     payload.consoleType = 'manual-console';
     return this.http.put(url, payload);
   }
