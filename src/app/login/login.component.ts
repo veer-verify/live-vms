@@ -76,33 +76,33 @@ export class LoginComponent {
                 this.storageSer.session_sub.next({ ...res, ...response });
                 this.router.navigate(['/user-dashboard/monitoring-info']);
               }
-              if (response.statusCode == 409) {
+              // if (response.statusCode == 409) {
 
-              let temp=this.storageSer.getData('session');
+              // let temp=this.storageSer.getData('session');
 
-              this.storageSer.saveData('session',{...temp,sessionId:response.sessionId})
+              // this.storageSer.saveData('session',{...temp,sessionId:response.sessionId})
 
-                this.alertSer.confirm(response.message).then((res: any) => {
-                  if (res?.isConfirmed) {
-                    this.showLoader = false;
-                    this.loginSer.manageUserSession('logOut').subscribe((res:any)=>{
-                      if(res.statusCode==200){
-                        this.alertSer.success(res.message);
-                        this.showLoader = false;
-                        this.loginSer.logout();
-                      }
-                      else{
-                         this.showLoader = false;
-                        this.loginSer.logout();
-                      }
+              //   this.alertSer.confirm(response.message).then((res: any) => {
+              //     if (res?.isConfirmed) {
+              //       this.showLoader = false;
+              //       this.loginSer.manageUserSession('logOut').subscribe((res:any)=>{
+              //         if(res.statusCode==200){
+              //           this.alertSer.success(res.message);
+              //           this.showLoader = false;
+              //           this.loginSer.logout();
+              //         }
+              //         else{
+              //            this.showLoader = false;
+              //           this.loginSer.logout();
+              //         }
 
-                    })
-                  }
-                  else{
-                      this.showLoader = false;
-                  }
-                });
-              }
+              //       })
+              //     }
+              //     else{
+              //         this.showLoader = false;
+              //     }
+              //   });
+              // }
             },
           });
         } else {
