@@ -529,14 +529,14 @@ export class EventsComponent {
   }
 
   listActionTags(data: any) {
-    this.camera_service
-      .listActionTags(data)
-      .subscribe((res: any) => {
-        if (res.statusCode === 200) {
-          // this.getTypes();
-          this.actionTags = res.data.flatMap((item: any) => item.actionTags);
-        }
-      });
+    // this.camera_service
+    //   .listActionTags(data)
+    //   .subscribe((res: any) => {
+    //     if (res.statusCode === 200) {
+    //       // this.getTypes();
+    //       this.actionTags = res.data.flatMap((item: any) => item.actionTags);
+    //     }
+    //   });
   }
 
   actionTags: any = [];
