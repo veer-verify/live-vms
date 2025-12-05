@@ -1,7 +1,7 @@
 
 
 <div class="side-panel" @inOutPaneAnimation>
-  
+
   <div class="d-flex justify-content-between">
   <button class="closebtn" (click)="closeSidePanel()">×</button>
     <p class="header">{{details?.item.siteName}}</p>
@@ -19,7 +19,7 @@
           <mat-icon>arrow_drop_down</mat-icon>
         </button>
         <mat-autocomplete #site="matAutocomplete">
-    
+
           <mat-option *ngFor="let item of siteslist | search: siteSearch" [value]="item.siteId" (click)="filter(item)">
             {{ item.siteId }} - {{ item.siteName }}
           </mat-option>
@@ -35,13 +35,13 @@
           <mat-icon>arrow_drop_down</mat-icon>
         </button>
         <mat-autocomplete #device="matAutocomplete" multiple>
-       
+
           <mat-option *ngFor="let item of devicesList | search: deviceSearch" [value]="item.cameraId" (click)="filterCam(item)">
             {{ item.cameraId }} - {{ item.name }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>  -->
-<!-- 
+<!--
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Devices</mat-label>
         <mat-select [(ngModel)]="deviceName" (keyup)="searchDevices($event)" multiple>
@@ -58,7 +58,7 @@
   <!-- <div *ngIf="templateDisplay" class="template mt-1">
     <div class="d-flex justify-content-between mb-3">
       <p class="header">New Template</p>
-    
+
       <button class="template-close" (click)="clsTemplate()">×</button>
 
     </div>
@@ -70,20 +70,20 @@
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Alert Type</mat-label>
           <mat-select [(ngModel)]="alert">
-        
+
             <mat-option *ngFor="let item of alertTypes; let i=index" [value]="item.keyId"
               (click)="getData(item)">{{item.value}}</mat-option>
           </mat-select>
         </mat-form-field>
 
-     
+
 
       </div>
       <div class="col-lg-4">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Alert Sub Type</mat-label>
           <mat-select [(ngModel)]="subalert">
-          
+
             <mat-option *ngFor="let item of alertSubTypes; let i=index" [value]="item.keyId"
               (click)="getData1(item)">{{item.value}}</mat-option>
           </mat-select>
@@ -144,7 +144,7 @@
 
 
     <div class="row">
-      <div class="col-lg-12 mb-1"> 
+      <div class="col-lg-12 mb-1">
         <!-- <div> -->
           <mat-checkbox class="mat-option" color="primary" [checked]="isChecked1()" (click)="$event.stopPropagation()" (change)="toggleSelection1()">
             Select All
@@ -154,42 +154,28 @@
             <mat-checkbox color="primary" (change)="toggleDaySelection(day)" [checked]="selectedDays.includes(day)"></mat-checkbox>
             {{ day }}
           </label>
-       
+
       </div>
-      <div class="col-lg-6">
+      <div class="col-lg-4">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>StartTime</mat-label>
-          <input matInput [(ngModel)]="startTime" (ngModelChange)="onTimeChange('start')" [max]="endTime" [ngxMatTimepicker]="picker"  [format]="24" >
+          <input matInput [(ngModel)]="startTime" (ngModelChange)="onTimeChange('start')"  [ngxMatTimepicker]="picker"  [format]="24" >
           <ngx-mat-timepicker #picker [hoursOnly]="true" [enableKeyboardInput]="true"></ngx-mat-timepicker>
         </mat-form-field>
       </div>
 
-      <div class="col-lg-6">
+      <div class="col-lg-4">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>EndTime</mat-label>
-          <input matInput [(ngModel)]="endTime" (ngModelChange)="onTimeChange('end')" [ngxMatTimepicker]="picker1" [min]="startTime" [format]="24" >
+          <input matInput [(ngModel)]="endTime" (ngModelChange)="onTimeChange('end')" [ngxMatTimepicker]="picker1"  [format]="24" >
           <ngx-mat-timepicker #picker1 [hoursOnly]="true" [enableKeyboardInput]="true"></ngx-mat-timepicker>
         </mat-form-field>
       </div>
 
-       <div class="col-lg-5">
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Name</mat-label>
-          <input matInput [(ngModel)]="contactName" appTextonly type="text">
-        </mat-form-field>
-      
+      <div class="col-lg-4">
+          <button class="btn-template" (click)="addHours()">Add Time</button>
       </div>
 
-      <div class="col-lg-5">
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Contact No</mat-label>
-          <input matInput [(ngModel)]="contactNumber" appTextAndNumberOnly type="text">
-        </mat-form-field>
-      </div>
-
-      <div class="col-lg-2">
-        <button class="btn-template" (click)="addcontact()">Add</button>
-      </div>
 
       <div class="col-lg-6">
         <mat-form-field class="example-chip-list w-100">
@@ -203,9 +189,10 @@
             </mat-chip-row>
           </mat-chip-grid>
           <input placeholder=" To Email..." #fruitInput name="to" [formControl]="toCtrl" [matChipInputFor]="toGrid"
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"  (input)="onInput($event)" >
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"  (input)="onInput($event)" >
         </mat-form-field>
       </div>
+
 
       <div class="col-lg-6">
 
@@ -224,7 +211,7 @@
         </mat-form-field>
       </div>
 
-      <div class="col-lg-6">
+      <div class="col-lg-12">
 
         <mat-form-field class="example-chip-list w-100">
           <mat-label>Bcc</mat-label>
@@ -240,34 +227,18 @@
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" (input)="onInput($event)">
         </mat-form-field>
       </div>
-      <div>
+
+        <div class="d-flex justify-content-end align-items-center ">
+
         <button class="btn-template" (click)="createGuardEmailsData()">Submit</button>
       </div>
+
+
     </div>
   </div>
 
-<div *ngIf="contactDetails.length!=0">
 
-  <h2>Contact Details</h2>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Contact No</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let contact of contactDetails;let i = index">
-      <td>{{ contact.contactName }}</td>
-      <td>{{ contact.contactNumber }}</td>
-      <td><button (click)="deleteContact(i)" class="button2">delete</button></td>
-    </tr>
-  </tbody>
-</table>
-</div>
-  
 </div>
 
 <ng-template #emailDialog>

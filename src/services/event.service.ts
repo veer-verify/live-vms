@@ -38,6 +38,7 @@ export class EventService {
   payload.consoleType='manual-console';
   payload.queueName=user?.queueName;
   payload.sessionId=user?.sessionId;
+  payload.userName=user?.UserName;
     return this.http.post(url, payload);
   }
 
