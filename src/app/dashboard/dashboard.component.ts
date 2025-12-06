@@ -537,6 +537,7 @@ export class DashboardComponent {
                     reviewStart: time,
                     reviewEnd: time,
                     notes: '',
+                    userName: user?.UserName
                   }
                 ]
               }).subscribe({
