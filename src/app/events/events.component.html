@@ -128,47 +128,52 @@
               </div>
             </div>
 
-            <div class="p-2 border rounded"
-              *ngIf="currentActionTag?.categoryId === 2 && currentSubActionTag && cameraDetails">
+            <div class="p-2 border rounded" *ngIf="currentActionTag?.categoryId === 2 && currentSubActionTag && cameraDetails">
               <h3>Site Information</h3>
               <div style="overflow-y: auto;height: 24vh;">
 
-                <!-- MONITORING HOURS -->
-                <h3>Monitoring Hours</h3>
-                <table border="1" cellpadding="6" width="100%">
-                  <tr>
-                    <th>Day</th>
-                    <th>Hours</th>
-                  </tr>
-                  <tr *ngFor="let day of getDays(cameraDetails?.cameras[0]?.monitoringHoursDetails)">
-                    <td>{{ day.key | titlecase }}</td>
-                    <td>{{ day.value }}</td>
-                  </tr>
-                </table>
+                <div *ngIf="path === 'pre-dispatch' || path === 'dispatch' || path === 'observer' ">
 
-                <hr>
+                  <!-- MONITORING HOURS -->
+                  <h3>Monitoring Hours</h3>
+                  <table border="1" cellpadding="6" width="100%">
+                    <tr>
+                      <th>Day</th>
+                      <th>Hours</th>
+                    </tr>
+                    <tr *ngFor="let day of getDays(cameraDetails?.cameras[0]?.monitoringHoursDetails)">
+                      <td>{{ day.key | titlecase }}</td>
+                      <td>{{ day.value }}</td>
+                    </tr>
+                  </table>
 
-                <!-- PLANNED SITE ACTIVITIES -->
-                <h3>Planned Site Activities</h3>
-                <table border="1" cellpadding="6" width="100%" *ngIf="cameraDetails?.plannedSiteActivities?.length">
-                  <tr>
-                    <th>Activity</th>
-                    <th>Description</th>
-                    <th>Start</th>
-                    <th>End</th>
-                  </tr>
-                  <tr *ngFor="let item of cameraDetails?.plannedSiteActivities">
-                    <td>{{ item.activityName }}</td>
-                    <td style="word-wrap:break-word;width: 200px;">{{ item.plannedActivityDescription }}</td>
-                    <td>{{ item.plannedActivityStart | date:'MMM d, y, h:mm a'}}</td>
-                    <td>{{ item.plannedActivityEnd | date:'MMM d, y, h:mm a' }}</td>
-                  </tr>
-                </table>
-                <p *ngIf="!cameraDetails?.plannedSiteActivities?.length">No Planned Activities</p>
+                  <hr>
 
-                <hr>
+                  <!-- PLANNED SITE ACTIVITIES -->
+                  <h3>Planned Site Activities</h3>
+                  <table border="1" cellpadding="6" width="100%" *ngIf="cameraDetails?.plannedSiteActivities?.length">
+                    <tr>
+                      <th>Activity</th>
+                      <th>Description</th>
+                      <th>Start</th>
+                      <th>End</th>
+                    </tr>
+                    <tr *ngFor="let item of cameraDetails?.plannedSiteActivities">
+                      <td>{{ item.activityName }}</td>
+                      <td style="word-wrap:break-word;width: 200px;">{{ item.plannedActivityDescription }}</td>
+                      <td>{{ item.plannedActivityStart | date:'MMM d, y, h:mm a'}}</td>
+                      <td>{{ item.plannedActivityEnd | date:'MMM d, y, h:mm a' }}</td>
+                    </tr>
+                  </table>
+                  <p *ngIf="!cameraDetails?.plannedSiteActivities?.length">No Planned Activities</p>
 
-                <!-- CONTACT DETAILS -->
+                  <hr>
+                </div>
+
+
+                <div *ngIf="path === 'pre-dispatch'">
+
+
                 <h3>Contact Details</h3>
                 <table border="1" cellpadding="6" width="100%">
                   <tr>
@@ -239,7 +244,7 @@
                     <td>{{ law.lawEnforcementPriority }}</td>
                   </tr>
                 </table>
-
+                </div>
               </div>
 
 
