@@ -15,7 +15,6 @@ export const environment = {
     // monitoring_url:`${dev_url}:8016/monitoring`,
 
 
-
     login_url: `${dev_url}/userDetails`,
     site_url: `${dev_url}/vipsites`,
     common_url: `${dev_url}/metadata`,

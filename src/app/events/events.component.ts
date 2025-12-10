@@ -600,10 +600,19 @@ getDays(obj: any) {
   }));
 }
 
-getValidEmails(list: string[]) {
-  return list?.filter(e => e && e.trim() !== '') || [];
-}
+getValidEmails(emails: string | string[] | undefined): string[] {
+  if (!emails) return [];
 
+  if (Array.isArray(emails)) return emails;
+
+  try {
+    // Replace single quotes with double quotes and parse
+    const parsed = JSON.parse(emails.replace(/'/g, '"'));
+    return Array.isArray(parsed) ? parsed.filter(e => e && e.trim() !== '') : [];
+  } catch (e) {
+    return [];
+  }
+}
   currentScreen!: string;
   maxmizeScreen(type: string) {
     this.currentScreen = type;

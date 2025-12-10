@@ -118,7 +118,14 @@ export class AlertsInfoComponent {
   filter(type?: string) {
     this.camerasListForSites(this.siteId);
     let pageNumber;
-    type == 'next' ? pageNumber = this.currentPage + 1 : type == 'prev' ? pageNumber = this.currentPage - 1 : pageNumber = type;
+   if (type === 'next') {
+  pageNumber = this.currentPage + 1;
+} else if (type === 'prev') {
+  pageNumber = this.currentPage - 1;
+} else if (type === '' || type == null) {
+  pageNumber = this.currentPage;
+}
+
     this.storage_service.status_text = 'loading...';
     this.eventSer.incidentList({
       siteId: this.siteId,
@@ -144,6 +151,7 @@ export class AlertsInfoComponent {
   }
 
   getPaginatedData(data: number) {
+
     this.currentPage = data + 1;
     this.filter();
   }
