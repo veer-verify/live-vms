@@ -208,8 +208,9 @@
                 <hr>
 
                 <!-- EMAIL DETAILS -->
+                 <h3>Email Details</h3>
                 <div *ngFor="let detail of cameraDetails?.emailDetails">
-                  <h4>{{ detail.emailCameras }}</h4>
+                  <h4>{{ detail?.emailCameras }}</h4>
                   <table border="1" cellpadding="6" width="100%">
                     <tr>
                       <th>To</th>
