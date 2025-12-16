@@ -198,6 +198,24 @@ getVMSEventFlow_1_0(){
 
 }
 
+getImagesForCameraId(payload:any){
+  const url = `${environment.site_url}/getCameraImagesForCameraId_1_0`;
+
+  let params=new HttpParams();
+  params=params.set('cameraId',payload?.cameraId);
+   return this.http.get(url,{params});
+}
+
+
+audioDisable(payload:any){
+  const url = `${environment.guard_monitoring_url}/checkCameraAudio_1_0`;
+  let params=new HttpParams();
+  params=params.set('cameraId',payload?.cameraId);
+  params=params.set('siteId',payload?.siteId);
+   return this.http.get(url,{params});
+
+}
+
 
 
 }

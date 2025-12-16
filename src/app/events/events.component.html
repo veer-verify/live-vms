@@ -34,6 +34,13 @@
 
               <!-- icon buttons -->
               <div style="position: absolute; top: 5px; right: 5px;">
+
+                <button class="icon" (click)="getImages(1)" matTooltip="Boundary-image">
+                  <img src="assets/icons/crop (2).svg" alt="">
+                </button>
+                <button class="icon" (click)="getImages(2)" matTooltip="Mask-image">
+                  <img src="assets/icons/filter (2).svg" alt="">
+                </button>
                 <button class="icon" (click)="audio()" matTooltip="Siren">
                   <img loading="lazy" [src]="isPlaying ? 'assets/icons/siren-red.png' : 'assets/icons/siren-new.png'"
                     [ngClass]="isPlaying ? 'blink-animation' : ''" alt="" />
@@ -128,7 +135,8 @@
               </div>
             </div>
 
-            <div class="p-2 border rounded" *ngIf="currentActionTag?.categoryId === 2 && currentSubActionTag && cameraDetails">
+            <div class="p-2 border rounded"
+              *ngIf="currentActionTag?.categoryId === 2 && currentSubActionTag && cameraDetails">
               <h3>Site Information</h3>
               <div style="overflow-y: auto;height: 24vh;">
 
@@ -174,77 +182,77 @@
                 <div *ngIf="path === 'pre-dispatch'">
 
 
-                <h3>Contact Details</h3>
-                <table border="1" cellpadding="6" width="100%">
-                  <tr>
-                    <th>Name</th>
-                    <th>Designation</th>
-                    <th>Phone</th>
-                    <th>Priority</th>
-                  </tr>
-                  <tr *ngFor="let contact of cameraDetails?.contactDetails">
-                    <td>{{ contact.contactName }}</td>
-                    <td>{{ contact.contactDesignation }}</td>
-                    <td>{{ contact.callNo }}</td>
-                    <td>{{ contact.callPriority }}</td>
-                  </tr>
-                </table>
-
-                <hr>
-
-                <!-- sms DETAILS -->
-                <h3>800.Com Details</h3>
-                <table border="1" cellpadding="6" width="100%">
-                  <tr>
-                    <th>Contact</th>
-                    <th>Priority</th>
-                  </tr>
-                  <tr *ngFor="let contact of cameraDetails?.smsDetails">
-                    <td>{{ contact.sms800dotComNo }}</td>
-                    <td>{{ contact.smsPriority }}</td>
-                  </tr>
-                </table>
-
-                <hr>
-
-                <!-- EMAIL DETAILS -->
-                 <h3>Email Details</h3>
-                <div *ngFor="let detail of cameraDetails?.emailDetails">
-                  <h4>{{ detail?.emailCameras }}</h4>
+                  <h3>Contact Details</h3>
                   <table border="1" cellpadding="6" width="100%">
                     <tr>
-                      <th>To</th>
-                      <td>{{ getValidEmails(detail.toEmails).join(', ') || 'None' }}</td>
+                      <th>Name</th>
+                      <th>Designation</th>
+                      <th>Phone</th>
+                      <th>Priority</th>
                     </tr>
-                    <tr>
-                      <th>CC</th>
-                      <td>{{ getValidEmails(detail.ccEmails).join(', ') || 'None' }}</td>
-                    </tr>
-                    <tr>
-                      <th>BCC</th>
-                      <td>{{ getValidEmails(detail.bccEmails).join(', ') || 'None' }}</td>
+                    <tr *ngFor="let contact of cameraDetails?.contactDetails">
+                      <td>{{ contact.contactName }}</td>
+                      <td>{{ contact.contactDesignation }}</td>
+                      <td>{{ contact.callNo }}</td>
+                      <td>{{ contact.callPriority }}</td>
                     </tr>
                   </table>
-                  <br />
-                </div>
+
+                  <hr>
+
+                  <!-- sms DETAILS -->
+                  <h3>800.Com Details</h3>
+                  <table border="1" cellpadding="6" width="100%">
+                    <tr>
+                      <th>Contact</th>
+                      <th>Priority</th>
+                    </tr>
+                    <tr *ngFor="let contact of cameraDetails?.smsDetails">
+                      <td>{{ contact.sms800dotComNo }}</td>
+                      <td>{{ contact.smsPriority }}</td>
+                    </tr>
+                  </table>
+
+                  <hr>
+
+                  <!-- EMAIL DETAILS -->
+                  <h3>Email Details</h3>
+                  <div *ngFor="let detail of cameraDetails?.emailDetails">
+                    <h4>{{ detail?.emailCameras }}</h4>
+                    <table border="1" cellpadding="6" width="100%">
+                      <tr>
+                        <th>To</th>
+                        <td>{{ getValidEmails(detail.toEmails).join(', ') || 'None' }}</td>
+                      </tr>
+                      <tr>
+                        <th>CC</th>
+                        <td>{{ getValidEmails(detail.ccEmails).join(', ') || 'None' }}</td>
+                      </tr>
+                      <tr>
+                        <th>BCC</th>
+                        <td>{{ getValidEmails(detail.bccEmails).join(', ') || 'None' }}</td>
+                      </tr>
+                    </table>
+                    <br />
+                  </div>
 
 
-                <hr>
+                  <hr>
 
-                <!-- LAW ENFORCEMENT -->
-                <h3>Law Enforcement Contacts</h3>
-                <table border="1" cellpadding="6" width="100%">
-                  <tr>
-                    <th>Contact</th>
-                    <th>Description</th>
-                    <th>Priority</th>
-                  </tr>
-                  <tr *ngFor="let law of cameraDetails?.lawEnforcement">
-                    <td>{{ law.lawEnforcementContact || 'N/A' }}</td>
-                    <td style="word-wrap:break-word;width: 200px;">{{ law.lawEnforcementDescription }}</td>
-                    <td>{{ law.lawEnforcementPriority }}</td>
-                  </tr>
-                </table>
+                  <!-- LAW ENFORCEMENT -->
+                  <h3>Law Enforcement Contacts</h3>
+                  <table border="1" cellpadding="6" width="100%">
+                    <tr>
+                      <th>Contact</th>
+                      <th>Description</th>
+                      <th>Priority</th>
+                    </tr>
+                    <tr *ngFor="let law of cameraDetails?.lawEnforcement">
+                      <td>{{ law.lawEnforcementContact || 'N/A' }}</td>
+                      <td style="word-wrap:break-word;width: 200px;">{{ law.lawEnforcementDescription }}</td>
+                      <td>{{ law.lawEnforcementPriority }}</td>
+                    </tr>
+                  </table>
                 </div>
               </div>
 
@@ -317,3 +325,42 @@
     </ng-container>
   </div>
 </ng-container>
+
+
+<ng-template #monitoringImg>
+  <div class="dialog-content p-0">
+
+    <div class="d-flex justify-content-between">
+      <p>Boundary-image</p>
+      <p>{{currentItem?.siteName}}</p>
+
+      <button mat-dialog-close style="background-color: transparent;border:none">X</button>
+
+    </div>
+
+    <div class="dashboard-img">
+       <p class="text-white" *ngIf="showLoader">Loading...</p>
+      <img *ngIf="!showLoader " [src]="monitoringImage | image | async" width="100%" height="100%" alt="" loading="lazy" />
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #eventsImg>
+  <div class="dialog-content p-0">
+
+    <div class="d-flex justify-content-between">
+      <p>Mask-image</p>
+      <p>{{currentItem?.siteName}}</p>
+
+      <button mat-dialog-close style="background-color: transparent;border:none">X</button>
+
+    </div>
+    <div class="dashboard-img">
+
+      <p class="text-white" *ngIf="showLoader">Loading...</p>
+
+      <img *ngIf="!showLoader" [src]="eventsImage | image | async" alt="" width="100%" height="100%" loading="lazy" />
+    </div>
+
+  </div>
+</ng-template>
