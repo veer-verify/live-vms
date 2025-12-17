@@ -35,7 +35,7 @@ export class LoginService {
 
   manageUserSession(type: string): Observable<any> {
     let url = environment.login_url + `/manageUserSession_1_0`;
-    let  session = this.storageSer.getData('session');
+    let session = this.storageSer.getData('session');
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     let obj = new Map();

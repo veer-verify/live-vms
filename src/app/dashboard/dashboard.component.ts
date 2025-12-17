@@ -522,7 +522,7 @@ export class DashboardComponent {
               // this.audio(data);
               this.event_service.write2Dispatch({
                 ...data,
-                queue_name: 'dispatch-2nd-level',
+                queue_name:this.storageSer.getData(2),
                 actionTag: 'suspicious',
                 userName: user?.UserName,
                 userLevelAlarmInfo: [
@@ -537,6 +537,7 @@ export class DashboardComponent {
                     reviewStart: time,
                     reviewEnd: time,
                     notes: '',
+                    userName: user?.UserName
                   }
                 ]
               }).subscribe({

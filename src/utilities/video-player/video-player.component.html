@@ -1,6 +1,6 @@
 <div class="video-player"
     [ngClass]="liveControl === 1? 'h2': camerasForPage === 2 ? 'h2' : camerasForPage === 6 ? 'h6' : camerasForPage === 9 ? 'h9' : camerasForPage === 12 ? 'h9' : 'h20'"
-    (mousewheel)="plainCapture()"
+    
     (dblclick)="toggleMaximize()" #videParent>
     <div class="eye-logo">
         <img loading="lazy" src="assets/gif/loading-gif.gif" alt="" width="200" *ngIf="showLoader">

@@ -15,7 +15,7 @@ export class PaginationComponent {
   page: number = 0;
   noOfPages: any = [];
   ngOnChanges(): void {
-  
+
     if(this.totalPages ) {
       this.noOfPages = [...new Array(this.totalPages).keys()];
     }
@@ -23,11 +23,12 @@ export class PaginationComponent {
       if (this.currentPage ) {
       this.page = this.currentPage-1;
     }
-   
-  
+
+
   }
 
   changePage(): void {
+
     this.emitPage.emit(this.page);
   }
 
