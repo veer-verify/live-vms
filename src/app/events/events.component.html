@@ -340,7 +340,7 @@
 
     <div class="dashboard-img">
        <p class="text-white" *ngIf="showLoader">Loading...</p>
-      <img *ngIf="!showLoader " [src]="monitoringImage | image | async" width="100%" height="100%" alt="" loading="lazy" />
+      <img *ngIf="!showLoader " [src]="monitoringImage | image | async" width="100%" height="100%" alt="" loading="lazy" onerror="this.src='assets/icons/eyedisabled.svg'"/>
     </div>
   </div>
 </ng-template>
@@ -359,7 +359,7 @@
 
       <p class="text-white" *ngIf="showLoader">Loading...</p>
 
-      <img *ngIf="!showLoader" [src]="eventsImage | image | async" alt="" width="100%" height="100%" loading="lazy" />
+      <img *ngIf="!showLoader" [src]="eventsImage | image | async" alt="" width="100%" height="100%" loading="lazy" onerror="this.src='assets/icons/eyedisabled.svg'"/>
     </div>
 
   </div>
