@@ -45,7 +45,7 @@ export class LoginService {
     obj.set('time', this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss', timezone));
     obj.set('timeZone', timezone);
     obj.set('createdBy', session?.UserId);
-    obj.set('callingSystemDetail', 'portal');
+    obj.set('callingSystemDetail', 'live-vms');
     if (type === 'logOut') {
       obj.set('sessionId', session?.sessionId);
     };
