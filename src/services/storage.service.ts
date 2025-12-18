@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, interval, map } from 'rxjs';
 import { LoginService } from './login.service';
 import { DatePipe } from '@angular/common';
 import CryptoJS from 'crypto-js';
@@ -61,7 +61,13 @@ export class StorageService {
 
     getTimeWithTime(timezone: string, options?: any): any {
 
-    return moment().tz(timezone).format('HH:mm:ss');
+    // return moment().tz(timezone).format('HH:mm:ss');
+
+      return interval(1000).pipe(
+    map(() => moment().tz(timezone).format('HH:mm:ss'))
+  );
+
+
   }
 
   getDay(timezone: string) {
@@ -149,5 +155,41 @@ export class StorageService {
     let a: Array<any> = Array.from(user?.roleList, (item: any) => item.category);
     return a.includes('Dispatch-3rd-Level') ? true : false;
   }
+
+   timeZoneCountryList = [
+  { timeZone: "Asia/Kolkata", countryCode: "IN" },
+  { timeZone: "Asia/Tokyo", countryCode: "JP" },
+  { timeZone: "Asia/Dubai", countryCode: "AE" },
+  { timeZone: "Europe/London", countryCode: "GB" },
+  { timeZone: "Europe/Paris", countryCode: "FR" },
+  { timeZone: "Europe/Berlin", countryCode: "DE" },
+  { timeZone: "America/New_York", countryCode: "US" },
+  { timeZone: "America/Chicago", countryCode: "US" },
+  { timeZone: "America/Denver", countryCode: "US" },
+  { timeZone: "America/Los_Angeles", countryCode: "US" },
+  { timeZone: "America/Toronto", countryCode: "CA" },
+  { timeZone: "Australia/Sydney", countryCode: "AU" },
+  { timeZone: "Australia/Melbourne", countryCode: "AU" },
+  { timeZone: "Australia/Canberra", countryCode: "AU" },
+  { timeZone: "Africa/Johannesburg", countryCode: "ZA" },
+  { timeZone: "Asia/Singapore", countryCode: "SG" }
+];
+
+
+ public getCountry = (zone:any) => {
+  return this.timeZoneCountryList.find((item) => item.timeZone === zone)?.countryCode || 'US';
+}
+
+public getZone = (timezone:any) => {
+  const date = new Date();
+  const tz = new Intl.DateTimeFormat(`en-${this.getCountry(timezone)}`, {
+    timeZone: timezone.toString(),
+    timeZoneName: "short",
+  })
+    .formatToParts(date)
+    .find((part) => part.type === "timeZoneName")?.value;
+    return tz;
+
+};
 
 }

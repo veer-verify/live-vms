@@ -170,7 +170,7 @@ export class EventsComponent {
 
   currentItem: any;
   object: string = 'person';
-  selectedActionTag: any;
+  // selectedActionTag: any;
   emailObject: any;
   alertType: any;
   alertSubType: any;
@@ -207,7 +207,7 @@ export class EventsComponent {
 
   resetVals() {
     // this.emailData = null;
-    this.selectedActionTag = null;
+    // this.selectedActionTag = null;
     this.alertType = null;
     this.alertSubType = null;
     this.object = 'person';
@@ -321,7 +321,7 @@ export class EventsComponent {
           ...this.emailData,
           ...this.currentSubActionTag,
           ...{ objectName: this.object },
-          ...{ selectedAction: this.selectedActionTag },
+          // ...{ selectedAction: this.selectedActionTag },
           textDetails: this.smsDetails,
         })
         .subscribe({

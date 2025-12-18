@@ -151,7 +151,7 @@
             <div class="d-flex justify-content-between align-items-center">
               <a class="cam-name" [matTooltip]="item.name"><span *ngIf="item?.showSiteName" >{{ item?.siteName }}-</span>{{ item?.name }}</a>
 
-              <a class="time-name">Time - {{storageSer.getTimeWithTime(item?.timezone)}}</a>
+              <!-- <a class="time-name">Time - {{storageSer.getTimeWithTime(item?.timezone) }}</a> -->
 
               <span >
                 <!-- <a class="frame-icon" *ngIf="cameraIndex == -1" matTooltip="Generate Event" (click)="openuserActionDialog(item)">
@@ -226,7 +226,7 @@
               </span>
             </div>
 
-            <app-video-player [siteData]="currentSite" [videoData]="item?.httpUrl + '/'"
+            <app-video-player [siteData]="currentSite" [videoData]="item?.httpUrl + '/'" [timezone]="item"
               [camerasForPage]="camerasForPage" (screenshotEmitter)="getImageFromVideo($event)" (camIndexEmitter)="cameraIndex = $event" #streamEl></app-video-player>
 
             <!-- <ng-container *ngIf="item.indexNo != 1 && !item.videoUrl">

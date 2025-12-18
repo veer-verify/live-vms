@@ -15,6 +15,7 @@ export class VideoPlayerComponent {
   @Input() camerasForPage: any;
   @Input() siteData: any;
   @Input() liveControl:any;
+  @Input() timezone:any;
 
   @Output() screenshotEmitter: EventEmitter<any> = new EventEmitter();
   @Output() camIndexEmitter: EventEmitter<any> = new EventEmitter();
@@ -38,6 +39,9 @@ export class VideoPlayerComponent {
 
   hitStream: boolean = false;
   encoded: any;
+  time:any;
+
+
   ngOnInit(): void {
     const username = "admin";
     const password = "verifai123789";
@@ -46,6 +50,9 @@ export class VideoPlayerComponent {
 
     this.hitStream = true;
     this.requestICEServers();
+
+   this.time= this.storage_service.getTimeWithTime(this.timezone?.timezone)
+
   }
 
   ngAfterViewInit() {

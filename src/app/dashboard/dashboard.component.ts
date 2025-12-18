@@ -149,6 +149,7 @@ export class DashboardComponent {
     this.siteSrvc.getCamerasForForPortal(data).subscribe((res: any) => {
       this.showCamLoader = false;
       this.cameras = res;
+
       this.cameras.forEach((object: any) => {
         object.isPlaying = false;
         object.buttons = [];
@@ -266,6 +267,7 @@ export class DashboardComponent {
   }
 
   get getCurrentPageItems() {
+
     const startIndex = (this.currentPage - 1) * this.camerasForPage;
     const endIndex = startIndex + this.camerasForPage;
     return this.gridListItems?.slice(startIndex, endIndex);
