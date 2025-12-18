@@ -35,7 +35,7 @@ export class LoginService {
 
   manageUserSession(type: string): Observable<any> {
     let url = environment.login_url + `/manageUserSession_1_0`;
-    let  session = this.storageSer.getData('session');
+    let session = this.storageSer.getData('session');
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     let obj = new Map();
@@ -45,7 +45,7 @@ export class LoginService {
     obj.set('time', this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss', timezone));
     obj.set('timeZone', timezone);
     obj.set('createdBy', session?.UserId);
-    obj.set('callingSystemDetail', 'vms');
+    obj.set('callingSystemDetail', 'live-vms');
     if (type === 'logOut') {
       obj.set('sessionId', session?.sessionId);
     };
