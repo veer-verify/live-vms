@@ -651,35 +651,36 @@ export class EventsComponent {
     this.currentScreen = type;
   }
 
-  monitoringImage: any = '';
-  eventsImage: any = '';
-showLoader:boolean=false;
+  monitoringImage: any;
+  eventsImage: any;
+  showLoader: boolean = false;
+
+  get hasMonitoringHours(): boolean {
+  const obj = this.cameraDetails?.cameras?.[0]?.monitoringHoursDetails;
+  return obj && Object.keys(obj).length > 0;
+}
 
   @ViewChild('monitoringImg') monitoringImg = {} as TemplateRef<any>;
   @ViewChild('eventsImg') eventsImg = {} as TemplateRef<any>;
+  @ViewChild('eventSrc') eventSrc!: ElementRef;
+    @ViewChild('monitoringSrc') monitoringSrc!: ElementRef;
 
   getImages(i: any) {
-    this.monitoringImage = '';
-    this.eventsImage = '';
+    this.monitoringImage = null;
+    this.eventsImage = null;
 
-    this.showLoader=true;
-
+    this.storage_service.isEnabled = true;
 
     if (i == 1) {
       this.dialog.open(this.monitoringImg);
       this.event_service
         .getImagesForCameraId(this.currentItem)
         .subscribe((res: any) => {
-
           if (res.statusCode == 200) {
-
             this.monitoringImage = res.data?.monitoringImage;
-             this.showLoader = false;
-
-          } else {
-            this.monitoringImage = 'assets/icons/eyedisabled.svg';
-             this.showLoader = false;
-
+            this.storage_service.isEnabled = false;
+          }else {
+            this.monitoringSrc.nativeElement.src = 'assets/icons/eyedisabled.svg';
           }
         });
     } else {
@@ -687,14 +688,11 @@ showLoader:boolean=false;
       this.event_service
         .getImagesForCameraId(this.currentItem)
         .subscribe((res: any) => {
-
           if (res.statusCode == 200) {
             this.eventsImage = res.data?.eventsImage;
-             this.showLoader = false;
+            this.storage_service.isEnabled = false;
           } else {
-            this.eventsImage = 'assets/icons/eyedisabled.svg';
-             this.showLoader = false;
-
+            this.eventSrc.nativeElement.src = 'assets/icons/eyedisabled.svg';
           }
         });
     }

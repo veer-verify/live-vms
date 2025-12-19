@@ -21,6 +21,9 @@ export class StorageService {
     return `assets/themes/${environment.env}/${file}`;
   }
 
+  isEnabled: boolean = false;
+
+
 
   session_sub: BehaviorSubject<any> = new BehaviorSubject(null);
   metadat_sub: any = [];

@@ -17,7 +17,9 @@ export class ImagePipe implements PipeTransform {
 
     const token = this.storageSer.getData('acTok');
     const headers = new HttpHeaders({'Authorization': `Bearer ${token}`});
+     this.storageSer.isEnabled=true;
     const imageBlob = await firstValueFrom(this.http.get(src, {headers, responseType: 'blob'}));
+     this.storageSer.isEnabled=false;
 
     const reader = new FileReader();
     return new Promise((resolve, reject) => {
@@ -27,6 +29,7 @@ export class ImagePipe implements PipeTransform {
       } else {
         reject(new Error('Failed to load image blob'));
       }
+
     });
   }
 

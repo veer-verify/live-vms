@@ -1,5 +1,5 @@
 const prod_url: string = "https://prod.ivisecurity.com";
-const dev_url: string = "http://usstaging.ivisecurity.com";
+// const dev_url: string = "http://usstaging.ivisecurity.com";
 
 export const environment = {
     env: 'ivis',
