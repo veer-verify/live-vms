@@ -184,6 +184,8 @@ export class StorageService {
 }
 
 public getZone = (timezone:any) => {
+
+  if(!timezone) return;
   const date = new Date();
   const tz = new Intl.DateTimeFormat(`en-${this.getCountry(timezone)}`, {
     timeZone: timezone.toString(),
