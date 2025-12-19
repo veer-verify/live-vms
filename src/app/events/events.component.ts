@@ -79,6 +79,7 @@ export class EventsComponent {
               this.storage_service.status_text = '';
               res[0].landingTime = this.storage_service.getTimeWithTimezone(
                 res[0].timezone
+
               );
               res[0].audioPlayed = false;
               this.event_service
