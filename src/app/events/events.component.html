@@ -117,7 +117,7 @@
 
               <ng-container *ngIf="path === 'pre-dispatch'">
                 <div class="w-100">
-                  <mat-radio-group [(ngModel)]="object">
+                  <mat-radio-group [(ngModel)]="object" (ngModelChange)="alertType=null;alertSubType=null">
                     <mat-radio-button value="person">Person</mat-radio-button>
                     <mat-radio-button value="vehicle">Vehicle</mat-radio-button>
                   </mat-radio-group>
