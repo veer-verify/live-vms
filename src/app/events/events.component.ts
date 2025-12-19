@@ -656,7 +656,7 @@ export class EventsComponent {
   showLoader: boolean = false;
 
   get hasMonitoringHours(): boolean {
-  const obj = this.cameraDetails?.cameras?.[0]?.monitoringHoursDetails;
+  const obj = this.cameraDetails?.cameras[0]?.monitoringHoursDetails;
   return obj && Object.keys(obj).length > 0;
 }
 
