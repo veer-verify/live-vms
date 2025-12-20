@@ -203,7 +203,6 @@ export class CameraService {
 
   eventsGenericEmail(payload: any) {
 
-
     let url = `${environment.guard_monitoring_url}/eventsGenericEmail_1_0`;
     let user = this.storageSer.getData('session');
 
@@ -223,7 +222,7 @@ export class CameraService {
     formData.append('alertSubTypeId', payload?.subTypeId);
     formData.append('objectName', payload?.objectName);
     formData.append('eventTag', 'Camera-Event');
-    formData.append('eventFromTime', this.storageSer.getTimeWithTimezone(payload?.timezone));
+    formData.append('eventFromTime', payload?.timestamp);
     formData.append('eventToTime', this.storageSer.getTimeWithTimezone(payload?.timezone));
     formData.append('actionTag', payload?.alertTag);
     formData.append('createdBy', user?.UserId);
@@ -307,5 +306,10 @@ export class CameraService {
     console.error(errorMessage);
     return throwError(() => new Error(errorMessage));
   }
+
+
+
+
+
 
 }
