@@ -16,7 +16,7 @@
               <img loading="lazy" src="assets/icons/close.svg" alt="" width="20px"></a> -->
           </div>
           <p class="camera">{{ item?.cameraId }}</p>
-          <p class="date">{{ item?.timestamp | date : "medium" }}({{ storage_service.getZone(item?.timezone) }})</p>
+          <p class="date">{{ item?.timestamp  }}({{ storage_service.getZone(item?.timezone) }})</p>
           <p class="site text-primary">{{ item?.userName | uppercase }}</p>
         </div>
       </div>
@@ -32,7 +32,7 @@
                   ? 'max-screen'
                   : 'position-relative'
               ">
-                <a  *ngIf="currentItem?.timezone" class="time-name" >{{ currentItem?.timestamp | date : "mediumTime" }}({{ storage_service.getZone(currentItem?.timezone) }})</a>
+                <a  *ngIf="currentItem?.timezone" class="time-name" >{{ currentItem?.timestamp | date:'HH:mm:ss'  }}({{ storage_service.getZone(currentItem?.timezone) }})</a>
 
               <!-- event image -->
               <img loading="lazy" [src]="environment + currentItem?.imageName" alt="LOADING..."
