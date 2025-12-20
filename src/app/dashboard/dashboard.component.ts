@@ -512,6 +512,7 @@ export class DashboardComponent {
   }
 
   postScreenshot(data: any, file: any) {
+
     let user = this.storageSer.getData('session');
     let time = this.storageSer.getTimeWithTimezone(data?.timezone);
     data.time = time;
@@ -627,7 +628,7 @@ export class DashboardComponent {
     this.mannualEmailBody.eventFromTime = data.dspTime;
     this.mannualEmailBody.eventToTime = this.storageSer.getTimeWithTimezone(data?.timezone);
     this.cameraCurrentTime = this.storageSer.getTimeWithTimezone(data?.timezone);
-    console.log(this.cameraCurrentTime)
+    
 
     this.siteSrvc.getCamerasForSiteId(data).subscribe((res: any) => {
       this.eventCameras = res;

@@ -391,6 +391,7 @@ export class VideoPlayerComponent {
       this.canvas.nativeElement.getContext("2d").drawImage(imgElement, finalX, finalY, 20, 20);
       this.canvas.nativeElement.toBlob((blob: any) => {
         let newObj = { ...camera, color, ...btnItem }
+        console.log(newObj)
         this.screenshotEmitter.emit({ image: blob, camera: newObj });
 
         const screenshotDataUrl = this.canvas.nativeElement.toDataURL('image/png');
