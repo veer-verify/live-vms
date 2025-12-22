@@ -6,11 +6,12 @@
     <p class="title mb-2" style="font-size: 22px; color: #3d3934; font-weight: 700;">ALERTS DASHBOARD</p>
 
     <div class="d-lg-flex justify-content-between align-items-center d-none">
+      <form [formGroup]="myForm">
         <div class="row mx-0 mt-2 w-100">
             <div class="col-lg-3 ps-0">
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Site</mat-label>
-                    <mat-select [(ngModel)]="siteId" (selectionChange)="filter()">
+                    <mat-select formControlName="siteId" (selectionChange)="filter(1)">
                         <mat-option *ngFor="let item of siteIdToNav; let i = index"
                             [value]="item.siteId">{{item?.siteName}}</mat-option>
                     </mat-select>
@@ -19,7 +20,7 @@
             <div class="col-lg-2 ps-0">
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Camera</mat-label>
-                    <mat-select [(ngModel)]="cameraId" (selectionChange)="filter()">
+                    <mat-select formControlName="cameraId" (selectionChange)="filter();">
                         <mat-option *ngFor="let item of camData" [value]="item?.cameraId">
                             {{item?.name}}</mat-option>
                     </mat-select>
@@ -28,7 +29,8 @@
             <div class="col-lg-2 ps-0">
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Action Tag</mat-label>
-                    <mat-select [(ngModel)]="actionTag" (selectionChange)="filter()">
+                    <mat-select formControlName="actionTag" (selectionChange)="filter()" >
+                      <mat-option value=""></mat-option>
                         <mat-option *ngFor="let item of actionTags" [value]="item?.value">{{item?.value |
                             titlecase}}</mat-option>
                     </mat-select>
@@ -39,8 +41,8 @@
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Enter a date range</mat-label>
                     <mat-date-range-input [rangePicker]="rangePicker">
-                        <input matStartDate placeholder="Start date" [(ngModel)]="fromDate">
-                        <input matEndDate placeholder="End date" [(ngModel)]="toDate">
+                        <input matStartDate placeholder="Start date" formControlName="fromDate">
+                        <input matEndDate placeholder="End date" formControlName="toDate">
                     </mat-date-range-input>
                     <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
                     <mat-date-range-picker #rangePicker>
@@ -61,8 +63,8 @@
             <!-- <div class="col-lg-2">
                 <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
             </div> -->
-
-        </div>
+          </div>
+        </form>
         <!-- <div>
             <button class="add-btn" (click)="show()">Create</button>
         </div> -->

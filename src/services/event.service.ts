@@ -186,6 +186,8 @@ getMonitoringInfo(payload:any){
   }
   params = params.set('level',user?.userLevel);
 
+  params=params.set('timezone',payload?.timezone);
+
   return this.http.get(url,{params});
 
 }

@@ -53,6 +53,8 @@ export class EventsComponent {
 
     this.getActionTagCategories();
     this.getDispatchData();
+
+
     this.poolEvents();
 
     this.aliveUser();
@@ -63,11 +65,12 @@ export class EventsComponent {
   }
 
   aliveUser() {
-    this.event_service.aliveUser().subscribe((res: any) => {});
+    this.event_service.aliveUser().subscribe();
   }
 
   poolEvents() {
     this.eventInterval = setInterval(() => {
+
       let menu = this.storage_service.getData('menu');
       if (this.eventData.length < 6 && !menu) {
         if (!this.eventPolling) return;
@@ -98,7 +101,11 @@ export class EventsComponent {
               }
             }
           },
-        });
+          error: (err) => {
+            this.eventPolling=true;
+          }
+        },
+      );
       }
       this.storage_service.events_sub.next(this.eventData.length);
     }, 2000);
@@ -175,7 +182,7 @@ export class EventsComponent {
   emailObject: any;
   alertType: any;
   alertSubType: any;
-  eventIndex!: number;
+  // eventIndex!: number;
 
   @ViewChild('currentBtn') currentBtn!: ElementRef;
   displayCurrent(data: any) {
@@ -187,7 +194,7 @@ export class EventsComponent {
     setTimeout(() => {
       this.storage_service.status_text = '';
       this.currentItem = data;
-      this.eventIndex = this.eventData.indexOf(this.currentItem);
+      // this.eventIndex = this.eventData.indexOf(this.currentItem);
       this.getCurrentSiteAlerts(data);
       this.listActionTags(data);
     }, 500);

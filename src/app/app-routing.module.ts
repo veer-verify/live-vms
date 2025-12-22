@@ -22,9 +22,9 @@ const routes: Routes = [
       { path: 'playback-info', component: PlaybackInfoComponent },
       { path: 'device-status', component: DeviceStatusComponent },
       { path: 'nvr', component: NvrComponent },
-      { path: 'pre-dispatch', component: EventsComponent },
-      { path: 'dispatch', component: EventsComponent },
-      { path: 'observer', component: EventsComponent },
+      { path: 'pre-dispatch', component: EventsComponent,canDeactivate:[AuthGuard]},
+      { path: 'dispatch', component: EventsComponent,canDeactivate:[AuthGuard]},
+      { path: 'observer', component: EventsComponent,canDeactivate:[AuthGuard]},
       { path: '', redirectTo: '/user-dashboard/nvr', pathMatch: 'full' },
     ]
   },

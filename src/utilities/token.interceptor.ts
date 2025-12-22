@@ -147,18 +147,19 @@ export class TokenInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
 
-        /* 🌐 NETWORK ERROR (internet disconnected, CORS, server unreachable) */
-        if (error.status === 0) {
-          console.warn('Network error. Waiting for internet...');
+        // /* 🌐 NETWORK ERROR (internet disconnected, CORS, server unreachable) */
+        // if (error.status === 0) {
+        //   console.warn('Network error. Waiting for internet...');
 
-          return fromEvent(window, 'online').pipe(
-            take(1), // retry once when online
-            switchMap(() => {
-              console.log('Internet restored. Retrying request...');
-              return next.handle(request);
-            })
-          );
-        }
+        //   return fromEvent(window, 'online').pipe(
+        //     take(1), // retry once when online
+        //     switchMap(() => {
+        //       console.log('Internet restored. Retrying request...');
+        //       return next.handle(request);
+        //     })
+        //   );
+        // }
+
 
         /* 🔐 UNAUTHORIZED */
         if (error.status === 401) {
@@ -213,4 +214,7 @@ export class TokenInterceptor implements HttpInterceptor {
       );
     }
   }
+
+
+
 }
