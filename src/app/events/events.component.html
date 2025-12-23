@@ -234,7 +234,8 @@
 
                 </div>
 
-                <div *ngIf="path === 'pre-dispatch'">
+                <div *ngIf="path === 'pre-dispatch' || path === 'dispatch' ||
+                    path === 'observer'">
 
                   <ng-container *ngIf="cameraDetails?.contactDetails?.length!=0">
 
