@@ -4,7 +4,7 @@
     gap: 3px;
    max-height: 50vh;
     overflow-y: auto;
- 
+
 }
 
 .alert-header {
@@ -13,48 +13,48 @@
     border-radius: 6px;
     margin-bottom: 20px;
   }
-  
+
 
   .alert-header h2 {
     color: #c34e01;
     font-size: 1.5rem;
     text-align: center;
   }
-  
+
   .alert-body {
     font-size: 1rem;
     color: #333;
   }
-  
+
   .greeting {
     font-weight: bold;
     margin-bottom: 10px;
-     
+
   }
-  
+
   .message {
     margin-bottom: 15px;
-     
+
   }
-  
+
   .previewmail{
 /* color: #ffffff; */
 /* background-color: #084982; */
 /* text-align: center; */
 /* border-radius:  15px 50px 15px 50px; */
-   
+
   font-weight: 600;
   text-transform: uppercase;
   padding: 5px;
     }
 
   .vehicle-info p {
-     
+
     font-size: 1rem;
     margin: 5px 0;
     color: #333;
   }
- 
+
 
   .card {
     border-radius: 10px;
@@ -68,7 +68,7 @@
   }
 
   .btn-template{
-     
+
     padding: 0.7em 1.4em;
     background-color: var(--cmn-background);
     text-decoration: none;
@@ -99,9 +99,9 @@
     font-size: 24px; */
     background-color: transparent;
     border-radius: 50%;
-    color: #000; 
+    color: #000;
   }
-  
+
 
   .table th, .table td {
     vertical-align: middle;
@@ -112,6 +112,6 @@
 
   .delete-template{
     display: flex;
-    justify-content: end;
+    justify-content:flex-end;
     gap: 5px;
   }

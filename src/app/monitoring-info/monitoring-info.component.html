@@ -1,9 +1,9 @@
   <div class="main-container">
-   
+
     <p class="title" style="font-size: 22px; color: #3d3934; font-weight: 700;">MONITORING DASHBOARD</p>
 
-      
-    
+
+
 
     <!-- count -->
     <div class="d-flex my-2 justify-content-between align-items-center srch">
@@ -46,9 +46,9 @@
                 (click)="this.siteSearch1 = item.siteName">{{ item.siteName }}</mat-option>
             </mat-autocomplete>
           </mat-form-field>
-  
-        </div> 
-        
+
+        </div>
+
         <div>
           <app-pagination [totalPages]="totalPages" [currentPage]="currentPage" (emitPage)="getPaginatedData($event)"></app-pagination>
         </div>
@@ -80,6 +80,12 @@
       <app-plannedsite [cameraList]="cameraList" [currentItem]="currentItem"></app-plannedsite>
     </ng-template>
 
+    <ng-template #sitesetting>
+      <app-sitesettings [cameraList]="cameraList" [currentItem]="currentItem"></app-sitesettings>
+    </ng-template>
+
+
+
     <ng-container *ngIf="isSidePanelOpen">
       <app-sidepanel [isSidePanelOpen]="isSidePanelOpen" (sidePanelClosed)="onCloseSidePanel($event)"
         [devicesList]="cameraList" [details]="currentItem"></app-sidepanel>
@@ -90,3 +96,96 @@
         [devicesList]="cameraList" [details]="currentItem"></app-template>
     </ng-container>
   </div>
+
+
+
+<ng-template #settingspopup>
+
+  <div
+    class="d-flex justify-content-between bg-light mb-2 p-1"
+    style="position: sticky; top: 0; font-size: 14px;"
+  >
+    <p>{{ currentItem?.siteName }} - Site Configuration</p>
+    <button mat-dialog-close class="closebtn">x</button>
+  </div>
+
+  <form [formGroup]="flagsForm" class="form-container">
+
+    <!-- Email -->
+    <div class="question-row">
+      <div class="question-text">
+        Do you want to receive Email notifications?
+      </div>
+
+      <mat-radio-group
+        formControlName="emailFlag"
+        color="primary"
+        class="radio-group"
+      >
+        <mat-radio-button [value]="'T'">Yes</mat-radio-button>
+        <mat-radio-button [value]="'F'">No</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <!-- Contacts -->
+    <div class="question-row">
+      <div class="question-text">
+        Should contacts be notified by call?
+      </div>
+
+      <mat-radio-group
+        formControlName="callFlag"
+        color="primary"
+        class="radio-group"
+      >
+        <mat-radio-button [value]="'T'">Yes</mat-radio-button>
+        <mat-radio-button [value]="'F'">No</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <!-- Text -->
+    <div class="question-row">
+      <div class="question-text">
+        Do you want to receive SMS/Text alerts?
+      </div>
+
+      <mat-radio-group
+        formControlName="textFlag"
+        color="primary"
+        class="radio-group"
+      >
+        <mat-radio-button [value]="'T'">Yes</mat-radio-button>
+        <mat-radio-button [value]="'F'">No</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <!-- Law Enforcement -->
+    <div class="question-row">
+      <div class="question-text">
+        Should law enforcement be notified?
+      </div>
+
+      <mat-radio-group
+        formControlName="lawEnforcementFlag"
+        color="primary"
+        class="radio-group"
+      >
+        <mat-radio-button [value]="'T'">Yes</mat-radio-button>
+        <mat-radio-button [value]="'F'">No</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <div class="d-flex justify-content-end mt-3">
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        mat-dialog-close
+        (click)="submitSiteConfig()"
+      >
+        Submit
+      </button>
+    </div>
+
+  </form>
+</ng-template>

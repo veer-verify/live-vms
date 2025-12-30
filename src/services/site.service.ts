@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class SiteService {
-  constructor(private http: HttpClient, private storageSer: StorageService) { }
+  constructor(private http: HttpClient, private storageSer: StorageService) {}
 
   public getSites(payload?: any): any {
     let url = `${environment.site_url}/getSitesListForUserName_2_0/`;
@@ -266,7 +266,7 @@ export class SiteService {
     let url = `${environment.guard_monitoring_url}/NVRList_1_0`;
     let params = new HttpParams();
     if (payload?.siteId) {
-      params = params.set('siteId', payload?.siteId)
+      params = params.set('siteId', payload?.siteId);
     }
     return this.http.get(url, { params: params });
   }
@@ -276,42 +276,120 @@ export class SiteService {
     return this.http.put(url, payload);
   }
 
-  addPlannedSiteActivity(payload:any){
-    let url=`${environment.guard_monitoring_url}/addPlannedSiteActivity_1_0`;
+  addPlannedSiteActivity(payload: any) {
+    let url = `${environment.guard_monitoring_url}/addPlannedSiteActivity_1_0`;
     let user = this.storageSer.getData('session');
     payload.createdBy = user?.UserId;
     return this.http.post(url, payload);
-
   }
 
-  updatePlannedSiteActivity(payload:any){
-    let url=`${environment.guard_monitoring_url}/updatePlannedSiteActivity_1_0`;
-     let user = this.storageSer.getData('session');
+  updatePlannedSiteActivity(payload: any) {
+    let url = `${environment.guard_monitoring_url}/updatePlannedSiteActivity_1_0`;
+    let user = this.storageSer.getData('session');
     payload.modifiedBy = user?.UserId;
     return this.http.put(url, payload);
   }
-  getPlannedSiteActivity(payload:any){
-      let url=`${environment.guard_monitoring_url}/getPlannedSiteActivity_1_0`;
-       let params = new HttpParams();
+  getPlannedSiteActivity(payload: any) {
+    let url = `${environment.guard_monitoring_url}/getPlannedSiteActivity_1_0`;
+    let params = new HttpParams();
     if (payload?.siteId) {
-      params = params.set('siteId', payload?.siteId)
+      params = params.set('siteId', payload?.siteId);
     }
     if (payload?.status) {
-      params = params.set('status', payload?.status)
+      params = params.set('status', payload?.status);
     }
-     return this.http.get(url,{params});
+    return this.http.get(url, { params });
   }
-InActive_ActivityStatus(payload:any){
+  InActive_ActivityStatus(payload: any) {
+    let url = `${environment.guard_monitoring_url}/inActivatePlannedSiteActivity_1_0`;
 
-  let url=`${environment.guard_monitoring_url}/inActivatePlannedSiteActivity_1_0`;
+    let user = this.storageSer.getData('session');
+    let params = new HttpParams();
+    params = params.set('id', payload?.id);
+    params = params.set('modifiedBy', user?.UserId);
 
-   let user = this.storageSer.getData('session');
-      let params = new HttpParams();
-      params = params.set('id', payload?.id);
-      params = params.set('modifiedBy', user?.UserId);
+    return this.http.delete(url, { params });
+  }
 
-  return this.http.delete(url,{params});
+  // site configuration
+
+
+
+  addSiteMonitoringInfo(payload: any) {
+    let url = `${environment.guard_monitoring_url}/addSiteMonitoringInfo_1_0`;
+    let user = this.storageSer.getData('session');
+    payload.createdBy = user?.UserId;
+    payload.siteId = payload.siteId;
+    return this.http.post(url, payload);
+  }
+
+  getSiteMonitoringInfo(payload: any) {
+    let url = `${environment.guard_monitoring_url}/getSiteMonitoringInfo_1_0`;
+    let params = new HttpParams();
+    params = params.set('siteId', payload?.siteId);
+
+    return this.http.get(url, { params });
+  }
+
+  addSiteContact(payload:any){
+
+    let url = `${environment.guard_monitoring_url}/addContactDetails_1_0`;
+    let user = this.storageSer.getData('session');
+    payload.createdBy = user?.UserId;
+    payload.siteId = payload.siteId;
+    return this.http.post(url, payload);
+  }
+
+  addSmsDetails(payload:any){
+       let url = `${environment.guard_monitoring_url}/addSmsDetails_1_0`;
+    let user = this.storageSer.getData('session');
+    payload.createdBy = user?.UserId;
+    payload.siteId = payload.siteId;
+    return this.http.post(url, payload);
+  }
+addlawenforce(payload:any){
+    let url = `${environment.guard_monitoring_url}/addLawEnforcementDetails_1_0`;
+    let user = this.storageSer.getData('session');
+    payload.createdBy = user?.UserId;
+    payload.siteId = payload.siteId;
+    return this.http.post(url, payload);
 }
 
 
-  }
+getSiteMonitoringInfoBySiteId(payload:any){
+   let url = `${environment.guard_monitoring_url}/getMonitoringEscalationInfoBySiteId_1_0`;
+    let params = new HttpParams();
+    params = params.set('siteId', payload?.siteId);
+    return this.http.get(url, {params});
+}
+
+inactiveLawEnforcementInfo(payload:any){
+   let url = `${environment.guard_monitoring_url}/inactiveLawEnforcementInfo_1_0`;
+   let user = this.storageSer.getData('session');
+    let params = new HttpParams();
+    params = params.set('modifiedBy', user?.UserId);
+     params = params.set('id', payload?.lawEnforcementId);
+      return this.http.put(url,null, {params});
+}
+inactiveSmsDetails(payload:any){
+   let url = `${environment.guard_monitoring_url}/inactiveSmsDetails_1_0`;
+   let user = this.storageSer.getData('session');
+    let params = new HttpParams();
+    params = params.set('modifiedBy', user?.UserId);
+     params = params.set('id', payload?.smsId);
+      return this.http.put(url,null, {params});
+}
+inactiveContactDetails(payload:any){
+
+   let url = `${environment.guard_monitoring_url}/inactiveContactDetails_1_0`;
+   let user = this.storageSer.getData('session');
+     let params = new HttpParams();
+    params = params.set('modifiedBy', user?.UserId);
+     params = params.set('contactId', payload?.contactId);
+      return this.http.put(url,null, {params});
+}
+
+
+  // site configuration
+
+}

@@ -46,6 +46,7 @@ import { TextonlyDirective } from 'src/utilities/pipes/textonly.directive';
 import { NvrComponent } from './nvr/nvr.component';
 import { CountPipe } from 'src/utilities/pipes/count.pipe';
 import { PlannedsiteComponent } from './plannedsite/plannedsite.component';
+import { SitesettingsComponent } from './sitesettings/sitesettings.component';
 
 
 @NgModule({
@@ -85,7 +86,8 @@ import { PlannedsiteComponent } from './plannedsite/plannedsite.component';
     TextonlyDirective,
     NvrComponent,
     CountPipe,
-    PlannedsiteComponent
+    PlannedsiteComponent,
+    SitesettingsComponent
   ],
   imports: [
     BrowserModule,

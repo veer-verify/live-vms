@@ -1,0 +1,69 @@
+.form-container {
+  max-width: 1000px;
+  /* margin: 20px auto; */
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.checkbox-group {
+flex-wrap: wrap;
+ grid-column: span 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+}
+
+.radio-row {
+  grid-column: span 2;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.group-label {
+  min-width: 50px;
+  font-weight: 500;
+}
+button {
+  grid-column: span 2;
+  justify-self: end;
+  margin-top: 20px;
+}
+
+
+
+
+
+
+
+
+.table-wrapper {
+  max-height: 200px;        /* adjust height */
+  overflow-y: auto;
+}
+
+/* Sticky header */
+.table thead th {
+  position: sticky;
+  top: 0;
+  background: #f8f9fa;     /* important to avoid overlap */
+  z-index: 1;
+}
+
+/* Optional: better UX */
+.table td, .table th {
+  vertical-align: middle;
+}
+
+
+.table-wrap {
+  max-height: 400px;        /* adjust height */
+  overflow-y: auto;
+}
