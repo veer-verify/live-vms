@@ -115,12 +115,12 @@ export class MonitoringInfoComponent {
       showCreate: false,
       showunikView: false,
       showView: true,
-      actions: ['settings'],
+      actions: ['Configure-site'],
       key: 'actions',
       type: 'actions',
       call: (data: any, type: string) => {
         switch (type) {
-          case 'settings':
+          case 'Configure-site':
             this.settings(data);
             break;
           default:
