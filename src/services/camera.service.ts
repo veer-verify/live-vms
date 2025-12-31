@@ -1,11 +1,15 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 import { DatePipe, formatDate } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-
 
 interface MessagePayload {
   sender: string;
@@ -15,16 +19,14 @@ interface MessagePayload {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class CameraService {
-
   constructor(
     private http: HttpClient,
     private storageSer: StorageService,
     private datePipe: DatePipe
-  ) { }
+  ) {}
 
   siren_sub = new BehaviorSubject<boolean>(false);
 
@@ -32,26 +34,32 @@ export class CameraService {
     let url = `${environment.guard_monitoring_url}/incidentList_1_0`;
     let params = new HttpParams();
     if (payload?.siteId) {
-      params = params.set('siteId', payload?.siteId)
+      params = params.set('siteId', payload?.siteId);
     }
     if (payload?.objectName) {
-      params = params.set('objectName', payload?.objectName)
+      params = params.set('objectName', payload?.objectName);
     }
     if (payload?.cameraId) {
-      params = params.set('cameraId', payload?.cameraId)
+      params = params.set('cameraId', payload?.cameraId);
     }
     if (payload?.actionTag) {
-      params = params.set('actionTag', payload?.actionTag)
+      params = params.set('actionTag', payload?.actionTag);
     }
     if (payload?.fromDate) {
       // let x = payload?.fromDate;
       // params = params.set('fromDate', `${x.year}-${x.month}-${x.day}`);
-      params = params.set('fromDate', formatDate(payload?.fromDate, 'yyyy-MM-dd', 'en-us'));
+      params = params.set(
+        'fromDate',
+        formatDate(payload?.fromDate, 'yyyy-MM-dd', 'en-us')
+      );
     }
     if (payload?.toDate) {
       // let x = payload?.toDate;
       // params = params.set('toDate', `${x.year}-${x.month}-${x.day}`);
-      params = params.set('toDate', formatDate(payload?.toDate, 'yyyy-MM-dd', 'en-us'));
+      params = params.set(
+        'toDate',
+        formatDate(payload?.toDate, 'yyyy-MM-dd', 'en-us')
+      );
     }
     if (payload?.page) {
       params = params.set('page', payload.page);
@@ -88,8 +96,8 @@ export class CameraService {
       videoFile: obj?.videoFile,
       createdTime: obj?.createdTime,
       createdBy: obj?.createdBy,
-      remarks: obj?.remarks
-    }
+      remarks: obj?.remarks,
+    };
     return this.http.post(url, myObj);
   }
 
@@ -158,7 +166,7 @@ export class CameraService {
     formData.append('createdBy', user?.UserId);
 
     for (var i = 0; i < payload?.files.length; i++) {
-      formData.append("files", payload?.files[i]);
+      formData.append('files', payload?.files[i]);
     }
     return this.http.post(url, formData);
   }
@@ -202,7 +210,6 @@ export class CameraService {
   }
 
   eventsGenericEmail(payload: any) {
-
     let url = `${environment.guard_monitoring_url}/eventsGenericEmail_1_0`;
     let user = this.storageSer.getData('session');
 
@@ -223,7 +230,10 @@ export class CameraService {
     formData.append('objectName', payload?.objectName);
     formData.append('eventTag', 'Camera-Event');
     formData.append('eventFromTime', payload?.timestamp);
-    formData.append('eventToTime', this.storageSer.getTimeWithTimezone(payload?.timezone));
+    formData.append(
+      'eventToTime',
+      this.storageSer.getTimeWithTimezone(payload?.timezone)
+    );
     formData.append('actionTag', payload?.alertTag);
     formData.append('createdBy', user?.UserId);
     formData.append('subject', payload?.emailSubject);
@@ -234,11 +244,16 @@ export class CameraService {
     formData.append('textDetails', JSON.stringify(payload?.textDetails));
     // formData.append('bcc', payload?.BCC);
     // formData.append('Cc', payload?.Cc);
-    formData.append("recipientEmails", payload?.recipientEmails?.join(', '));
-    formData.append("Bcc", payload?.BCC?.join(','));
-    formData.append("Cc", payload?.Cc?.join(','));
+    formData.append('recipientEmails', payload?.recipientEmails?.join(', '));
+    formData.append('Bcc', payload?.BCC?.join(','));
+    formData.append('Cc', payload?.Cc?.join(','));
     for (var i = 0; i < payload?.screenshots?.length; i++) {
-      formData.append("files", payload?.screenshots[i].substring(payload?.screenshots[i].lastIndexOf('/') + 1));
+      formData.append(
+        'files',
+        payload?.screenshots[i].substring(
+          payload?.screenshots[i].lastIndexOf('/') + 1
+        )
+      );
     }
 
     return this.http.post(url, formData, { params: params });
@@ -247,7 +262,7 @@ export class CameraService {
   getEmailData(payload: any) {
     let url = `${environment.guard_monitoring_url}/getEmailData_1_0`;
     let timer;
-    payload?.siteId == 36444 ? timer = 10 : timer = 120;
+    payload?.siteId == 36444 ? (timer = 10) : (timer = 120);
     let params = new HttpParams();
     params = params.set('siteId', payload?.siteId);
     params = params.set('camerasList', payload?.camerasList);
@@ -260,11 +275,10 @@ export class CameraService {
     return this.http.get(url, { params: params });
   }
 
-
   getEmailDataForVMSEvents(payload: any) {
     let url = `${environment.guard_monitoring_url}/getEmailDataForVMSEvents_1_0`;
     let timer;
-    payload?.siteId == 36444 ? timer = 10 : timer = 120;
+    payload?.siteId == 36444 ? (timer = 10) : (timer = 120);
     let params = new HttpParams();
     params = params.set('siteId', payload?.siteId);
     params = params.set('camerasList', payload?.camerasList);
@@ -282,7 +296,7 @@ export class CameraService {
     let url: string = `${environment.guard_monitoring_url}/listActionTags_1_0`;
     let params = new HttpParams();
     if (payload?.siteId) {
-      params = params.set('siteId', payload?.siteId)
+      params = params.set('siteId', payload?.siteId);
     }
     return this.http.get(url, { params: params });
   }
@@ -306,10 +320,4 @@ export class CameraService {
     console.error(errorMessage);
     return throwError(() => new Error(errorMessage));
   }
-
-
-
-
-
-
 }
