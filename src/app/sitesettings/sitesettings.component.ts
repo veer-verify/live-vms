@@ -47,11 +47,12 @@ if(this.currentItem.type=='view'){
       designation: ['', Validators.required],
       priority: [null, Validators.required],
       contactNo: ['', [Validators.required, Validators.pattern(/^[0-9]{1,15}$/)]],
-      alternateContactNo: ['',Validators.maxLength(15)],
+      alternateContactNo: ['',Validators.pattern(/^[0-9]{1,15}$/)],
       days: [[], [Validators.minLength(1)]],
       startTime: [null, Validators.required],
       endTime: [null, Validators.required],
-    });
+    }
+  );
 
       this.smsForm = this.fb.group({
       priority: [null, Validators.required],
@@ -68,8 +69,46 @@ if(this.currentItem.type=='view'){
       description: [''],
     });
 
+  this.watchContactNumbers();
 
   }
+
+
+  watchContactNumbers(): void {
+  const contactCtrl = this.contactForm.get('contactNo');
+  const alternateCtrl = this.contactForm.get('alternateContactNo');
+
+  this.contactForm.valueChanges.subscribe(() => {
+    if (
+      contactCtrl?.value &&
+      alternateCtrl?.value &&
+      contactCtrl.value === alternateCtrl.value
+    ) {
+      alternateCtrl.setErrors({ sameContact: true });
+    } else {
+      if (alternateCtrl?.hasError('sameContact')) {
+        alternateCtrl.setErrors(null);
+      }
+    }
+  });
+}
+
+
+  setSelectForm(data: any) {
+  if (data.callFlag === 'T') {
+    this.selectform = 1;
+  }
+  else if (data.callFlag === 'F' && data.textFlag === 'T') {
+    this.selectform = 2;
+  }
+  else if (
+    data.callFlag === 'F' &&
+    data.textFlag === 'F' &&
+    data.lawEnforcementFlag === 'T'
+  ) {
+    this.selectform = 3;
+  }
+}
 
   siteconfig: any;
   getsiteInfo() {
@@ -78,6 +117,7 @@ if(this.currentItem.type=='view'){
       .subscribe((res: any) => {
         if (res?.statusCode == 200) {
           this.siteconfig = res.data;
+          this.setSelectForm(this.siteconfig);
         }
       });
   }
@@ -150,13 +190,14 @@ addOrUpdateContactCommon(
 
 AddSiteContact(): void {
 
- console.log('STATUS', this.contactForm.status);
-  console.log('ERRORS', this.contactForm.errors);
 
-  Object.keys(this.contactForm.controls).forEach(key => {
-    const c = this.contactForm.get(key);
-    console.log(key, c?.value, c?.status, c?.errors);
-  });
+    if (this.contactForm.value.contactNo && this.contactForm.value.alternateContactNo && this.contactForm.value.contactNo === this.contactForm.value.alternateContactNo) {
+    this.alaram.error(
+      "Contact number and alternate contact number cannot be the same"
+    );
+    return;
+  }
+
 
   if (this.contactForm.invalid || !this.contactForm.value.days ||
   this.contactForm.value.days.length === 0) {

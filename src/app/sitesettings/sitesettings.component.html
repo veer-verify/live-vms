@@ -1,4 +1,4 @@
-<ng-container *ngIf="currentItem.type=='add'">
+<ng-container *ngIf="currentItem.type=='add' && siteconfig && (siteconfig?.callFlag=='T' || siteconfig?.textFlag=='T' || siteconfig?.lawEnforcementFlag=='T')">
 
 
 <div class="p-2">
@@ -56,6 +56,9 @@
     <mat-form-field appearance="outline">
       <mat-label>Alternate Contact No</mat-label>
       <input matInput formControlName="alternateContactNo"  appTextAndNumberOnly/>
+       <mat-error *ngIf="contactForm.get('alternateContactNo')?.hasError('sameContact')">
+  Contact number and alternate contact number cannot be the same
+</mat-error>
     </mat-form-field>
 
     <!-- Days -->
@@ -385,7 +388,18 @@
 
 
 
+<ng-container *ngIf="currentItem.type=='add' && siteconfig && (siteconfig?.callFlag=='F' && siteconfig?.textFlag=='F' && siteconfig?.lawEnforcementFlag=='F')">
 
+
+  <div class="d-flex justify-content-between bg-light mb-2 p-1 gap-3" style="position: sticky; top: 0; font-size: 14px;">
+    <p>{{currentItem?.item.siteName}} - Site Settings </p>
+    <button mat-dialog-close class="closebtn m-0">x</button>
+  </div>
+  <div style="height: 300px;">
+
+    <p>Please configure the required site settings in the Actions section.</p>
+  </div>
+</ng-container>
 
 
 
