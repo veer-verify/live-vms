@@ -72,6 +72,19 @@ export class SitesettingsComponent {
     });
 
     this.watchContactNumbers();
+    this.handleEndTime(this.contactForm);
+    this.handleEndTime(this.smsForm);
+  }
+
+  handleEndTime(form: FormGroup): void {
+    const endTimeCtrl = form.get('endTime');
+
+    endTimeCtrl?.valueChanges.subscribe((value: string) => {
+      if (value === '00:00') {
+        // UI display
+        endTimeCtrl.setValue('23:00', { emitEvent: false });
+      }
+    });
   }
 
   watchContactNumbers(): void {
@@ -196,6 +209,7 @@ export class SitesettingsComponent {
     let timeline = contact.dayTimeLine.find((dt: any) =>
       this.areDaysSame(dt.days, selectedDays)
     );
+    console.log(timeline)
 
     if (timeline) {
       // 🔹 Add hours if not already present
@@ -238,8 +252,6 @@ export class SitesettingsComponent {
       this.contactsArray,
       'CONTACT'
     );
-
-    this.resetContactForm();
   }
 
   AddSmsContact(): void {
@@ -257,8 +269,6 @@ export class SitesettingsComponent {
       this.smsContactsArray,
       'SMS'
     );
-
-    this.resetSmsForm();
   }
 
   resetContactForm(): void {
@@ -292,12 +302,6 @@ export class SitesettingsComponent {
     }
 
     this.laweforce.push(this.enforcementform.value);
-
-    this.enforcementform.reset({
-      priority: null,
-      contact: '',
-      description: '',
-    });
   }
 
   areDaysSame(a: string[], b: string[]): boolean {
@@ -316,6 +320,7 @@ export class SitesettingsComponent {
         if (res.statusCode === 200) {
           this.alaram.success(res.message);
           this.contactsArray = [];
+          this.resetContactForm();
         } else {
           this.alaram.error(res.message);
         }
@@ -332,6 +337,7 @@ export class SitesettingsComponent {
         if (res.statusCode === 200) {
           this.alaram.success(res.message);
           this.smsContactsArray = [];
+          this.resetSmsForm();
         } else {
           this.alaram.error(res.message);
         }
@@ -348,6 +354,11 @@ export class SitesettingsComponent {
         if (res.statusCode === 200) {
           this.alaram.success(res.message);
           this.laweforce = [];
+          this.enforcementform.reset({
+            priority: null,
+            contact: '',
+            description: '',
+          });
         } else {
           this.alaram.error(res.message);
         }
