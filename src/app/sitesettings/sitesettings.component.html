@@ -49,13 +49,13 @@
     <!-- Contact No -->
     <mat-form-field appearance="outline">
       <mat-label>Contact No</mat-label>
-      <input matInput formControlName="contactNo"  appTextAndNumberOnly/>
+      <input matInput formControlName="contactNo"   maxlength="15" appTextAndNumberOnly/>
     </mat-form-field>
 
     <!-- Alternate Contact No -->
     <mat-form-field appearance="outline">
       <mat-label>Alternate Contact No</mat-label>
-      <input matInput formControlName="alternateContactNo"  appTextAndNumberOnly/>
+      <input matInput formControlName="alternateContactNo"   maxlength="15" appTextAndNumberOnly/>
        <mat-error *ngIf="contactForm.get('alternateContactNo')?.hasError('sameContact')">
   Contact number and alternate contact number cannot be the same
 </mat-error>
@@ -64,13 +64,23 @@
     <!-- Days -->
     <div class="checkbox-group">
       <label class="group-label">Days*</label>
-      <mat-checkbox *ngFor="let day of daysList" [checked]="contactForm.value.days.includes(day)" (change)="
-            $event.checked
-              ? contactForm.value.days.push(day)
-              : contactForm.value.days.splice(contactForm.value.days.indexOf(day), 1)
-          " color="primary">
-        {{ day }}
-      </mat-checkbox>
+
+      <mat-checkbox
+    color="primary"
+    [checked]="isAllSelected(contactForm)"
+    [indeterminate]="isIndeterminate(contactForm)"
+    (change)="toggleAllDays(contactForm, $event.checked)">
+    Select All
+  </mat-checkbox>
+
+    <mat-checkbox
+      *ngFor="let day of daysList"
+      color="primary"
+      [checked]="contactForm.controls['days'].value.includes(day)"
+      (change)="toggleDay(contactForm, day, $event.checked)">
+      {{ day }}
+    </mat-checkbox>
+
     </div>
 
     <!-- Hours -->
@@ -169,7 +179,7 @@
      <!-- Contact No -->
      <mat-form-field appearance="outline">
        <mat-label>Contact No</mat-label>
-       <input matInput formControlName="contactNo"  appTextAndNumberOnly/>
+       <input matInput formControlName="contactNo"   maxlength="15"  appTextAndNumberOnly/>
       </mat-form-field>
 
       <!-- Priority -->
@@ -187,27 +197,28 @@
       </mat-select>
     </mat-form-field>
 
-
-     <!-- Remarks -->
-    <mat-form-field appearance="outline">
-      <mat-label>Remarks</mat-label>
-      <input matInput formControlName="remarks" />
-    </mat-form-field>
-
-
     <!-- Days -->
-    <div class="checkbox-group">
-      <label class="group-label">Days*</label>
-      <mat-checkbox *ngFor="let day of daysList" [checked]="smsForm.value.days.includes(day)" (change)="
-            $event.checked
-              ? smsForm.value.days.push(day)
-              : smsForm.value.days.splice(smsForm.value.days.indexOf(day), 1)
-          " color="primary">
-        {{ day }}
-      </mat-checkbox>
-    </div>
 
-    <!-- Hours -->
+ <div class="checkbox-group">
+      <label class="group-label">Days*</label>
+       <mat-checkbox
+          color="primary"
+          [checked]="isAllSelected(smsForm)"
+          [indeterminate]="isIndeterminate(smsForm)"
+          (change)="toggleAllDays(smsForm, $event.checked)">
+          Select All
+        </mat-checkbox>
+
+
+          <mat-checkbox
+            *ngFor="let day of daysList"
+            color="primary"
+            [checked]="smsForm.controls['days'].value.includes(day)"
+            (change)="toggleDay(smsForm, day, $event.checked)">
+            {{ day }}
+          </mat-checkbox>
+          </div>
+     <!-- Hours -->
 
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>StartTime</mat-label>
@@ -222,6 +233,16 @@
         [format]="24">
       <ngx-mat-timepicker #picker1 [hoursOnly]="true" [enableKeyboardInput]="true"></ngx-mat-timepicker>
     </mat-form-field>
+
+
+     <!-- Remarks -->
+    <mat-form-field appearance="outline">
+      <mat-label>Remarks</mat-label>
+      <input matInput formControlName="remarks" />
+    </mat-form-field>
+
+
+
 
 
      <button mat-raised-button color="primary" type="button" (click)="AddSmsContact()">
@@ -253,7 +274,7 @@
            <ng-container *ngFor="let contact of smsContactsArray; let cIndex = index">
              <tr *ngFor="let timeline of contact.dayTimeLine; let tIndex = index">
 
-               <td>{{ contact.contactNo }}</td>
+               <td>{{ contact.dotComNo }}</td>
                <td>{{ contact.priority }}</td>
 
                <td>{{ timeline.days.join(', ') }}</td>
@@ -303,7 +324,7 @@
     <!-- Contact No -->
     <mat-form-field appearance="outline">
       <mat-label>Contact No</mat-label>
-      <input matInput formControlName="contact" appTextAndNumberOnly />
+      <input matInput formControlName="contact" maxlength="15" appTextAndNumberOnly />
     </mat-form-field>
 
 

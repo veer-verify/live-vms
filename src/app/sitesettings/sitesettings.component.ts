@@ -94,6 +94,43 @@ if(this.currentItem.type=='view'){
 }
 
 
+
+
+
+toggleDay(form: FormGroup, day: string, checked: boolean): void {
+  const control = form.get('days');
+  const days = [...control?.value];
+
+  if (checked && !days.includes(day)) {
+    days.push(day);
+  }
+
+  if (!checked) {
+    const index = days.indexOf(day);
+    if (index > -1) {
+      days.splice(index, 1);
+    }
+  }
+
+  control?.setValue(days);
+}
+
+toggleAllDays(form: FormGroup, checked: boolean): void {
+  const control = form.get('days') ;
+  control?.setValue(checked ? [...this.daysList] : []);
+}
+
+isAllSelected(form: FormGroup): boolean {
+  const days = (form.get('days'))?.value;
+  return days.length === this.daysList.length;
+}
+
+isIndeterminate(form: FormGroup): boolean {
+  const days = (form.get('days') )?.value;
+  return days.length > 0 && days.length < this.daysList.length;
+}
+
+
   setSelectForm(data: any) {
   if (data.callFlag === 'T') {
     this.selectform = 1;
