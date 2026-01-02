@@ -1,302 +1,286 @@
-<ng-container *ngIf="currentItem.type=='add' && siteconfig && (siteconfig?.callFlag=='T' || siteconfig?.textFlag=='T' || siteconfig?.lawEnforcementFlag=='T')">
+<ng-container
+  *ngIf="currentItem.type=='add' && siteconfig && (siteconfig?.callFlag=='T' || siteconfig?.textFlag=='T' || siteconfig?.lawEnforcementFlag=='T')">
 
 
-<div class="p-2">
-  <div class="d-flex justify-content-between bg-light mb-2 p-1" style="position: sticky; top: 0; font-size: 14px;">
-    <p>{{currentItem?.item.siteName}} - Site Settings </p>
-    <button mat-dialog-close class="closebtn m-0">x</button>
-  </div>
-
-   <mat-radio-group [(ngModel)]="selectform" color="primary" class="radio-row" >
-      <mat-radio-button [value]="1"  *ngIf="siteconfig?.callFlag === 'T'">Site Contacts</mat-radio-button>
-      <mat-radio-button [value]="2"    *ngIf="siteconfig?.textFlag === 'T'">800.com</mat-radio-button>
-       <mat-radio-button [value]="3"  *ngIf="siteconfig?.lawEnforcementFlag === 'T'">Law enforcement</mat-radio-button>
-    </mat-radio-group>
-
-</div>
-
-<div *ngIf="selectform==1 && siteconfig?.callFlag=='T'">
-
-  <form [formGroup]="contactForm" class="form-container">
-
-    <!-- Name -->
-    <mat-form-field appearance="outline">
-      <mat-label>Name</mat-label>
-      <input matInput formControlName="name" />
-    </mat-form-field>
-
-    <!-- Designation -->
-    <mat-form-field appearance="outline">
-      <mat-label>Designation</mat-label>
-      <input matInput formControlName="designation" />
-    </mat-form-field>
-
-    <!-- Priority -->
-    <mat-form-field appearance="outline">
-      <mat-label>Priority</mat-label>
-      <mat-select formControlName="priority">
-        <mat-option [value]="1">1</mat-option>
-        <mat-option [value]="2">2</mat-option>
-        <mat-option [value]="3">3</mat-option>
-        <mat-option [value]="4">4</mat-option>
-        <mat-option [value]="5">5</mat-option>
-        <mat-option [value]="6">6</mat-option>
-        <mat-option [value]="7">7</mat-option>
-        <mat-option [value]="8">8</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <!-- Contact No -->
-    <mat-form-field appearance="outline">
-      <mat-label>Contact No</mat-label>
-      <input matInput formControlName="contactNo"   maxlength="15" appTextAndNumberOnly/>
-    </mat-form-field>
-
-    <!-- Alternate Contact No -->
-    <mat-form-field appearance="outline">
-      <mat-label>Alternate Contact No</mat-label>
-      <input matInput formControlName="alternateContactNo"   maxlength="15" appTextAndNumberOnly/>
-       <mat-error *ngIf="contactForm.get('alternateContactNo')?.hasError('sameContact')">
-  Contact number and alternate contact number cannot be the same
-</mat-error>
-    </mat-form-field>
-
-    <!-- Days -->
-    <div class="checkbox-group">
-      <label class="group-label">Days*</label>
-
-      <mat-checkbox
-    color="primary"
-    [checked]="isAllSelected(contactForm)"
-    [indeterminate]="isIndeterminate(contactForm)"
-    (change)="toggleAllDays(contactForm, $event.checked)">
-    Select All
-  </mat-checkbox>
-
-    <mat-checkbox
-      *ngFor="let day of daysList"
-      color="primary"
-      [checked]="contactForm.controls['days'].value.includes(day)"
-      (change)="toggleDay(contactForm, day, $event.checked)">
-      {{ day }}
-    </mat-checkbox>
-
+  <div class="p-2">
+    <div class="d-flex justify-content-between bg-light mb-2 p-1" style="position: sticky; top: 0; font-size: 14px;">
+      <p>{{currentItem?.item.siteName}} - Site Settings </p>
+      <button mat-dialog-close class="closebtn m-0">x</button>
     </div>
 
-    <!-- Hours -->
+    <mat-radio-group [(ngModel)]="selectform" color="primary" class="radio-row">
+      <mat-radio-button [value]="1" *ngIf="siteconfig?.callFlag === 'T'">Site Contacts</mat-radio-button>
+      <mat-radio-button [value]="2" *ngIf="siteconfig?.textFlag === 'T'">800.com</mat-radio-button>
+      <mat-radio-button [value]="3" *ngIf="siteconfig?.lawEnforcementFlag === 'T'">Law enforcement</mat-radio-button>
+    </mat-radio-group>
 
-    <mat-form-field appearance="outline" class="w-100">
-      <mat-label>StartTime</mat-label>
-      <input matInput formControlName="startTime"  [ngxMatTimepicker]="picker"
-        [format]="24">
-      <ngx-mat-timepicker #picker [hoursOnly]="true" [enableKeyboardInput]="true"></ngx-mat-timepicker>
-    </mat-form-field>
+  </div>
 
-    <mat-form-field appearance="outline" class="w-100">
-      <mat-label>endTime</mat-label>
-      <input matInput formControlName="endTime"  [ngxMatTimepicker]="picker1"
-        [format]="24">
-      <ngx-mat-timepicker #picker1 [hoursOnly]="true" [enableKeyboardInput]="true"></ngx-mat-timepicker>
-    </mat-form-field>
+  <div *ngIf="selectform==1 && siteconfig?.callFlag=='T'">
 
+    <form [formGroup]="contactForm" class="form-container">
 
+      <!-- Name -->
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
 
-    <button mat-raised-button color="primary" type="button" (click)="AddSiteContact()">
-      Add
-    </button>
-
-
-
-    <button mat-raised-button color="primary" mat-dialog-close type="button" (click)="submitsiteContact()" [disabled]="contactsArray.length==0">
-      Submit
-    </button>
-  </form>
-
-  <div *ngIf="contactsArray.length != 0" class="table-wrapper">
-
-     <table class="table table-striped table-bordered">
-       <thead>
-         <tr>
-           <th>Name</th>
-           <th>Designation</th>
-           <th>Priority</th>
-           <th>Contact No</th>
-           <th>Alternate No</th>
-           <th>Days</th>
-           <th>Hours</th>
-           <th>Action</th>
-         </tr>
-       </thead>
-
-       <tbody>
-         <ng-container *ngFor="let contact of contactsArray; let cIndex = index">
-           <tr *ngFor="let timeline of contact.dayTimeLine; let tIndex = index">
-             <td>{{ contact.name }}</td>
-             <td>{{ contact.designation }}</td>
-             <td>{{ contact.priority }}</td>
-             <td>{{ contact.contactNo }}</td>
-             <td>{{ contact.alternateContactNo || '-' }}</td>
-             <td>{{ timeline.days.join(', ') }}</td>
-             <td>{{ timeline.hours.join(', ') }}</td>
-             <td>
-               <button
-                 class="btn btn-sm btn-danger"
-                 (click)="deleteTimeline(contactsArray,cIndex, tIndex)">
-                 Delete
-               </button>
-             </td>
-           </tr>
-         </ng-container>
-       </tbody>
-
-     </table>
-   </div>
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div *ngIf="selectform==2 && siteconfig?.textFlag=='T'">
-
-   <form [formGroup]="smsForm" class="form-container">
-
-
-     <!-- Contact No -->
-     <mat-form-field appearance="outline">
-       <mat-label>Contact No</mat-label>
-       <input matInput formControlName="contactNo"   maxlength="15"  appTextAndNumberOnly/>
+      <!-- Designation -->
+      <mat-form-field appearance="outline">
+        <mat-label>Designation</mat-label>
+        <input matInput formControlName="designation" />
       </mat-form-field>
 
       <!-- Priority -->
-    <mat-form-field appearance="outline">
-      <mat-label>Priority</mat-label>
-      <mat-select formControlName="priority">
-        <mat-option [value]="1">1</mat-option>
-        <mat-option [value]="2">2</mat-option>
-        <mat-option [value]="3">3</mat-option>
-        <mat-option [value]="4">4</mat-option>
-        <mat-option [value]="5">5</mat-option>
-        <mat-option [value]="6">6</mat-option>
-        <mat-option [value]="7">7</mat-option>
-        <mat-option [value]="8">8</mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Priority</mat-label>
+        <mat-select formControlName="priority">
+          <mat-option [value]="1">1</mat-option>
+          <mat-option [value]="2">2</mat-option>
+          <mat-option [value]="3">3</mat-option>
+          <mat-option [value]="4">4</mat-option>
+          <mat-option [value]="5">5</mat-option>
+          <mat-option [value]="6">6</mat-option>
+          <mat-option [value]="7">7</mat-option>
+          <mat-option [value]="8">8</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <!-- Days -->
+      <!-- Contact No -->
+      <mat-form-field appearance="outline">
+        <mat-label>Contact No</mat-label>
+        <input matInput formControlName="contactNo" maxlength="15" appTextAndNumberOnly />
+      </mat-form-field>
 
- <div class="checkbox-group">
-      <label class="group-label">Days*</label>
-       <mat-checkbox
-          color="primary"
-          [checked]="isAllSelected(smsForm)"
-          [indeterminate]="isIndeterminate(smsForm)"
+      <!-- Alternate Contact No -->
+      <mat-form-field appearance="outline">
+        <mat-label>Alternate Contact No</mat-label>
+        <input matInput formControlName="alternateContactNo" maxlength="15" appTextAndNumberOnly />
+        <mat-error *ngIf="contactForm.get('alternateContactNo')?.hasError('sameContact')">
+          Contact number and alternate contact number cannot be the same
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Days -->
+      <div class="checkbox-group">
+        <label class="group-label">Days*</label>
+
+        <mat-checkbox color="primary" [checked]="isAllSelected(contactForm)"
+          [indeterminate]="isIndeterminate(contactForm)" (change)="toggleAllDays(contactForm, $event.checked)">
+          Select All
+        </mat-checkbox>
+
+        <mat-checkbox *ngFor="let day of daysList" color="primary"
+          [checked]="contactForm.controls['days'].value.includes(day)"
+          (change)="toggleDay(contactForm, day, $event.checked)">
+          {{ day }}
+        </mat-checkbox>
+
+      </div>
+
+      <!-- Hours -->
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>StartTime</mat-label>
+        <input matInput formControlName="startTime" [ngxMatTimepicker]="picker" [format]="24">
+        <ngx-mat-timepicker #picker [hoursOnly]="true" [enableKeyboardInput]="true"></ngx-mat-timepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>endTime</mat-label>
+        <input matInput formControlName="endTime" [ngxMatTimepicker]="picker1" [format]="24">
+        <ngx-mat-timepicker #picker1 [hoursOnly]="true" [enableKeyboardInput]="true"></ngx-mat-timepicker>
+      </mat-form-field>
+
+
+
+      <button mat-raised-button color="primary" type="button" (click)="AddSiteContact()">
+        Add
+      </button>
+
+
+
+      <button mat-raised-button color="primary" mat-dialog-close type="button" (click)="submitsiteContact()"
+        [disabled]="contactsArray.length==0">
+        Submit
+      </button>
+    </form>
+
+    <div *ngIf="contactsArray.length != 0" class="table-wrapper">
+
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Designation</th>
+            <th>Priority</th>
+            <th>Contact No</th>
+            <th>Alternate No</th>
+            <th>Days</th>
+            <th>Hours</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <ng-container *ngFor="let contact of contactsArray; let cIndex = index">
+            <tr *ngFor="let timeline of contact.dayTimeLine; let tIndex = index">
+              <td>{{ contact.name }}</td>
+              <td>{{ contact.designation }}</td>
+              <td>{{ contact.priority }}</td>
+              <td>{{ contact.contactNo }}</td>
+              <td>{{ contact.alternateContactNo || '-' }}</td>
+              <td>{{ timeline.days.join(', ') }}</td>
+              <td>{{ timeline.hours.join(', ') }}</td>
+              <td>
+                <button class="btn btn-sm btn-danger" (click)="deleteTimeline(contactsArray,cIndex, tIndex)">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+
+      </table>
+    </div>
+
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div *ngIf="selectform==2 && siteconfig?.textFlag=='T'">
+
+    <form [formGroup]="smsForm" class="form-container">
+
+
+      <!-- Contact No -->
+      <mat-form-field appearance="outline">
+        <mat-label>Contact No</mat-label>
+        <input matInput formControlName="contactNo" maxlength="15" appTextAndNumberOnly />
+      </mat-form-field>
+
+      <!-- Priority -->
+      <mat-form-field appearance="outline">
+        <mat-label>Priority</mat-label>
+        <mat-select formControlName="priority">
+          <mat-option [value]="1">1</mat-option>
+          <mat-option [value]="2">2</mat-option>
+          <mat-option [value]="3">3</mat-option>
+          <mat-option [value]="4">4</mat-option>
+          <mat-option [value]="5">5</mat-option>
+          <mat-option [value]="6">6</mat-option>
+          <mat-option [value]="7">7</mat-option>
+          <mat-option [value]="8">8</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Days -->
+
+      <div class="checkbox-group">
+        <label class="group-label">Days*</label>
+        <mat-checkbox color="primary" [checked]="isAllSelected(smsForm)" [indeterminate]="isIndeterminate(smsForm)"
           (change)="toggleAllDays(smsForm, $event.checked)">
           Select All
         </mat-checkbox>
 
 
-          <mat-checkbox
-            *ngFor="let day of daysList"
-            color="primary"
-            [checked]="smsForm.controls['days'].value.includes(day)"
-            (change)="toggleDay(smsForm, day, $event.checked)">
-            {{ day }}
-          </mat-checkbox>
-          </div>
-     <!-- Hours -->
+        <mat-checkbox *ngFor="let day of daysList" color="primary"
+          [checked]="smsForm.controls['days'].value.includes(day)" (change)="toggleDay(smsForm, day, $event.checked)">
+          {{ day }}
+        </mat-checkbox>
+      </div>
+      <!-- Hours -->
 
-    <mat-form-field appearance="outline" class="w-100">
-      <mat-label>StartTime</mat-label>
-      <input matInput formControlName="startTime"  [ngxMatTimepicker]="picker"
-        [format]="24">
-      <ngx-mat-timepicker #picker [hoursOnly]="true" [enableKeyboardInput]="true"></ngx-mat-timepicker>
-    </mat-form-field>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>StartTime</mat-label>
+        <input matInput formControlName="startTime" [ngxMatTimepicker]="picker" [format]="24">
+        <ngx-mat-timepicker #picker [hoursOnly]="true" [enableKeyboardInput]="true"></ngx-mat-timepicker>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" class="w-100">
-      <mat-label>endTime</mat-label>
-      <input matInput formControlName="endTime"  [ngxMatTimepicker]="picker1"
-        [format]="24">
-      <ngx-mat-timepicker #picker1 [hoursOnly]="true" [enableKeyboardInput]="true"></ngx-mat-timepicker>
-    </mat-form-field>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>endTime</mat-label>
+        <input matInput formControlName="endTime" [ngxMatTimepicker]="picker1" [format]="24">
+        <ngx-mat-timepicker #picker1 [hoursOnly]="true" [enableKeyboardInput]="true"></ngx-mat-timepicker>
+      </mat-form-field>
 
 
-     <!-- Remarks -->
-    <mat-form-field appearance="outline">
-      <mat-label>Remarks</mat-label>
-      <input matInput formControlName="remarks" />
-    </mat-form-field>
+      <!-- Remarks -->
+      <mat-form-field appearance="outline">
+        <mat-label>Remarks</mat-label>
+        <input matInput formControlName="remarks" />
+      </mat-form-field>
 
 
 
 
 
-     <button mat-raised-button color="primary" type="button" (click)="AddSmsContact()">
-      Add
-    </button>
+      <button mat-raised-button color="primary" type="button" (click)="AddSmsContact()">
+        Add
+      </button>
 
-    <button mat-raised-button color="primary" type="button" mat-dialog-close (click)="submitsmsContact()" [disabled]="smsContactsArray.length==0">
-      Submit
-    </button>
+      <button mat-raised-button color="primary" type="button" mat-dialog-close (click)="submitsmsContact()"
+        [disabled]="smsContactsArray.length==0">
+        Submit
+      </button>
 
-  </form>
+    </form>
 
-      <div *ngIf="smsContactsArray.length != 0" class="table-wrapper">
+    <div *ngIf="smsContactsArray.length != 0" class="table-wrapper">
 
-       <table class="table table-striped table-bordered">
-         <thead>
-           <tr>
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
 
-             <th>Contact No</th>
-             <th>Priority</th>
+            <th>Contact No</th>
+            <th>Priority</th>
 
-             <th>Days</th>
-             <th>Hours</th>
-             <th>Action</th>
-           </tr>
-         </thead>
+            <th>Days</th>
+            <th>Hours</th>
+            <th>Action</th>
+          </tr>
+        </thead>
 
-         <tbody>
-           <ng-container *ngFor="let contact of smsContactsArray; let cIndex = index">
-             <tr *ngFor="let timeline of contact.dayTimeLine; let tIndex = index">
+        <tbody>
+          <ng-container *ngFor="let contact of smsContactsArray; let cIndex = index">
+            <tr *ngFor="let timeline of contact.dayTimeLine; let tIndex = index">
 
-               <td>{{ contact.dotComNo }}</td>
-               <td>{{ contact.priority }}</td>
+              <td>{{ contact.dotComNo }}</td>
+              <td>{{ contact.priority }}</td>
 
-               <td>{{ timeline.days.join(', ') }}</td>
-               <td>{{ timeline.hours.join(', ') }}</td>
-               <td>
-                 <button
-                   class="btn btn-sm btn-danger"
-                   (click)="deleteTimeline(smsContactsArray,cIndex, tIndex)">
-                   Delete
-                 </button>
-               </td>
-             </tr>
-           </ng-container>
-         </tbody>
+              <td>{{ timeline.days.join(', ') }}</td>
+              <td>{{ timeline.hours.join(', ') }}</td>
+              <td>
+                <button class="btn btn-sm btn-danger" (click)="deleteTimeline(smsContactsArray,cIndex, tIndex)">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
 
-       </table>
-     </div>
-
+      </table>
+    </div>
 
 
 
-</div>
+
+  </div>
 
 
 
@@ -317,90 +301,89 @@
 
 
 
-<div *ngIf="selectform==3 && siteconfig?.lawEnforcementFlag=='T'">
+  <div *ngIf="selectform==3 && siteconfig?.lawEnforcementFlag=='T'">
 
-  <form [formGroup]="enforcementform" class="form-container">
+    <form [formGroup]="enforcementform" class="form-container">
 
-    <!-- Contact No -->
-    <mat-form-field appearance="outline">
-      <mat-label>Contact No</mat-label>
-      <input matInput formControlName="contact" maxlength="15" appTextAndNumberOnly />
-    </mat-form-field>
-
-
-    <!-- Priority -->
-    <mat-form-field appearance="outline">
-      <mat-label>Priority</mat-label>
-      <mat-select formControlName="priority">
-        <mat-option [value]="1">1</mat-option>
-        <mat-option [value]="2">2</mat-option>
-        <mat-option [value]="3">3</mat-option>
-        <mat-option [value]="4">4</mat-option>
-        <mat-option [value]="5">5</mat-option>
-        <mat-option [value]="6">6</mat-option>
-        <mat-option [value]="7">7</mat-option>
-        <mat-option [value]="8">8</mat-option>
-      </mat-select>
-    </mat-form-field>
+      <!-- Contact No -->
+      <mat-form-field appearance="outline">
+        <mat-label>Contact No</mat-label>
+        <input matInput formControlName="contact" maxlength="15" appTextAndNumberOnly />
+      </mat-form-field>
 
 
+      <!-- Priority -->
+      <mat-form-field appearance="outline">
+        <mat-label>Priority</mat-label>
+        <mat-select formControlName="priority">
+          <mat-option [value]="1">1</mat-option>
+          <mat-option [value]="2">2</mat-option>
+          <mat-option [value]="3">3</mat-option>
+          <mat-option [value]="4">4</mat-option>
+          <mat-option [value]="5">5</mat-option>
+          <mat-option [value]="6">6</mat-option>
+          <mat-option [value]="7">7</mat-option>
+          <mat-option [value]="8">8</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-     <!-- Remarks -->
-    <mat-form-field appearance="outline">
-      <mat-label>Description</mat-label>
-      <input matInput formControlName="description" />
-    </mat-form-field>
+
+
+      <!-- Remarks -->
+      <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <input matInput formControlName="description" />
+      </mat-form-field>
 
 
       <button mat-raised-button color="primary" type="button" (click)="Addlaw()">
-      Add
-    </button>
+        Add
+      </button>
 
 
 
-    <button mat-raised-button color="primary" type="button" mat-dialog-close (click)="submitlaw()" [disabled]="laweforce.length==0">
-      Submit
-    </button>
+      <button mat-raised-button color="primary" type="button" mat-dialog-close (click)="submitlaw()"
+        [disabled]="laweforce.length==0">
+        Submit
+      </button>
 
-  </form>
+    </form>
 
-  <div *ngIf="laweforce.length != 0" class="table-wrapper">
+    <div *ngIf="laweforce.length != 0" class="table-wrapper">
 
-    <table class="table table-striped table-bordered">
-      <thead>
-        <tr>
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
 
-          <th>Contact No</th>
-          <th>Priority</th>
-          <th>Description</th>
-          <th>Action</th>
-        </tr>
-      </thead>
+            <th>Contact No</th>
+            <th>Priority</th>
+            <th>Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
 
-      <tbody>
-        <ng-container *ngFor="let contact of laweforce; let cIndex = index">
+        <tbody>
+          <ng-container *ngFor="let contact of laweforce; let cIndex = index">
 
             <tr>
 
               <td>{{ contact.contact }}</td>
               <td>{{ contact.priority }}</td>
-               <td>{{ contact.description|| '-'  }}</td>
+              <td>{{ contact.description|| '-' }}</td>
 
               <td>
-                <button
-                  class="btn btn-sm btn-danger"
-                  (click)="deletelawenforce(cIndex)">
+                <button class="btn btn-sm btn-danger" (click)="deletelawenforce(cIndex)">
                   Delete
                 </button>
               </td>
             </tr>
-        </ng-container>
-      </tbody>
+          </ng-container>
+        </tbody>
 
-    </table>
+      </table>
+    </div>
+
   </div>
-
-</div>
 
 
 
@@ -409,10 +392,12 @@
 
 
 
-<ng-container *ngIf="currentItem.type=='add' && siteconfig && (siteconfig?.callFlag=='F' && siteconfig?.textFlag=='F' && siteconfig?.lawEnforcementFlag=='F')">
+<ng-container
+  *ngIf="currentItem.type=='add' && siteconfig && (siteconfig?.callFlag=='F' && siteconfig?.textFlag=='F' && siteconfig?.lawEnforcementFlag=='F')">
 
 
-  <div class="d-flex justify-content-between bg-light mb-2 p-1 gap-3" style="position: sticky; top: 0; font-size: 14px;">
+  <div class="d-flex justify-content-between bg-light mb-2 p-1 gap-3"
+    style="position: sticky; top: 0; font-size: 14px;">
     <p>{{currentItem?.item.siteName}} - Site Settings </p>
     <button mat-dialog-close class="closebtn m-0">x</button>
   </div>
@@ -454,134 +439,134 @@
 
 <ng-container *ngIf="currentItem.type=='view'">
 
-<div  style="height: 500px;overflow-y: auto;padding: 0 10px;">
+  <div style="height: 500px;overflow-y: auto;padding: 0 10px;">
 
-  <div class="d-flex justify-content-between bg-light mb-2 p-1" style="position: sticky; top: 0; font-size: 14px;z-index: 9;">
-    <p>{{currentItem?.item.siteName}} - Site Details </p>
-    <button mat-dialog-close class="closebtn m-0">x</button>
+    <div class="d-flex justify-content-between bg-light mb-2 p-1"
+      style="position: sticky; top: 0; font-size: 14px;z-index: 9;">
+      <p>{{currentItem?.item.siteName}} - Site Details </p>
+      <button mat-dialog-close class="closebtn m-0">x</button>
+    </div>
+
+
+    <h4>Site Contacts</h4>
+
+    <div class="table-wrap">
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Designation</th>
+            <th>Contact No</th>
+            <th>Days</th>
+            <th>Hours</th>
+            <th>Priority</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let c of siteContacts; let i = index">
+            <td>{{ c.name }}</td>
+            <td>{{ c.designation }}</td>
+            <td>{{ c.contactNo }}</td>
+            <td>{{ formatArray(c.contactDays) }}</td>
+            <td>{{ formatArray(c.contactHours) }}</td>
+            <td>{{ c.callPriority }}</td>
+            <td>
+              <button class="btn btn-danger btn-sm" (click)="deleteSiteContact(c)">
+                Delete
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="siteContacts.length === 0">
+            <td colspan="7" class="text-center">No contacts found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+
+
+    <h4 class="mt-4">SMS Contacts</h4>
+
+    <div class="table-wrap">
+
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Contact</th>
+            <th>Priority</th>
+            <th>Days</th>
+            <th>Hours</th>
+            <th>Cameras</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let s of smsContactlist; let i = index">
+            <td>{{ s['800dotComNo'] }}</td>
+            <td>{{ s.textPriority }}</td>
+            <td>{{ formatArray(s.smsDays) }}</td>
+            <td>{{ formatArray(s.smsHours) }}</td>
+            <td>{{ s.cameras }}</td>
+            <td>
+              <button class="btn btn-danger btn-sm" (click)="deleteSmsContact(s)">
+                Delete
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="smsContactlist.length === 0">
+            <td colspan="6" class="text-center">No SMS records</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+
+
+
+
+    <h4 class="mt-4">Law Enforcement</h4>
+
+    <div class="table-wrap">
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Contact</th>
+            <th>Priority</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let l of lawEnforcementList; let i = index">
+            <td>{{ l.lawEnforcementDescription || 'N/A' }}</td>
+            <td>{{ l.lawEnforcementContact }}</td>
+            <td>{{ l.lawEnforcementPriority }}</td>
+            <td>
+              <button class="btn btn-danger btn-sm" (click)="deleteLawEnforcement(l)">
+                Delete
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="lawEnforcementList.length === 0">
+            <td colspan="4" class="text-center">No law enforcement records</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
   </div>
 
-
-<h4>Site Contacts</h4>
-
-<div class="table-wrap">
-
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Designation</th>
-        <th>Contact No</th>
-        <th>Days</th>
-        <th>Hours</th>
-        <th>Priority</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let c of siteContacts; let i = index">
-        <td>{{ c.name }}</td>
-        <td>{{ c.designation }}</td>
-        <td>{{ c.contactNo }}</td>
-        <td>{{ formatArray(c.contactDays) }}</td>
-        <td>{{ formatArray(c.contactHours) }}</td>
-        <td>{{ c.callPriority }}</td>
-        <td>
-          <button class="btn btn-danger btn-sm" (click)="deleteSiteContact(c)">
-            Delete
-          </button>
-        </td>
-      </tr>
-
-      <tr *ngIf="siteContacts.length === 0">
-        <td colspan="7" class="text-center">No contacts found</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-
-
-
-<h4 class="mt-4">SMS Contacts</h4>
-
-<div class="table-wrap">
-
-
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Contact</th>
-        <th>Priority</th>
-        <th>Days</th>
-        <th>Hours</th>
-        <th>Cameras</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let s of smsContactlist; let i = index">
-        <td>{{ s['800dotComNo'] }}</td>
-        <td>{{ s.textPriority }}</td>
-        <td>{{ formatArray(s.smsDays) }}</td>
-        <td>{{ formatArray(s.smsHours) }}</td>
-        <td>{{ s.cameras }}</td>
-        <td>
-          <button class="btn btn-danger btn-sm" (click)="deleteSmsContact(s)">
-            Delete
-          </button>
-        </td>
-      </tr>
-
-      <tr *ngIf="smsContactlist.length === 0">
-        <td colspan="6" class="text-center">No SMS records</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-
-
-
-
-
-<h4 class="mt-4">Law Enforcement</h4>
-
-<div class="table-wrap">
-
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Description</th>
-        <th>Contact</th>
-        <th>Priority</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let l of lawEnforcementList; let i = index">
-        <td>{{ l.lawEnforcementDescription || 'N/A' }}</td>
-        <td>{{ l.lawEnforcementContact }}</td>
-        <td>{{ l.lawEnforcementPriority }}</td>
-        <td>
-          <button class="btn btn-danger btn-sm" (click)="deleteLawEnforcement(l)">
-            Delete
-          </button>
-        </td>
-      </tr>
-
-      <tr *ngIf="lawEnforcementList.length === 0">
-        <td colspan="4" class="text-center">No law enforcement records</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-
-</div>
-
 </ng-container>
-
