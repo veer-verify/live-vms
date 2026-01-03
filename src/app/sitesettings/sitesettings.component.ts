@@ -312,7 +312,20 @@ export class SitesettingsComponent {
       return;
     }
 
-    this.laweforce.push(this.enforcementform.value);
+
+const formValue = this.enforcementform.value;
+
+const contactExists = this.laweforce.find(
+  (c: any) => c.contact === formValue.contact
+);
+
+if (contactExists) {
+  this.alaram.error('Contact already exists');
+  return;
+}
+
+this.laweforce.push(formValue);
+
   }
 
   areDaysSame(a: string[], b: string[]): boolean {

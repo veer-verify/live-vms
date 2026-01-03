@@ -10,7 +10,12 @@
 mat-form-field {
   width: 100%;
 }
-
+.wrap-text {
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+  max-width: 200px;
+}
 .checkbox-group {
 flex-wrap: wrap;
  grid-column: span 2;

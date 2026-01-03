@@ -126,13 +126,13 @@
         <tbody>
           <ng-container *ngFor="let contact of contactsArray; let cIndex = index">
             <tr *ngFor="let timeline of contact.dayTimeLine; let tIndex = index">
-              <td>{{ contact.name }}</td>
-              <td>{{ contact.designation }}</td>
-              <td>{{ contact.priority }}</td>
-              <td>{{ contact.contactNo }}</td>
-              <td>{{ contact.alternateContactNo || '-' }}</td>
-              <td>{{ timeline.days.join(', ') }}</td>
-              <td>{{ timeline.hours.join(', ') }}</td>
+              <td class="wrap-text">{{ contact.name }}</td>
+              <td class="wrap-text">{{ contact.designation }}</td>
+              <td class="wrap-text">{{ contact.priority }}</td>
+              <td class="wrap-text">{{ contact.contactNo }}</td>
+              <td class="wrap-text">{{ contact.alternateContactNo || '-' }}</td>
+              <td class="wrap-text">{{ timeline.days.join(', ') }}</td>
+              <td class="wrap-text">{{ timeline.hours.join(', ') }}</td>
               <td>
                 <button class="btn btn-sm btn-danger" (click)="deleteTimeline(contactsArray,cIndex, tIndex)">
                   Delete
@@ -252,6 +252,7 @@
 
             <th>Days</th>
             <th>Hours</th>
+             <th>Remarks</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -260,11 +261,12 @@
           <ng-container *ngFor="let contact of smsContactsArray; let cIndex = index">
             <tr *ngFor="let timeline of contact.dayTimeLine; let tIndex = index">
 
-              <td>{{ contact.dotComNo }}</td>
-              <td>{{ contact.priority }}</td>
+              <td class="wrap-text">{{ contact.dotComNo }}</td>
+              <td class="wrap-text">{{ contact.priority }}</td>
 
-              <td>{{ timeline.days.join(', ') }}</td>
-              <td>{{ timeline.hours.join(', ') }}</td>
+              <td class="wrap-text">{{ timeline.days.join(', ') }}</td>
+              <td class="wrap-text">{{ timeline.hours.join(', ') }}</td>
+              <td class="wrap-text">{{ contact.remarks }}</td>
               <td>
                 <button class="btn btn-sm btn-danger" (click)="deleteTimeline(smsContactsArray,cIndex, tIndex)">
                   Delete
@@ -367,9 +369,9 @@
 
             <tr>
 
-              <td>{{ contact.contact }}</td>
-              <td>{{ contact.priority }}</td>
-              <td>{{ contact.description|| '-' }}</td>
+              <td class="wrap-text">{{ contact.contact }}</td>
+              <td class="wrap-text">{{ contact.priority }}</td>
+              <td class="wrap-text">{{ contact.description|| '-' }}</td>
 
               <td>
                 <button class="btn btn-sm btn-danger" (click)="deletelawenforce(cIndex)">
@@ -467,11 +469,11 @@
 
         <tbody>
           <tr *ngFor="let c of siteContacts; let i = index">
-            <td>{{ c.name }}</td>
-            <td>{{ c.designation }}</td>
-            <td>{{ c.contactNo }}</td>
-            <td>{{ formatArray(c.contactDays) }}</td>
-            <td>{{ formatArray(c.contactHours) }}</td>
+            <td class="wrap-text">{{ c.name }}</td>
+            <td class="wrap-text">{{ c.designation }}</td>
+            <td class="wrap-text">{{ c.contactNo }}</td>
+            <td class="wrap-text">{{ formatArray(c.contactDays) }}</td>
+            <td class="wrap-text">{{ formatArray(c.contactHours) }}</td>
             <td>{{ c.callPriority }}</td>
             <td>
               <button class="btn btn-danger btn-sm" (click)="deleteSiteContact(c)">
@@ -509,11 +511,11 @@
 
         <tbody>
           <tr *ngFor="let s of smsContactlist; let i = index">
-            <td>{{ s['800dotComNo'] }}</td>
-            <td>{{ s.textPriority }}</td>
-            <td>{{ formatArray(s.smsDays) }}</td>
-            <td>{{ formatArray(s.smsHours) }}</td>
-            <td>{{ s.cameras }}</td>
+            <td class="wrap-text">{{ s['800dotComNo'] }}</td>
+            <td class="wrap-text">{{ s.textPriority }}</td>
+            <td class="wrap-text">{{ formatArray(s.smsDays) }}</td>
+            <td class="wrap-text">{{ formatArray(s.smsHours) }}</td>
+            <td class="wrap-text">{{ s.cameras }}</td>
             <td>
               <button class="btn btn-danger btn-sm" (click)="deleteSmsContact(s)">
                 Delete
@@ -549,9 +551,9 @@
 
         <tbody>
           <tr *ngFor="let l of lawEnforcementList; let i = index">
-            <td>{{ l.lawEnforcementDescription || 'N/A' }}</td>
-            <td>{{ l.lawEnforcementContact }}</td>
-            <td>{{ l.lawEnforcementPriority }}</td>
+            <td class="wrap-text">{{ l.lawEnforcementDescription || 'N/A' }}</td>
+            <td class="wrap-text">{{ l.lawEnforcementContact }}</td>
+            <td class="wrap-text">{{ l.lawEnforcementPriority }}</td>
             <td>
               <button class="btn btn-danger btn-sm" (click)="deleteLawEnforcement(l)">
                 Delete
