@@ -13,7 +13,7 @@ export class SitesettingsComponent {
   @Input() cameraList: any;
   daysList = [
     'Monday',
-    'Tueday',
+    'Tuesday',
     'Wednesday',
     'Thursday',
     'Friday',
@@ -182,7 +182,7 @@ export class SitesettingsComponent {
       (c) => c.contactNo === formValue.contactNo
     );
 
-    // 🔹 Create new contact if not exists
+
     if (!contact) {
       if (type == 'CONTACT') {
         contact = {
@@ -209,7 +209,7 @@ export class SitesettingsComponent {
     let timeline = contact.dayTimeLine.find((dt: any) =>
       this.areDaysSame(dt.days, selectedDays)
     );
-    console.log(timeline)
+
 
     if (timeline) {
       // 🔹 Add hours if not already present
@@ -269,6 +269,17 @@ export class SitesettingsComponent {
       this.smsContactsArray,
       'SMS'
     );
+  }
+
+  onSelectFormChange(a:any){
+   this.resetContactForm();
+   this.resetSmsForm();
+    this.enforcementform.reset({
+            priority: null,
+            contact: '',
+            description: '',
+          });
+
   }
 
   resetContactForm(): void {
@@ -409,7 +420,7 @@ export class SitesettingsComponent {
   }
 
   deleteSiteContact(i: any) {
-    this.alaram.confirm('Do you want to continue ?').then((res: any) => {
+    this.alaram.confirm('').then((res: any) => {
       if (res.isConfirmed) {
         this.siteser.inactiveContactDetails(i).subscribe((res: any) => {
           if (res.statusCode == 200) {
@@ -422,7 +433,7 @@ export class SitesettingsComponent {
   }
 
   deleteSmsContact(i: any) {
-    this.alaram.confirm('Do you want to continue ?').then((res: any) => {
+    this.alaram.confirm('').then((res: any) => {
       if (res.isConfirmed) {
         this.siteser.inactiveSmsDetails(i).subscribe((res: any) => {
           if (res.statusCode == 200) {
@@ -435,7 +446,7 @@ export class SitesettingsComponent {
   }
 
   deleteLawEnforcement(i: any) {
-    this.alaram.confirm('Do you want to continue ?').then((res: any) => {
+    this.alaram.confirm('').then((res: any) => {
       if (res.isConfirmed) {
         this.siteser.inactiveLawEnforcementInfo(i).subscribe((res: any) => {
           if (res.statusCode == 200) {
