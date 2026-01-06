@@ -31,7 +31,9 @@ export class CameraService {
   siren_sub = new BehaviorSubject<boolean>(false);
 
   incidentList(payload?: any) {
-    let url = `${environment.guard_monitoring_url}/incidentList_1_0`;
+    // let url = `${environment.guard_monitoring_url}/incidentList_1_0`;
+    let url = `${environment.event_tags_url}/getEventList_1_0`;
+    
     let params = new HttpParams();
     if (payload?.siteId) {
       params = params.set('siteId', payload?.siteId);
@@ -66,6 +68,8 @@ export class CameraService {
     } else {
       params = params.set('page', 1);
     }
+
+    params=params.set('callingSystemDetail','vms')
 
     return this.http.get(url, { params: params });
   }
