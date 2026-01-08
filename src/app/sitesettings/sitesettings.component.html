@@ -50,13 +50,13 @@
       <!-- Contact No -->
       <mat-form-field appearance="outline">
         <mat-label>Contact No</mat-label>
-        <input matInput formControlName="contactNo" maxlength="15" appTextAndNumberOnly />
+        <input matInput formControlName="contactNo" maxlength="15"  />
       </mat-form-field>
 
       <!-- Alternate Contact No -->
       <mat-form-field appearance="outline">
         <mat-label>Alternate Contact No</mat-label>
-        <input matInput formControlName="alternateContactNo" maxlength="15" appTextAndNumberOnly />
+        <input matInput formControlName="alternateContactNo" maxlength="15"  />
         <mat-error *ngIf="contactForm.get('alternateContactNo')?.hasError('sameContact')">
           Contact number and alternate contact number cannot be the same
         </mat-error>
@@ -172,7 +172,7 @@
       <!-- Contact No -->
       <mat-form-field appearance="outline">
         <mat-label>Contact No</mat-label>
-        <input matInput formControlName="contactNo" maxlength="15" appTextAndNumberOnly />
+        <input matInput formControlName="contactNo" maxlength="15"  />
       </mat-form-field>
 
       <!-- Priority -->
@@ -310,7 +310,7 @@
       <!-- Contact No -->
       <mat-form-field appearance="outline">
         <mat-label>Contact No</mat-label>
-        <input matInput formControlName="contact" maxlength="15" appTextAndNumberOnly />
+        <input matInput formControlName="contact" maxlength="15"  />
       </mat-form-field>
 
 

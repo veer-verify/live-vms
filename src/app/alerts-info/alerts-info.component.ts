@@ -32,6 +32,8 @@ export class AlertsInfoComponent {
   searchText: any;
   latestIncidentTime: any;
   objectNames = ['Person', 'Vehicle'];
+   showLoader: boolean = false;
+
   ngOnInit() {
     this.userData = JSON.parse(sessionStorage.getItem('session')!);
     let d1 = new Date();
@@ -42,7 +44,7 @@ export class AlertsInfoComponent {
     this.myForm = this.fb.group({
       siteId: [''],
       cameraId: [''],
-      actionTag: [''],
+      actionTag: [0],
       fromDate: [''],
       toDate: [''],
     });
@@ -108,6 +110,7 @@ export class AlertsInfoComponent {
   getTags() {
     this.metadaSer.getMetadataByType(36).subscribe((res: any) => {
       this.actionTags = res[0].metadata;
+
     });
   }
 
@@ -137,6 +140,11 @@ export class AlertsInfoComponent {
   actionTag: any = '';
   fromDate: any = '';
   toDate: any = '';
+  visibleTags:any;
+  remainingTags:any;
+  showMore = false;
+displayedColumns: string[] = ['actionTag', 'actionTagCount'];
+
   filter(i?:number,type?: string) {
 
     if(i===1){
@@ -147,7 +155,8 @@ export class AlertsInfoComponent {
     }
 
 
-    this.camerasListForSites(this.siteId);
+    this.camerasListForSites(this.myForm.get('siteId')?.value);
+
     let pageNumber;
     if (type === 'next') {
       pageNumber = this.currentPage + 1;
@@ -167,6 +176,8 @@ export class AlertsInfoComponent {
           if (res.statusCode === 200) {
             this.storage_service.status_text = '';
             this.eventData = res.IncidentList;
+            this.visibleTags=res.actionTagCounts.slice(0,5);
+            this.remainingTags=res.actionTagCounts.slice(5);
             this.newEventData = [...this.eventData];
           } else {
             this.storage_service.status_text = 'no data!';
@@ -348,5 +359,10 @@ export class AlertsInfoComponent {
 
   close() {
     this.showAddRequest = false;
+  }
+
+
+  showactiontagscount(){
+    this.showMore = !this.showMore;
   }
 }
