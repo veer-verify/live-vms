@@ -376,6 +376,8 @@ export class EventsComponent {
           subActionTag: this.currentSubActionTag?.subCategoryId,
           notes: this.notes,
           userName: user?.UserName,
+          alertTag:this.alertType,
+          subAlertTag:this.alertSubType
         })
       : this.path === 'dispatch'
       ? this.currentItem?.userLevelAlarmInfo.push({
@@ -483,6 +485,8 @@ export class EventsComponent {
           subActionTag: this.currentSubActionTag?.subCategoryId,
           notes: this.notes,
           userName: user?.UserName,
+          alertTag:this.alertType,
+          subAlertTag:this.alertSubType
         })
       : this.path === 'dispatch'
       ? this.currentItem?.userLevelAlarmInfo.push({

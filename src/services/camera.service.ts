@@ -32,10 +32,7 @@ export class CameraService {
 
   incidentList(payload?: any) {
     // let url = `${environment.guard_monitoring_url}/incidentList_1_0`;
-    // let url = `${environment.event_tags_url}/getEventList_1_0`;
-
-      let url = `http://192.168.0.235:3009/events_data/getEventList_1_0`;
-
+    let url = `${environment.event_tags_url}/getEventList_1_0`;
 
     let params = new HttpParams();
     if (payload?.siteId) {
