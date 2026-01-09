@@ -29,13 +29,13 @@
 <div class="d-flex mb-3 align-items-baseline">
   <div class="d-flex justify-content-start me-4" *ngFor="let tag of visibleTags">
     <div class="vl"
-      [ngClass]="tag?.actionTag == 'Suspicious' ? 'vl-red' : tag?.actionTag == 'Police Visit' ? 'vl-blue' : tag?.actionTag == 'Information'?'vl-green': tag?.actionTag =='Deterred'?'vl-violet':'vl-black'">
+      [ngClass]="tag?.subAlertTag == 'Suspicious' ? 'vl-red' : tag?.subAlertTag == 'Police Visit' ? 'vl-blue' : tag?.subAlertTag == 'Information'?'vl-green': tag?.subAlertTag =='Deterred'?'vl-violet':'vl-black'">
     </div>
 
     <div class="mx-2">
-      <div class="status" [matTooltip]="tag.actionTag">{{ tag.actionTag }}</div>
+      <div class="status" [matTooltip]="tag.subAlertTag">{{ tag.subAlertTag }}</div>
       <div class="count">
-        {{ showLoader ? '...' : tag.actionTagCount }}
+        {{ showLoader ? '...' : tag.subAlertTagCount }}
       </div>
     </div>
   </div>
@@ -51,7 +51,7 @@
     <div class="d-lg-flex justify-content-between align-items-center d-none">
       <form [formGroup]="myForm">
         <div class="row mx-0 mt-2 w-100">
-            <div class="col-lg-3 ps-0">
+            <div class="col-lg-2 ps-0">
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Site</mat-label>
                     <mat-select formControlName="siteId" (selectionChange)="filter(1)">
@@ -69,7 +69,7 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div class="col-lg-2 ps-0">
+            <!-- <div class="col-lg-2 ps-0">
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Action Tag</mat-label>
                     <mat-select formControlName="actionTag" (selectionChange)="filter()" >
@@ -78,9 +78,30 @@
                             titlecase}}</mat-option>
                     </mat-select>
                 </mat-form-field>
+            </div> -->
+
+             <div class="col-lg-2 ps-0">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Alert Type</mat-label>
+                    <mat-select formControlName="alertTag" (selectionChange)="onAlertChange();filter()" >
+                      <mat-option value=""></mat-option>
+                        <mat-option *ngFor="let item of alertTypes" [value]="item.guardAlertTypeId" > {{ item.guardAlertType }}
+                           </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
 
-            <div class="col-lg-3">
+             <div class="col-lg-2 ps-0">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Alert sub Type</mat-label>
+                    <mat-select formControlName="subAlertTag" (selectionChange)="filter()" >
+                      <mat-option value=""></mat-option>
+                        <mat-option *ngFor="let item of alertSubTypes" [value]="item.guardSubAlertTypeId"> {{ item.guardSubAlertType }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="col-lg-2">
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Enter a date range</mat-label>
                     <mat-date-range-input [rangePicker]="rangePicker">
@@ -127,7 +148,8 @@
                     <th scope="col">To Time</th>
                     <th scope="col">Duration</th>
                     <th scope="col">Object Name</th>
-                    <th scope="col">Action Tag</th>
+                     <th scope="col">Alert</th>
+            <th scope="col">subAlert</th>
                     <th scope="col" class="text-center">Event Clip</th>
                     <!-- <th>Actions</th> -->
                     <th></th>
@@ -146,10 +168,15 @@
                     <!-- <td>{{ getTimeDifference(item?.eventFromTime, item?.eventToTime) }}</td> -->
                      <td>{{item?.duration}}</td>
                     <td>{{item?.objectName | titlecase}}</td>
-                    <td
-                        [style.color]="item?.actionTag == 'Suspicious' ? 'red' : item?.actionTag == 'Police Visit' ? 'blue' : item?.actionTag == 'Information'?'green': item?.actionTag =='Deterred'?'violet':''">
-                        {{ item?.actionTag | titlecase }}
-                    </td>
+                      <td
+              >
+              {{ item?.alertTag | titlecase }}
+            </td>
+
+             <td
+                    [style.color]="item?.subAlertTag == 'Suspicious' ? 'red' : item?.subAlertTag == 'Police Visit' ? 'blue' : item?.subAlertTag == 'Information'?'green': item?.subAlertTag =='Deterred'?'violet':''">
+                    {{ item?.subAlertTag }}
+                  </td>
                     <td class="text-center">
                         <p class="text-primary pointer" (click)="openGalleryDialog(item)">View</p>
                     </td>
@@ -392,8 +419,8 @@
       <ng-container matColumnDef="actionTag">
         <th mat-header-cell *matHeaderCellDef> Action Tag </th>
         <td mat-cell *matCellDef="let row">
-          <span class="ellipsis" title="{{ row.actionTag }}">
-            {{ row.actionTag }}
+          <span class="ellipsis" title="{{ row.subAlertTag }}">
+            {{ row.subAlertTag }}
           </span>
         </td>
       </ng-container>
@@ -402,7 +429,7 @@
       <ng-container matColumnDef="actionTagCount">
         <th mat-header-cell *matHeaderCellDef> Count </th>
         <td mat-cell *matCellDef="let row">
-          {{ row.actionTagCount }}
+          {{ row.subAlertTagCount }}
         </td>
       </ng-container>
 

@@ -44,7 +44,9 @@ export class AlertsInfoComponent {
     this.myForm = this.fb.group({
       siteId: [''],
       cameraId: [''],
-      actionTag: [0],
+      // actionTag: [0],
+      alertTag: [''],
+      subAlertTag: [''],
       fromDate: [''],
       toDate: [''],
     });
@@ -82,6 +84,7 @@ export class AlertsInfoComponent {
             a.siteName > b.siteName ? 1 : a.siteName < b.siteName ? -1 : 0
           );
           this.siteId = this.siteIdToNav[0].siteId;
+          // this.getCurrentSiteAlerts(this.siteIdToNav[0])
           this.myForm.get('siteId')?.setValue(this.siteIdToNav[0].siteId);
           this.filter();
           this.getTags();
@@ -145,15 +148,38 @@ export class AlertsInfoComponent {
   showMore = false;
   displayedColumns: string[] = ['actionTag', 'actionTagCount'];
 
+
+  alertTypes: any[] = [];
+  alertSubTypes: any[] = [];
+
+  onAlertChange() {
+
+    const selectedAlert = this.alertTypes.find(
+      (a: any) => a.guardAlertTypeId == Number(this.myForm.get('alertTag')?.value)
+    );
+
+    this.alertSubTypes = selectedAlert ? selectedAlert.subAlerts : [];
+  }
+
+
+  getCurrentSiteAlerts(data: any) {
+
+    this.siteSer.getAlertCategoriesForSiteId(data).subscribe((res: any) => {
+      this.alertTypes = res;
+    });
+  }
+
   filter(i?: number, type?: string) {
 
     if (i === 1) {
       this.myForm.get('cameraId')?.setValue('');
-      this.myForm.get('actionTag')?.setValue('');
+      this.myForm.get('subAlertTag')?.setValue('');
+      this.myForm.get('alertTag')?.setValue('');
       this.myForm.get('fromDate')?.setValue('');
       this.myForm.get('toDate')?.setValue('');
     }
 
+    this.getCurrentSiteAlerts({ siteId: this.myForm.get('siteId')?.value });
 
     this.camerasListForSites(this.myForm.get('siteId')?.value);
 

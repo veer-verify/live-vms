@@ -44,8 +44,11 @@ export class CameraService {
     if (payload?.cameraId) {
       params = params.set('cameraId', payload?.cameraId);
     }
-    if (payload?.actionTag) {
-      params = params.set('actionTag', payload?.actionTag);
+     if(payload?.alertTag){
+       params = params.set('alertTag', payload?.alertTag);
+    }
+    if(payload?.subAlertTag){
+       params = params.set('subAlertTag', payload?.subAlertTag);
     }
     if (payload?.fromDate) {
       // let x = payload?.fromDate;
