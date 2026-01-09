@@ -29,7 +29,7 @@ export class SitesettingsComponent {
     private fb: FormBuilder,
     private siteser: SiteService,
     private alaram: AlertService
-  ) {}
+  ) { }
 
   ngOnInit() {
     if (this.currentItem.type == 'add') {
@@ -45,9 +45,9 @@ export class SitesettingsComponent {
       priority: [null, Validators.required],
       contactNo: [
         '',
-        [Validators.required, Validators.pattern(/^[0-9]{1,15}$/)],
+        [Validators.required],
       ],
-      alternateContactNo: ['', Validators.pattern(/^[0-9]{1,15}$/)],
+      alternateContactNo: [''],
       days: [[], [Validators.minLength(1)]],
       startTime: [null, Validators.required],
       endTime: [null, Validators.required],
@@ -57,7 +57,7 @@ export class SitesettingsComponent {
       priority: [null, Validators.required],
       contactNo: [
         '',
-        [Validators.required, Validators.pattern(/^[0-9]{1,15}$/)],
+        [Validators.required],
       ],
       remarks: [''],
       days: [[], [Validators.minLength(1)]],
@@ -67,7 +67,7 @@ export class SitesettingsComponent {
 
     this.enforcementform = this.fb.group({
       priority: [null, Validators.required],
-      contact: ['', [Validators.required, Validators.pattern(/^[0-9]{1,15}$/)]],
+      contact: ['', [Validators.required]],
       description: [''],
     });
 
@@ -230,7 +230,7 @@ export class SitesettingsComponent {
       this.contactForm.value.contactNo &&
       this.contactForm.value.alternateContactNo &&
       this.contactForm.value.contactNo ===
-        this.contactForm.value.alternateContactNo
+      this.contactForm.value.alternateContactNo
     ) {
       this.alaram.error(
         'Contact number and alternate contact number cannot be the same'
@@ -271,14 +271,14 @@ export class SitesettingsComponent {
     );
   }
 
-  onSelectFormChange(a:any){
-   this.resetContactForm();
-   this.resetSmsForm();
+  onSelectFormChange(a: any) {
+    this.resetContactForm();
+    this.resetSmsForm();
     this.enforcementform.reset({
-            priority: null,
-            contact: '',
-            description: '',
-          });
+      priority: null,
+      contact: '',
+      description: '',
+    });
 
   }
 
@@ -313,18 +313,18 @@ export class SitesettingsComponent {
     }
 
 
-const formValue = this.enforcementform.value;
+    const formValue = this.enforcementform.value;
 
-const contactExists = this.laweforce.find(
-  (c: any) => c.contact === formValue.contact
-);
+    const contactExists = this.laweforce.find(
+      (c: any) => c.contact === formValue.contact
+    );
 
-if (contactExists) {
-  this.alaram.error('Contact already exists');
-  return;
-}
+    if (contactExists) {
+      this.alaram.error('Contact already exists');
+      return;
+    }
 
-this.laweforce.push(formValue);
+    this.laweforce.push(formValue);
 
   }
 

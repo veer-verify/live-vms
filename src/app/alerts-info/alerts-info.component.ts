@@ -25,14 +25,14 @@ export class AlertsInfoComponent {
     private siteSer: SiteService,
     public storage_service: StorageService,
     private fb: FormBuilder
-  ) {}
+  ) { }
   myForm!: FormGroup;
   environment = environment.download_url;
   userData: any;
   searchText: any;
   latestIncidentTime: any;
   objectNames = ['Person', 'Vehicle'];
-   showLoader: boolean = false;
+  showLoader: boolean = false;
 
   ngOnInit() {
     this.userData = JSON.parse(sessionStorage.getItem('session')!);
@@ -140,18 +140,18 @@ export class AlertsInfoComponent {
   actionTag: any = '';
   fromDate: any = '';
   toDate: any = '';
-  visibleTags:any;
-  remainingTags:any;
+  visibleTags: any;
+  remainingTags: any;
   showMore = false;
-displayedColumns: string[] = ['actionTag', 'actionTagCount'];
+  displayedColumns: string[] = ['actionTag', 'actionTagCount'];
 
-  filter(i?:number,type?: string) {
+  filter(i?: number, type?: string) {
 
-    if(i===1){
+    if (i === 1) {
       this.myForm.get('cameraId')?.setValue('');
       this.myForm.get('actionTag')?.setValue('');
-       this.myForm.get('fromDate')?.setValue('');
-       this.myForm.get('toDate')?.setValue('');
+      this.myForm.get('fromDate')?.setValue('');
+      this.myForm.get('toDate')?.setValue('');
     }
 
 
@@ -176,8 +176,9 @@ displayedColumns: string[] = ['actionTag', 'actionTagCount'];
           if (res.statusCode === 200) {
             this.storage_service.status_text = '';
             this.eventData = res.IncidentList;
-            this.visibleTags=res.actionTagCounts.slice(0,5);
-            this.remainingTags=res.actionTagCounts.slice(5);
+
+            // this.visibleTags = res.actionTagCounts.slice(0, 5);
+            // this.remainingTags = res.actionTagCounts.slice(5);
             this.newEventData = [...this.eventData];
           } else {
             this.storage_service.status_text = 'no data!';
@@ -362,7 +363,7 @@ displayedColumns: string[] = ['actionTag', 'actionTagCount'];
   }
 
 
-  showactiontagscount(){
+  showactiontagscount() {
     this.showMore = !this.showMore;
   }
 }
