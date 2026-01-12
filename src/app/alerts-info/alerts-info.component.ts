@@ -136,7 +136,7 @@ export class AlertsInfoComponent {
 
   eventData: Array<any> = new Array();
   newEventData: Array<any> = new Array();
-  currentPage!: number;
+  currentPage: number = 1;
   totalPages!: number;
   siteId: any = '';
   cameraId: any = '';
@@ -192,9 +192,11 @@ export class AlertsInfoComponent {
       pageNumber = this.currentPage;
     }
 
+
+
     this.storage_service.status_text = 'loading...';
     this.eventSer
-      .incidentList(this.myForm.value)
+      .incidentList({ ...this.myForm.value, page: this.currentPage })
       .subscribe(
         (res: any) => {
           this.currentPage = res.page;
@@ -218,6 +220,7 @@ export class AlertsInfoComponent {
   }
 
   getPaginatedData(data: number) {
+    // console.log(data);
     this.currentPage = data + 1;
     this.filter();
   }
