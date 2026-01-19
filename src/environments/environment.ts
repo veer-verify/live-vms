@@ -15,27 +15,27 @@ export const environment = {
     // guard_monitoring_url:`${dev_url}:8015/guard_monitoring`,
     // monitoring_url:`${dev_url}:8016/monitoring`,
 
-    // login_url: `${prod_url}/userDetails_test`,
-    // site_url: `${prod_url}/vipsites_test`,
-    // common_url: `${prod_url}/metadata`,
-    // download_url: `${prod_url}/common`,
-    // guard_monitoring_url: `${prod_url}/guard_monitoring_test`,
-    // monitoring_url: `${prod_url}/monitoring_test`,
-    // events_url: `https://prodmq.ivisecurity.com/queueManagement_test`,
-    // eventImageUrl: `${prod_url}/dotimages/`,
-    // event_tags_url: `${prod_url}/events_data_test`,
-
-
-
-    login_url: `${prod_url}/userDetails`,
-    site_url: `${prod_url}/vipsites`,
+    login_url: `${prod_url}/userDetails_test`,
+    site_url: `${prod_url}/vipsites_test`,
     common_url: `${prod_url}/metadata`,
     download_url: `${prod_url}/common`,
-    guard_monitoring_url: `${prod_url}/guard_monitoring`,
-    monitoring_url: `${prod_url}/monitoring`,
-    events_url: `https://prodmq.ivisecurity.com/queueManagement`,
+    guard_monitoring_url: `${prod_url}/guard_monitoring_test`,
+    monitoring_url: `${prod_url}/monitoring_test`,
+    events_url: `https://prodmq.ivisecurity.com/queueManagement_test`,
     eventImageUrl: `${prod_url}/dotimages/`,
-    event_tags_url: `${prod_url}/events_data`,
+    event_tags_url: `${prod_url}/events_data_test`,
+
+
+
+    // login_url: `${prod_url}/userDetails`,
+    // site_url: `${prod_url}/vipsites`,
+    // common_url: `${prod_url}/metadata`,
+    // download_url: `${prod_url}/common`,
+    // guard_monitoring_url: `${prod_url}/guard_monitoring`,
+    // monitoring_url: `${prod_url}/monitoring`,
+    // events_url: `https://prodmq.ivisecurity.com/queueManagement`,
+    // eventImageUrl: `${prod_url}/dotimages/`,
+    // event_tags_url: `${prod_url}/events_data`,
 
     firstAlert: {
         time1: 160,

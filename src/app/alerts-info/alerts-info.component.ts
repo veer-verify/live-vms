@@ -205,8 +205,8 @@ export class AlertsInfoComponent {
             this.storage_service.status_text = '';
             this.eventData = res.IncidentList;
 
-            // this.visibleTags = res.actionTagCounts.slice(0, 5);
-            // this.remainingTags = res.actionTagCounts.slice(5);
+            this.visibleTags = res.actionTagCounts.slice(0, 5);
+            this.remainingTags = res.actionTagCounts.slice(5);
             this.newEventData = [...this.eventData];
           } else {
             this.storage_service.status_text = 'no data!';
