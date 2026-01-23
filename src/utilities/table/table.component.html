@@ -52,8 +52,8 @@
 
               <ng-container *ngIf="field?.type === 'actions'">
                 <div class="d-inline-flex">
-                  <a class="mx-1 pointer" *ngFor="let el of field.actions" (click)="field.call(item, el)" [matTooltip]="el"><img loading="lazy"
-                      src="assets/icons/{{el}}.svg"></a>
+                  <a class="mx-1 pointer" *ngFor="let el of field.actions" (click)="field.call(item, el)" [matTooltip]="el"><img
+                      loading="lazy" src="assets/icons/{{el}}.svg"></a>
 
                 </div>
               </ng-container>

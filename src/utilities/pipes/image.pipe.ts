@@ -14,22 +14,12 @@ export class ImagePipe implements PipeTransform {
   ) {}
 
   async transform(src: string): Promise<any> {
+
     const token = this.storageSer.getData('acTok');
     const headers = new HttpHeaders({'Authorization': `Bearer ${token}`});
+     this.storageSer.isEnabled=true;
     const imageBlob = await firstValueFrom(this.http.get(src, {headers, responseType: 'blob'}));
-
-    // await  fetch(src, {
-    //     method: 'GET',
-    //     headers: {
-    //       'Authorization': `Bearer ${token}`
-    //     }
-    //   })
-    //   .then((res) => {
-    //     console.log(res)
-    //   })
-    //   .catch((err) => {
-    //     console.log(err)
-    //   })
+     this.storageSer.isEnabled=false;
 
     const reader = new FileReader();
     return new Promise((resolve, reject) => {
@@ -39,6 +29,7 @@ export class ImagePipe implements PipeTransform {
       } else {
         reject(new Error('Failed to load image blob'));
       }
+
     });
   }
 

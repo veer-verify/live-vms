@@ -8,7 +8,7 @@
     "verifai": "ng serve --configuration verifai --host 0.0.0.0",
     "prod": "ng serve --configuration production --host 0.0.0.0",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development",
+    "watch": "ng build --base-href /live-vms/ --configuration development",
     "build-unv": "ng build --configuration unv",
     "build-verify": "ng build --configuration verifai",
     "test": "ng test"

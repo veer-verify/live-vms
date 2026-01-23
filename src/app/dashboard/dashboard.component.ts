@@ -1,12 +1,23 @@
-import { Component, ElementRef, QueryList, TemplateRef, ViewChild, ViewChildren, } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  QueryList,
+  TemplateRef,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { CameraService } from 'src/services/camera.service';
 import { StorageService } from 'src/services/storage.service';
 import { Router } from '@angular/router';
-import { CdkDragEnter, moveItemInArray, } from '@angular/cdk/drag-drop';
-import { Observable, Subscription, fromEvent, tap, } from 'rxjs';
+import { CdkDragEnter, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Observable, Subscription, fromEvent, tap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from 'src/services/alert.service';
-import { HttpClient, HttpErrorResponse, HttpEventType, } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpEventType,
+} from '@angular/common/http';
 import { SiteService } from 'src/services/site.service';
 import { v4 as uuid } from 'uuid';
 import { MetadataService } from 'src/services/metadata.service';
@@ -65,7 +76,7 @@ export class DashboardComponent {
     private http: HttpClient,
     private loginSer: LoginService,
     private event_service: EventService
-  ) { }
+  ) {}
 
   searchText!: string;
   showLoader: boolean = false;
@@ -95,11 +106,14 @@ export class DashboardComponent {
     let user = this.storageSer.getData('session');
     let tempUser = this.storageSer.session_sub.getValue();
     if (!user) {
-      this.storageSer.saveData('session', this.storageSer.session_sub.getValue());
+      this.storageSer.saveData(
+        'session',
+        this.storageSer.session_sub.getValue()
+      );
     }
     if (!tempUser) {
       this.storageSer.session_sub.next(this.storageSer.getData('session'));
-    };
+    }
   }
 
   // getUrl(data: any) {
@@ -149,6 +163,7 @@ export class DashboardComponent {
     this.siteSrvc.getCamerasForForPortal(data).subscribe((res: any) => {
       this.showCamLoader = false;
       this.cameras = res;
+
       this.cameras.forEach((object: any) => {
         object.isPlaying = false;
         object.buttons = [];
@@ -302,19 +317,26 @@ export class DashboardComponent {
   cameraIndex: number = -1;
   toggleMaximize(index: number) {
     if (this.camerasForPage === 2) {
-      this.streamEl.toArray()[index].video.nativeElement.parentElement.classList.remove('h2');
-    }
-    else if (this.camerasForPage === 6) {
-      this.streamEl.toArray()[index].video.nativeElement.parentElement.classList.remove('h6');
-    }
-    else if (this.camerasForPage === 9 || this.camerasForPage === 12) {
-      this.streamEl.toArray()[index].video.nativeElement.parentElement.classList.remove('h9');
-    }
-    else {
-      this.streamEl.toArray()[index].video.nativeElement.parentElement.classList.remove('h20');
+      this.streamEl
+        .toArray()
+        [index].video.nativeElement.parentElement.classList.remove('h2');
+    } else if (this.camerasForPage === 6) {
+      this.streamEl
+        .toArray()
+        [index].video.nativeElement.parentElement.classList.remove('h6');
+    } else if (this.camerasForPage === 9 || this.camerasForPage === 12) {
+      this.streamEl
+        .toArray()
+        [index].video.nativeElement.parentElement.classList.remove('h9');
+    } else {
+      this.streamEl
+        .toArray()
+        [index].video.nativeElement.parentElement.classList.remove('h20');
     }
 
-    this.streamEl.toArray()[index].video.nativeElement.parentElement.classList.add('tile-active');
+    this.streamEl
+      .toArray()
+      [index].video.nativeElement.parentElement.classList.add('tile-active');
     this.cameraIndex = index;
   }
 
@@ -323,7 +345,8 @@ export class DashboardComponent {
     this.audioIndex = this.getCurrentPageItems.indexOf(data);
     this.camSer.siren_sub.next(true);
 
-    this.http.get(`${environment.site_url}/play_1_0/${data.cameraId}`)
+    this.http
+      .get(`${environment.site_url}/play_1_0/${data.cameraId}`)
       .subscribe({
         next: (res: any) => {
           setTimeout(() => {
@@ -342,10 +365,8 @@ export class DashboardComponent {
           }, 120000);
           this.audioIndex = -1;
           this.alertSrvc.snackError('Siren not Played!');
-
-        }
-      }
-      );
+        },
+      });
 
     // this.camSer.play(data).subscribe({
     //   next: (res) => {
@@ -395,13 +416,12 @@ export class DashboardComponent {
     { id: 5, label: 'Vehicle' },
   ];
 
-
   filteredListTypes() {
-
     return this.currentSite?.manualEvents === 'T'
-      ? this.listTypes.filter((type: any) => type.label === 'Event' || type.label === 'None')
+      ? this.listTypes.filter(
+          (type: any) => type.label === 'Event' || type.label === 'None'
+        )
       : this.listTypes;
-
   }
 
   btnInterval: any;
@@ -426,23 +446,24 @@ export class DashboardComponent {
 
         this.createBtnEl.toArray().forEach((item) => {
           item.nativeElement.style.pointerEvents = 'none';
-        })
+        });
 
-        timeAlert = { time1: 160, time2: 180, time3: 210, time4: 240, time5: 270 };
-      }
-      else if (data.siteId == 36415) {
+        timeAlert = {
+          time1: 160,
+          time2: 180,
+          time3: 210,
+          time4: 240,
+          time5: 270,
+        };
+      } else if (data.siteId == 36415) {
         timeAlert = environment.kennedyAlert;
-      }
-      else if (data.siteId == 36562) {
+      } else if (data.siteId == 36562) {
         timeAlert = environment.springAlert;
-      }
-      else if (data.siteId == 36587) {
+      } else if (data.siteId == 36587) {
         timeAlert = environment.shopAlert;
-      }
-      else if (data.siteId == 36444 || data?.siteId === 36446) {
+      } else if (data.siteId == 36444 || data?.siteId === 36446) {
         timeAlert = environment.oneWatchAlert;
-      }
-      else {
+      } else {
         timeAlert = environment.firstAlert;
       }
 
@@ -452,11 +473,21 @@ export class DashboardComponent {
         y: y,
         elementWidth: event.target.offsetParent.clientWidth,
         elementHeight: event.target.offsetParent.clientHeight,
-        chkTime1: new Date().setMinutes(new Date().getMinutes() + timeAlert.time1),
-        chkTime2: new Date().setMinutes(new Date().getMinutes() + timeAlert.time2),
-        chkTime3: new Date().setMinutes(new Date().getMinutes() + timeAlert.time3),
-        chkTime4: new Date().setMinutes(new Date().getMinutes() + timeAlert.time4),
-        chkTime5: new Date().setMinutes(new Date().getMinutes() + timeAlert.time5),
+        chkTime1: new Date().setMinutes(
+          new Date().getMinutes() + timeAlert.time1
+        ),
+        chkTime2: new Date().setMinutes(
+          new Date().getMinutes() + timeAlert.time2
+        ),
+        chkTime3: new Date().setMinutes(
+          new Date().getMinutes() + timeAlert.time3
+        ),
+        chkTime4: new Date().setMinutes(
+          new Date().getMinutes() + timeAlert.time4
+        ),
+        chkTime5: new Date().setMinutes(
+          new Date().getMinutes() + timeAlert.time5
+        ),
         dspTime: this.displayTime,
         width: `${this.listType === 1 ? 8 : this.listType === 2 ? 12 : 15}`,
         height: `${this.listType === 1 ? 8 : this.listType === 2 ? 12 : 15}`,
@@ -520,63 +551,76 @@ export class DashboardComponent {
           if (this.listType === 6) {
             if (data.color == 'green') {
               // this.audio(data);
-              this.event_service.write2Dispatch({
-                ...data,
-                queue_name:this.storageSer.getData(2),
-                actionTag: 'suspicious',
-                userName: user?.UserName,
-                userLevelAlarmInfo: [
-                  {
-                    level: 1,
-                    user: user?.UserId,
-                    actionTag: 2,
-                    subActionTag: 23,
-                    activityDetTime: time,
-                    alarm: data?.audioUrl ? 'P' : 'N',
-                    landingTime: time,
-                    reviewStart: time,
-                    reviewEnd: time,
-                    notes: '',
-                  }
-                ]
-              }).subscribe({
-                next: (res) => {
-                  data.buttons.splice(0, 1);
-                  this.createBtnEl.toArray().forEach((item) => {
-                    item.nativeElement.style.pointerEvents = 'all';
-                  });
-                  this.alertSrvc.snackSuccess('Event generated successfully!');
-                },
-                error: (err) => {
-                  data.buttons.splice(0, 1);
-                  this.createBtnEl.toArray().forEach((item) => {
-                    item.nativeElement.style.pointerEvents = 'all';
-                  });
-                  this.alertSrvc.snackError('Event generated failed!');
-                }
-              });
+              this.event_service
+                .write2Dispatch({
+                  ...data,
+                  queue_name: this.storageSer.getData(2),
+                  actionTag: 'suspicious',
+                  userName: user?.UserName,
+                  userLevelAlarmInfo: [
+                    {
+                      level: 1,
+                      user: user?.UserId,
+                      actionTag: 2,
+                      subActionTag: 23,
+                      activityDetTime: time,
+                      alarm: data?.audioUrl ? 'P' : 'N',
+                      landingTime: time,
+                      reviewStart: time,
+                      reviewEnd: time,
+                      notes: '',
+                      userName: user?.UserName,
+                    },
+                  ],
+                })
+                .subscribe({
+                  next: (res) => {
+                    data.buttons.splice(0, 1);
+                    this.createBtnEl.toArray().forEach((item) => {
+                      item.nativeElement.style.pointerEvents = 'all';
+                    });
+                    this.alertSrvc.snackSuccess(
+                      'Event generated successfully!'
+                    );
+                  },
+                  error: (err) => {
+                    data.buttons.splice(0, 1);
+                    this.createBtnEl.toArray().forEach((item) => {
+                      item.nativeElement.style.pointerEvents = 'all';
+                    });
+                    this.alertSrvc.snackError('Event generated failed!');
+                  },
+                });
             }
           } else {
-            if (data.color == 'yellow' || (this.currentItem?.siteId === 36336 && data.color == 'green')) {
+            if (
+              data.color == 'yellow' ||
+              (this.currentItem?.siteId === 36336 && data.color == 'green')
+            ) {
               if (
                 this.currentItem?.siteId === 36346 ||
                 this.currentItem?.siteId === 36360 ||
                 this.currentItem?.siteId === 36444 ||
                 this.currentItem?.siteId === 36446
               ) {
-                this.emailLimited({ ...data, ...this.emailObject })
-              }
-              else if (this.currentItem?.siteId === 36336) {
+                this.emailLimited({ ...data, ...this.emailObject });
+              } else if (this.currentItem?.siteId === 36336) {
                 setTimeout(() => {
-                  this.openEmaiDialog(data)
-                }, data?.internalPort * 60 * 1000)
-              }
-              else {
+                  this.openEmaiDialog(data);
+                }, data?.internalPort * 60 * 1000);
+              } else {
                 this.openEmaiDialog(data);
               }
             }
           }
         }
+      },
+      error: (err) => {
+        data.buttons.splice(0, 1);
+        this.createBtnEl.toArray().forEach((item) => {
+          item.nativeElement.style.pointerEvents = 'all';
+        });
+        this.alertSrvc.snackError('Event generated failed!');
       },
     });
   }
@@ -622,20 +666,26 @@ export class DashboardComponent {
     this.mannualEmailBody.siteId = data.siteId;
     this.mannualEmailBody.cameraId = data.cameraId;
     this.mannualEmailBody.eventFromTime = data.dspTime;
-    this.mannualEmailBody.eventToTime = this.storageSer.getTimeWithTimezone(data?.timezone);
-    this.cameraCurrentTime = this.storageSer.getTimeWithTimezone(data?.timezone);
-    console.log(this.cameraCurrentTime)
+    this.mannualEmailBody.eventToTime = this.storageSer.getTimeWithTimezone(
+      data?.timezone
+    );
+    this.cameraCurrentTime = this.storageSer.getTimeWithTimezone(
+      data?.timezone
+    );
 
     this.siteSrvc.getCamerasForSiteId(data).subscribe((res: any) => {
       this.eventCameras = res;
     });
     this.mannualEmailBody.siteId = data?.siteId;
 
-    this.camSer.listActionTags(data).toPromise().then((res: any) => {
-      if (res.statusCode === 200) {
-        this.actionTags = res.data[0].actionTags;
-      }
-    });
+    this.camSer
+      .listActionTags(data)
+      .toPromise()
+      .then((res: any) => {
+        if (res.statusCode === 200) {
+          this.actionTags = res.data[0].actionTags;
+        }
+      });
     this.matDialog.open(this.mannualEmailDialog, { disableClose: true });
   }
 
@@ -649,7 +699,8 @@ export class DashboardComponent {
       next: (res: any) => {
         this.dialogLoader = false;
         if (res.statusCode === 200) {
-          this.mannualEmailBody.recipientEmails = res.emailDetails.recipientEmails.join(', ');
+          this.mannualEmailBody.recipientEmails =
+            res.emailDetails.recipientEmails.join(', ');
           this.mannualEmailBody.subject = res.emailDetails.emailSubject;
           this.mannualEmailBody.body = res.emailDetails.emailBody;
           this.mannualEmailBody.bcc = res.emailDetails.BCC.join(', ');
@@ -675,7 +726,10 @@ export class DashboardComponent {
   }
 
   closeImage1(data: any) {
-    this.mannualEmailBody.files.splice(this.mannualEmailBody.files.indexOf(data), 1);
+    this.mannualEmailBody.files.splice(
+      this.mannualEmailBody.files.indexOf(data),
+      1
+    );
   }
 
   downloadImg(url: string) {
@@ -690,7 +744,9 @@ export class DashboardComponent {
       camerasList: [],
       alertTypeId: this.mannualEmailBody.alertType,
       subTypeId: this.mannualEmailBody.alertSubType,
-      day: this.storageSer.weekdays[this.storageSer.getDay(data?.camera?.timezone)],
+      day: this.storageSer.weekdays[
+        this.storageSer.getDay(data?.camera?.timezone)
+      ],
       hour: this.storageSer.getHour(data?.camera?.timezone),
       currentTime: this.cameraCurrentTime,
     };
@@ -722,15 +778,23 @@ export class DashboardComponent {
 
   @ViewChildren('streamEl') streamEl!: QueryList<any>;
   @ViewChildren('createBtnEl') createBtnEl!: QueryList<any>;
-  async captureScreenshot(camera: any, index: any, color: any, btnItem: any, btnIndex: any) {
-    let btnEl = await this.createBtnEl.toArray()[index].nativeElement.children[btnIndex];
+  async captureScreenshot(
+    camera: any,
+    index: any,
+    color: any,
+    btnItem: any,
+    btnIndex: any
+  ) {
+    let btnEl = await this.createBtnEl.toArray()[index].nativeElement.children[
+      btnIndex
+    ];
     let imgEl = await btnEl.firstChild;
     let videoComponents = this.streamEl.toArray();
 
     if (videoComponents[index]) {
       videoComponents[index].capture(camera, color, imgEl, btnItem);
     } else {
-      console.log('no component!')
+      console.log('no component!');
     }
   }
 
@@ -748,8 +812,8 @@ export class DashboardComponent {
       complete: () => {
         this.showLoader = false;
         this.loginSer.logout();
-      }
-    })
+      },
+    });
   }
 
   /** drag and drop cameras */
@@ -772,8 +836,13 @@ export class DashboardComponent {
 
   dragMoved() {
     if (!this.dropListContainer) return;
-    const placeholderEl = this.dropListContainer.nativeElement.querySelector('.cdk-drag-placeholder');
-    const receiverEl = this.dragDropInfo?.dragIndex > this.dragDropInfo?.dropIndex ? placeholderEl?.nextElementSibling : placeholderEl?.previousElementSibling;
+    const placeholderEl = this.dropListContainer.nativeElement.querySelector(
+      '.cdk-drag-placeholder'
+    );
+    const receiverEl =
+      this.dragDropInfo?.dragIndex > this.dragDropInfo?.dropIndex
+        ? placeholderEl?.nextElementSibling
+        : placeholderEl?.previousElementSibling;
     if (!receiverEl) return;
     receiverEl.style.display = 'none';
     this.dropListReceiverElement = receiverEl;

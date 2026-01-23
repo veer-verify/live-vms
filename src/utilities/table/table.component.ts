@@ -17,11 +17,11 @@ export class TableComponent {
 
   @Input() search!: any;
 
-  @Output() childEvent = new EventEmitter<any>(); 
+  @Output() childEvent = new EventEmitter<any>();
 
-  // ngOnInit() {
-  //   console.log(this.data)
-  // }
+  ngOnInit() {
+    console.log(this.data)
+  }
 
   isSort:boolean=false;
 
@@ -34,12 +34,12 @@ export class TableComponent {
     this.isSort ? x.sort((a: string, b: string) => a[label] > b[label] ? 1 : a[label] < b[label] ? -1 : 0)
                 : x.sort((a: string, b: string) => b[label] > a[label] ? 1 : b[label] < a[label] ? -1 : 0);
 
-   
+
 
   }
   openPopup(field:any,item:any,type?:string){
-    
-    this.childEvent.emit({ field, item,type }); 
+
+    this.childEvent.emit({ field, item,type });
   }
 
 }

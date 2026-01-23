@@ -94,7 +94,7 @@
   border: none;
   cursor: pointer;
   background-color: #fff;
- 
+
 }
 
 .btn-secondary {
@@ -149,4 +149,25 @@
 
 ::ng-deep .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
   font-size: 12px !important;
+}
+
+
+
+
+
+
+.dashboard-img {
+                /* take remaining space */
+  width: 500px;
+  height: 500px;
+  object-fit: cover;   /* no crop, no overflow */
+  background-color: #333;
+}
+
+.time-name{
+  position: absolute;
+
+  color: #ffffff;
+  top: 95%;
+  left: 1%;
 }

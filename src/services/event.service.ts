@@ -37,6 +37,8 @@ export class EventService {
     payload.level = `Level${user?.userLevel}`;
   payload.consoleType='manual-console';
   payload.queueName=user?.queueName;
+  payload.sessionId=user?.sessionId;
+  payload.userName=user?.UserName;
     return this.http.post(url, payload);
   }
 
@@ -141,8 +143,10 @@ export class EventService {
     let user = this.storageSer.getData('session');
     let payload = {
       userId: 0,
+      sessionId:0
     };
     payload.userId = user?.UserId;
+    payload.sessionId=user?.sessionId;
     return this.http.post(url, payload);
   }
 
@@ -161,6 +165,7 @@ export class EventService {
     let user = this.storageSer.getData('session');
 
     payload.userId = user?.UserId;
+     payload.sessionId=user?.sessionId;
     payload.consoleType = 'manual-console';
     return this.http.put(url, payload);
   }
@@ -181,6 +186,8 @@ getMonitoringInfo(payload:any){
   }
   params = params.set('level',user?.userLevel);
 
+  params=params.set('timezone',payload?.timezone);
+
   return this.http.get(url,{params});
 
 }
@@ -190,6 +197,24 @@ getVMSEventFlow_1_0(){
   let params = new HttpParams();
   params = params.set('callingSystemDetail','vms');
   return this.http.get(url,{params});
+
+}
+
+getImagesForCameraId(payload:any){
+  const url = `${environment.site_url}/getCameraImagesForCameraId_1_0`;
+
+  let params=new HttpParams();
+  params=params.set('cameraId',payload?.cameraId);
+   return this.http.get(url,{params});
+}
+
+
+audioDisable(payload:any){
+  const url = `${environment.guard_monitoring_url}/checkCameraAudio_1_0`;
+  let params=new HttpParams();
+  params=params.set('cameraId',payload?.cameraId);
+  params=params.set('siteId',payload?.siteId);
+   return this.http.get(url,{params});
 
 }
 
