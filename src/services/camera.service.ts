@@ -66,12 +66,15 @@ export class CameraService {
         formatDate(payload?.toDate, 'yyyy-MM-dd', 'en-us')
       );
     }
+        console.log(payload.page)
+        
     if (payload?.page) {
       params = params.set('page', payload.page);
     } else {
       params = params.set('page', 1);
     }
 
+    console.log(payload.page)
     params=params.set('callingSystemDetail','vms')
 
     return this.http.get(url, { params: params });

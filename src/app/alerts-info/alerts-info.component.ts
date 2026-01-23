@@ -177,6 +177,7 @@ export class AlertsInfoComponent {
       this.myForm.get('alertTag')?.setValue('');
       this.myForm.get('fromDate')?.setValue('');
       this.myForm.get('toDate')?.setValue('');
+      this.currentPage=1;
     }
 
     this.getCurrentSiteAlerts({ siteId: this.myForm.get('siteId')?.value });
@@ -220,7 +221,7 @@ export class AlertsInfoComponent {
   }
 
   getPaginatedData(data: number) {
-    // console.log(data);
+
     this.currentPage = data + 1;
     this.filter();
   }

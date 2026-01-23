@@ -121,7 +121,7 @@
             </div>
 
             <div class="col-lg-2">
-                <app-pagination [totalPages]="totalPages" (emitPage)="getPaginatedData($event)"></app-pagination>
+                <app-pagination [totalPages]="totalPages" [currentPage]="currentPage" (emitPage)="getPaginatedData($event)"></app-pagination>
             </div>
 
             <!-- <div class="col-lg-2">
