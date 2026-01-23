@@ -40,6 +40,10 @@ export class AlertsInfoComponent {
     this.getSitesListForUserName();
   }
 
+  getFile(data: any) {
+    return data.split('/')[data.split('/').length - 1] || '';
+  }
+
   getTimeDifference(date1: Date, date2: Date): string {
     let first: any = new Date(date1);
     let second: any = new Date(date2);
@@ -157,6 +161,8 @@ export class AlertsInfoComponent {
   @ViewChild('galleryDialog') galleryDialog = {} as TemplateRef<any>;
   galleryData: any;
   openGalleryDialog(data: any) {
+
+    console.log(data)
     this.galleryData = data;
     this.matdialog.open(this.galleryDialog);
   }
