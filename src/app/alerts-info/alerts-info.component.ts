@@ -33,6 +33,8 @@ export class AlertsInfoComponent {
   latestIncidentTime: any;
   objectNames = ['Person', 'Vehicle'];
   showLoader: boolean = false;
+  detChange = false;
+  today = new Date()
 
   ngOnInit() {
     this.userData = JSON.parse(sessionStorage.getItem('session')!);
@@ -104,6 +106,12 @@ export class AlertsInfoComponent {
     );
   }
 
+  clearDet(){
+    this.detChange = false;
+    this.myForm.reset();
+    this.getSitesListForUserName();
+  }
+
   camData: Array<any> = new Array();
   camerasListForSites(siteId: any) {
     this.siteSer
@@ -150,6 +158,7 @@ export class AlertsInfoComponent {
   visibleTags: any;
   remainingTags: any;
   showMore = false;
+  noData = false;
   displayedColumns: string[] = ['actionTag', 'actionTagCount'];
 
 
@@ -174,7 +183,7 @@ export class AlertsInfoComponent {
   }
 
   filter(i?: number, type?: string) {
-
+    this.detChange = true;
     if (i === 1) {
       this.myForm.get('cameraId')?.setValue('');
       this.myForm.get('subAlertTag')?.setValue('');
@@ -211,8 +220,15 @@ export class AlertsInfoComponent {
             this.eventData = res.IncidentList;
 
             this.visibleTags = res.actionTagCounts.slice(0, 5);
+            console.log(this.visibleTags);
             this.remainingTags = res.actionTagCounts.slice(5);
             this.newEventData = [...this.eventData];
+            if(res.IncidentList.length === 0){
+              this.noData = true;
+            }
+            else{
+              this.noData = false;
+            }
           } else {
             this.storage_service.status_text = 'no data!';
             this.newEventData = [];

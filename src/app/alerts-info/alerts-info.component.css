@@ -272,3 +272,18 @@ label {
   font-size: 25px;
   font: 700;
 }
+
+form{
+  display: flex;
+  align-items: center;
+}
+
+.no-data{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 18px;
+  font-weight: 800;
+  color: #ed3237;
+  text-shadow: #ed323869 0px 3px 8px;
+}

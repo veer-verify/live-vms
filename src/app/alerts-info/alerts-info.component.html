@@ -33,7 +33,7 @@
     </div>
 
     <div class="mx-2">
-      <div class="status" [matTooltip]="tag.subAlertTag">{{ tag.subAlertTag }}</div>
+      <div class="status" [matTooltip]="tag.subAlertTag">{{tag.subAlertTag ? tag.subAlertTag : '--'}}</div>
       <div class="count">
         {{ showLoader ? '...' : tag.subAlertTagCount }}
       </div>
@@ -84,7 +84,7 @@
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Alert Type</mat-label>
                     <mat-select formControlName="alertTag" (selectionChange)="onAlertChange();filter()" >
-                      <mat-option value=""></mat-option>
+                      <mat-option value="">All</mat-option>
                         <mat-option *ngFor="let item of alertTypes" [value]="item.guardAlertTypeId" > {{ item.guardAlertType }}
                            </mat-option>
                     </mat-select>
@@ -95,7 +95,7 @@
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Alert sub Type</mat-label>
                     <mat-select formControlName="subAlertTag" (selectionChange)="filter()" >
-                      <mat-option value=""></mat-option>
+                      <mat-option value="">All</mat-option>
                         <mat-option *ngFor="let item of alertSubTypes" [value]="item.guardSubAlertTypeId"> {{ item.guardSubAlertType }}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -119,15 +119,16 @@
                     </mat-date-range-picker>
                 </mat-form-field>
             </div>
-
+            
             <div class="col-lg-2">
                 <app-pagination [totalPages]="totalPages" [currentPage]="currentPage" (emitPage)="getPaginatedData($event)"></app-pagination>
             </div>
-
+            
             <!-- <div class="col-lg-2">
                 <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
             </div> -->
-          </div>
+        </div>
+        <button class="add-btn" (click)="clearDet()" style="height: 50%;">Clear</button>
         </form>
         <!-- <div>
             <button class="add-btn" (click)="show()">Create</button>
@@ -157,6 +158,7 @@
             </thead>
 
             <tbody>
+                <div *ngIf="noData" class="no-data">No Data</div>
                 <tr *ngFor="let item of newEventData; let i = index">
                     <!-- <td>{{i+1}}</td> -->
                     <!-- <td>{{item?.siteName}}</td> -->
