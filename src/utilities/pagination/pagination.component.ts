@@ -16,8 +16,11 @@ export class PaginationComponent {
   noOfPages: any = [];
   ngOnChanges(): void {
 
+    // console.log(this.totalPages)
     if (this.totalPages) {
       this.noOfPages = [...new Array(this.totalPages).keys()];
+    } else {
+      this.noOfPages = []
     }
 
     if (this.currentPage) {

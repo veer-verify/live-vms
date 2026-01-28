@@ -1,12 +1,15 @@
 <!-- <app-loader *ngIf="showLoader"></app-loader> -->
- <app-status></app-status>
-
+<app-status></app-status>
 
 <ng-container *ngIf="siteIdToNav.length !== 0">
-    <p class="title mb-4" style="font-size: 22px; color: #3d3934; font-weight: 700;">ALERTS DASHBOARD</p>
+  <p
+    class="title mb-4"
+    style="font-size: 22px; color: #3d3934; font-weight: 700"
+  >
+    ALERTS DASHBOARD
+  </p>
 
-
-      <!-- <div class="d-flex mb-3 align-items-baseline ">
+  <!-- <div class="d-flex mb-3 align-items-baseline ">
         <div class=" d-flex justify-content-start">
           <div class="vl-blue"></div>
           <div class="mx-2">
@@ -26,50 +29,75 @@
           {{ showMore ? 'View less' : 'View more' }}
         </a>
       </div> -->
-<div class="d-flex mb-3 align-items-baseline">
-  <div class="d-flex justify-content-start me-4" *ngFor="let tag of visibleTags">
-    <div class="vl"
-      [ngClass]="tag?.subAlertTag == 'Suspicious' ? 'vl-red' : tag?.subAlertTag == 'Police Visit' ? 'vl-blue' : tag?.subAlertTag == 'Information'?'vl-green': tag?.subAlertTag =='Deterred'?'vl-violet':'vl-black'">
-    </div>
+  <div class="d-flex mb-3 align-items-baseline">
+    <div
+      class="d-flex justify-content-start me-4"
+      *ngFor="let tag of visibleTags"
+    >
+      <div
+        class="vl"
+        [ngClass]="
+          tag?.subAlertTag == 'Suspicious'
+            ? 'vl-red'
+            : tag?.subAlertTag == 'Police Visit'
+              ? 'vl-blue'
+              : tag?.subAlertTag == 'Information'
+                ? 'vl-green'
+                : tag?.subAlertTag == 'Deterred'
+                  ? 'vl-violet'
+                  : 'vl-black'
+        "
+      ></div>
 
-    <div class="mx-2">
-      <div class="status" [matTooltip]="tag.subAlertTag">{{tag.subAlertTag ? tag.subAlertTag : '--'}}</div>
-      <div class="count">
-        {{ showLoader ? '...' : tag.subAlertTagCount }}
+      <div class="mx-2">
+        <div class="status" [matTooltip]="tag.subAlertTag">
+          {{ tag.subAlertTag ? tag.subAlertTag : "--" }}
+        </div>
+        <div class="count">
+          {{ showLoader ? "..." : tag.subAlertTagCount }}
+        </div>
       </div>
     </div>
+    <a
+      href=""
+      *ngIf="remainingTags?.length"
+      class="view-more"
+      [matMenuTriggerFor]="actionTagMenu"
+      #menuTrigger="matMenuTrigger"
+      (click)="$event.preventDefault(); showactiontagscount()"
+      [matTooltip]="!showMore ? 'view more' : 'view less'"
+    >
+      {{ showMore ? "<" : ">" }}
+    </a>
   </div>
-  <a href="" *ngIf="remainingTags?.length" class="view-more" [matMenuTriggerFor]="actionTagMenu"
-    #menuTrigger="matMenuTrigger" (click)="$event.preventDefault();showactiontagscount()" [matTooltip]="!showMore?'view more':'view less'">
-     {{ showMore ? '<' : '>' }}
-  </a>
-</div>
 
-
-
-
-    <div class="d-lg-flex justify-content-between align-items-center d-none">
-      <form [formGroup]="myForm">
-        <div class="row mx-0 mt-2 w-100">
-            <div class="col-lg-2 ps-0">
-                <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Site</mat-label>
-                    <mat-select formControlName="siteId" (selectionChange)="filter(1)">
-                        <mat-option *ngFor="let item of siteIdToNav; let i = index"
-                            [value]="item.siteId">{{item?.siteName}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="col-lg-2 ps-0">
-                <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Camera</mat-label>
-                    <mat-select formControlName="cameraId" (selectionChange)="filter();">
-                        <mat-option *ngFor="let item of camData" [value]="item?.cameraId">
-                            {{item?.name}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <!-- <div class="col-lg-2 ps-0">
+  <div class="d-lg-flex justify-content-between align-items-center d-none">
+    <form [formGroup]="myForm">
+      <div class="row mx-0 mt-2 w-100">
+        <div class="col-lg-2 ps-0">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Site</mat-label>
+            <mat-select formControlName="siteId" (selectionChange)="filter(1)">
+              <mat-option
+                *ngFor="let item of siteIdToNav; let i = index"
+                [value]="item.siteId"
+                >{{ item?.siteName }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-2 ps-0">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Camera</mat-label>
+            <mat-select formControlName="cameraId" (selectionChange)="filter()">
+              <mat-option value="">All</mat-option>
+              <mat-option *ngFor="let item of camData" [value]="item?.cameraId">
+                {{ item?.name }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <!-- <div class="col-lg-2 ps-0">
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Action Tag</mat-label>
                     <mat-select formControlName="actionTag" (selectionChange)="filter()" >
@@ -80,109 +108,164 @@
                 </mat-form-field>
             </div> -->
 
-             <div class="col-lg-2 ps-0">
-                <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Alert Type</mat-label>
-                    <mat-select formControlName="alertTag" (selectionChange)="onAlertChange();filter()" >
-                      <mat-option value="">All</mat-option>
-                        <mat-option *ngFor="let item of alertTypes" [value]="item.guardAlertTypeId" > {{ item.guardAlertType }}
-                           </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
+        <div class="col-lg-2 ps-0">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Alert Type</mat-label>
+            <mat-select
+              formControlName="alertTag"
+              (selectionChange)="onAlertChange(); filter()"
+            >
+              <mat-option value="">All</mat-option>
+              <mat-option
+                *ngFor="let item of alertTypes"
+                [value]="item.guardAlertTypeId"
+              >
+                {{ item.guardAlertType }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
 
-             <div class="col-lg-2 ps-0">
-                <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Alert sub Type</mat-label>
-                    <mat-select formControlName="subAlertTag" (selectionChange)="filter()" >
-                      <mat-option value="">All</mat-option>
-                        <mat-option *ngFor="let item of alertSubTypes" [value]="item.guardSubAlertTypeId"> {{ item.guardSubAlertType }}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
+        <div class="col-lg-2 ps-0">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Alert sub Type</mat-label>
+            <mat-select
+              formControlName="subAlertTag"
+              (selectionChange)="filter()"
+            >
+              <mat-option value="">All</mat-option>
+              <mat-option
+                *ngFor="let item of alertSubTypes"
+                [value]="item.guardSubAlertTypeId"
+              >
+                {{ item.guardSubAlertType }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
 
-            <div class="col-lg-2">
-                <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Enter a date range</mat-label>
-                    <mat-date-range-input [rangePicker]="rangePicker">
-                        <input matStartDate placeholder="Start date" formControlName="fromDate">
-                        <input matEndDate placeholder="End date" formControlName="toDate">
-                    </mat-date-range-input>
-                    <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
-                    <mat-date-range-picker #rangePicker>
-                        <mat-date-range-picker-actions>
-                            <button mat-button matDateRangePickerCancel
-                                (click)="fromDate = ''; toDate = ''; filter()">Cancel</button>
-                            <button mat-raised-button color="primary" matDateRangePickerApply
-                                (click)="filter()">Apply</button>
-                        </mat-date-range-picker-actions>
-                    </mat-date-range-picker>
-                </mat-form-field>
-            </div>
-            
-            <div class="col-lg-2">
-                <app-pagination [totalPages]="totalPages" [currentPage]="currentPage" (emitPage)="getPaginatedData($event)"></app-pagination>
-            </div>
-            
-            <!-- <div class="col-lg-2">
+        <div class="col-lg-2">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Date range</mat-label>
+            <mat-date-range-input [rangePicker]="rangePicker">
+              <input
+                matStartDate
+                placeholder="Start date"
+                formControlName="fromDate"
+              />
+              <input
+                matEndDate
+                placeholder="End date"
+                formControlName="toDate"
+              />
+            </mat-date-range-input>
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="rangePicker"
+            ></mat-datepicker-toggle>
+            <mat-date-range-picker #rangePicker>
+              <mat-date-range-picker-actions>
+                <button
+                  mat-button
+                  matDateRangePickerCancel
+                  (click)="resetDate(); filter()"
+                >
+                  Clear
+                </button>
+                <button
+                  mat-raised-button
+                  color="primary"
+                  matDateRangePickerApply
+                  (click)="filter()"
+                >
+                  Apply
+                </button>
+              </mat-date-range-picker-actions>
+            </mat-date-range-picker>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-2">
+          <app-pagination
+            [totalPages]="totalPages"
+            [currentPage]="currentPage"
+            (emitPage)="getPaginatedData($event)"
+          ></app-pagination>
+        </div>
+
+        <!-- <div class="col-lg-2">
                 <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
             </div> -->
-        </div>
-        <button class="add-btn" (click)="clearDet()" style="height: 50%;">Clear</button>
-        </form>
-        <!-- <div>
+      </div>
+      <!-- <button class="add-btn" (click)="clearDet()" style="height: 50%">
+        Clear
+      </button> -->
+    </form>
+    <!-- <div>
             <button class="add-btn" (click)="show()">Create</button>
         </div> -->
-    </div>
+  </div>
 
-    <div class="table-resp mt-1">
-        <table class="table">
-            <thead>
-                <tr class="tab">
-                    <!-- <th scope="col">No</th> -->
-                    <!-- <th scope="col">Site</th> -->
-                    <th scope="col">Camera</th>
-                    <!-- <th scope="col">User Level</th> -->
-                    <th scope="col">Event ID</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">From Time</th>
-                    <th scope="col">To Time</th>
-                    <th scope="col">Duration</th>
-                    <th scope="col">Object Name</th>
-                     <th scope="col">Alert</th>
-            <th scope="col">subAlert</th>
-                    <th scope="col" class="text-center">Event Clip</th>
-                    <!-- <th>Actions</th> -->
-                    <th></th>
-                </tr>
-            </thead>
+  <div class="table-resp mt-1">
+    <table class="table">
+      <thead>
+        <tr class="tab">
+          <!-- <th scope="col">No</th> -->
+          <!-- <th scope="col">Site</th> -->
+          <th scope="col">Camera</th>
+          <!-- <th scope="col">User Level</th> -->
+          <th scope="col">Event ID</th>
+          <th scope="col">Date</th>
+          <th scope="col">From Time</th>
+          <th scope="col">To Time</th>
+          <th scope="col">Duration</th>
+          <th scope="col">Object Name</th>
+          <th scope="col">Alert</th>
+          <th scope="col">subAlert</th>
+          <th scope="col" class="text-center">Event Clip</th>
+          <!-- <th>Actions</th> -->
+          <th></th>
+        </tr>
+      </thead>
 
-            <tbody>
-                <div *ngIf="noData" class="no-data">No Data</div>
-                <tr *ngFor="let item of newEventData; let i = index">
-                    <!-- <td>{{i+1}}</td> -->
-                    <!-- <td>{{item?.siteName}}</td> -->
-                    <td>{{item?.name}}</td>
-                    <td>{{item?.eventId}}</td>
-                    <td>{{item?.eventDate | date: 'mediumDate'}}</td>
-                    <td>{{item?.eventFromTime }}</td>
-                    <td>{{item?.eventToTime }}</td>
-                    <!-- <td>{{ getTimeDifference(item?.eventFromTime, item?.eventToTime) }}</td> -->
-                     <td>{{item?.duration}}</td>
-                    <td>{{item?.objectName | titlecase}}</td>
-                      <td
-              >
-              {{ item?.alertTag | titlecase }}
-            </td>
+      <tbody>
+        <!-- <div *ngIf="noData" class="no-data">No Data</div> -->
+        <tr *ngFor="let item of newEventData; let i = index">
+          <!-- <td>{{i+1}}</td> -->
+          <!-- <td>{{item?.siteName}}</td> -->
+          <td>{{ item?.name }}</td>
+          <td>{{ item?.eventId }}</td>
+          <td>{{ item?.eventDate | date: "mediumDate" }}</td>
+          <td>{{ item?.eventFromTime }}</td>
+          <td>{{ item?.eventToTime }}</td>
+          <!-- <td>{{ getTimeDifference(item?.eventFromTime, item?.eventToTime) }}</td> -->
+          <td>{{ item?.duration }}</td>
+          <td>{{ item?.objectName | titlecase }}</td>
+          <td>
+            {{ item?.alertTag | titlecase }}
+          </td>
 
-             <td
-                    [style.color]="item?.subAlertTag == 'Suspicious' ? 'red' : item?.subAlertTag == 'Police Visit' ? 'blue' : item?.subAlertTag == 'Information'?'green': item?.subAlertTag =='Deterred'?'violet':''">
-                    {{ item?.subAlertTag }}
-                  </td>
-                    <td class="text-center">
-                        <p class="text-primary pointer" (click)="openGalleryDialog(item)">View</p>
-                    </td>
-                    <!-- <td>
+          <td
+            [style.color]="
+              item?.subAlertTag == 'Suspicious'
+                ? 'red'
+                : item?.subAlertTag == 'Police Visit'
+                  ? 'blue'
+                  : item?.subAlertTag == 'Information'
+                    ? 'green'
+                    : item?.subAlertTag == 'Deterred'
+                      ? 'violet'
+                      : ''
+            "
+          >
+            {{ item?.subAlertTag }}
+          </td>
+          <td class="text-center">
+            <p class="text-primary pointer" (click)="openGalleryDialog(item)">
+              View
+            </p>
+          </td>
+          <!-- <td>
                         <div class="d-inline-flex">
                             <img loading="lazy" class="me-2" src="assets/icons/add_circle-black.svg" class="pointer" width="18"
                                 (click)="openUploadDialog(item)" alt="" matTooltip="Add File">
@@ -192,252 +275,349 @@
                                 (click)="deleteIncident(item)" matTooltip="Delete">
                         </div>
                     </td> -->
-                    <td>
-                        <p class="new-item" *ngIf="item?.createdTime > latestIncidentTime">NEW</p>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+          <td>
+            <p class="new-item" *ngIf="item?.createdTime > latestIncidentTime">
+              NEW
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </ng-container>
 
-
-<div class="err-info" *ngIf="errInfo">
-    <p>{{ errInfo }}</p>
-</div>
+<!-- <div class="err-info" *ngIf="errInfo">
+  <p>{{ errInfo }}</p>
+</div> -->
 
 <ng-template #confirmationDialog>
-    <div style="background-color: #084982;">
-        <p class="text-white p-1">DELETE FILE FOR EVENT ID - {{ currentItem?.eventId }}</p>
+  <div style="background-color: #084982">
+    <p class="text-white p-1">
+      DELETE FILE FOR EVENT ID - {{ currentItem?.eventId }}
+    </p>
+  </div>
+
+  <div class="dialog-content">
+    <!-- <p class="file-item my-2 text-center">Do you want to delete <span class="fw-bold">{{currentDeletingFile}}</span></p> -->
+
+    <div class="text-center" *ngIf="!isVid(currentDeletingFile)">
+      <video
+        [src]="currentDeletingFile | image | async"
+        class="bg-dark"
+        controls
+        height="200px"
+        width="200px"
+      ></video>
     </div>
 
-    <div class="dialog-content">
-        <!-- <p class="file-item my-2 text-center">Do you want to delete <span class="fw-bold">{{currentDeletingFile}}</span></p> -->
-
-        <div class="text-center" *ngIf="!isVid(currentDeletingFile)">
-            <video
-                [src]=" currentDeletingFile | image | async"
-                class="bg-dark" controls height="200px" width="200px"></video>
-        </div>
-
-        <div class="text-center" *ngIf="isVid(currentDeletingFile)">
-            <img loading="lazy" [src]=" currentDeletingFile | image | async"
-                alt="" height="200px" width="=200px">
-        </div>
+    <div class="text-center" *ngIf="isVid(currentDeletingFile)">
+      <img
+        loading="lazy"
+        [src]="currentDeletingFile | image | async"
+        alt=""
+        height="200px"
+        width="=200px"
+      />
     </div>
+  </div>
 
-    <div class="d-flex align-items-center justify-content-end">
-        <button class="dialog-close-btn" mat-dialog-close>Cancel</button>
-        <button class="dialog-update-btn" mat-dialog-close (click)="deleteIncidentClip()">Delete</button>
-    </div>
+  <div class="d-flex align-items-center justify-content-end">
+    <button class="dialog-close-btn" mat-dialog-close>Cancel</button>
+    <button
+      class="dialog-update-btn"
+      mat-dialog-close
+      (click)="deleteIncidentClip()"
+    >
+      Delete
+    </button>
+  </div>
 </ng-template>
 
 <ng-template #galleryDialog>
-    <div style="background-color: #084982;">
-        <p class="text-white p-1">{{ galleryData?.siteName }}</p>
-    </div>
-    <div class="dialog-content d-flex flex-wrap">
-        <div *ngFor="let data of galleryData?.files; let i = index">
-            <div class="w-250">
-                <!-- <img loading="lazy" *ngIf="!isVid(data)"
+  <div style="background-color: #084982">
+    <p class="text-white p-1">{{ galleryData?.siteName }}</p>
+  </div>
+  <div class="dialog-content d-flex flex-wrap">
+    <div *ngFor="let data of galleryData?.files; let i = index">
+      <div class="w-250">
+        <!-- <img loading="lazy" *ngIf="!isVid(data)"
                     [src]="environment + '/downloadFile_1_0?requestName=prod-events' + '&assetName=' + data | image | async"
                     alt="Loading..." width="100%" height="100%"> -->
-                      <img loading="lazy" *ngIf="!isVid(data)"
-                    [src]="data | image | async"
-                    alt="Loading..." width="100%" height="100%">
-                <video *ngIf="isVid(data)"
-                    [src]="data | image | async"
-                    class="bg-dark" controls width="100%" height="100%"></video>
-            </div>
-
-        </div>
+        <img
+          loading="lazy"
+          *ngIf="!isVid(data)"
+          [src]="data | image | async"
+          alt="Loading..."
+          width="100%"
+          height="100%"
+        />
+        <video
+          *ngIf="isVid(data)"
+          [src]="data | image | async"
+          class="bg-dark"
+          controls
+          width="100%"
+          height="100%"
+        ></video>
+      </div>
     </div>
+  </div>
 
-    <div class="d-flex align-items-center justify-content-end">
-        <button class="dialog-close-btn" mat-dialog-close>Close</button>
-    </div>
+  <div class="d-flex align-items-center justify-content-end">
+    <button class="dialog-close-btn" mat-dialog-close>Close</button>
+  </div>
 </ng-template>
 
 <ng-template #maxDialog>
-    <img loading="lazy" [src]="currentFullImage | image | async"
-        alt="" height="500px" width="500px">
+  <img
+    loading="lazy"
+    [src]="currentFullImage | image | async"
+    alt=""
+    height="500px"
+    width="500px"
+  />
 </ng-template>
 
 <ng-template #playbackDialog>
-    <div style="background-color: #084982;">
-        <p class="text-white p-1">{{ currentVideoData?.siteName }}</p>
-    </div>
-    <div class="dialog-content">
-        <div class="d-flex justify-content-between align-items-center">
-            <button class="next-prev-btns me-1" (click)="showPrev()" [disabled]="currentImageIndex === 0"
-                matTooltip="Preveous">
-                <img loading="lazy" src="assets/icons/chevron_left.svg" alt="">
-            </button>
-            <div *ngIf="isVideo">
-                <video
-                    [src]=" currentVideoData?.files[currentImageIndex] | image | async"
-                    autoplay controls height="300px" width="500px"></video>
-            </div>
+  <div style="background-color: #084982">
+    <p class="text-white p-1">{{ currentVideoData?.siteName }}</p>
+  </div>
+  <div class="dialog-content">
+    <div class="d-flex justify-content-between align-items-center">
+      <button
+        class="next-prev-btns me-1"
+        (click)="showPrev()"
+        [disabled]="currentImageIndex === 0"
+        matTooltip="Preveous"
+      >
+        <img loading="lazy" src="assets/icons/chevron_left.svg" alt="" />
+      </button>
+      <div *ngIf="isVideo">
+        <video
+          [src]="currentVideoData?.files[currentImageIndex] | image | async"
+          autoplay
+          controls
+          height="300px"
+          width="500px"
+        ></video>
+      </div>
 
-            <div *ngIf="!isVideo">
-                <img loading="lazy" [src]=" currentVideoData?.files[currentImageIndex] | image | async"
-                    alt="" height="300px" width="500px">
-            </div>
-            <button class="next-prev-btns ms-1" (click)="showNext()"
-                [disabled]="currentImageIndex === currentVideoData?.files.length - 1" matTooltip="Next">
-                <img loading="lazy" src="assets/icons/chevron_left.svg" style="rotate: 180deg;" alt="">
-            </button>
-        </div>
+      <div *ngIf="!isVideo">
+        <img
+          loading="lazy"
+          [src]="currentVideoData?.files[currentImageIndex] | image | async"
+          alt=""
+          height="300px"
+          width="500px"
+        />
+      </div>
+      <button
+        class="next-prev-btns ms-1"
+        (click)="showNext()"
+        [disabled]="currentImageIndex === currentVideoData?.files.length - 1"
+        matTooltip="Next"
+      >
+        <img
+          loading="lazy"
+          src="assets/icons/chevron_left.svg"
+          style="rotate: 180deg"
+          alt=""
+        />
+      </button>
     </div>
+  </div>
 
-    <div class="d-flex align-items-center justify-content-end">
-        <button class="dialog-close-btn" mat-dialog-close>Close</button>
-    </div>
+  <div class="d-flex align-items-center justify-content-end">
+    <button class="dialog-close-btn" mat-dialog-close>Close</button>
+  </div>
 </ng-template>
 
 <ng-template #uploadFileDialog>
-    <div style="background-color: #084982;">
-        <p class="text-white p-1">ADD FILE FOR EVENT ID {{currentItem?.eventId}}</p>
+  <div style="background-color: #084982">
+    <p class="text-white p-1">
+      ADD FILE FOR EVENT ID {{ currentItem?.eventId }}
+    </p>
+  </div>
+  <div class="dialog-content">
+    <div class="mb-2" style="width: 500px">
+      <p class="label mb-2">Upload File</p>
+      <input
+        class="form-control w-100"
+        type="file"
+        (change)="onFileSelected($event)"
+      />
+      <!-- <span class="error-msg" *ngIf="UserForm.controls['assetFile'].invalid  && submitted">File is required</span> -->
     </div>
-    <div class="dialog-content">
-        <div class="mb-2" style="width: 500px;">
-            <p class="label mb-2">Upload File</p>
-            <input class="form-control w-100" type="file" (change)="onFileSelected($event)">
-            <!-- <span class="error-msg" *ngIf="UserForm.controls['assetFile'].invalid  && submitted">File is required</span> -->
-        </div>
-    </div>
+  </div>
 
-    <div class="d-flex align-items-center justify-content-end">
-        <button class="dialog-close-btn" mat-dialog-close>Close</button>
-        <button class="dialog-update-btn" mat-dialog-close (click)="uploadVideoFile()">Update</button>
-    </div>
+  <div class="d-flex align-items-center justify-content-end">
+    <button class="dialog-close-btn" mat-dialog-close>Close</button>
+    <button
+      class="dialog-update-btn"
+      mat-dialog-close
+      (click)="uploadVideoFile()"
+    >
+      Update
+    </button>
+  </div>
 </ng-template>
 
 <ng-template #editDialog>
-    <div style="background-color: #084982;">
-        <p class="text-white p-1">MODIFY EVENT DATA {{ currentItem?.eventId }} - {{ currentItem?.siteName }}</p>
-    </div>
+  <div style="background-color: #084982">
+    <p class="text-white p-1">
+      MODIFY EVENT DATA {{ currentItem?.eventId }} - {{ currentItem?.siteName }}
+    </p>
+  </div>
 
-    <div class="dialog-content">
-        <div class="row m-0">
-            <div class="col-md-6 mb-3">
-                <span class="label">Site</span>
-                <select class="form-select" [(ngModel)]="currentItem.siteId" disabled>
-                    <option value="" disabled>Select Site</option>
-                    <option *ngFor="let site of siteIdToNav" [value]="site?.siteId">{{site?.siteName}}</option>
-                </select>
-            </div>
-            <!-- <div class="col-md-6 mb-3">
+  <div class="dialog-content">
+    <div class="row m-0">
+      <div class="col-md-6 mb-3">
+        <span class="label">Site</span>
+        <select class="form-select" [(ngModel)]="currentItem.siteId" disabled>
+          <option value="" disabled>Select Site</option>
+          <option *ngFor="let site of siteIdToNav" [value]="site?.siteId">
+            {{ site?.siteName }}
+          </option>
+        </select>
+      </div>
+      <!-- <div class="col-md-6 mb-3">
         <span class="label">Camera</span>
         <select class="form-select" [(ngModel)]="currentItem.cameraId">
           <option value="" disabled>Select Camera</option>
           <option *ngFor="let cam of camData" [value]="cam?.cameraId">{{cam?.cameraId}}</option>
         </select>
       </div> -->
-            <div class="col-md-6 mb-3">
-                <span class="label">Camera</span>
-                <input type="text" class="form-control" [(ngModel)]="currentItem.cameraId">
-            </div>
-            <div class="col-md-6 mb-3">
-                <span class="label">Object Name</span>
-                <select class="form-select" [(ngModel)]="currentItem.objectName">
-                    <option value="" disabled>Object Name</option>
-                    <option *ngFor="let type of objectNames" [value]="type">{{type}}</option>
-                </select>
-            </div>
-            <!-- <div class="col-md-6 mb-3">
+      <div class="col-md-6 mb-3">
+        <span class="label">Camera</span>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="currentItem.cameraId"
+        />
+      </div>
+      <div class="col-md-6 mb-3">
+        <span class="label">Object Name</span>
+        <select class="form-select" [(ngModel)]="currentItem.objectName">
+          <option value="" disabled>Object Name</option>
+          <option *ngFor="let type of objectNames" [value]="type">
+            {{ type }}
+          </option>
+        </select>
+      </div>
+      <!-- <div class="col-md-6 mb-3">
         <span class="label">Action Tag</span>
         <select class="form-select" [(ngModel)]="currentItem.actionTag">
           <option value="">Action Tag</option>
           <option *ngFor="let item of actionTags" [value]="item?.value">{{item?.value}}</option>
         </select>
       </div> -->
-            <div class="col-md-6 mb-3" *ngIf="siteId != 36444">
-                <span class="label">Action Tag</span>
-                <select class="form-select" [(ngModel)]="currentItem.actionTag">
-                    <option value="">Action Tag</option>
-                    <option *ngFor="let item of actionTags" [value]="item?.value">{{item?.value}}</option>
-                </select>
-            </div>
-            <div class="col-md-6 mb-3" *ngIf="siteId == 36444">
-                <span class="label">Action Tag</span>
-                <select class="form-select" [(ngModel)]="currentItem.actionTag">
-                    <option value="">Action Tag</option>
-                    <option *ngFor="let item of newTags" [value]="item?.value">{{item?.value}}</option>
-                </select>
-            </div>
-            <div class="col-md-6 mb-3">
-                <span class="label">From Date</span>
-                <input type="datetime-local" class="form-control" [(ngModel)]="currentItem.eventFromTime">
-            </div>
-            <div class="col-md-6 mb-3">
-                <span class="label">To Date</span>
-                <input type="datetime-local" class="form-control" [(ngModel)]="currentItem.eventToTime">
-            </div>
-            <div class="col-lg-12" *ngIf="currentItem?.files?.length !== 0">
-                <div class="mb-3">
-                    <span class="label">Files</span>
-                    <div class="file-list" *ngFor="let file of currentItem.files">
-                        <p class="file-item">{{ file }}</p>
-                        <a (click)="openConfirmationDialog(file)" matTooltip="Delete"><img loading="lazy"
-                                src="assets/icons/delete_black.svg" class="ms-1 pointer" width="15" alt=""></a>
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="col-lg-2">
+      <div class="col-md-6 mb-3" *ngIf="siteId != 36444">
+        <span class="label">Action Tag</span>
+        <select class="form-select" [(ngModel)]="currentItem.actionTag">
+          <option value="">Action Tag</option>
+          <option *ngFor="let item of actionTags" [value]="item?.value">
+            {{ item?.value }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-6 mb-3" *ngIf="siteId == 36444">
+        <span class="label">Action Tag</span>
+        <select class="form-select" [(ngModel)]="currentItem.actionTag">
+          <option value="">Action Tag</option>
+          <option *ngFor="let item of newTags" [value]="item?.value">
+            {{ item?.value }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-6 mb-3">
+        <span class="label">From Date</span>
+        <input
+          type="datetime-local"
+          class="form-control"
+          [(ngModel)]="currentItem.eventFromTime"
+        />
+      </div>
+      <div class="col-md-6 mb-3">
+        <span class="label">To Date</span>
+        <input
+          type="datetime-local"
+          class="form-control"
+          [(ngModel)]="currentItem.eventToTime"
+        />
+      </div>
+      <div class="col-lg-12" *ngIf="currentItem?.files?.length !== 0">
+        <div class="mb-3">
+          <span class="label">Files</span>
+          <div class="file-list" *ngFor="let file of currentItem.files">
+            <p class="file-item">{{ file }}</p>
+            <a (click)="openConfirmationDialog(file)" matTooltip="Delete"
+              ><img
+                loading="lazy"
+                src="assets/icons/delete_black.svg"
+                class="ms-1 pointer"
+                width="15"
+                alt=""
+            /></a>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-lg-2">
         <button (click)="showUploadFile()">Change</button>
       </div> -->
-            <!-- <div class="col-lg-12" *ngIf="showUploadFile">
+      <!-- <div class="col-lg-12" *ngIf="showUploadFile">
         <div class="mb-3">
           <span class="label">Change File</span>
           <input class="form-control" type="file" (change)="onFileSelected($event)">
         </div>
       </div> -->
-            <div class="col-md-12 mb-3">
-                <span class="label">Remarks</span>
-                <input type="text" class="form-control" placeholder="Remarks" [(ngModel)]="currentItem.remarks">
-            </div>
-        </div>
+      <div class="col-md-12 mb-3">
+        <span class="label">Remarks</span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Remarks"
+          [(ngModel)]="currentItem.remarks"
+        />
+      </div>
     </div>
-
-    <div class="d-flex align-items-center justify-content-end">
-        <button class="dialog-close-btn" mat-dialog-close>Close</button>
-        <button class="dialog-update-btn" mat-dialog-close (click)="updateIncidents()">Update</button>
-    </div>
-</ng-template>
-
-
-
-
-
-<!-- (click)="$event.stopPropagation()  [hasBackdrop]="false"" -->
-
-<mat-menu #actionTagMenu="matMenu" class="action-tag-menu"  [hasBackdrop]="false">
-
-  <div class="d-flex justify-content-end align-items-center">
-
-    <button mat-button  (click)="showMore=false">X</button>
   </div>
 
-  <div class="menu-content"  (click)="$event.stopPropagation()">
+  <div class="d-flex align-items-center justify-content-end">
+    <button class="dialog-close-btn" mat-dialog-close>Close</button>
+    <button
+      class="dialog-update-btn"
+      mat-dialog-close
+      (click)="updateIncidents()"
+    >
+      Update
+    </button>
+  </div>
+</ng-template>
 
+<mat-menu
+  #actionTagMenu="matMenu"
+  class="action-tag-menu"
+  [hasBackdrop]="false"
+>
+  <div class="d-flex justify-content-end align-items-center">
+    <button mat-button (click)="showMore = false">X</button>
+  </div>
 
+  <div class="menu-content" (click)="$event.stopPropagation()">
     <table mat-table [dataSource]="remainingTags" class="mat-elevation-z0">
-
       <!-- Action Tag Column -->
       <ng-container matColumnDef="actionTag">
-        <th mat-header-cell *matHeaderCellDef class="blue-text"> Action Tag </th>
-        <td mat-cell *matCellDef="let row" >
-          <span class="ellipsis" title="{{ row.subAlertTag }}" >
-            {{ row.subAlertTag || '-' }}
+        <th mat-header-cell *matHeaderCellDef class="blue-text">Action Tag</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="ellipsis" title="{{ row.subAlertTag }}">
+            {{ row.subAlertTag || "-" }}
           </span>
-
         </td>
       </ng-container>
 
       <!-- Count Column -->
       <ng-container matColumnDef="actionTagCount">
-        <th mat-header-cell *matHeaderCellDef class="blue-text"> Count </th>
+        <th mat-header-cell *matHeaderCellDef class="blue-text">Count</th>
         <td mat-cell *matCellDef="let row">
           {{ row.subAlertTagCount }}
         </td>
@@ -445,8 +625,6 @@
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-
     </table>
-
   </div>
 </mat-menu>

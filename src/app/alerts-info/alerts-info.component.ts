@@ -33,7 +33,7 @@ export class AlertsInfoComponent {
   latestIncidentTime: any;
   objectNames = ['Person', 'Vehicle'];
   showLoader: boolean = false;
-  detChange = false;
+  // detChange = false;
   today = new Date()
 
   ngOnInit() {
@@ -79,7 +79,7 @@ export class AlertsInfoComponent {
   }
 
   siteIdToNav: Array<any> = new Array();
-  errInfo: any;
+  // errInfo: any;
   getSitesListForUserName() {
     this.storage_service.status_text = 'loading...';
     this.siteSer.getSites(this.userData).subscribe(
@@ -96,21 +96,21 @@ export class AlertsInfoComponent {
           this.getTags();
         } else if (res.Status === 'Failed') {
           this.storage_service.status_text = 'no data!';
-          this.errInfo = res.message;
+          // this.errInfo = res.message;
         }
       },
       (err: any) => {
         this.storage_service.status_text = 'failed to load data!';
-        this.errInfo = 'CONNECTION TIMED OUT!';
+        // this.errInfo = 'CONNECTION TIMED OUT!';
       }
     );
   }
 
-  clearDet(){
-    this.detChange = false;
-    this.myForm.reset();
-    this.getSitesListForUserName();
-  }
+  // clearDet() {
+  //   // this.detChange = false;
+  //   this.myForm.reset();
+  //   this.getSitesListForUserName();
+  // }
 
   camData: Array<any> = new Array();
   camerasListForSites(siteId: any) {
@@ -158,7 +158,7 @@ export class AlertsInfoComponent {
   visibleTags: any;
   remainingTags: any;
   showMore = false;
-  noData = false;
+  // noData = false;
   displayedColumns: string[] = ['actionTag', 'actionTagCount'];
 
 
@@ -183,14 +183,14 @@ export class AlertsInfoComponent {
   }
 
   filter(i?: number, type?: string) {
-    this.detChange = true;
+    // this.detChange = true;
     if (i === 1) {
       this.myForm.get('cameraId')?.setValue('');
       this.myForm.get('subAlertTag')?.setValue('');
       this.myForm.get('alertTag')?.setValue('');
       this.myForm.get('fromDate')?.setValue('');
       this.myForm.get('toDate')?.setValue('');
-      this.currentPage=1;
+      this.currentPage = 1;
     }
 
     this.getCurrentSiteAlerts({ siteId: this.myForm.get('siteId')?.value });
@@ -220,14 +220,10 @@ export class AlertsInfoComponent {
             this.eventData = res.IncidentList;
 
             this.visibleTags = res.actionTagCounts.slice(0, 5);
-            console.log(this.visibleTags);
             this.remainingTags = res.actionTagCounts.slice(5);
             this.newEventData = [...this.eventData];
-            if(res.IncidentList.length === 0){
-              this.noData = true;
-            }
-            else{
-              this.noData = false;
+            if (res.IncidentList.length === 0) {
+              this.storage_service.status_text = 'no data!';
             }
           } else {
             this.storage_service.status_text = 'no data!';
@@ -240,6 +236,10 @@ export class AlertsInfoComponent {
       );
   }
 
+  resetDate() {
+    this.myForm.get('fromDate')?.setValue('');
+    this.myForm.get('toDate')?.setValue('');
+  }
   getPaginatedData(data: number) {
 
     this.currentPage = data + 1;
