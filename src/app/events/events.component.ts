@@ -31,7 +31,7 @@ export class EventsComponent {
     private router: Router,
     private http: HttpClient,
     private siteser: SiteService
-  ) {}
+  ) { }
 
   intervalId: any;
   eventInterval: any;
@@ -49,7 +49,7 @@ export class EventsComponent {
         consoleType: '',
         consumeType: 'refresh',
       })
-      .subscribe((res: any) => {});
+      .subscribe((res: any) => { });
 
     this.getActionTagCategories();
     this.getDispatchData();
@@ -93,7 +93,7 @@ export class EventsComponent {
                   queueName: '',
                   consoleType: '',
                 })
-                .subscribe((res: any) => {});
+                .subscribe((res: any) => { });
               this.eventData.push(...res);
               if (this.eventData.length === 1) {
                 const [event] = this.eventData;
@@ -102,10 +102,10 @@ export class EventsComponent {
             }
           },
           error: (err) => {
-            this.eventPolling=true;
+            this.eventPolling = true;
           }
         },
-      );
+        );
       }
       this.storage_service.events_sub.next(this.eventData.length);
     }, 2000);
@@ -165,7 +165,7 @@ export class EventsComponent {
               queueName: '',
               consoleType: '',
             })
-            .subscribe((res: any) => {});
+            .subscribe((res: any) => { });
         } else {
           this.storage_service.status_text = 'no events!';
         }
@@ -365,22 +365,22 @@ export class EventsComponent {
     );
     this.path === 'pre-dispatch'
       ? this.currentItem?.userLevelAlarmInfo.push({
-          level: 2,
-          user: user?.UserId,
-          alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
-          activityDetTime: this.sirenTime ?? '',
-          landingTime: this.currentItem?.landingTime ?? '',
-          reviewStart: this.currentItem?.reviewStart ?? '',
-          reviewEnd: endTime ?? '',
-          actionTag: this.currentActionTag?.categoryId,
-          subActionTag: this.currentSubActionTag?.subCategoryId,
-          notes: this.notes,
-          userName: user?.UserName,
-          alertTag:this.alertType,
-          subAlertTag:this.alertSubType
-        })
+        level: 2,
+        user: user?.UserId,
+        alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
+        activityDetTime: this.sirenTime ?? '',
+        landingTime: this.currentItem?.landingTime ?? '',
+        reviewStart: this.currentItem?.reviewStart ?? '',
+        reviewEnd: endTime ?? '',
+        actionTag: this.currentActionTag?.categoryId,
+        subActionTag: this.currentSubActionTag?.subCategoryId,
+        notes: this.notes,
+        userName: user?.UserName,
+        alertTag: this.alertType,
+        subAlertTag: this.alertSubType
+      })
       : this.path === 'dispatch'
-      ? this.currentItem?.userLevelAlarmInfo.push({
+        ? this.currentItem?.userLevelAlarmInfo.push({
           level: 3,
           user: user?.UserId,
           alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
@@ -393,7 +393,7 @@ export class EventsComponent {
           notes: this.notes,
           userName: user?.UserName,
         })
-      : this.currentItem?.userLevelAlarmInfo.push({
+        : this.currentItem?.userLevelAlarmInfo.push({
           level: 4,
           user: user?.UserId,
           alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
@@ -416,7 +416,7 @@ export class EventsComponent {
         consoleType: '',
         consumeType: '',
       })
-      .subscribe((res: any) => {});
+      .subscribe((res: any) => { });
 
     this.storage_service.show_loader = true;
     this.event_service
@@ -467,7 +467,7 @@ export class EventsComponent {
         consoleType: '',
         consumeType: '',
       })
-      .subscribe((res: any) => {});
+      .subscribe((res: any) => { });
 
     let user = this.storage_service.getData('session');
     let endTime = this.storage_service.getTimeWithTimezone(
@@ -475,21 +475,21 @@ export class EventsComponent {
     );
     this.path === 'pre-dispatch'
       ? this.currentItem?.userLevelAlarmInfo.push({
-          level: 2,
-          user: user?.UserId,
-          alarm: 'N',
-          landingTime: this.currentItem?.landingTime ?? '',
-          reviewStart: this.currentItem?.reviewStart ?? '',
-          reviewEnd: endTime ?? '',
-          actionTag: this.currentActionTag?.categoryId,
-          subActionTag: this.currentSubActionTag?.subCategoryId,
-          notes: this.notes,
-          userName: user?.UserName,
-          alertTag:this.alertType,
-          subAlertTag:this.alertSubType
-        })
+        level: 2,
+        user: user?.UserId,
+        alarm: 'N',
+        landingTime: this.currentItem?.landingTime ?? '',
+        reviewStart: this.currentItem?.reviewStart ?? '',
+        reviewEnd: endTime ?? '',
+        actionTag: this.currentActionTag?.categoryId,
+        subActionTag: this.currentSubActionTag?.subCategoryId,
+        notes: this.notes,
+        userName: user?.UserName,
+        alertTag: this.alertType,
+        subAlertTag: this.alertSubType
+      })
       : this.path === 'dispatch'
-      ? this.currentItem?.userLevelAlarmInfo.push({
+        ? this.currentItem?.userLevelAlarmInfo.push({
           level: 3,
           user: user?.UserId,
           alarm: 'N',
@@ -501,7 +501,7 @@ export class EventsComponent {
           notes: this.notes,
           userName: user?.UserName,
         })
-      : this.currentItem?.userLevelAlarmInfo.push({
+        : this.currentItem?.userLevelAlarmInfo.push({
           level: 4,
           user: user?.UserId,
           alarm: 'N',
@@ -668,20 +668,20 @@ export class EventsComponent {
   showLoader: boolean = false;
 
   get hasMonitoringHours(): boolean {
-  const obj = this.cameraDetails?.cameras[0]?.monitoringHoursDetails;
-  return obj && Object.keys(obj).length > 0;
-}
+    const obj = this.cameraDetails?.cameras[0]?.monitoringHoursDetails;
+    return obj && Object.keys(obj).length > 0;
+  }
 
   @ViewChild('monitoringImg') monitoringImg = {} as TemplateRef<any>;
   @ViewChild('eventsImg') eventsImg = {} as TemplateRef<any>;
   @ViewChild('eventSrc') eventSrc!: ElementRef;
-    @ViewChild('monitoringSrc') monitoringSrc!: ElementRef;
+  @ViewChild('monitoringSrc') monitoringSrc!: ElementRef;
 
   getImages(i: any) {
     this.monitoringImage = null;
     this.eventsImage = null;
 
-    this.storage_service.isEnabled = true;
+    this.storage_service.showMediaLoader = true;
 
     if (i == 1) {
       this.dialog.open(this.monitoringImg);
@@ -690,8 +690,8 @@ export class EventsComponent {
         .subscribe((res: any) => {
           if (res.statusCode == 200) {
             this.monitoringImage = res.data?.monitoringImage;
-            this.storage_service.isEnabled = false;
-          }else {
+            this.storage_service.showMediaLoader = false;
+          } else {
             this.monitoringSrc.nativeElement.src = 'assets/icons/eyedisabled.svg';
           }
         });
@@ -702,7 +702,7 @@ export class EventsComponent {
         .subscribe((res: any) => {
           if (res.statusCode == 200) {
             this.eventsImage = res.data?.eventsImage;
-            this.storage_service.isEnabled = false;
+            this.storage_service.showMediaLoader = false;
           } else {
             this.eventSrc.nativeElement.src = 'assets/icons/eyedisabled.svg';
           }

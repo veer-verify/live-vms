@@ -11,15 +11,14 @@ export class ImagePipe implements PipeTransform {
   constructor(
     private http: HttpClient,
     private storageSer: StorageService,
-  ) {}
+  ) { }
 
   async transform(src: string): Promise<any> {
-
     const token = this.storageSer.getData('acTok');
-    const headers = new HttpHeaders({'Authorization': `Bearer ${token}`});
-     this.storageSer.isEnabled=true;
-    const imageBlob = await firstValueFrom(this.http.get(src, {headers, responseType: 'blob'}));
-     this.storageSer.isEnabled=false;
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+    this.storageSer.showMediaLoader = true;
+    const imageBlob = await firstValueFrom(this.http.get(src, { headers, responseType: 'blob' }));
+    this.storageSer.showMediaLoader = false;
 
     const reader = new FileReader();
     return new Promise((resolve, reject) => {

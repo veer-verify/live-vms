@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class SiteService {
-  constructor(private http: HttpClient, private storageSer: StorageService) {}
+  constructor(private http: HttpClient, private storageSer: StorageService) { }
 
   public getSites(payload?: any): any {
     let url = `${environment.site_url}/getSitesListForUserName_2_0/`;
@@ -331,7 +331,7 @@ export class SiteService {
     return this.http.get(url, { params });
   }
 
-  addSiteContact(payload:any){
+  addSiteContact(payload: any) {
 
     let url = `${environment.guard_monitoring_url}/addContactDetails_1_0`;
     let user = this.storageSer.getData('session');
@@ -340,54 +340,54 @@ export class SiteService {
     return this.http.post(url, payload);
   }
 
-  addSmsDetails(payload:any){
-       let url = `${environment.guard_monitoring_url}/addSmsDetails_1_0`;
+  addSmsDetails(payload: any) {
+    let url = `${environment.guard_monitoring_url}/addSmsDetails_1_0`;
     let user = this.storageSer.getData('session');
     payload.createdBy = user?.UserId;
     payload.siteId = payload.siteId;
     return this.http.post(url, payload);
   }
-addlawenforce(payload:any){
+  addlawenforce(payload: any) {
     let url = `${environment.guard_monitoring_url}/addLawEnforcementDetails_1_0`;
     let user = this.storageSer.getData('session');
     payload.createdBy = user?.UserId;
     payload.siteId = payload.siteId;
     return this.http.post(url, payload);
-}
+  }
 
 
-getSiteMonitoringInfoBySiteId(payload:any){
-   let url = `${environment.guard_monitoring_url}/getMonitoringEscalationInfoBySiteId_1_0`;
+  getSiteMonitoringInfoBySiteId(payload: any) {
+    let url = `${environment.guard_monitoring_url}/getMonitoringEscalationInfoBySiteId_1_0`;
     let params = new HttpParams();
     params = params.set('siteId', payload?.siteId);
-    return this.http.get(url, {params});
-}
+    return this.http.get(url, { params });
+  }
 
-inactiveLawEnforcementInfo(payload:any){
-   let url = `${environment.guard_monitoring_url}/inactiveLawEnforcementInfo_1_0`;
-   let user = this.storageSer.getData('session');
+  inactiveLawEnforcementInfo(payload: any) {
+    let url = `${environment.guard_monitoring_url}/inactiveLawEnforcementInfo_1_0`;
+    let user = this.storageSer.getData('session');
     let params = new HttpParams();
     params = params.set('modifiedBy', user?.UserId);
-     params = params.set('id', payload?.lawEnforcementId);
-      return this.http.put(url,null, {params});
-}
-inactiveSmsDetails(payload:any){
-   let url = `${environment.guard_monitoring_url}/inactiveSmsDetails_1_0`;
-   let user = this.storageSer.getData('session');
+    params = params.set('id', payload?.lawEnforcementId);
+    return this.http.put(url, null, { params });
+  }
+  inactiveSmsDetails(payload: any) {
+    let url = `${environment.guard_monitoring_url}/inactiveSmsDetails_1_0`;
+    let user = this.storageSer.getData('session');
     let params = new HttpParams();
     params = params.set('modifiedBy', user?.UserId);
-     params = params.set('id', payload?.smsId);
-      return this.http.put(url,null, {params});
-}
-inactiveContactDetails(payload:any){
+    params = params.set('id', payload?.smsId);
+    return this.http.put(url, null, { params });
+  }
+  inactiveContactDetails(payload: any) {
 
-   let url = `${environment.guard_monitoring_url}/inactiveContactDetails_1_0`;
-   let user = this.storageSer.getData('session');
-     let params = new HttpParams();
+    let url = `${environment.guard_monitoring_url}/inactiveContactDetails_1_0`;
+    let user = this.storageSer.getData('session');
+    let params = new HttpParams();
     params = params.set('modifiedBy', user?.UserId);
-     params = params.set('contactId', payload?.contactId);
-      return this.http.put(url,null, {params});
-}
+    params = params.set('contactId', payload?.contactId);
+    return this.http.put(url, null, { params });
+  }
 
 
   // site configuration

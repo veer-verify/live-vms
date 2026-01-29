@@ -21,7 +21,7 @@ export class StorageService {
     return `assets/themes/${environment.env}/${file}`;
   }
 
-  isEnabled: boolean = false;
+  showMediaLoader: boolean = false;
 
 
 
@@ -62,13 +62,13 @@ export class StorageService {
     return moment().tz(timezone).format('YYYY-MM-DD HH:mm:ss');
   }
 
-    getTimeWithTime(timezone: string, options?: any): any {
+  getTimeWithTime(timezone: string, options?: any): any {
 
     // return moment().tz(timezone).format('HH:mm:ss');
 
-      return interval(1000).pipe(
-    map(() => moment().tz(timezone).format('HH:mm:ss'))
-  );
+    return interval(1000).pipe(
+      map(() => moment().tz(timezone).format('HH:mm:ss'))
+    );
 
 
   }
@@ -159,42 +159,42 @@ export class StorageService {
     return a.includes('Dispatch-3rd-Level') ? true : false;
   }
 
-   timeZoneCountryList = [
-  { timeZone: "Asia/Kolkata", countryCode: "IN" },
-  { timeZone: "Asia/Tokyo", countryCode: "JP" },
-  { timeZone: "Asia/Dubai", countryCode: "AE" },
-  { timeZone: "Europe/London", countryCode: "GB" },
-  { timeZone: "Europe/Paris", countryCode: "FR" },
-  { timeZone: "Europe/Berlin", countryCode: "DE" },
-  { timeZone: "America/New_York", countryCode: "US" },
-  { timeZone: "America/Chicago", countryCode: "US" },
-  { timeZone: "America/Denver", countryCode: "US" },
-  { timeZone: "America/Los_Angeles", countryCode: "US" },
-  { timeZone: "America/Toronto", countryCode: "CA" },
-  { timeZone: "Australia/Sydney", countryCode: "AU" },
-  { timeZone: "Australia/Melbourne", countryCode: "AU" },
-  { timeZone: "Australia/Canberra", countryCode: "AU" },
-  { timeZone: "Africa/Johannesburg", countryCode: "ZA" },
-  { timeZone: "Asia/Singapore", countryCode: "SG" }
-];
+  timeZoneCountryList = [
+    { timeZone: "Asia/Kolkata", countryCode: "IN" },
+    { timeZone: "Asia/Tokyo", countryCode: "JP" },
+    { timeZone: "Asia/Dubai", countryCode: "AE" },
+    { timeZone: "Europe/London", countryCode: "GB" },
+    { timeZone: "Europe/Paris", countryCode: "FR" },
+    { timeZone: "Europe/Berlin", countryCode: "DE" },
+    { timeZone: "America/New_York", countryCode: "US" },
+    { timeZone: "America/Chicago", countryCode: "US" },
+    { timeZone: "America/Denver", countryCode: "US" },
+    { timeZone: "America/Los_Angeles", countryCode: "US" },
+    { timeZone: "America/Toronto", countryCode: "CA" },
+    { timeZone: "Australia/Sydney", countryCode: "AU" },
+    { timeZone: "Australia/Melbourne", countryCode: "AU" },
+    { timeZone: "Australia/Canberra", countryCode: "AU" },
+    { timeZone: "Africa/Johannesburg", countryCode: "ZA" },
+    { timeZone: "Asia/Singapore", countryCode: "SG" }
+  ];
 
 
- public getCountry = (zone:any) => {
-  return this.timeZoneCountryList.find((item) => item.timeZone === zone)?.countryCode || 'US';
-}
+  public getCountry = (zone: any) => {
+    return this.timeZoneCountryList.find((item) => item.timeZone === zone)?.countryCode || 'US';
+  }
 
-public getZone = (timezone:any) => {
+  public getZone = (timezone: any) => {
 
-  if(!timezone) return;
-  const date = new Date();
-  const tz = new Intl.DateTimeFormat(`en-${this.getCountry(timezone)}`, {
-    timeZone: timezone.toString(),
-    timeZoneName: "short",
-  })
-    .formatToParts(date)
-    .find((part) => part.type === "timeZoneName")?.value;
+    if (!timezone) return;
+    const date = new Date();
+    const tz = new Intl.DateTimeFormat(`en-${this.getCountry(timezone)}`, {
+      timeZone: timezone.toString(),
+      timeZoneName: "short",
+    })
+      .formatToParts(date)
+      .find((part) => part.type === "timeZoneName")?.value;
     return tz;
 
-};
+  };
 
 }

@@ -255,8 +255,6 @@ export class AlertsInfoComponent {
   @ViewChild('galleryDialog') galleryDialog = {} as TemplateRef<any>;
   galleryData: any;
   openGalleryDialog(data: any) {
-
-    console.log(data)
     this.galleryData = data;
     this.matdialog.open(this.galleryDialog);
   }

@@ -1,42 +1,71 @@
 <app-header></app-header>
 
 <div class="overall-container">
-  <div class="left-content" [ngStyle]="{'width': showSidenav ? '300px' : '50px'}">
-
+  <div
+    class="left-content"
+    [ngStyle]="{ width: showSidenav ? '300px' : '50px' }"
+  >
     <div class="d-flex justify-content-center my-1">
       <button class="colap-arr" (click)="collap_nav()">
-        <img loading="lazy" src="assets/icons/arrow_back.svg" alt="" width="16"
-          [ngStyle]="{'rotate' : showSidenav ? '' : '180deg'}" style="vertical-align: sub;" />
+        <img
+          loading="lazy"
+          src="assets/icons/arrow_back.svg"
+          alt=""
+          width="16"
+          [ngStyle]="{ rotate: showSidenav ? '' : '180deg' }"
+          style="vertical-align: sub"
+        />
       </button>
     </div>
 
-
     <div class="list-group">
+      <a
+        [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+        [routerLink]="['/user-dashboard/monitoring-info']"
+        routerLinkActive="routeactive"
+      >
+        <img
+          loading="lazy"
+          src="assets/icons/grip.svg"
+          matTooltip="Dashboard"
+        />
+        <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
+          >Dashboard</span
+        >
+      </a>
 
-      <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
-      [routerLink]="['/user-dashboard/monitoring-info']" routerLinkActive="routeactive">
-      <img loading="lazy" src="assets/icons/grip.svg" matTooltip="Dashboard" />
-      <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Dashboard</span>
-    </a>
-
-    <!-- <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+      <!-- <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
       [routerLink]="['/user-dashboard/nvr']" routerLinkActive="routeactive">
       <img loading="lazy" src="assets/icons/device.svg" matTooltip="Devices" />
       <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Devices</span>
     </a> -->
 
       <ng-container>
-        <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'" [routerLink]="['/dashboard']"
-          routerLinkActive="routeactive">
-          <img loading="lazy" src="assets/icons/building.svg" matTooltip="Sites" />
-          <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Sites</span>
+        <a
+          [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+          [routerLink]="['/dashboard']"
+          routerLinkActive="routeactive"
+        >
+          <img
+            loading="lazy"
+            src="assets/icons/building.svg"
+            matTooltip="Sites"
+          />
+          <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
+            >Sites</span
+          >
         </a>
       </ng-container>
 
-       <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
-        [routerLink]="['/user-dashboard/alerts-info']" routerLinkActive="routeactive">
+      <a
+        [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+        [routerLink]="['/user-dashboard/alerts-info']"
+        routerLinkActive="routeactive"
+      >
         <img loading="lazy" src="assets/icons/bell.svg" matTooltip="Alerts" />
-        <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Alerts</span>
+        <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
+          >Alerts</span
+        >
       </a>
 
       <!-- <a class="list-group-item " [routerLink]="['/user-dashboard/device-status']" routerLinkActive="routeactive">
@@ -44,32 +73,54 @@
         <span style="font-weight: 500; margin-left: 10px;" matTooltip="" *ngIf="showSidenav">Devices</span>
       </a> -->
 
-      <ng-container
-        *ngIf=" user?.userLevel === 2">
-        <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
-          [routerLink]="['/user-dashboard/pre-dispatch']" routerLinkActive="routeactive">
-          <img loading="lazy" src="assets/icons/outgoing_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg"
-            matTooltip="Pre-Dispatch">
-          <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Pre-Dispatch</span>
+      <ng-container *ngIf="user?.userLevel === 2">
+        <a
+          [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+          [routerLink]="['/user-dashboard/pre-dispatch']"
+          routerLinkActive="routeactive"
+        >
+          <img
+            loading="lazy"
+            src="assets/icons/outgoing_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg"
+            matTooltip="Pre-Dispatch"
+          />
+          <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
+            >Pre-Dispatch</span
+          >
         </a>
       </ng-container>
 
-      <ng-container
-        *ngIf=" user?.userLevel === 3">
-        <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
-          [routerLink]="['/user-dashboard/dispatch']" routerLinkActive="routeactive">
-          <img loading="lazy" src="assets/icons/truck-ramp-box.svg" matTooltip="Dispatch">
-          <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Dispatch</span>
+      <ng-container *ngIf="user?.userLevel === 3">
+        <a
+          [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+          [routerLink]="['/user-dashboard/dispatch']"
+          routerLinkActive="routeactive"
+        >
+          <img
+            loading="lazy"
+            src="assets/icons/truck-ramp-box.svg"
+            matTooltip="Dispatch"
+          />
+          <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
+            >Dispatch</span
+          >
         </a>
       </ng-container>
 
-      <ng-container
-        *ngIf=" user?.userLevel === 4">
-        <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
-          [routerLink]="['/user-dashboard/observer']" routerLinkActive="routeactive">
-          <img loading="lazy" src="assets/icons/eye_tracking_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg"
-            matTooltip="Observer">
-          <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Observer</span>
+      <ng-container *ngIf="user?.userLevel === 4">
+        <a
+          [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+          [routerLink]="['/user-dashboard/observer']"
+          routerLinkActive="routeactive"
+        >
+          <img
+            loading="lazy"
+            src="assets/icons/eye_tracking_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg"
+            matTooltip="Observer"
+          />
+          <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
+            >Observer</span
+          >
         </a>
       </ng-container>
     </div>
