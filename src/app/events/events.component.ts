@@ -30,8 +30,8 @@ export class EventsComponent {
     private dialog: MatDialog,
     private router: Router,
     private http: HttpClient,
-    private siteser: SiteService
-  ) { }
+    private siteser: SiteService,
+  ) {}
 
   intervalId: any;
   eventInterval: any;
@@ -49,11 +49,10 @@ export class EventsComponent {
         consoleType: '',
         consumeType: 'refresh',
       })
-      .subscribe((res: any) => { });
+      .subscribe((res: any) => {});
 
     this.getActionTagCategories();
     this.getDispatchData();
-
 
     this.poolEvents();
 
@@ -70,7 +69,6 @@ export class EventsComponent {
 
   poolEvents() {
     this.eventInterval = setInterval(() => {
-
       let menu = this.storage_service.getData('menu');
       if (this.eventData.length < 6 && !menu) {
         if (!this.eventPolling) return;
@@ -81,8 +79,7 @@ export class EventsComponent {
             if (res.length !== 0) {
               this.storage_service.status_text = '';
               res[0].landingTime = this.storage_service.getTimeWithTimezone(
-                res[0].timezone
-
+                res[0].timezone,
               );
               res[0].audioPlayed = false;
               this.event_service
@@ -93,7 +90,7 @@ export class EventsComponent {
                   queueName: '',
                   consoleType: '',
                 })
-                .subscribe((res: any) => { });
+                .subscribe((res: any) => {});
               this.eventData.push(...res);
               if (this.eventData.length === 1) {
                 const [event] = this.eventData;
@@ -103,9 +100,8 @@ export class EventsComponent {
           },
           error: (err) => {
             this.eventPolling = true;
-          }
-        },
-        );
+          },
+        });
       }
       this.storage_service.events_sub.next(this.eventData.length);
     }, 2000);
@@ -151,7 +147,7 @@ export class EventsComponent {
         if (res.length !== 0) {
           this.storage_service.status_text = '';
           res[0].landingTime = this.storage_service.getTimeWithTimezone(
-            res[0].timezone
+            res[0].timezone,
           );
           res[0].audioPlayed = false;
           this.eventData.push(...res);
@@ -165,7 +161,7 @@ export class EventsComponent {
               queueName: '',
               consoleType: '',
             })
-            .subscribe((res: any) => { });
+            .subscribe((res: any) => {});
         } else {
           this.storage_service.status_text = 'no events!';
         }
@@ -208,7 +204,7 @@ export class EventsComponent {
 
   onAlertChange(alertId: string) {
     const selectedAlert = this.alertTypes.find(
-      (a: any) => a.guardAlertTypeId === this.alertType
+      (a: any) => a.guardAlertTypeId === this.alertType,
     );
     this.alertSubTypes = selectedAlert ? selectedAlert.subAlerts : [];
   }
@@ -262,8 +258,8 @@ export class EventsComponent {
   audio() {
     this.isPlaying = true;
     this.currentItem.audioPlayed = true;
-    (this.sirenTime = this.storage_service.getTimeWithTimezone(
-      this.currentItem?.timezone
+    ((this.sirenTime = this.storage_service.getTimeWithTimezone(
+      this.currentItem?.timezone,
     )),
       this.http
         .get(`${environment.site_url}/play_1_0/${this.currentItem.cameraId}`)
@@ -280,7 +276,7 @@ export class EventsComponent {
             this.isPlaying = false;
             this.alert_service.snackError('Siren not Played!');
           },
-        });
+        }));
   }
 
   emailData: any;
@@ -320,7 +316,7 @@ export class EventsComponent {
     }
   }
 
-  eventsGenericEmail() {
+  eventsGenericEmail(type: string) {
     if (this.emailData?.recipientEmails?.length) {
       this.camera_service
         .eventsGenericEmail({
@@ -328,6 +324,8 @@ export class EventsComponent {
           ...this.currentItem,
           ...this.emailData,
           ...this.currentSubActionTag,
+          ...{ type: type },
+          ...{ address: this.cameraDetails?.address },
           ...{ objectName: this.object },
           // ...{ selectedAction: this.selectedActionTag },
           textDetails: this.smsDetails,
@@ -356,56 +354,56 @@ export class EventsComponent {
   updateEventFullDetails(type: number | string) {
     if (type === 2) return;
     if (type === 'second-level') {
-      this.eventsGenericEmail();
+      this.eventsGenericEmail('complete');
     }
 
     let user = this.storage_service.getData('session');
     let endTime = this.storage_service.getTimeWithTimezone(
-      this.currentItem?.timezone
+      this.currentItem?.timezone,
     );
     this.path === 'pre-dispatch'
       ? this.currentItem?.userLevelAlarmInfo.push({
-        level: 2,
-        user: user?.UserId,
-        alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
-        activityDetTime: this.sirenTime ?? '',
-        landingTime: this.currentItem?.landingTime ?? '',
-        reviewStart: this.currentItem?.reviewStart ?? '',
-        reviewEnd: endTime ?? '',
-        actionTag: this.currentActionTag?.categoryId,
-        subActionTag: this.currentSubActionTag?.subCategoryId,
-        notes: this.notes,
-        userName: user?.UserName,
-        alertTag: this.alertType,
-        subAlertTag: this.alertSubType
-      })
+          level: 2,
+          user: user?.UserId,
+          alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
+          activityDetTime: this.sirenTime ?? '',
+          landingTime: this.currentItem?.landingTime ?? '',
+          reviewStart: this.currentItem?.reviewStart ?? '',
+          reviewEnd: endTime ?? '',
+          actionTag: this.currentActionTag?.categoryId,
+          subActionTag: this.currentSubActionTag?.subCategoryId,
+          notes: this.notes,
+          userName: user?.UserName,
+          alertTag: this.alertType,
+          subAlertTag: this.alertSubType,
+        })
       : this.path === 'dispatch'
         ? this.currentItem?.userLevelAlarmInfo.push({
-          level: 3,
-          user: user?.UserId,
-          alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
-          activityDetTime: this.sirenTime ?? '',
-          landingTime: this.currentItem?.landingTime ?? '',
-          reviewStart: this.currentItem?.reviewStart ?? '',
-          reviewEnd: endTime ?? '',
-          actionTag: this.currentActionTag?.categoryId,
-          subActionTag: this.currentSubActionTag?.subCategoryId,
-          notes: this.notes,
-          userName: user?.UserName,
-        })
+            level: 3,
+            user: user?.UserId,
+            alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
+            activityDetTime: this.sirenTime ?? '',
+            landingTime: this.currentItem?.landingTime ?? '',
+            reviewStart: this.currentItem?.reviewStart ?? '',
+            reviewEnd: endTime ?? '',
+            actionTag: this.currentActionTag?.categoryId,
+            subActionTag: this.currentSubActionTag?.subCategoryId,
+            notes: this.notes,
+            userName: user?.UserName,
+          })
         : this.currentItem?.userLevelAlarmInfo.push({
-          level: 4,
-          user: user?.UserId,
-          alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
-          activityDetTime: this.sirenTime ?? '',
-          landingTime: this.currentItem?.landingTime ?? '',
-          reviewStart: this.currentItem?.reviewStart ?? '',
-          reviewEnd: endTime ?? '',
-          actionTag: this.currentActionTag?.categoryId,
-          subActionTag: this.currentSubActionTag?.subCategoryId,
-          notes: this.notes,
-          userName: user?.UserName,
-        });
+            level: 4,
+            user: user?.UserId,
+            alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
+            activityDetTime: this.sirenTime ?? '',
+            landingTime: this.currentItem?.landingTime ?? '',
+            reviewStart: this.currentItem?.reviewStart ?? '',
+            reviewEnd: endTime ?? '',
+            actionTag: this.currentActionTag?.categoryId,
+            subActionTag: this.currentSubActionTag?.subCategoryId,
+            notes: this.notes,
+            userName: user?.UserName,
+          });
 
     // this.currentItem.imageName = null;
 
@@ -416,7 +414,7 @@ export class EventsComponent {
         consoleType: '',
         consumeType: '',
       })
-      .subscribe((res: any) => { });
+      .subscribe((res: any) => {});
 
     this.storage_service.show_loader = true;
     this.event_service
@@ -451,13 +449,13 @@ export class EventsComponent {
   actionTagTime: any;
   getTime() {
     this.actionTagTime = this.storage_service.getTimeWithTimezone(
-      this.currentItem?.timezone
+      this.currentItem?.timezone,
     );
   }
 
   write2Dispatch(queue_name: string) {
     if (this.path === 'pre-dispatch') {
-      this.eventsGenericEmail();
+      this.eventsGenericEmail('escalate');
     }
 
     this.event_service
@@ -467,52 +465,52 @@ export class EventsComponent {
         consoleType: '',
         consumeType: '',
       })
-      .subscribe((res: any) => { });
+      .subscribe((res: any) => {});
 
     let user = this.storage_service.getData('session');
     let endTime = this.storage_service.getTimeWithTimezone(
-      this.currentItem?.timezone
+      this.currentItem?.timezone,
     );
     this.path === 'pre-dispatch'
       ? this.currentItem?.userLevelAlarmInfo.push({
-        level: 2,
-        user: user?.UserId,
-        alarm: 'N',
-        landingTime: this.currentItem?.landingTime ?? '',
-        reviewStart: this.currentItem?.reviewStart ?? '',
-        reviewEnd: endTime ?? '',
-        actionTag: this.currentActionTag?.categoryId,
-        subActionTag: this.currentSubActionTag?.subCategoryId,
-        notes: this.notes,
-        userName: user?.UserName,
-        alertTag: this.alertType,
-        subAlertTag: this.alertSubType
-      })
+          level: 2,
+          user: user?.UserId,
+          alarm: 'N',
+          landingTime: this.currentItem?.landingTime ?? '',
+          reviewStart: this.currentItem?.reviewStart ?? '',
+          reviewEnd: endTime ?? '',
+          actionTag: this.currentActionTag?.categoryId,
+          subActionTag: this.currentSubActionTag?.subCategoryId,
+          notes: this.notes,
+          userName: user?.UserName,
+          alertTag: this.alertType,
+          subAlertTag: this.alertSubType,
+        })
       : this.path === 'dispatch'
         ? this.currentItem?.userLevelAlarmInfo.push({
-          level: 3,
-          user: user?.UserId,
-          alarm: 'N',
-          landingTime: this.currentItem?.landingTime ?? '',
-          reviewStart: this.currentItem?.reviewStart ?? '',
-          reviewEnd: endTime ?? '',
-          actionTag: this.currentActionTag?.categoryId,
-          subActionTag: this.currentSubActionTag?.subCategoryId,
-          notes: this.notes,
-          userName: user?.UserName,
-        })
+            level: 3,
+            user: user?.UserId,
+            alarm: 'N',
+            landingTime: this.currentItem?.landingTime ?? '',
+            reviewStart: this.currentItem?.reviewStart ?? '',
+            reviewEnd: endTime ?? '',
+            actionTag: this.currentActionTag?.categoryId,
+            subActionTag: this.currentSubActionTag?.subCategoryId,
+            notes: this.notes,
+            userName: user?.UserName,
+          })
         : this.currentItem?.userLevelAlarmInfo.push({
-          level: 4,
-          user: user?.UserId,
-          alarm: 'N',
-          landingTime: this.currentItem?.landingTime ?? '',
-          reviewStart: this.currentItem?.reviewStart ?? '',
-          reviewEnd: endTime ?? '',
-          actionTag: this.currentActionTag?.categoryId,
-          subActionTag: this.currentSubActionTag?.subCategoryId,
-          notes: this.notes,
-          userName: user?.UserName,
-        });
+            level: 4,
+            user: user?.UserId,
+            alarm: 'N',
+            landingTime: this.currentItem?.landingTime ?? '',
+            reviewStart: this.currentItem?.reviewStart ?? '',
+            reviewEnd: endTime ?? '',
+            actionTag: this.currentActionTag?.categoryId,
+            subActionTag: this.currentSubActionTag?.subCategoryId,
+            notes: this.notes,
+            userName: user?.UserName,
+          });
 
     this.currentItem.time = this.currentItem.timestamp;
     this.storage_service.show_loader = true;
@@ -603,7 +601,7 @@ export class EventsComponent {
       next: (res: any) => {
         if (res.statusCode === 200) {
           this.actionTagsNew = res.actionTagCategories.filter(
-            (item: any) => item.categoryId !== 3
+            (item: any) => item.categoryId !== 3,
           );
         }
       },
@@ -621,10 +619,10 @@ export class EventsComponent {
     this.getTime();
     this.currentActionTag = type;
     let filteredData = this.actionTagsNew.filter(
-      (item: any) => item.categoryId === type.categoryId
+      (item: any) => item.categoryId === type.categoryId,
     );
     this.subActionTags = filteredData.flatMap(
-      (el: any) => el.actionTagSubCategories
+      (el: any) => el.actionTagSubCategories,
     );
     this.event_service
       .getMonitoringInfo(this.currentItem)
@@ -692,7 +690,8 @@ export class EventsComponent {
             this.monitoringImage = res.data?.monitoringImage;
             this.storage_service.showMediaLoader = false;
           } else {
-            this.monitoringSrc.nativeElement.src = 'assets/icons/eyedisabled.svg';
+            this.monitoringSrc.nativeElement.src =
+              'assets/icons/eyedisabled.svg';
           }
         });
     } else {

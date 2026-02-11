@@ -25,7 +25,7 @@ export class CameraService {
   constructor(
     private http: HttpClient,
     private storageSer: StorageService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
   ) {}
 
   siren_sub = new BehaviorSubject<boolean>(false);
@@ -44,18 +44,18 @@ export class CameraService {
     if (payload?.cameraId) {
       params = params.set('cameraId', payload?.cameraId);
     }
-     if(payload?.alertTag){
-       params = params.set('alertTag', payload?.alertTag);
+    if (payload?.alertTag) {
+      params = params.set('alertTag', payload?.alertTag);
     }
-    if(payload?.subAlertTag){
-       params = params.set('subAlertTag', payload?.subAlertTag);
+    if (payload?.subAlertTag) {
+      params = params.set('subAlertTag', payload?.subAlertTag);
     }
     if (payload?.fromDate) {
       // let x = payload?.fromDate;
       // params = params.set('fromDate', `${x.year}-${x.month}-${x.day}`);
       params = params.set(
         'fromDate',
-        formatDate(payload?.fromDate, 'yyyy-MM-dd', 'en-us')
+        formatDate(payload?.fromDate, 'yyyy-MM-dd', 'en-us'),
       );
     }
     if (payload?.toDate) {
@@ -63,10 +63,9 @@ export class CameraService {
       // params = params.set('toDate', `${x.year}-${x.month}-${x.day}`);
       params = params.set(
         'toDate',
-        formatDate(payload?.toDate, 'yyyy-MM-dd', 'en-us')
+        formatDate(payload?.toDate, 'yyyy-MM-dd', 'en-us'),
       );
     }
-
 
     if (payload?.page) {
       params = params.set('page', payload.page);
@@ -74,7 +73,7 @@ export class CameraService {
       params = params.set('page', 1);
     }
 
-    params=params.set('callingSystemDetail','vms')
+    params = params.set('callingSystemDetail', 'vms');
 
     return this.http.get(url, { params: params });
   }
@@ -219,6 +218,7 @@ export class CameraService {
   }
 
   eventsGenericEmail(payload: any) {
+    // console.log(payload)
     let url = `${environment.guard_monitoring_url}/eventsGenericEmail_1_0`;
     let user = this.storageSer.getData('session');
 
@@ -241,7 +241,7 @@ export class CameraService {
     formData.append('eventFromTime', payload?.timestamp);
     formData.append(
       'eventToTime',
-      this.storageSer.getTimeWithTimezone(payload?.timezone)
+      this.storageSer.getTimeWithTimezone(payload?.timezone),
     );
     formData.append('actionTag', payload?.alertTag);
     formData.append('createdBy', user?.UserId);
@@ -260,10 +260,13 @@ export class CameraService {
       formData.append(
         'files',
         payload?.screenshots[i].substring(
-          payload?.screenshots[i].lastIndexOf('/') + 1
-        )
+          payload?.screenshots[i].lastIndexOf('/') + 1,
+        ),
       );
     }
+
+    formData.append('userSendMailLevel', payload?.type);
+    formData.append('address', JSON.stringify(payload?.address));
 
     return this.http.post(url, formData, { params: params });
   }
