@@ -1,0 +1,133 @@
+<div class="side-panel" @inOutPaneAnimation>
+  <div class="d-flex justify-content-between">
+    <button class="closebtn" (click)="closeSidePanel()">×</button>
+
+  </div>
+
+  <div class="mt-4">
+    <div>
+      <p class="header mb-3">Create ManualProcess</p>
+      <form [formGroup]="dateTimeForm">
+        <div class="row">
+          <div class="col-lg-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Select Site</mat-label>
+              <mat-select formControlName="site">
+                <mat-option *ngFor="let item of Sites" [value]="item.keyId">
+                  {{ item.value }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Select Camera</mat-label>
+              <mat-select formControlName="camera">
+                <mat-option *ngFor="let item of Cameras" [value]="item.keyId">
+                  {{ item.value }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div>
+
+
+
+
+            <!-- Date Picker -->
+
+            <!-- Time Picker HH : MM : SS -->
+            <div class="time-container">
+
+              <mat-form-field appearance="outline">
+                <mat-label>Select Date</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="time-field">
+                <mat-label>HH</mat-label>
+                <input matInput type="number" min="0" max="23" formControlName="hours">
+              </mat-form-field>
+
+              <span class="colon">:</span>
+
+              <mat-form-field appearance="outline" class="time-field">
+                <mat-label>MM</mat-label>
+                <input matInput type="number" min="0" max="59" formControlName="minutes">
+              </mat-form-field>
+
+              <span class="colon">:</span>
+
+              <mat-form-field appearance="outline" class="time-field">
+                <mat-label>SS</mat-label>
+                <input matInput type="number" min="0" max="59" formControlName="seconds">
+              </mat-form-field>
+
+            </div>
+
+
+            <div class="col-lg-12 mt-3">
+
+              <div class="upload-box" (dragover)="$event.preventDefault()" (drop)="onDrop($event)">
+
+                <div class="upload-content">
+                  <mat-icon>cloud_upload</mat-icon>
+                  <p>Drag & Drop image</p>
+                  <span>or</span>
+
+                  <button mat-stroked-button color="primary" type="button" (click)="fileInput.click()">
+                    Browse File
+                  </button>
+
+                  <input #fileInput type="file"  accept="image/*,video/*" hidden
+                    (change)="onFileChange($event)">
+                </div>
+
+              </div>
+
+              <!-- Preview Section -->
+              <div class="preview-container" *ngIf="selectedFiles.length">
+
+                <div class="preview-card" *ngFor="let file of selectedFiles; let i = index">
+
+                  <button type="button" class="remove-btn-manual" (click)="removeFile(i)">
+                    ✕
+                  </button>
+
+                  <img *ngIf="file.type.startsWith('image/')" [src]="file.preview" class="preview-media">
+
+                  <video *ngIf="file.type.startsWith('video/')" [src]="file.preview" class="preview-media" controls [muted]="true">
+                  </video>
+
+                  <div class="file-name">{{ file.name }}</div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+          </div>
+
+
+
+          <div class="d-flex justify-content-end align-items-center mt-3">
+
+            <button class="button2 me-2">Submit</button>
+            <button class="button2 me-2">Cancel</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+
+
+  </div>
+
+
+</div>

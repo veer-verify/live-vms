@@ -1,0 +1,524 @@
+
+.side-panel {
+  position: fixed;
+  top: 0;
+  right: 0px;  /* Start off-screen */
+  width: 70%;
+  height: 100%;
+  background-color: white;
+  border-radius: 5px;
+  transition: transform 0.3s ease-in-out;  /* Transition for sliding */
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 999;
+
+}
+
+
+  /* From Uiverse.io by mrhyddenn */
+  .closebtn {
+    padding: 4px 12px 4px 12px;
+    outline: none;
+    text-decoration: none;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    cursor: pointer;
+    border: 1px solid whitesmoke;
+    text-transform: uppercase;
+    background-color: white;
+    border-radius: 50%;
+    color: black;
+    font-weight: 300;
+    font-size: 24px;
+    box-shadow: 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.3);
+
+    transition: all 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
+
+  }
+
+  .closebtn:hover {
+    animation: sh0 0.4s ease-in-out both;
+  }
+
+  @keyframes sh0 {
+    0% {
+      transform: rotate(0deg) translate3d(0, 0, 0);
+    }
+
+    25% {
+      transform: rotate(7deg) translate3d(0, 0, 0);
+    }
+
+    50% {
+      transform: rotate(-7deg) translate3d(0, 0, 0);
+    }
+
+    75% {
+      transform: rotate(1deg) translate3d(0, 0, 0);
+    }
+
+    100% {
+      transform: rotate(0deg) translate3d(0, 0, 0);
+    }
+  }
+
+  .closebtn:hover span {
+    animation: storm 0.7s ease-in-out both;
+    animation-delay: 0.06s;
+  }
+
+
+
+  .closebtn:hover::before,
+  .closebtn:hover::after {
+    opacity: 0.15;
+    transition: transform 0.2s cubic-bezier(0.02, 0.01, 0.47, 1), opacity 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
+  }
+
+  .closebtn:hover::before {
+    transform: translate3d(50%, 0, 0) scale(0.9);
+  }
+
+  .closebtn:hover::after {
+    transform: translate(50%, 0) scale(1.1);
+  }
+
+  ::ng-deep .mat-drawer{
+
+    width: 600px !important;
+  }
+
+
+
+
+/* template button */
+.btn-template {
+  position: relative;
+
+  padding: 0.7em 1.4em;
+  /* background-color: rgba(8,73,130,1); */
+    background-color: var(--cmn-background);
+  text-decoration: none;
+  border: none;
+  border-radius: 0.5em;
+  color: #fff;
+  box-shadow: 0.5em 0.5em 0.5em rgba(0, 0, 0, 0.3);
+
+}
+
+.btn-template::before {
+  position: absolute;
+  border-radius: 0.5em 0 0.5em 0;
+  box-shadow: 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.3);
+  transition: 0.3s;
+}
+
+.btn-template:hover::before {
+  width: 1.6em;
+  height: 1.6em;
+
+}
+
+.btn-template:active {
+  box-shadow: 0.2em 0.2em 0.3em rgba(0, 0, 0, 0.3);
+
+}
+/* template button */
+
+
+/* template */
+.template-close{
+  background-color: transparent ;
+  border: 1px solid rgb(170, 168, 168);
+  color: rgba(8,73,130,1);
+
+  border: none;
+  border-radius: 5px;
+  font-size: 30px;
+}
+.template-close:hover{
+  animation: sh0 0.4s ease-in-out both;
+}
+
+.template{
+  border:2px solid rgb(196, 192, 192);
+  border-radius: 5px;
+  padding: 26px;
+
+}
+.example-form {
+  /* min-width: 150px;
+  max-width: 500px; */
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+
+/* preview */
+/* From Uiverse.io by shah1345 */
+.button2 {
+  display: inline-block;
+  transition: all 0.2s ease-in;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  color: #090909;
+  padding: 0.4em;
+  cursor: pointer;
+
+  border-radius: 0.5em;
+  background: #e8e8e8;
+  border: 1px solid #e8e8e8;
+  box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+  text-transform: uppercase;
+}
+
+.button2:active {
+  color: #666;
+  box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
+}
+
+.button2:before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.25);
+  top: 100%;
+  width: 50%;
+  height: 50%;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
+}
+
+.button2:after {
+  content: "";
+  position: absolute;
+  left: 55%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.45);
+  top: 180%;
+  width: 160%;
+  height: 190%;
+  background-color: rgba(8,73,130,1) ;
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
+}
+
+.button2:hover {
+  color: #ffffff;
+  border: 1px solid rgba(8,73,130,1) ;
+}
+
+.button2:hover:before {
+  top: -35%;
+  background-color: rgba(8,73,130,1) ;
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+
+.button2:hover:after {
+  top: -45%;
+  background-color: rgba(8,73,130,1) ;
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+.previewmail{
+color: white;
+
+font-size: 20px;
+
+}
+/* preview */
+
+
+
+.alert-header {
+  background-color: #ffecb3;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+
+.alert-header h2 {
+  color: #c34e01;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.alert-body {
+  font-size: 1rem;
+  color: #333;
+}
+
+.greeting {
+  font-weight: bold;
+  margin-bottom: 10px;
+
+}
+
+.message {
+  margin-bottom: 15px;
+
+}
+
+
+.vehicle-info p {
+
+  font-size: 1rem;
+  margin: 5px 0;
+  color: #333;
+}
+.header{
+
+  color: var(--cmn-background);
+  font-size: 20px;
+}
+
+ ::ng-deep.mat-mdc-mini-fab.mat-accent {
+  --mat-mdc-fab-color: #000 !important;
+
+}
+
+::ng-deep .mat-mdc-mini-fab .mdc-button__label {
+  font-size: 12px !important;
+}
+
+::ng-deep .w-clock {
+  width: 250px !important;
+  height: 250px !important;
+  padding: 12px !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.grid-template{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 3px;
+   max-height: 70vh;
+    overflow-y: auto;
+
+}
+
+.alert-header {
+    background-color: #ffecb3;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+  }
+
+
+  .alert-header h2 {
+    color: #c34e01;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .alert-body {
+    font-size: 1rem;
+    color: #333;
+  }
+
+  .greeting {
+    font-weight: bold;
+    margin-bottom: 10px;
+
+  }
+
+  .message {
+    margin-bottom: 15px;
+
+  }
+
+  .previewmail{
+
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 5px;
+    }
+
+  .vehicle-info p {
+
+    font-size: 1rem;
+    margin: 5px 0;
+    color: #333;
+  }
+
+
+  .card {
+    border-radius: 10px;
+    margin-top: 10px;
+    box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+    transition:cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
+
+  .demo-chart {
+    height: 400px;
+  }
+
+
+
+
+
+  /* .datetime-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+} */
+
+.time-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+}
+
+.time-field {
+  width: 80px;
+}
+
+.colon {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+
+
+
+
+
+.upload-box {
+  border: 2px dashed #90caf9;
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+  background: #f5f9ff;
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+
+.upload-box:hover {
+  background: #e3f2fd;
+  border-color: #42a5f5;
+}
+
+.upload-content mat-icon {
+  font-size: 40px;
+  color: #42a5f5;
+  margin-bottom: 10px;
+}
+
+.upload-content p {
+  margin: 5px 0;
+  font-weight: 500;
+}
+
+.preview-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.preview-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background: white;
+  padding: 10px;
+}
+
+.preview-media {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.file-name {
+  font-size: 12px;
+  margin-top: 8px;
+  text-align: center;
+  word-break: break-word;
+}
+
+.remove-btn-manual {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  color: rgb(233, 13, 13);
+  /* border-radius: 50%; */
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 9;
+}
+
+
+.preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.preview-card {
+  width: 150px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  position: relative;
+}
+
+.preview-media {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.file-name {
+  font-size: 12px;
+  margin-top: 5px;
+  word-break: break-word;
+}
+
+.remove-btn {
+  margin-top: 5px;
+  font-size: 12px;
+  background: #e53935;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}

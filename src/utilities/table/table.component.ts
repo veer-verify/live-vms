@@ -20,7 +20,7 @@ export class TableComponent {
   @Output() childEvent = new EventEmitter<any>();
 
   ngOnInit() {
-    console.log(this.data)
+    console.log(this.data,this.fields)
   }
 
   isSort:boolean=false;

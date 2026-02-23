@@ -47,6 +47,10 @@ import { NvrComponent } from './nvr/nvr.component';
 import { CountPipe } from 'src/utilities/pipes/count.pipe';
 import { PlannedsiteComponent } from './plannedsite/plannedsite.component';
 import { SitesettingsComponent } from './sitesettings/sitesettings.component';
+import { ManualprocessComponent } from './manualprocess/manualprocess/manualprocess.component';
+
+import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
+import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 
 
 @NgModule({
@@ -87,9 +91,12 @@ import { SitesettingsComponent } from './sitesettings/sitesettings.component';
     NvrComponent,
     CountPipe,
     PlannedsiteComponent,
-    SitesettingsComponent
+    SitesettingsComponent,
+    ManualprocessComponent
   ],
   imports: [
+    NgxMatDatetimePickerModule,
+    NgxMatMomentModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

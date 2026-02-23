@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from 'src/services/alert.service';
 import { MetadataService } from 'src/services/metadata.service';
 import { SiteService } from 'src/services/site.service';
+import { StorageService } from 'src/services/storage.service';
 
 @Component({
   selector: 'app-monitoring-info',
@@ -16,13 +17,16 @@ export class MonitoringInfoComponent {
     private SiteSer: SiteService,
     private metadaSer: MetadataService,
     private alaram: AlertService,
+    private storage_service:StorageService,
     private fb: FormBuilder
-  ) {}
+  ) {
+        this.user=this.storage_service.getData('session')
+  }
 
   sitesForSearch: any = [];
+  user:any;
   ngOnInit() {
     this.getSitesforUser();
-
 
     // this.SiteSer.getSites().subscribe((res: any) => { this.sitesForSearch = res.sites });
     this.flagsForm = this.fb.group({
@@ -147,7 +151,7 @@ export class MonitoringInfoComponent {
     });
   }
 
-  currentPage: any;
+  currentPage: any=1;
   getPaginatedData(data: number) {
     this.currentPage = data + 1;
     this.getSitesforUser();
@@ -249,6 +253,17 @@ export class MonitoringInfoComponent {
   openTemplate() {
     this.isSidePanelOpen1 = true;
   }
+
+
+  manualProcessopen=false;
+  openManulProcess(){
+  this.manualProcessopen=true;
+  }
+
+    onCloseManualProcess(event: boolean) {
+    this.manualProcessopen = event;
+  }
+
 
   flagsForm!: FormGroup;
 
