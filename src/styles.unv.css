@@ -2,25 +2,24 @@
 
 @font-face {
   font-family: ES;
-  src: url('assets/font/EngraversGothicRegular.otf') format("opentype");
+  src: url("assets/font/EngraversGothicRegular.otf") format("opentype");
 }
 
 @font-face {
   font-family: TP;
-  src: url('assets/font/Typold-Book500.otf') format("opentype");
+  src: url("assets/font/Typold-Book500.otf") format("opentype");
 }
 
-
 :root {
-  --background: linear-gradient(325deg, #1E3F73 100%, #ffffff 0%);
-  --cmn-background: #ffffff;
-  --table-background: #ffffff;
+  --background: linear-gradient(325deg, #1e3f73 100%, #ffffff 0%);
+  --cmn-background: #1e3f73;
+  --table-background: #1e3f73;
   --loader-background: rgba(72, 116, 182, 0.8);
   --route-color: #7d8d9b;
 }
 
 *:not(.material-icons) {
-  font-family: 'TP', sans-serif !important;
+  font-family: "TP", sans-serif !important;
 }
 
 html,
@@ -48,17 +47,16 @@ a {
 }
 
 .title {
-  font-family: 'ES', sans-serif !important;
+  font-family: "ES", sans-serif !important;
 }
 
 .text {
-  font-family: 'TP', sans-serif !important;
+  font-family: "TP", sans-serif !important;
 }
 
 .pointer {
   cursor: pointer;
 }
-
 
 .w-250 {
   width: 250px;
@@ -68,7 +66,7 @@ a {
 
 .status {
   font-size: 12px;
-  color: #28231D;
+  color: #28231d;
   letter-spacing: 0.5px;
   width: 120px;
   font-weight: 600;
@@ -81,7 +79,7 @@ a {
 }
 
 .vl-green {
-  border-left: 2px solid #00A44C;
+  border-left: 2px solid #00a44c;
   height: 40px;
 }
 
@@ -91,17 +89,17 @@ a {
 }
 
 .vl-red {
-  border-left: 2px solid #EF2800;
+  border-left: 2px solid #ef2800;
   height: 40px;
 }
 
 .vl-yellow {
-  border-left: 2px solid #F5B400;
+  border-left: 2px solid #f5b400;
   height: 40px;
 }
 
 .vl-orange {
-  border-left: 2px solid #EF6000;
+  border-left: 2px solid #ef6000;
   height: 40px;
 }
 
@@ -173,7 +171,6 @@ a {
   border-width: 0;
   font-size: 12px;
   margin: 0 10px 10px 0;
-
 }
 
 .dialog-update-btn:active {
