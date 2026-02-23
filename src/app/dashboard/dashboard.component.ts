@@ -102,19 +102,19 @@ export class DashboardComponent {
     //   }, 60000);
   }
 
-  ngDoCheck(): void {
-    let user = this.storageSer.getData('session');
-    let tempUser = this.storageSer.session_sub.getValue();
-    if (!user) {
-      this.storageSer.saveData(
-        'session',
-        this.storageSer.session_sub.getValue()
-      );
-    }
-    if (!tempUser) {
-      this.storageSer.session_sub.next(this.storageSer.getData('session'));
-    }
-  }
+  // ngDoCheck(): void {
+  //   let user = this.storageSer.getData('session');
+  //   let tempUser = this.storageSer.session_sub.getValue();
+  //   if (!user) {
+  //     this.storageSer.saveData(
+  //       'session',
+  //       this.storageSer.session_sub.getValue()
+  //     );
+  //   }
+  //   if (!tempUser) {
+  //     this.storageSer.session_sub.next(this.storageSer.getData('session'));
+  //   }
+  // }
 
   // getUrl(data: any) {
   //   this.siteSrvc.getUrl(data).subscribe({
@@ -805,7 +805,7 @@ export class DashboardComponent {
   logout() {
     this.showLoader = true;
     this.loginSer.manageUserSession('logOut').subscribe({
-      error: (err: any) => {
+      error: () => {
         this.showLoader = false;
         this.loginSer.logout();
       },

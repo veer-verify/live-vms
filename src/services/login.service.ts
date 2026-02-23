@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { StorageService } from './storage.service';
 import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
@@ -61,8 +61,9 @@ export class LoginService {
   }
 
   getAccessforRefreshToken(payload: any): Observable<any> {
-    let url = environment.login_url + '/getAccessforRefreshToken';
-    let params = new HttpParams().set('refresh_token', payload?.RefreshToken).set('modifiedBy', payload?.UserId);
+    const url = environment.login_url + '/getAccessforRefreshToken';
+    if (!payload) return throwError(() => alert('Session data missing!!!'));
+    const params = new HttpParams().set('refresh_token', payload?.RefreshToken).set('modifiedBy', payload?.UserId ?? 0);
     return this.http.post(url, null, { params: params });
   }
 

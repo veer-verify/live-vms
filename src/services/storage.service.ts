@@ -25,9 +25,9 @@ export class StorageService {
 
 
 
-  session_sub: BehaviorSubject<any> = new BehaviorSubject(null);
-  metadat_sub: any = [];
+  // session_sub: BehaviorSubject<any> = new BehaviorSubject(null);
   events_sub: BehaviorSubject<any> = new BehaviorSubject(0);
+  metadat_sub: any = [];
   status_text!: string;
   show_loader: boolean = false;
 

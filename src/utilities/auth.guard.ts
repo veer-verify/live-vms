@@ -8,19 +8,15 @@ import { StorageService } from 'src/services/storage.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard  {
+export class AuthGuard {
 
-  constructor(private loginSer: LoginService, private router: Router,private storage:StorageService) {
-
-
-
-  }
+  constructor(private loginSer: LoginService, private router: Router, private storage: StorageService) { }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     let isAuthenticated: boolean = this.loginSer.isLoggedin();
-    if(!isAuthenticated) {
+    if (!isAuthenticated) {
       this.router.navigate(['/login']);
     }
     return isAuthenticated;
@@ -28,7 +24,7 @@ export class AuthGuard  {
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      return true;
+    return true;
   }
 
   canDeactivate(
@@ -36,14 +32,10 @@ export class AuthGuard  {
     currentRoute: ActivatedRouteSnapshot,
     currentState: RouterStateSnapshot,
     nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-
-  if (component?.eventData?.length !== 0 && component?.eventData) {
-   
-    return false;
-  }
-
-  return true;
-
+    if (component?.eventData?.length !== 0 && component?.eventData) {
+      return false;
+    }
+    return true;
   }
 
   canMatch(

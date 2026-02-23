@@ -22,11 +22,11 @@ export class LoginComponent {
     private alertSer: AlertService,
     private metadata_service: MetadataService,
     private event: EventService
-  ) {}
+  ) { }
 
   loginForm!: FormGroup;
   ngOnInit() {
-    this.storageSer.session_sub.next(null);
+    // this.storageSer.session_sub.next(null);
 
     const user = this.storageSer.getData('session');
     if (user) this.router.navigate(['/user-dashboard']);
@@ -36,15 +36,15 @@ export class LoginComponent {
       password: this.fb.control('', Validators.required),
     });
 
-    const formatter = new Intl.DateTimeFormat([], {
-      timeZone: 'America/New_York',
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-    });
+    // const formatter = new Intl.DateTimeFormat([], {
+    //   timeZone: 'America/New_York',
+    //   year: 'numeric',
+    //   month: 'numeric',
+    //   day: 'numeric',
+    //   hour: 'numeric',
+    //   minute: 'numeric',
+    //   second: 'numeric',
+    // });
   }
 
   eventsFlow() {
@@ -69,11 +69,11 @@ export class LoginComponent {
           this.eventsFlow();
           this.loginSer.manageUserSession('logIn').subscribe({
             next: (response) => {
+              this.showLoader = false;
               if (response.statusCode == 200) {
-                this.showLoader = false;
                 let temp = this.storageSer.getData('session');
                 this.storageSer.saveData('session', { ...temp, ...response });
-                this.storageSer.session_sub.next({ ...res, ...response });
+                // this.storageSer.session_sub.next({ ...res, ...response });
                 this.router.navigate(['/user-dashboard/monitoring-info']);
               }
               // if (response.statusCode == 409) {

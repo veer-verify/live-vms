@@ -117,7 +117,6 @@ import {
   throwError,
   fromEvent
 } from 'rxjs';
-import { Router } from '@angular/router';
 import { StorageService } from 'src/services/storage.service';
 import { LoginService } from 'src/services/login.service';
 
@@ -126,28 +125,27 @@ export class TokenInterceptor implements HttpInterceptor {
 
   private isRefreshing = false;
   private refreshTokenSubject = new BehaviorSubject<any>(null);
+  private session: any;
 
   constructor(
-    private router: Router,
     private authSer: LoginService,
     private storageService: StorageService
-  ) {}
+  ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-    const session = this.storageService.getData('session');
+    this.session = this.storageService.getData('session');
 
     if (
-      session?.AccessToken &&
+      this.session?.AccessToken &&
       !request.url.startsWith('https://api.800.com')
     ) {
-      request = this.addToken(request, session.AccessToken);
+      request = this.addToken(request, this.session?.AccessToken);
     }
 
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
 
-        // /* 🌐 NETWORK ERROR (internet disconnected, CORS, server unreachable) */
+        // /* NETWORK ERROR (internet disconnected, CORS, server unreachable) */
         // if (error.status === 0) {
         //   console.warn('Network error. Waiting for internet...');
 
@@ -160,13 +158,10 @@ export class TokenInterceptor implements HttpInterceptor {
         //   );
         // }
 
-
-        /* 🔐 UNAUTHORIZED */
         if (error.status === 401) {
           return this.handle401Error(request, next);
         }
 
-        /* ❌ OTHER ERRORS */
         return throwError(() => error);
       })
     );
@@ -181,29 +176,28 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
-    const session = this.storageService.getData('session');
+    // const session = this.storageService.getData('session');
 
     if (!this.isRefreshing) {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);
 
-      return this.authSer.getAccessforRefreshToken(session).pipe(
+      return this.authSer.getAccessforRefreshToken(this.session).pipe(
         switchMap((res: any) => {
-          session.AccessToken = res.access_token;
-          this.storageService.saveData('session', session);
+          this.session.AccessToken = res.access_token;
+          this.storageService.saveData('session', this.session);
 
           this.isRefreshing = false;
           this.refreshTokenSubject.next(res.access_token);
 
           return next.handle(this.addToken(request, res.access_token));
         }),
-        catchError(err => {
+        catchError((err) => {
           this.isRefreshing = false;
           this.authSer.logout();
           return throwError(() => err);
         })
       );
-
     } else {
       return this.refreshTokenSubject.pipe(
         filter(token => token != null),
@@ -214,7 +208,5 @@ export class TokenInterceptor implements HttpInterceptor {
       );
     }
   }
-
-
 
 }
