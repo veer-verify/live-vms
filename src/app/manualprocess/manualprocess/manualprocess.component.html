@@ -13,8 +13,8 @@
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Select Site</mat-label>
               <mat-select formControlName="site">
-                <mat-option *ngFor="let item of Sites" [value]="item.keyId">
-                  {{ item.value }}
+                <mat-option *ngFor="let item of Sites" [value]="item.siteId">
+                  {{ item.siteName }}
                 </mat-option>
               </mat-select>
             </mat-form-field>

@@ -58,11 +58,25 @@ export class ManualprocessComponent {
   @Output() sidePanelClosed = new EventEmitter<boolean>();
 
   Cameras: any[] = [];
-  Sites: any[] = [];
+ Sites: any=[];
   site: any;
   camera: any;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getSitesforUser();
+  }
+
+
+    getSitesforUser() {
+
+    this.SiteSer.getSites().subscribe((res: any) => {
+
+      if (res.Status === 'Success') {
+
+        this.Sites = res.sites;
+      }
+    });
+  }
 
   closeSidePanel() {
     this.sidePanelClosed.emit(false);
