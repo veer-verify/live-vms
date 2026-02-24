@@ -49,7 +49,7 @@ export class EventService {
       color: payload?.color,
       id: payload?.id,
       timestamp: payload?.time,
-      eventType:'Manual-Wall',
+      eventType:payload?.eventType??'Manual-Wall',
       queue_name: payload?.queue_name,
       timezone: payload?.timezone,
       httpUrl: payload?.httpUrl,
