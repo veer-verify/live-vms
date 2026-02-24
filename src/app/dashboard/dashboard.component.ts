@@ -25,6 +25,7 @@ import { environment } from 'src/environments/environment';
 import { DeviceStatusComponent } from '../device-status/device-status.component';
 import { LoginService } from 'src/services/login.service';
 import { EventService } from 'src/services/event.service';
+import { ManualprocessComponent } from '../manualprocess/manualprocess/manualprocess.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -127,6 +128,15 @@ export class DashboardComponent {
   //     },
   //   });
   // }
+
+  openManualevent() {
+  this.matDialog.open(ManualprocessComponent, {
+    width: '600px',
+    maxHeight: '600px',
+    disableClose: true,
+    panelClass: 'custom-dialog'
+  });
+}
 
   sitesList: any = [];
   errInfo: any;

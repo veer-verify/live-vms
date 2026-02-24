@@ -117,6 +117,8 @@ export class CameraService {
   }
 
   screenshots(payload: any, file: any) {
+
+    console.log(payload,file)
     let url: string = `${environment.guard_monitoring_url}/screenshots_1_0`;
     let formData = new FormData();
 

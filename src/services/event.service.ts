@@ -49,6 +49,7 @@ export class EventService {
       color: payload?.color,
       id: payload?.id,
       timestamp: payload?.time,
+      eventType:'Manual-Wall',
       queue_name: payload?.queue_name,
       timezone: payload?.timezone,
       httpUrl: payload?.httpUrl,
@@ -57,7 +58,33 @@ export class EventService {
       userName: payload?.userName,
       actionTag: payload?.actionTag ?? '',
       actionTime: this.storageSer.getTimeWithTimezone(payload?.timezone),
-      eventTag: '',
+      eventTag: payload?.eventTag??'',
+      userLevelAlarmInfo: payload?.userLevelAlarmInfo,
+      userLevels: 0,
+    };
+    return this.http.post(url, obj);
+  }
+
+
+    write2Dispatchcustomevent(payload: any) {
+    let url = `${environment.events_url}/writeCustomEvent_1_0/`;
+    // let url = `http://192.168.0.125:8667/writeCustomManualEvent_1_0/`;
+    let obj = {
+      cameraId: payload?.cameraId,
+      color: payload?.color,
+      id: payload?.id,
+      timestamp: payload?.time,
+      queue_name: payload?.queue_name,
+      timezone: payload?.timezone,
+      httpUrl: payload?.httpUrl,
+      siteId: payload?.siteId,
+      siteName: payload?.siteName,
+      userName: payload?.userName,
+      actionTag: payload?.actionTag ?? '',
+      actionTime: this.storageSer.getTimeWithTimezone(payload?.timezone),
+      eventTag: 'LIVE-VMS',
+      eventType:'Custom-Event',
+      nativeApp:payload?.nativeApp,
       userLevelAlarmInfo: payload?.userLevelAlarmInfo,
       userLevels: 0,
     };
@@ -93,7 +120,7 @@ export class EventService {
       remarks: '',
       // createdTime: currentTime,
       // landingTime: payload?.landingTime,
-      eventType: 'Manual_Wall',
+      eventType: payload?.eventType,
       timezone: payload?.timezone,
       subActionTag: payload?.subActionTag,
       userLevelAlarmInfo: payload?.userLevelAlarmInfo,
