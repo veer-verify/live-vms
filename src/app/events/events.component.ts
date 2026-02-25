@@ -13,6 +13,7 @@ import { LiveComponent } from 'src/utilities/live/live.component';
 import { HttpClient } from '@angular/common/http';
 import html2canvas from 'html2canvas';
 import { SiteService } from 'src/services/site.service';
+import { ManualprocessComponent } from '../manualprocess/manualprocess/manualprocess.component';
 
 @Component({
   selector: 'app-events',
@@ -61,6 +62,15 @@ export class EventsComponent {
     this.intervalId = setInterval(() => {
       this.aliveUser();
     }, 60000);
+  }
+
+    openManualevent() {
+    this.dialog.open(ManualprocessComponent, {
+      width: '600px',
+      maxHeight: '600px',
+      disableClose: true,
+      panelClass: 'custom-dialog'
+    });
   }
 
   aliveUser() {
@@ -511,7 +521,7 @@ export class EventsComponent {
             notes: this.notes,
             userName: user?.UserName,
           });
-
+console.log(this.currentItem)
     this.currentItem.time = this.currentItem.timestamp;
     this.storage_service.show_loader = true;
     this.event_service

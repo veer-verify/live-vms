@@ -1,15 +1,20 @@
+<!-- style="position: absolute; top: 18px; right: 66px; z-index: 99;" -->
 <app-status></app-status>
+<button matTooltip="ManualEvent" class="btn btn-sm btn-primary rounded" (click)="openManualevent()"
+  *ngIf="path === 'pre-dispatch'">
+  ME
+</button>
 
 <ng-container *ngIf="eventData.length !== 0">
-  <div class="row">
+  <div class="d-flex justify-content-start">
+
+  </div>
+
+  <div class="row mt-2">
     <div class="col-lg-2 d-none d-lg-block side-panel">
-      <div
-        class="card"
-        *ngFor="let item of eventData; let i = index"
-        [ngStyle]="{
+      <div class="card" *ngFor="let item of eventData; let i = index" [ngStyle]="{
           border: item?.id == this.currentItem?.id ? '2px solid #084982' : '',
-        }"
-      >
+        }">
         <div class="card-content" (click)="displayCurrent(item)" #currentBtn>
           <div class="d-flex justify-content-between align-items-center">
             <p class="site">{{ item?.siteName }}</p>
@@ -27,92 +32,51 @@
 
     <ng-container *ngIf="currentItem">
       <!-- <a class="d-block d-lg-none">menu</a> -->
-      <div
-        class="col-lg-10"
-        style="height: calc(100vh - 90px); overflow-y: auto"
-      >
+      <div class="col-lg-10" style="height: calc(100vh - 130px); overflow-y: auto">
         <div class="row">
           <div class="col-lg-6 mb-1">
-            <div
-              [ngClass]="
+            <div [ngClass]="
                 currentScreen === 'event-image'
                   ? 'max-screen'
                   : 'position-relative'
-              "
-            >
-              <a *ngIf="currentItem?.timezone" class="time-name"
-                >{{ currentItem?.timestamp | date: "HH:mm:ss" }}({{
-                  storage_service.getZone(currentItem?.timezone)
-                }})</a
-              >
+              ">
+              <a *ngIf="currentItem?.timezone" class="time-name">{{ currentItem?.timestamp | date: "HH:mm:ss" }}({{
+                storage_service.getZone(currentItem?.timezone)
+                }})</a>
 
               <!-- event image -->
-              <img
-                loading="lazy"
-                [src]="environment + currentItem?.imageName"
-                alt="LOADING..."
-                onerror="this.src = 'assets/icons/eyedisabled.svg'"
-                width="100%"
-                height="500px"
-                class="bg-dark border rounded"
-                #image
-              />
+              <img loading="lazy" [src]="environment + currentItem?.imageName" alt="LOADING..."
+                onerror="this.src = 'assets/icons/eyedisabled.svg'" width="100%" height="500px"
+                class="bg-dark border rounded" #image />
 
               <!-- icon buttons -->
               <div style="position: absolute; top: 5px; right: 5px">
-                <button
-                  class="icon"
-                  (click)="getImages(1)"
-                  matTooltip="Boundary-image"
-                >
+                <button class="icon" (click)="getImages(1)" matTooltip="Boundary-image">
                   <img src="assets/icons/crop (2).svg" alt="" />
                 </button>
-                <button
-                  class="icon"
-                  (click)="getImages(2)"
-                  matTooltip="Mask-image"
-                >
+                <button class="icon" (click)="getImages(2)" matTooltip="Mask-image">
                   <img src="assets/icons/filter (2).svg" alt="" />
                 </button>
                 <button class="icon" (click)="audio()" matTooltip="Siren">
-                  <img
-                    loading="lazy"
-                    [src]="
+                  <img loading="lazy" [src]="
                       isPlaying
                         ? 'assets/icons/siren-red.png'
                         : 'assets/icons/siren-new.png'
-                    "
-                    [ngClass]="isPlaying ? 'blink-animation' : ''"
-                    alt=""
-                  />
+                    " [ngClass]="isPlaying ? 'blink-animation' : ''" alt="" />
                 </button>
-                <button
-                  class="icon"
-                  (click)="downloadImg()"
-                  matTooltip="Screenshot"
-                >
-                  <img
-                    loading="lazy"
-                    src="assets/icons/screenshot.svg"
-                    alt=""
-                  />
+                <button class="icon" (click)="downloadImg()" matTooltip="Screenshot">
+                  <img loading="lazy" src="assets/icons/screenshot.svg" alt="" />
                 </button>
-                <button
-                  class="icon"
-                  (click)="
+                <button class="icon" (click)="
                     currentScreen === 'event-image'
                       ? maxmizeScreen('')
                       : maxmizeScreen('event-image')
-                  "
-                >
-                  <img
-                    [src]="
+                  ">
+                  <img [src]="
                       currentScreen === 'event-image'
                         ? 'assets/icons/close-black.svg'
                         : 'assets/icons/fullscreen.svg'
-                    "
-                    alt=""
-                  />
+                    " alt="" />
                 </button>
               </div>
             </div>
@@ -120,43 +84,34 @@
 
           <div class="col-lg-6">
             <div class="d-flex gap-2 justify-content-end menu">
-              <button
-                *ngFor="let btn of actionTagsNew"
-                type="button"
-                class="btn btn-sm dialog-update-btn"
-                [matMenuTriggerFor]="falseMenu"
-                (click)="getCurrentType(btn)"
-                [ngStyle]="{
+
+              <button *ngIf="currentItem?.nativeApp" class="native-badge">
+                NativeApp
+              </button>
+
+              <button *ngFor="let btn of actionTagsNew" type="button" class="btn btn-sm dialog-update-btn"
+                [matMenuTriggerFor]="falseMenu" (click)="getCurrentType(btn)" [ngStyle]="{
                   'background-color':
                     btn?.categoryId === currentActionTag?.categoryId
                       ? '#d34124'
                       : '#084982',
-                }"
-              >
+                }">
                 {{ btn?.categoryName }}
               </button>
 
               <mat-menu #falseMenu xPosition="before">
                 <div class="row m-0" *ngIf="subActionTags">
-                  <button
-                    class="col-lg-12 action-btn"
-                    *ngFor="let btn of subActionTags"
-                    (click)="
+                  <button class="col-lg-12 action-btn" *ngFor="let btn of subActionTags" (click)="
                       currentSubActionTag = btn;
                       updateEventFullDetails(currentActionTag?.categoryId)
-                    "
-                  >
+                    ">
                     {{ btn?.subCategoryName }}
                   </button>
                 </div>
                 <!-- <p *ngIf="subActionTags.length === 0" class="text-center p-5">Loading...</p> -->
               </mat-menu>
 
-              <button
-                type="button"
-                class="btn btn-sm dialog-update-btn"
-                [matMenuTriggerFor]="menu"
-              >
+              <button type="button" class="btn btn-sm dialog-update-btn" [matMenuTriggerFor]="menu">
                 Live
               </button>
               <mat-menu #menu="matMenu">
@@ -169,11 +124,8 @@
               </mat-menu>
             </div>
 
-            <div
-              class="p-2 border rounded mb-1"
-              [ngClass]="currentScreen === 'email' ? 'max-screen' : ''"
-              *ngIf="currentActionTag?.categoryId === 2 && currentSubActionTag"
-            >
+            <div class="p-2 border rounded mb-1" [ngClass]="currentScreen === 'email' ? 'max-screen' : ''"
+              *ngIf="currentActionTag?.categoryId === 2 && currentSubActionTag">
               <!-- <a class="d-flex justify-content-end"
                 (click)="currentScreen === 'email' ? maxmizeScreen('') : maxmizeScreen('email')">
                 <img [src]="currentScreen === 'email' ? 'assets/icons/close-black.svg' : 'assets/icons/fullscreen.svg'"
@@ -182,10 +134,7 @@
 
               <ng-container *ngIf="path === 'pre-dispatch'">
                 <div class="w-100">
-                  <mat-radio-group
-                    [(ngModel)]="object"
-                    (ngModelChange)="alertType = null; alertSubType = null"
-                  >
+                  <mat-radio-group [(ngModel)]="object" (ngModelChange)="alertType = null; alertSubType = null">
                     <mat-radio-button value="person">Person</mat-radio-button>
                     <mat-radio-button value="vehicle">Vehicle</mat-radio-button>
                   </mat-radio-group>
@@ -203,12 +152,8 @@
                   <mat-form-field class="w-100" appearance="outline">
                     <mat-label>Alert Type</mat-label>
                     <mat-select [(ngModel)]="alertType">
-                      <mat-option
-                        *ngFor="let item of alertTypes; let i = index"
-                        [value]="item.guardAlertTypeId"
-                        (click)="onAlertChange(item.guardAlertTypeId)"
-                        >{{ item.guardAlertType }}</mat-option
-                      >
+                      <mat-option *ngFor="let item of alertTypes; let i = index" [value]="item.guardAlertTypeId"
+                        (click)="onAlertChange(item.guardAlertTypeId)">{{ item.guardAlertType }}</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
@@ -217,12 +162,8 @@
                   <mat-form-field class="w-100" appearance="outline">
                     <mat-label>Alert Sub Type</mat-label>
                     <mat-select [(ngModel)]="alertSubType">
-                      <mat-option
-                        *ngFor="let item of alertSubTypes; let i = index"
-                        [value]="item.guardSubAlertTypeId"
-                        (click)="getEmailDataForVMSEvents()"
-                        >{{ item.guardSubAlertType }}</mat-option
-                      >
+                      <mat-option *ngFor="let item of alertSubTypes; let i = index" [value]="item.guardSubAlertTypeId"
+                        (click)="getEmailDataForVMSEvents()">{{ item.guardSubAlertType }}</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
@@ -231,32 +172,23 @@
               <div class="w-100">
                 <mat-form-field class="w-100">
                   <mat-label>Notes</mat-label>
-                  <textarea
-                    matInput
-                    [(ngModel)]="notes"
-                    [rows]="path == 'pre-dispatch' ? 2 : 7"
-                  ></textarea>
+                  <textarea matInput [(ngModel)]="notes" [rows]="path == 'pre-dispatch' ? 2 : 7"></textarea>
                 </mat-form-field>
               </div>
             </div>
 
-            <div
-              class="p-2 border rounded"
-              *ngIf="
+            <div class="p-2 border rounded" *ngIf="
                 currentActionTag?.categoryId === 2 &&
                 currentSubActionTag &&
                 cameraDetails
-              "
-            >
+              ">
               <h3>Site Information</h3>
               <div style="overflow-y: auto; height: 24vh">
-                <div
-                  *ngIf="
+                <div *ngIf="
                     path === 'pre-dispatch' ||
                     path === 'dispatch' ||
                     path === 'observer'
-                  "
-                >
+                  ">
                   <!-- MONITORING HOURS -->
                   <ng-container *ngIf="hasMonitoringHours">
                     <h3>Monitoring Hours</h3>
@@ -265,13 +197,11 @@
                         <th>Day</th>
                         <th>Hours</th>
                       </tr>
-                      <tr
-                        *ngFor="
+                      <tr *ngFor="
                           let day of getDays(
                             cameraDetails?.cameras[0]?.monitoringHoursDetails
                           )
-                        "
-                      >
+                        ">
                         <td>{{ day.key | titlecase }}</td>
                         <td>{{ day.value }}</td>
                       </tr>
@@ -281,9 +211,7 @@
                   </ng-container>
 
                   <!-- PLANNED SITE ACTIVITIES -->
-                  <ng-container
-                    *ngIf="cameraDetails?.plannedSiteActivities?.length != 0"
-                  >
+                  <ng-container *ngIf="cameraDetails?.plannedSiteActivities?.length != 0">
                     <h3>Planned Site Activities</h3>
                     <table border="1" cellpadding="6" width="100%">
                       <tr>
@@ -292,23 +220,21 @@
                         <th>Start</th>
                         <th>End</th>
                       </tr>
-                      <tr
-                        *ngFor="
+                      <tr *ngFor="
                           let item of cameraDetails?.plannedSiteActivities
-                        "
-                      >
+                        ">
                         <td>{{ item.activityName }}</td>
                         <td style="word-wrap: break-word; width: 200px">
                           {{ item.plannedActivityDescription }}
                         </td>
                         <td>
                           {{
-                            item.plannedActivityStart | date: "MMM d, y, h:mm a"
+                          item.plannedActivityStart | date: "MMM d, y, h:mm a"
                           }}
                         </td>
                         <td>
                           {{
-                            item.plannedActivityEnd | date: "MMM d, y, h:mm a"
+                          item.plannedActivityEnd | date: "MMM d, y, h:mm a"
                           }}
                         </td>
                       </tr>
@@ -321,16 +247,12 @@
                   </ng-container>
                 </div>
 
-                <div
-                  *ngIf="
+                <div *ngIf="
                     path === 'pre-dispatch' ||
                     path === 'dispatch' ||
                     path === 'observer'
-                  "
-                >
-                  <ng-container
-                    *ngIf="cameraDetails?.contactDetails?.length != 0"
-                  >
+                  ">
+                  <ng-container *ngIf="cameraDetails?.contactDetails?.length != 0">
                     <h3>Contact Details</h3>
                     <table border="1" cellpadding="6" width="100%">
                       <tr>
@@ -368,9 +290,7 @@
                   </ng-container>
 
                   <!-- EMAIL DETAILS -->
-                  <ng-container
-                    *ngIf="cameraDetails?.emailDetails?.length != 0"
-                  >
+                  <ng-container *ngIf="cameraDetails?.emailDetails?.length != 0">
                     <h3>Email Details</h3>
                     <div *ngFor="let detail of cameraDetails?.emailDetails">
                       <table border="1" cellpadding="6" width="100%">
@@ -378,8 +298,8 @@
                           <th>To</th>
                           <td>
                             {{
-                              getValidEmails(detail.toEmails).join(", ") ||
-                                "None"
+                            getValidEmails(detail.toEmails).join(", ") ||
+                            "None"
                             }}
                           </td>
                         </tr>
@@ -387,8 +307,8 @@
                           <th>CC</th>
                           <td>
                             {{
-                              getValidEmails(detail.ccEmails).join(", ") ||
-                                "None"
+                            getValidEmails(detail.ccEmails).join(", ") ||
+                            "None"
                             }}
                           </td>
                         </tr>
@@ -396,8 +316,8 @@
                           <th>BCC</th>
                           <td>
                             {{
-                              getValidEmails(detail.bccEmails).join(", ") ||
-                                "None"
+                            getValidEmails(detail.bccEmails).join(", ") ||
+                            "None"
                             }}
                           </td>
                         </tr>
@@ -409,9 +329,7 @@
                   </ng-container>
 
                   <!-- LAW ENFORCEMENT -->
-                  <ng-container
-                    *ngIf="cameraDetails?.lawEnforcement?.length != 0"
-                  >
+                  <ng-container *ngIf="cameraDetails?.lawEnforcement?.length != 0">
                     <h3>Law Enforcement Contacts</h3>
                     <table border="1" cellpadding="6" width="100%">
                       <tr>
@@ -434,17 +352,12 @@
           </div>
         </div>
 
-        <ng-container
-          *ngIf="
+        <ng-container *ngIf="
             emailData &&
             currentActionTag?.categoryId === 2 &&
             path === 'pre-dispatch'
-          "
-        >
-          <div
-            class="p-3 border rounded"
-            [ngClass]="currentScreen === 'template' ? 'max-screen' : ''"
-          >
+          ">
+          <div class="p-3 border rounded" [ngClass]="currentScreen === 'template' ? 'max-screen' : ''">
             <!-- <a class="d-flex justify-content-end"
               (click)="currentScreen === 'template' ? maxmizeScreen('') : maxmizeScreen('template')">
               <img [src]="currentScreen === 'template' ? 'assets/icons/close-black.svg' : 'assets/icons/fullscreen.svg'"
@@ -462,16 +375,13 @@
 
               <div class="fields mt-2">
                 <p>
-                  <span>Location:&nbsp;</span
-                  ><span>{{ emailData?.emailFields.LOCATION }}</span>
+                  <span>Location:&nbsp;</span><span>{{ emailData?.emailFields.LOCATION }}</span>
                 </p>
                 <p>
-                  <span>Date:&nbsp;</span
-                  ><span>{{ emailData?.emailFields.DATE }}</span>
+                  <span>Date:&nbsp;</span><span>{{ emailData?.emailFields.DATE }}</span>
                 </p>
                 <p>
-                  <span>Time:&nbsp;</span
-                  ><span>{{ emailData?.emailFields.TIME }}</span>
+                  <span>Time:&nbsp;</span><span>{{ emailData?.emailFields.TIME }}</span>
                 </p>
               </div>
 
@@ -488,63 +398,34 @@
           </div>
         </ng-container>
 
-        <div
-          class="d-flex align-items-center justify-content-end gap-1 mt-2"
-          *ngIf="currentActionTag?.categoryId === 2"
-        >
+        <div class="d-flex align-items-center justify-content-end gap-1 mt-2"
+          *ngIf="currentActionTag?.categoryId === 2">
           <ng-container *ngIf="path === 'pre-dispatch' && emailData">
-            <button
-              class="btn-secondary"
-              (click)="updateEventFullDetails('second-level')"
-              title="Send Email & Close"
-            >
+            <button class="btn-secondary" (click)="updateEventFullDetails('second-level')" title="Send Email & Close">
               Complete
             </button>
-            <button
-              class="btn-secondary"
-              (click)="write2Dispatch(this.storage_service.getData(3))"
-              title="Send to Dispatch"
-            >
+            <button class="btn-secondary" (click)="write2Dispatch(this.storage_service.getData(3))"
+              title="Send to Dispatch">
               Escalate
             </button>
           </ng-container>
 
-          <ng-container
-            *ngIf="path === 'dispatch' && currentSubActionTag"
-            class="mt-5"
-          >
-            <button
-              class="btn-secondary"
-              (click)="updateEventFullDetails('third-level')"
-              title="Close"
-            >
+          <ng-container *ngIf="path === 'dispatch' && currentSubActionTag" class="mt-5">
+            <button class="btn-secondary" (click)="updateEventFullDetails('third-level')" title="Close">
               Complete
             </button>
-            <button
-              class="btn-secondary"
-              (click)="write2Dispatch(this.storage_service.getData(4))"
-              title="Send to Observer"
-            >
+            <button class="btn-secondary" (click)="write2Dispatch(this.storage_service.getData(4))"
+              title="Send to Observer">
               Escalate
             </button>
           </ng-container>
 
-          <ng-container
-            *ngIf="path === 'observer' && currentSubActionTag"
-            class="mt-5"
-          >
-            <button
-              class="btn-secondary"
-              (click)="updateEventFullDetails('fourth-level')"
-              title="Send Email & Close"
-            >
+          <ng-container *ngIf="path === 'observer' && currentSubActionTag" class="mt-5">
+            <button class="btn-secondary" (click)="updateEventFullDetails('fourth-level')" title="Send Email & Close">
               Complete
             </button>
-            <button
-              class="btn-secondary"
-              (click)="write2Dispatch(this.storage_service.getData(3))"
-              title="Send to Second Level"
-            >
+            <button class="btn-secondary" (click)="write2Dispatch(this.storage_service.getData(3))"
+              title="Send to Second Level">
               Escalate
             </button>
           </ng-container>
@@ -560,28 +441,18 @@
       <p>Boundary-image</p>
       <p>{{ currentItem?.siteName }}</p>
 
-      <button
-        mat-dialog-close
-        style="background-color: transparent; border: none"
-      >
+      <button mat-dialog-close style="background-color: transparent; border: none">
         X
       </button>
     </div>
 
     <div class="dashboard-img">
-      <img
-        [src]="
+      <img [src]="
           !storage_service.showMediaLoader
             ? (monitoringImage | image | async)
             : 'assets/gif/loading-text-gif.gif'
-        "
-        width="100%"
-        height="100%"
-        alt=""
-        loading="lazy"
-        onerror="this.src = 'assets/icons/eyedisabled.svg'"
-        #monitoringSrc
-      />
+        " width="100%" height="100%" alt="" loading="lazy" onerror="this.src = 'assets/icons/eyedisabled.svg'"
+        #monitoringSrc />
     </div>
   </div>
 </ng-template>
@@ -592,28 +463,18 @@
       <p>Mask-image</p>
       <p>{{ currentItem?.siteName }}</p>
 
-      <button
-        mat-dialog-close
-        style="background-color: transparent; border: none"
-      >
+      <button mat-dialog-close style="background-color: transparent; border: none">
         X
       </button>
     </div>
 
     <div class="dashboard-img">
-      <img
-        [src]="
+      <img [src]="
           !storage_service.showMediaLoader
             ? (eventsImage | image | async)
             : 'assets/gif/loading-text-gif.gif'
-        "
-        alt=""
-        width="100%"
-        height="100%"
-        loading="lazy"
-        onerror="this.src = 'assets/icons/eyedisabled.svg'"
-        #eventSrc
-      />
+        " alt="" width="100%" height="100%" loading="lazy" onerror="this.src = 'assets/icons/eyedisabled.svg'"
+        #eventSrc />
     </div>
   </div>
 </ng-template>
