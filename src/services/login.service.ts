@@ -63,7 +63,7 @@ export class LoginService {
   getAccessforRefreshToken(payload: any): Observable<any> {
     const url = environment.login_url + '/getAccessforRefreshToken';
     if (!payload) return throwError(() => alert('Session data missing!!!'));
-    const params = new HttpParams().set('refresh_token', payload?.RefreshToken).set('modifiedBy', payload?.UserId ?? 0);
+    const params = new HttpParams().set('refresh_token', payload?.RefreshToken).set('modifiedBy', payload?.UserId ? payload?.UserId : 0);
     return this.http.post(url, null, { params: params });
   }
 

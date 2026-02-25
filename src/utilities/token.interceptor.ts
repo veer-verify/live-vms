@@ -162,7 +162,7 @@ export class TokenInterceptor implements HttpInterceptor {
           return this.handle401Error(request, next);
         }
 
-        return throwError(() => error);
+        return throwError(() => console.log(error));
       })
     );
   }
@@ -176,26 +176,27 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
-    // const session = this.storageService.getData('session');
-
     if (!this.isRefreshing) {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);
 
       return this.authSer.getAccessforRefreshToken(this.session).pipe(
         switchMap((res: any) => {
-          this.session.AccessToken = res.access_token;
-          this.storageService.saveData('session', this.session);
+          if (res.statusCode === 200) {
+            this.isRefreshing = false;
+            this.session.AccessToken = res.access_token;
+            this.session.RefreshToken = res.refresh_token;
+            this.storageService.saveData('session', this.session);
+            this.refreshTokenSubject.next(res.access_token);
+            return next.handle(this.addToken(request, res.access_token));
+          }
 
-          this.isRefreshing = false;
-          this.refreshTokenSubject.next(res.access_token);
-
-          return next.handle(this.addToken(request, res.access_token));
+          return throwError(() => alert('Failed to get Access Token!'))
         }),
         catchError((err) => {
           this.isRefreshing = false;
           this.authSer.logout();
-          return throwError(() => err);
+          return throwError(() => console.log(err));
         })
       );
     } else {

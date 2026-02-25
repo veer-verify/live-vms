@@ -8,7 +8,5 @@ import {
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  constructor() {
-
-  }
+  constructor() { }
 }
