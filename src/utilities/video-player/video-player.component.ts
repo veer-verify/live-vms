@@ -1,6 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { NgxCaptureService } from 'ngx-capture';
-import { AlertService } from 'src/services/alert.service';
 import { CameraService } from 'src/services/camera.service';
 import { StorageService } from 'src/services/storage.service';
 
@@ -14,8 +13,8 @@ export class VideoPlayerComponent {
   @Input() videoData: any;
   @Input() camerasForPage: any;
   @Input() siteData: any;
-  @Input() liveControl:any;
-  @Input() timezone:any;
+  @Input() liveControl: any;
+  @Input() timezone: any;
 
   @Output() screenshotEmitter: EventEmitter<any> = new EventEmitter();
   @Output() camIndexEmitter: EventEmitter<any> = new EventEmitter();
@@ -39,7 +38,7 @@ export class VideoPlayerComponent {
 
   hitStream: boolean = false;
   encoded: any;
-  time:any;
+  time: any;
 
 
   ngOnInit(): void {
@@ -51,7 +50,7 @@ export class VideoPlayerComponent {
     this.hitStream = true;
     this.requestICEServers();
 
-   this.time= this.storage_service.getTimeWithTime(this.timezone?.timezone)
+    this.time = this.storage_service.getTimeWithTime(this.timezone?.timezone)
 
   }
 
@@ -363,7 +362,7 @@ export class VideoPlayerComponent {
     const screenshotDataUrl = await this.canvas.nativeElement.toDataURL('image/png');
     const link = document.createElement('a');
     link.href = screenshotDataUrl;
-    if(camera) {
+    if (camera) {
       link.download = `${camera?.cameraId}-${camera?.name}-${this.storage_service.getTimeWithTimezone(camera?.timezone)}.png`;
     } else {
       link.download = `${new Date().toString()}.png`;

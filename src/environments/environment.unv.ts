@@ -1,4 +1,4 @@
-const base_url: string = 'https://prod.uneeviu.com';
+const base_url: string = 'https://live.uneeviu.com';
 // const base_url: string = 'https://usstaging.ivisecurity.com';
 
 export const environment = {
@@ -10,7 +10,7 @@ export const environment = {
   download_url: `${base_url}/common`,
   guard_monitoring_url: `${base_url}/guard_monitoring`,
   monitoring_url: `${base_url}/monitoring`,
-  events_url: `https://prodmq.uneeviu.com/queueManagement`,
+  events_url: `https://livemq.uneeviu.com/queueManagement`,
   event_tags_url: `${base_url}/events_data`,
 
   firstAlert: {
