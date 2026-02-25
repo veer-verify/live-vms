@@ -14,7 +14,7 @@ export class EventService {
     private storageSer: StorageService,
     private router: Router,
     private datePipe: DatePipe,
-  ) {}
+  ) { }
 
   getDispatchData() {
     let url = `${environment.events_url}/getVms_DispatchQueueData_1_0/`;
@@ -49,7 +49,7 @@ export class EventService {
       color: payload?.color,
       id: payload?.id,
       timestamp: payload?.time,
-      eventType: payload?.eventType ?? 'Manual-Wall',
+      eventType: payload?.eventType ?? 'Manual_Wall',
       queue_name: payload?.queue_name,
       timezone: payload?.timezone,
       httpUrl: payload?.httpUrl,
@@ -57,7 +57,7 @@ export class EventService {
       siteName: payload?.siteName,
       userName: payload?.userName,
       actionTag: payload?.actionTag ?? '',
-        nativeApp: payload?.nativeApp,
+      nativeApp: payload?.nativeApp,
       actionTime: this.storageSer.getTimeWithTimezone(payload?.timezone),
       eventTag: payload?.eventTag ?? '',
       userLevelAlarmInfo: payload?.userLevelAlarmInfo,
@@ -84,7 +84,7 @@ export class EventService {
       actionTag: payload?.actionTag ?? '',
       actionTime: this.storageSer.getTimeWithTimezone(payload?.timezone),
       eventTag: 'LIVE-VMS',
-      eventType: 'Custom-Event',
+      eventType: 'Custom_Event',
       nativeApp: payload?.nativeApp,
       userLevelAlarmInfo: payload?.userLevelAlarmInfo,
       userLevels: 0,
