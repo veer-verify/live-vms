@@ -521,7 +521,7 @@ export class EventsComponent {
             notes: this.notes,
             userName: user?.UserName,
           });
-
+console.log(this.currentItem)
     this.currentItem.time = this.currentItem.timestamp;
     this.storage_service.show_loader = true;
     this.event_service

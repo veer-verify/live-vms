@@ -96,10 +96,11 @@
 
             <div class="upload-box" (click)="fileInput.click()">
 
-              <div class="upload-content" >
+              <div class="upload-content">
 
 
-                <button mat-stroked-button color="primary" type="button" style="background-color: transparent;border: none;">
+                <button mat-stroked-button color="primary" type="button"
+                  style="background-color: transparent;border: none;">
                   Browse File
                 </button>
 
@@ -140,7 +141,15 @@
 
         <div class="d-flex justify-content-end align-items-center mt-3">
 
-          <button class="button2 me-2" (click)="postScreenshot()">Submit</button>
+          <button class="button2 me-2 d-flex align-items-center justify-content-center gap-2" (click)="postScreenshot()"
+            [disabled]="isLoading">
+
+            <span>Submit</span>
+
+            <mat-spinner *ngIf="isLoading" diameter="18">
+            </mat-spinner>
+
+          </button>
           <button class="button2 me-2" mat-dialog-close>Cancel</button>
         </div>
 

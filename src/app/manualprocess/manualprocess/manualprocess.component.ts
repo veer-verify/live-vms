@@ -168,14 +168,19 @@ setSingleFile(file: File) {
   removeFile() {
     this.selectedFiles=null;
   }
-
+isLoading = false;
 
 
   postScreenshot() {
+    if(this.selectedFiles==null){
+       return this.alertSrvc.error("Please upload image");
+    }
 
         if (this.dateTimeForm.invalid) {
        return this.alertSrvc.error("Please fill all fields");
      }
+
+     this.isLoading=true;
 
     let user = this.storageSer.getData('session');
    let data = this.dateTimeForm.get('camera')?.value;
@@ -184,7 +189,7 @@ setSingleFile(file: File) {
     data.color = 'green';
     data.nativeApp=this.dateTimeForm.get('isActive')?.value;
     data.id= uuid();
-   
+
 
     let file= this.selectedFiles?.file;
 
@@ -220,10 +225,11 @@ setSingleFile(file: File) {
                     this.alertSrvc.snackSuccess(
                       'Event generated successfully!'
                     );
+                       this.isLoading=false;
                   },
                   error: (err) => {
 
-
+                     this.isLoading=false;
                     this.alertSrvc.snackError('Event generated failed!');
                   },
                 });
@@ -231,8 +237,8 @@ setSingleFile(file: File) {
         }
       },
       error: (err) => {
-        data.buttons.splice(0, 1);
 
+         this.isLoading=false;
         this.alertSrvc.snackError('Event generated failed!');
       },
     });

@@ -13,7 +13,7 @@ export class EventService {
     private http: HttpClient,
     private storageSer: StorageService,
     private router: Router,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
   ) {}
 
   getDispatchData() {
@@ -24,8 +24,8 @@ export class EventService {
       path === 'pre-dispatch'
         ? this.storageSer.getData(2)
         : path === 'observer'
-        ? this.storageSer.getData(4)
-        : this.storageSer.getData(3)
+          ? this.storageSer.getData(4)
+          : this.storageSer.getData(3),
     );
     return this.http.get(url, { params: params });
   }
@@ -35,10 +35,10 @@ export class EventService {
     let user = this.storageSer.getData('session');
     payload.userId = user?.UserId;
     payload.level = `Level${user?.userLevel}`;
-  payload.consoleType='manual-console';
-  payload.queueName=user?.queueName;
-  payload.sessionId=user?.sessionId;
-  payload.userName=user?.UserName;
+    payload.consoleType = 'manual-console';
+    payload.queueName = user?.queueName;
+    payload.sessionId = user?.sessionId;
+    payload.userName = user?.UserName;
     return this.http.post(url, payload);
   }
 
@@ -49,7 +49,7 @@ export class EventService {
       color: payload?.color,
       id: payload?.id,
       timestamp: payload?.time,
-      eventType:payload?.eventType??'Manual-Wall',
+      eventType: payload?.eventType ?? 'Manual-Wall',
       queue_name: payload?.queue_name,
       timezone: payload?.timezone,
       httpUrl: payload?.httpUrl,
@@ -57,18 +57,19 @@ export class EventService {
       siteName: payload?.siteName,
       userName: payload?.userName,
       actionTag: payload?.actionTag ?? '',
+        nativeApp: payload?.nativeApp,
       actionTime: this.storageSer.getTimeWithTimezone(payload?.timezone),
-      eventTag: payload?.eventTag??'',
+      eventTag: payload?.eventTag ?? '',
       userLevelAlarmInfo: payload?.userLevelAlarmInfo,
       userLevels: 0,
     };
     return this.http.post(url, obj);
   }
 
+  write2Dispatchcustomevent(payload: any) {
+    // let url = `${environment.events_url}/writeCustomEvent_1_0/`;
+    let url = `${environment.events_url}/write2Vms_DispatchQueue_1_0/`;
 
-    write2Dispatchcustomevent(payload: any) {
-    let url = `${environment.events_url}/writeCustomEvent_1_0/`;
-    // let url = `http://192.168.0.125:8667/writeCustomManualEvent_1_0/`;
     let obj = {
       cameraId: payload?.cameraId,
       color: payload?.color,
@@ -83,8 +84,8 @@ export class EventService {
       actionTag: payload?.actionTag ?? '',
       actionTime: this.storageSer.getTimeWithTimezone(payload?.timezone),
       eventTag: 'LIVE-VMS',
-      eventType:'Custom-Event',
-      nativeApp:payload?.nativeApp,
+      eventType: 'Custom-Event',
+      nativeApp: payload?.nativeApp,
       userLevelAlarmInfo: payload?.userLevelAlarmInfo,
       userLevels: 0,
     };
@@ -92,6 +93,7 @@ export class EventService {
   }
 
   updateEventFullDetails(payload: any) {
+    console.log(payload.type);
     let url = `${environment.event_tags_url}/updateEventFullDetails_1_0/`;
     let user = this.storageSer.getData('session');
     let path = this.router.url.split('/').at(-1);
@@ -113,7 +115,7 @@ export class EventService {
       callNoResponseTime: '',
       eventStartTime: payload?.timestamp,
       eventEndtime: currentTime,
-      emailTime: currentTime,
+      emailTime: typeof payload?.type === 'number' ? '' : currentTime,
       httpUrl: payload?.httpUrl,
       videoFile: payload?.imageName,
       createdBy: user?.UserId,
@@ -165,19 +167,19 @@ export class EventService {
     return this.http.post(url, payload);
   }
 
-   aliveUser() {
+  aliveUser() {
     const url = `${environment.event_tags_url}/userActiveStatus_1_0`;
     let user = this.storageSer.getData('session');
     let payload = {
       userId: 0,
-      sessionId:0
+      sessionId: 0,
     };
     payload.userId = user?.UserId;
-    payload.sessionId=user?.sessionId;
+    payload.sessionId = user?.sessionId;
     return this.http.post(url, payload);
   }
 
-   refreshUser() {
+  refreshUser() {
     const url = `${environment.event_tags_url}/refresh`;
     let user = this.storageSer.getData('session');
     let payload = {
@@ -192,59 +194,50 @@ export class EventService {
     let user = this.storageSer.getData('session');
 
     payload.userId = user?.UserId;
-     payload.sessionId=user?.sessionId;
+    payload.sessionId = user?.sessionId;
     payload.consoleType = 'manual-console';
     return this.http.put(url, payload);
   }
-getMonitoringInfo(payload:any){
+  getMonitoringInfo(payload: any) {
+    let url = `${environment.guard_monitoring_url}/getMonitoringInfo_1_0`;
 
-  let url=`${environment.guard_monitoring_url}/getMonitoringInfo_1_0`;
+    let user = this.storageSer.getData('session');
 
-   let user = this.storageSer.getData('session');
+    let params = new HttpParams();
 
+    if (payload?.siteId) {
+      params = params.set('siteId', payload?.siteId);
+    }
+    if (payload?.cameraId) {
+      params = params.set('cameraId', payload?.cameraId);
+    }
+    params = params.set('level', user?.userLevel);
 
-  let params = new HttpParams();
+    params = params.set('timezone', payload?.timezone);
 
-  if(payload?.siteId){
-    params = params.set('siteId',payload?.siteId);
+    return this.http.get(url, { params });
   }
-   if(payload?.cameraId){
-    params = params.set('cameraId',payload?.cameraId);
+
+  getVMSEventFlow_1_0() {
+    const url = `${environment.event_tags_url}/getVmsEventFlow_1_0`;
+    let params = new HttpParams();
+    params = params.set('callingSystemDetail', 'vms');
+    return this.http.get(url, { params });
   }
-  params = params.set('level',user?.userLevel);
 
-  params=params.set('timezone',payload?.timezone);
+  getImagesForCameraId(payload: any) {
+    const url = `${environment.site_url}/getCameraImagesForCameraId_1_0`;
 
-  return this.http.get(url,{params});
+    let params = new HttpParams();
+    params = params.set('cameraId', payload?.cameraId);
+    return this.http.get(url, { params });
+  }
 
-}
-
-getVMSEventFlow_1_0(){
- const url= `${environment.event_tags_url}/getVmsEventFlow_1_0`;
-  let params = new HttpParams();
-  params = params.set('callingSystemDetail','vms');
-  return this.http.get(url,{params});
-
-}
-
-getImagesForCameraId(payload:any){
-  const url = `${environment.site_url}/getCameraImagesForCameraId_1_0`;
-
-  let params=new HttpParams();
-  params=params.set('cameraId',payload?.cameraId);
-   return this.http.get(url,{params});
-}
-
-
-audioDisable(payload:any){
-  const url = `${environment.guard_monitoring_url}/checkCameraAudio_1_0`;
-  let params=new HttpParams();
-  params=params.set('cameraId',payload?.cameraId);
-  params=params.set('siteId',payload?.siteId);
-   return this.http.get(url,{params});
-
-}
-
-
-
+  audioDisable(payload: any) {
+    const url = `${environment.guard_monitoring_url}/checkCameraAudio_1_0`;
+    let params = new HttpParams();
+    params = params.set('cameraId', payload?.cameraId);
+    params = params.set('siteId', payload?.siteId);
+    return this.http.get(url, { params });
+  }
 }

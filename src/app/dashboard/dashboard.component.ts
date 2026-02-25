@@ -573,7 +573,7 @@ export class DashboardComponent {
                       user: user?.UserId,
                       actionTag: 2,
                       subActionTag: 23,
-                      activityDetTime: time,
+                      activityDetTime: data?.audioUrl ? time : '',
                       alarm: data?.audioUrl ? 'P' : 'N',
                       landingTime: time,
                       reviewStart: time,

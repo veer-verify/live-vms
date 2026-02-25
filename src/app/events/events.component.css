@@ -1,6 +1,6 @@
 .side-panel {
   border-right: 1px solid #ddd;
-  height: calc(100vh - 90px);
+  height: calc(100vh - 130px);
   overflow-y: auto;
 }
 
@@ -63,7 +63,6 @@
   font-weight: 500;
   font-size: 14px;
   letter-spacing: 1px;
-
 }
 
 .fields {
@@ -94,17 +93,16 @@
   border: none;
   cursor: pointer;
   background-color: #fff;
-
 }
 
 .btn-secondary {
-   border:2px solid #ED3237;
-  color: #ED3237;
+  border: 2px solid #ed3237;
+  color: #ed3237;
 }
 
 .btn-secondary:hover {
-  background: #ED3237;
-  color:white
+  background: #ed3237;
+  color: white;
 }
 
 .icon {
@@ -151,23 +149,43 @@
   font-size: 12px !important;
 }
 
-
-
-
-
-
 .dashboard-img {
-                /* take remaining space */
+  /* take remaining space */
   width: 500px;
   height: 500px;
-  object-fit: cover;   /* no crop, no overflow */
+  object-fit: cover; /* no crop, no overflow */
   background-color: #333;
 }
 
-.time-name{
+.time-name {
   position: absolute;
 
   color: #ffffff;
   top: 95%;
   left: 1%;
+}
+
+.native-badge {
+  font-weight: 600;
+  animation: blinkAnimation 1s infinite;
+
+  background-color: #084982;
+  color: #fff;
+  border-radius: 16px;
+  border-width: 0;
+  font-size: 12px;
+  margin: 0 10px 10px 0;
+  padding: 5px 10px;
+}
+
+@keyframes blinkAnimation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
 }
