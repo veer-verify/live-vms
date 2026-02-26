@@ -40,34 +40,34 @@ export const environment = {
     },
 
     kennedyAlert: {
-        time1: 2,
-        time2: 4,
-        time3: 6,
-        time4: 8,
-        time5: 10
+        time1: 1,
+        time2: 2,
+        time3: 3,
+        time4: 4,
+        time5: 5
+    },
+
+    springAlert: {
+        time1: 1,
+        time2: 2,
+        time3: 3,
+        time4: 4,
+        time5: 5
+    },
+
+    shopAlert: {
+        time1: 1,
+        time2: 2,
+        time3: 3,
+        time4: 4,
+        time5: 5
     },
 
     oneWatchAlert: {
         time1: 0.5,
-        time2: 150,
-        time3: 180,
-        time4: 210,
-        time5: 240
+        time2: 1,
+        time3: 2,
+        time4: 3,
+        time5: 4
     },
-
-    springAlert: {
-        time1: 115,
-        time2: 120,
-        time3: 150,
-        time4: 180,
-        time5: 210
-    },
-
-    shopAlert: {
-        time1: 100,
-        time2: 120,
-        time3: 150,
-        time4: 180,
-        time5: 210
-    }
 };

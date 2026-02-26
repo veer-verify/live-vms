@@ -130,13 +130,13 @@ export class DashboardComponent {
   // }
 
   openManualevent() {
-  this.matDialog.open(ManualprocessComponent, {
-    width: '600px',
-    maxHeight: '600px',
-    disableClose: true,
-    panelClass: 'custom-dialog'
-  });
-}
+    this.matDialog.open(ManualprocessComponent, {
+      width: '600px',
+      maxHeight: '600px',
+      disableClose: true,
+      panelClass: 'custom-dialog'
+    });
+  }
 
   sitesList: any = [];
   errInfo: any;
@@ -357,6 +357,7 @@ export class DashboardComponent {
 
     this.http
       .get(`${environment.site_url}/play_1_0/${data.cameraId}`)
+
       .subscribe({
         next: (res: any) => {
           setTimeout(() => {
@@ -364,9 +365,9 @@ export class DashboardComponent {
           }, 120000);
           this.audioIndex = -1;
           if (res.statusCode === 200) {
-            this.alertSrvc.success(res.message);
+            this.alertSrvc.snackSuccess(res.message);
           } else {
-            this.alertSrvc.error(res.message);
+            this.alertSrvc.snackError(res.message);
           }
         },
         error: (err) => {
@@ -469,7 +470,7 @@ export class DashboardComponent {
         timeAlert = environment.kennedyAlert;
       } else if (data.siteId == 36562) {
         timeAlert = environment.springAlert;
-      } else if (data.siteId == 36587) {
+      } else if (data.siteId == 36587 || data.siteId == 36681) {
         timeAlert = environment.shopAlert;
       } else if (data.siteId == 36444 || data?.siteId === 36446) {
         timeAlert = environment.oneWatchAlert;
@@ -560,7 +561,7 @@ export class DashboardComponent {
         if (res.statusCode === 200) {
           if (this.listType === 6) {
             if (data.color == 'green') {
-              // this.audio(data);
+              this.audio(data);
               this.event_service
                 .write2Dispatch({
                   ...data,
@@ -585,7 +586,7 @@ export class DashboardComponent {
                 })
                 .subscribe({
                   next: (res) => {
-                    data.buttons.splice(0, 1);
+                    data.buttons.shift();
                     this.createBtnEl.toArray().forEach((item) => {
                       item.nativeElement.style.pointerEvents = 'all';
                     });
@@ -594,7 +595,7 @@ export class DashboardComponent {
                     );
                   },
                   error: (err) => {
-                    data.buttons.splice(0, 1);
+                    data.buttons.shift();
                     this.createBtnEl.toArray().forEach((item) => {
                       item.nativeElement.style.pointerEvents = 'all';
                     });
@@ -626,7 +627,7 @@ export class DashboardComponent {
         }
       },
       error: (err) => {
-        data.buttons.splice(0, 1);
+        data.buttons.shift();
         this.createBtnEl.toArray().forEach((item) => {
           item.nativeElement.style.pointerEvents = 'all';
         });
@@ -659,7 +660,6 @@ export class DashboardComponent {
 
   @ViewChild('mannualEmailDialog') mannualEmailDialog = {} as TemplateRef<any>;
   eventCameras: any = [];
-  cameraCurrentTime: any;
   async openEmaiDialog(data: any) {
     this.selectedFiles = [];
     this.selectedCameras = [];
@@ -677,9 +677,6 @@ export class DashboardComponent {
     this.mannualEmailBody.cameraId = data.cameraId;
     this.mannualEmailBody.eventFromTime = data.dspTime;
     this.mannualEmailBody.eventToTime = this.storageSer.getTimeWithTimezone(
-      data?.timezone
-    );
-    this.cameraCurrentTime = this.storageSer.getTimeWithTimezone(
       data?.timezone
     );
 
@@ -748,19 +745,19 @@ export class DashboardComponent {
 
   emailObject: any;
   emailCurrentItem: any;
-  getImageFromVideo(data: any) {
+  getImageFromVideo(event: any) {
     this.emailObject = {
       siteId: this.currentItem?.siteId,
       camerasList: [],
       alertTypeId: this.mannualEmailBody.alertType,
       subTypeId: this.mannualEmailBody.alertSubType,
       day: this.storageSer.weekdays[
-        this.storageSer.getDay(data?.camera?.timezone)
+        this.storageSer.getDay(event?.camera?.timezone)
       ],
-      hour: this.storageSer.getHour(data?.camera?.timezone),
-      currentTime: this.cameraCurrentTime,
+      hour: this.storageSer.getHour(event?.camera?.timezone),
+      currentTime: this.storageSer.getTimeWithTimezone(event?.camera?.timezone),
     };
-    this.postScreenshot(data.camera, data.image);
+    this.postScreenshot(event.camera, event.image);
   }
 
   addVehicleCount() {

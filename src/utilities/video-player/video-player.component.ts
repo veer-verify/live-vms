@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { NgxCaptureService } from 'ngx-capture';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { CameraService } from 'src/services/camera.service';
 import { StorageService } from 'src/services/storage.service';
 
@@ -39,6 +40,7 @@ export class VideoPlayerComponent {
   hitStream: boolean = false;
   encoded: any;
   time: any;
+  siren$ = new Subject()
 
 
   ngOnInit(): void {
@@ -56,7 +58,7 @@ export class VideoPlayerComponent {
 
   ngAfterViewInit() {
     if (this.siteData?.siteId === 36585 || this.siteData?.siteId === 36591) {
-      this.camSer.siren_sub.subscribe((res: any) => {
+      this.camSer.siren_sub.pipe(takeUntil(this.siren$)).subscribe((res: any) => {
         if (res) {
           this.video.nativeElement.muted = false;
         } else {
@@ -390,7 +392,6 @@ export class VideoPlayerComponent {
       this.canvas.nativeElement.getContext("2d").drawImage(imgElement, finalX, finalY, 20, 20);
       this.canvas.nativeElement.toBlob((blob: any) => {
         let newObj = { ...camera, color, ...btnItem }
-        console.log(newObj)
         this.screenshotEmitter.emit({ image: blob, camera: newObj });
 
         const screenshotDataUrl = this.canvas.nativeElement.toDataURL('image/png');
@@ -405,5 +406,6 @@ export class VideoPlayerComponent {
   ngOnDestroy() {
     this.hitStream = false;
     this.peerConnection?.close();
+    this.siren$.complete();
   }
 }

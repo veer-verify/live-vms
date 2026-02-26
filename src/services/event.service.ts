@@ -93,7 +93,6 @@ export class EventService {
   }
 
   updateEventFullDetails(payload: any) {
-    console.log(payload.type);
     let url = `${environment.event_tags_url}/updateEventFullDetails_1_0/`;
     let user = this.storageSer.getData('session');
     let path = this.router.url.split('/').at(-1);

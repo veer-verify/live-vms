@@ -26,7 +26,7 @@ export class CameraService {
     private http: HttpClient,
     private storageSer: StorageService,
     private datePipe: DatePipe,
-  ) {}
+  ) { }
 
   siren_sub = new BehaviorSubject<boolean>(false);
 
@@ -117,8 +117,6 @@ export class CameraService {
   }
 
   screenshots(payload: any, file: any) {
-
-    console.log(payload,file)
     let url: string = `${environment.guard_monitoring_url}/screenshots_1_0`;
     let formData = new FormData();
 
@@ -274,6 +272,7 @@ export class CameraService {
   }
 
   getEmailData(payload: any) {
+    console.log(payload)
     let url = `${environment.guard_monitoring_url}/getEmailData_1_0`;
     let timer;
     payload?.siteId == 36444 ? (timer = 10) : (timer = 120);

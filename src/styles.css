@@ -70,6 +70,14 @@ a {
   text-decoration: none;
 }
 
+.fs-12 {
+  font-size: 12px;
+}
+
+.fs-10 {
+  font-size: 10px;
+}
+
 .btn {
   background-color: var(--cmn-background) !important;
   color: #ffffff;
