@@ -1,12 +1,12 @@
-import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { AlertService } from 'src/services/alert.service';
 import { LoginService } from 'src/services/login.service';
 import { MetadataService } from 'src/services/metadata.service';
 import { StorageService } from 'src/services/storage.service';
 import { EventService } from 'src/services/event.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +14,8 @@ import { EventService } from 'src/services/event.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
+  subject = new BehaviorSubject<number>(0);
+  intervalId: any;
   constructor(
     private fb: FormBuilder,
     private loginSer: LoginService,
@@ -22,7 +24,20 @@ export class LoginComponent {
     private alertSer: AlertService,
     private metadata_service: MetadataService,
     private event: EventService
-  ) { }
+  ) {
+    // this.subject.pipe().subscribe((res) => console.log(res));
+    // this.intervalId = setInterval(() => {
+    //   this.subject.next(Math.random() * 10);
+    // }, 1000);
+
+    // router.events.subscribe((event) => {
+    //   if (event instanceof NavigationStart) {
+    //     clearInterval(this.intervalId);
+    //     this.subject.unsubscribe();
+    //     console.log(this.subject.closed);
+    //   }
+    // })
+  }
 
   loginForm!: FormGroup;
   ngOnInit() {
@@ -77,11 +92,8 @@ export class LoginComponent {
                 this.router.navigate(['/user-dashboard/monitoring-info']);
               }
               // if (response.statusCode == 409) {
-
               // let temp=this.storageSer.getData('session');
-
               // this.storageSer.saveData('session',{...temp,sessionId:response.sessionId})
-
               //   this.alertSer.confirm(response.message).then((res: any) => {
               //     if (res?.isConfirmed) {
               //       this.showLoader = false;
@@ -95,7 +107,6 @@ export class LoginComponent {
               //            this.showLoader = false;
               //           this.loginSer.logout();
               //         }
-
               //       })
               //     }
               //     else{

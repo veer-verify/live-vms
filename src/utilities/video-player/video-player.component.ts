@@ -40,7 +40,7 @@ export class VideoPlayerComponent {
   hitStream: boolean = false;
   encoded: any;
   time: any;
-  siren$ = new Subject()
+  siren$ = new Subject<void>();
 
 
   ngOnInit(): void {
@@ -406,6 +406,8 @@ export class VideoPlayerComponent {
   ngOnDestroy() {
     this.hitStream = false;
     this.peerConnection?.close();
+
+    this.siren$.next();
     this.siren$.complete();
   }
 }

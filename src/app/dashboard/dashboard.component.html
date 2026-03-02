@@ -35,7 +35,7 @@
       src="assets/icons/home.svg"
       alt=""
       width="20"
-      (click)="clearCams(null)"
+      (click)="clearCams()"
     />
   </button>
 
@@ -93,7 +93,7 @@
       src="assets/icons/clean.svg"
       alt=""
       width="20"
-      (click)="clearCams(null)"
+      (click)="clearCams()"
     />
   </button>
 </div>
@@ -215,7 +215,7 @@
                 [cdkDropListConnectedTo]="[camList]"
                 (cdkDropListDropped)="onDrop(cam)"
               >
-                <div cdkDrag [cdkDragDisabled]="checkCam(cam)">
+                <div cdkDrag [cdkDragDisabled]="cam?.isPlaying">
                   <img
                     loading="lazy"
                     [src]="

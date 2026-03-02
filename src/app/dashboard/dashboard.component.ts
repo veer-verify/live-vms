@@ -15,8 +15,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from 'src/services/alert.service';
 import {
   HttpClient,
-  HttpErrorResponse,
-  HttpEventType,
 } from '@angular/common/http';
 import { SiteService } from 'src/services/site.service';
 import { v4 as uuid } from 'uuid';
@@ -117,18 +115,6 @@ export class DashboardComponent {
   //   }
   // }
 
-  // getUrl(data: any) {
-  //   this.siteSrvc.getUrl(data).subscribe({
-  //     error: (err: HttpErrorResponse) => {
-  //       if (err.status === 200) {
-  //         data.videoUrl = err.url;
-  //       } else if(err.status === 0) {
-  //         data.videoUrl = null;
-  //       }
-  //     },
-  //   });
-  // }
-
   openManualevent() {
     this.matDialog.open(ManualprocessComponent, {
       width: '600px',
@@ -150,7 +136,6 @@ export class DashboardComponent {
           this.sitesList = res.sites.sort((a: any, b: any) =>
             a.siteName > b.siteName ? 1 : a.siteName < b.siteName ? -1 : 0
           );
-          // this.getCamerasForSiteId(res.sites[0]);
         } else {
           this.sitesList = [];
           this.errInfo = 'NO SITES';
@@ -165,52 +150,44 @@ export class DashboardComponent {
   }
 
   cameras: any = [];
+  newCameras: any = [];
   currentSite: any;
   showCamLoader: boolean = false;
   getCamerasForForPortal(data: any) {
     this.currentSite = data;
     this.showCamLoader = true;
-    this.siteSrvc.getCamerasForForPortal(data).subscribe((res: any) => {
-      this.showCamLoader = false;
-      this.cameras = res;
+    this.siteSrvc.getCamerasForForPortal(data).subscribe({
+      next: (res) => {
+        this.showCamLoader = false;
+        this.cameras = res;
 
-      this.cameras.forEach((object: any) => {
-        object.isPlaying = false;
-        object.buttons = [];
-        if (
-          object.siteName.startsWith('DSW') ||
-          object.siteName.startsWith('Whole Foods') ||
-          object.siteName.startsWith('Guitar Center') ||
-          object.siteName.startsWith('Fifth Season')
-        ) {
-          object.showSiteName = true;
-        } else {
-          object.showSiteName = false;
-        }
-      });
-      // this.findCommon();
-      this.selector();
-    });
-  }
+        this.cameras.forEach((object: any) => {
+          object.buttons = [];
 
-  findCommon() {
-    let commonObjects = this.cameras?.filter((obj1: any) => {
-      return this.gridListItems.some((obj2: any) => {
-        return obj2.cameraId === obj1.cameraId;
-      });
-    });
-    commonObjects.forEach((commonObj: any) => {
-      const foundIndex = this.cameras?.findIndex(
-        (obj: any) => obj.cameraId === commonObj.cameraId
-      );
-      if (foundIndex !== -1) {
-        this.cameras[foundIndex].isPlaying = true;
+          // if (this.newCameras.some((el: any) => el.cameraId === object.cameraId)) {
+          //   object.isPlaying = true;
+          // } else {
+          //   object.isPlaying = false;
+          // }
+
+          if (
+            object.siteName.startsWith('DSW') ||
+            object.siteName.startsWith('Whole Foods') ||
+            object.siteName.startsWith('Guitar Center') ||
+            object.siteName.startsWith('Fifth Season')
+          ) {
+            object.showSiteName = true;
+          } else {
+            object.showSiteName = false;
+          }
+        });
+        this.selector();
+        this.check()
+      },
+      error: (err) => {
+        this.showCamLoader = false;
       }
     });
-  }
-
-  checkCam(data: any) {
-    return this.getCurrentPageItems.includes(data) ? true : false;
   }
 
   showSidenav: boolean = true;
@@ -257,14 +234,13 @@ export class DashboardComponent {
     this.selector();
   }
 
-  gridListItems: any = [];
   currentPage: any = 1;
   totalPages: any;
   camerasForPage: any = 20;
   pagesForDropdown: any = [];
   selector(): void {
     this.totalPages = Math.ceil(
-      this.gridListItems.length / this.camerasForPage
+      this.newCameras.length / this.camerasForPage
     );
     this.pagesForDropdown = new Array(this.totalPages)
       .fill(0)
@@ -278,22 +254,24 @@ export class DashboardComponent {
   moveAllCams() {
     this.cameras.map((item: any) => {
       item.isPlaying = true;
+      if (!this.newCameras.some((el: any) => el.cameraId === item.cameraId)) {
+        this.newCameras.push(item);
+      }
     });
-    this.gridListItems.push(...this.cameras);
+
     this.selector();
   }
 
-  @ViewChild('panel') panel = ElementRef;
   onDrop(item: any) {
     item.isPlaying = true;
-    this.gridListItems.push(item);
+    this.newCameras.push(item);
     this.selector();
   }
 
   get getCurrentPageItems() {
     const startIndex = (this.currentPage - 1) * this.camerasForPage;
     const endIndex = startIndex + this.camerasForPage;
-    return this.gridListItems?.slice(startIndex, endIndex);
+    return this.newCameras?.slice(startIndex, endIndex);
   }
 
   prevPage(): void {
@@ -303,25 +281,35 @@ export class DashboardComponent {
   }
 
   nextPage(): void {
-    const maxPages = Math.ceil(this.gridListItems.length / this.camerasForPage);
+    const maxPages = Math.ceil(this.newCameras.length / this.camerasForPage);
     if (this.currentPage < maxPages) {
       this.currentPage++;
     }
   }
 
-  clearCams(item: any): void {
+  clearCams(item?: any): void {
     if (item) {
-      item.isPlaying = false;
-      let index: number = this.gridListItems.indexOf(item);
-      this.gridListItems.splice(index, 1);
+      let index: number = this.newCameras.findIndex((el: any) => el.cameraId === item.cameraId);
+      this.newCameras.splice(index, 1);
+      this.check();
     } else {
       this.currentPage = 1;
-      this.gridListItems = [];
+      this.newCameras = [];
       this.cameras.map((item: any) => {
         item.isPlaying = false;
       });
     }
     this.selector();
+  }
+
+  check() {
+    this.cameras.forEach((item: any) => {
+      if (this.newCameras.some((el: any) => el.cameraId === item.cameraId)) {
+        item.isPlaying = true;
+      } else {
+        item.isPlaying = false;
+      }
+    })
   }
 
   cameraIndex: number = -1;
@@ -357,7 +345,6 @@ export class DashboardComponent {
 
     this.http
       .get(`${environment.site_url}/play_1_0/${data.cameraId}`)
-
       .subscribe({
         next: (res: any) => {
           setTimeout(() => {
@@ -561,7 +548,7 @@ export class DashboardComponent {
         if (res.statusCode === 200) {
           if (this.listType === 6) {
             if (data.color == 'green') {
-              this.audio(data);
+              // this.audio(data);
               this.event_service
                 .write2Dispatch({
                   ...data,
@@ -574,8 +561,8 @@ export class DashboardComponent {
                       user: user?.UserId,
                       actionTag: 2,
                       subActionTag: 23,
-                      activityDetTime: data?.audioUrl ? time : '',
-                      alarm: data?.audioUrl ? 'P' : 'N',
+                      activityDetTime: '',
+                      alarm: 'N',
                       landingTime: time,
                       reviewStart: time,
                       reviewEnd: time,
@@ -837,7 +824,7 @@ export class DashboardComponent {
     if (phElement) {
       phContainer.removeChild(phElement);
       phContainer.parentElement?.insertBefore(phElement, phContainer);
-      moveItemInArray(this.gridListItems, drag?.data, dropList?.data);
+      moveItemInArray(this.newCameras, drag?.data, dropList?.data);
     }
   }
 
