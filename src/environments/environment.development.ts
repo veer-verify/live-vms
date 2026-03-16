@@ -30,6 +30,7 @@ export const environment = {
     event_tags_url: `${dev_url}/events_data`,
     eventImageUrl: `${dev_url}/dotimages/`,
     events_url: `${event_url}/queueManagement`,
+    insightsUrl: `${dev_url}/insights`,
 
     firstAlert: {
         time1: 1,

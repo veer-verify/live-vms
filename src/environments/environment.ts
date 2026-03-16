@@ -34,6 +34,8 @@ export const environment = {
   events_url: `https://prodmq.ivisecurity.com/queueManagement`,
   eventImageUrl: `${prod_url}/dotimages/`,
   event_tags_url: `${prod_url}/events_data`,
+  insightsUrl: `${prod_url}/insights`,
+
 
   firstAlert: {
     time1: 160,

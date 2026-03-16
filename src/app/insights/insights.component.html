@@ -1,0 +1,109 @@
+<section>
+  <!-- <app-err-info></app-err-info> -->
+
+  <form [formGroup]="myForm">
+    <div class="row mx-0 mt-2 w-100">
+      <div class="col-lg-2 ps-0">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Site</mat-label>
+          <mat-select
+            formControlName="siteId"
+            (selectionChange)="getNonWorkingDays()"
+          >
+            <mat-option
+              *ngFor="let item of siteIdToNav; let i = index"
+              [value]="item.siteId"
+              >{{ item?.siteName }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-2 ps-0">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Camera</mat-label>
+          <mat-select
+            formControlName="cameraId"
+            (selectionChange)="biAnalyticsReport()"
+          >
+            <mat-option value="">All</mat-option>
+            <mat-option *ngFor="let item of camList" [value]="item?.cameraId">
+              {{ item?.name }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-lg-2">
+        <mat-form-field appearance="outline">
+          <mat-label>From</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker1"
+            formControlName="fromDate"
+            (dateChange)="biAnalyticsReport()"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker1"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-2">
+        <mat-form-field appearance="outline">
+          <mat-label>To</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker2"
+            formControlName="toDate"
+            (dateChange)="biAnalyticsReport()"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker2"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+
+  <ng-container *ngIf="page === 'list'">
+    <div class="dashboard">
+      <!-- LEFT TABLE -->
+      <div class="table-panel">
+        <div *ngFor="let section of analyticsData">
+          <div class="section-header">
+            {{ section.name }}
+            <span>COUNT</span>
+          </div>
+
+          <div class="ag-theme-alpine grid">
+            <ag-grid-angular
+              class="custom-grid"
+              [rowData]="section.data"
+              [columnDefs]="columnDefs"
+              [domLayout]="'autoHeight'"
+            >
+            </ag-grid-angular>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT CHARTS -->
+      <div class="chart-panel">
+        <div *ngFor="let chart of charts">
+          <div class="chart-title">
+            {{ chart.title }}
+          </div>
+
+          <ag-charts class="donut-chart" [options]="chart.options"> </ag-charts>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="page === 'map'">
+    <app-site-map></app-site-map>
+  </ng-container>
+</section>
