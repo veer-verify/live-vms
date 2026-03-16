@@ -1,5 +1,6 @@
 // const base_url: string = "http://prod.ivisecurity.com";
 const base_url: string = "https://usstaging.ivisecurity.com";
+const localurl: string = "http://localhost";
 
 export const environment = {
     env: 'verifai',
@@ -18,6 +19,21 @@ export const environment = {
     // metadataUrl: `${base_url}:3005/metadata`,
     // sitesUrl: `${base_url}:3004`,
     // incidentsUrl: `${base_url}:8945`,
+
+    //   login_url: `${localurl}:3002/userDetails`,
+    // site_url: `${localurl}:3004/vipsites`,
+    // common_url: `${localurl}:8844/metadata`,
+    // dot_analytics_url: `${localurl}:8952/dotAnalytics`,
+    // events_url: `${localurl}:80`,
+    // email_url: `${localurl}:8953/guard`,
+    // guard_automation_url: `${localurl}:8089/guard_automation`,
+    // guard_url:`${localurl}:8015/guardEmails`,
+    // guard_monitoring_url:`${localurl}:3009/guard_monitoring`,
+    // monitoring_url:`${localurl}:8016/monitoring`,
+    // event_tags_url: `${localurl}:80/events_data`,
+    // download_url: `${localurl}:80/common`,
+    // eventImageUrl: `${localurl}:80/alert-images/`,
+
 
     eventImageUrl: `${base_url}/dotimages/`,
     login_url: `${base_url}/userDetails`,

@@ -65,7 +65,7 @@
 
 .table-resp table thead tr {
   /* background-image: linear-gradient(to right, #084982, #D34124); */
-  background-color: #084982 !important;
+  background-color: var(--cmn-background);
   background-size: cover;
   border-radius: 5px;
   margin-top: 20px;
@@ -78,7 +78,7 @@
 
 
 thead tr th {
-  background-color: #084982;
+  background-color: var(--cmn-background);
   color: #fff;
   font-size: 12px;
   vertical-align: middle;
