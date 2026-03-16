@@ -51,7 +51,16 @@ import { ManualprocessComponent } from './manualprocess/manualprocess/manualproc
 
 import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { InsightsComponent } from './insights/insights.component';
+import { SiteMapComponent } from './insights/site-map/site-map.component';
+import { AgGridAngular } from 'ag-grid-angular';
+import { AgCharts } from 'ag-charts-angular';
 
+
+ModuleRegistry.registerModules([
+  AllCommunityModule,
+]);
 
 @NgModule({
   declarations: [
@@ -92,7 +101,9 @@ import { NgxMatMomentModule } from '@angular-material-components/moment-adapter'
     CountPipe,
     PlannedsiteComponent,
     SitesettingsComponent,
-    ManualprocessComponent
+    ManualprocessComponent,
+    InsightsComponent,
+    SiteMapComponent
   ],
   imports: [
     NgxMatDatetimePickerModule,
@@ -106,6 +117,8 @@ import { NgxMatMomentModule } from '@angular-material-components/moment-adapter'
     MaterialModule,
     CommonModule,
     NgxMatTimepickerModule,
+    AgGridAngular,
+    AgCharts,
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
     }),

@@ -68,6 +68,21 @@
         >
       </a>
 
+      <a
+        [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+        [routerLink]="['/user-dashboard/insights']"
+        routerLinkActive="routeactive"
+      >
+        <img
+          loading="lazy"
+          src="assets/icons/grouped_bar_chart.svg"
+          matTooltip="Insights"
+        />
+        <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
+          >Insights</span
+        >
+      </a>
+
       <!-- <a class="list-group-item " [routerLink]="['/user-dashboard/device-status']" routerLinkActive="routeactive">
         <img loading="lazy" src="assets/icons/floppy-disk.svg">
         <span style="font-weight: 500; margin-left: 10px;" matTooltip="" *ngIf="showSidenav">Devices</span>

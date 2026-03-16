@@ -10,6 +10,7 @@ import { AlertsInfoComponent } from './alerts-info/alerts-info.component';
 import { PlaybackInfoComponent } from './playback-info/playback-info.component';
 import { EventsComponent } from './events/events.component';
 import { NvrComponent } from './nvr/nvr.component';
+import { InsightsComponent } from './insights/insights.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -25,6 +26,7 @@ const routes: Routes = [
       { path: 'pre-dispatch', component: EventsComponent, canDeactivate: [AuthGuard] },
       { path: 'dispatch', component: EventsComponent, canDeactivate: [AuthGuard] },
       { path: 'observer', component: EventsComponent, canDeactivate: [AuthGuard] },
+      { path: 'insights', component: InsightsComponent, canDeactivate: [AuthGuard] },
       { path: '', redirectTo: '/user-dashboard/monitoring-info', pathMatch: 'full' },
     ]
   },
