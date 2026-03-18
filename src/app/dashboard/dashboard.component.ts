@@ -539,8 +539,9 @@ export class DashboardComponent {
   }
 
   postScreenshot(data: any, file: any) {
-    let user = this.storageSer.getData('session');
-    let time = this.storageSer.getTimeWithTimezone(data?.timezone);
+    const sites = [36432, 36505, 36554, 36523];
+    const user = this.storageSer.getData('session');
+    const time = this.storageSer.getTimeWithTimezone(data?.timezone);
     data.time = time;
 
     this.camSer.screenshots(data, file).subscribe({
@@ -548,7 +549,9 @@ export class DashboardComponent {
         if (res.statusCode === 200) {
           if (this.listType === 6) {
             if (data.color == 'green') {
-              // this.audio(data);
+              if (!sites.includes(data.siteId)) {
+                this.audio(data);
+              }
               this.event_service
                 .write2Dispatch({
                   ...data,
