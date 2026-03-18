@@ -1,4 +1,4 @@
-/* From Uiverse.io by SteveBloX */ 
+/* From Uiverse.io by SteveBloX */
 
 .site-details {
   display: flex;
@@ -10,7 +10,7 @@
 
 .site-details p {
   margin: 0;  /* Remove default margin */
-   
+
   font-size: 12px;
   font-weight: 600;
 }
@@ -45,14 +45,14 @@
     display: flex;
     user-select:none;
     color: black;
-    
+
   }
-  
+
   .card:hover {
     border: 1px solid rgb(170, 170, 170);
     transform: scale(1.05);
   }
-    
+
 
   .card:active {
     transform: scale(0.95) rotateZ(1.7deg);
@@ -67,16 +67,16 @@
     height: 90%;
     border-top-left-radius: 17px;
     border-top-right-radius: 17px;
-    
+
   }
-  
+
   .image_container .image {
     /* transform: translate(-50%, -50%); */
     position: absolute;
     object-fit:cover;
     top: 50%;
     left: 50%;
-   
+
   }
 
   .checkbox-list{
@@ -86,14 +86,15 @@
     gap: 5px;
   }
   .cam-name{
-    white-space: nowrap; 
+    white-space: nowrap;
     width: 100px;
     text-overflow: ellipsis;
     overflow: hidden;
 
   }
   .btn-style{
-    background-color: #084982;
+    /* background-color: #084982; */
+    background-color: var(--cmn-background);
     border-radius: 5px;
     color: white;
     border: none;
@@ -103,10 +104,10 @@
   .closebtn {
     background-color: transparent;
     border-radius: 50%;
-    color: #000; 
+    color: #000;
   }
-  
-  
+
+
   .bordered {
     border: 2px solid #007bff; /* Customize the border color and width */
     padding: 10px;
@@ -114,7 +115,7 @@
 
   .previous-changed {
     border: 3px solid #ff9800;  /* Highlight border color for items with changed state */
- 
+
 }
 
 .demo-chart {

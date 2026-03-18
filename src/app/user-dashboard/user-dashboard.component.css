@@ -4,8 +4,9 @@
 }
 
 .left-content {
-  background-color: var(--background);
+  /* background-color: var(--background); */
   color: #fff;
+   background: #dbd5d5;
   background-size: cover;
   width: 300px;
   transition: all 300ms ease-in-out;
@@ -50,7 +51,7 @@
 
 .list-group-item {
   background-color: transparent;
-  color: #fff;
+  color: black;
   border: none;
   margin: 8px;
   display: flex;

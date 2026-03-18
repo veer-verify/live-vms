@@ -1,6 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
 
 @font-face {
+  font-family: 'Neometric';
+  src: url('/neometric/Neometric-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Neometric';
+  src: url('/neometric/Neometric-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Neometric';
+  src: url('/neometric/Neometric-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Neometric';
+  src: url('/neometric/Neometric-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Neometric';
+  src: url('/neometric/Neometric-ExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+
+
+/* @font-face {
   font-family: ES;
   src: url('assets/font/EngraversGothicRegular.otf') format("opentype");
 }
@@ -8,13 +45,14 @@
 @font-face {
   font-family: TP;
   src: url('assets/font/Typold-Book500.otf') format("opentype");
-}
+} */
 
 
 :root {
-  --background: linear-gradient(125deg, rgba(237, 50, 55, 1) 20%, rgba(255, 255, 255, 1) 80%);
+  /* --background: linear-gradient(125deg, rgba(237, 50, 55, 1) 20%, rgba(255, 255, 255, 1) 80%); */
+  --background:#eeeeee;
   --header-background: #ffffff;
-  --table-background: #ffffff;
+  --table-background: #ED3237;
   --cmn-background: #ED3237;
   --primary: #ed3237;
   --secondary: #ffffff;
@@ -23,7 +61,7 @@
 }
 
 *:not(.material-icons) {
-  font-family: 'TP', sans-serif !important;
+  /* font-family: 'TP', sans-serif !important; */
 }
 
 html,

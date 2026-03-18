@@ -12,11 +12,11 @@
   padding: 20px;
   overflow-y: auto;
   z-index: 999;
-  
+
 }
 
 
-  /* From Uiverse.io by mrhyddenn */ 
+  /* From Uiverse.io by mrhyddenn */
   .closebtn {
     padding: 4px 12px 4px 12px;
     outline: none;
@@ -33,79 +33,84 @@
     font-weight: 300;
     font-size: 24px;
     box-shadow: 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.3);
-   
+
     transition: all 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
 
   }
-  
+
   .closebtn:hover {
     animation: sh0 0.4s ease-in-out both;
   }
-  
+
   @keyframes sh0 {
     0% {
       transform: rotate(0deg) translate3d(0, 0, 0);
     }
-  
+
     25% {
       transform: rotate(7deg) translate3d(0, 0, 0);
     }
-  
+
     50% {
       transform: rotate(-7deg) translate3d(0, 0, 0);
     }
-  
+
     75% {
       transform: rotate(1deg) translate3d(0, 0, 0);
     }
-  
+
     100% {
       transform: rotate(0deg) translate3d(0, 0, 0);
     }
   }
-  
+
   .closebtn:hover span {
     animation: storm 0.7s ease-in-out both;
     animation-delay: 0.06s;
   }
-  
- 
-  
+
+
+
   .closebtn:hover::before,
   .closebtn:hover::after {
     opacity: 0.15;
     transition: transform 0.2s cubic-bezier(0.02, 0.01, 0.47, 1), opacity 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
   }
-  
+
   .closebtn:hover::before {
     transform: translate3d(50%, 0, 0) scale(0.9);
   }
-  
+
   .closebtn:hover::after {
     transform: translate(50%, 0) scale(1.1);
   }
-  
+
   ::ng-deep .mat-drawer{
 
     width: 600px !important;
   }
-  
+
+.template-change{
+  background-color: var(--cmn-background);
+  color:white;
+}
 
 
-
-/* template button */ 
+/* template button */
 .btn-template {
   position: relative;
-   
+
   padding: 0.7em 1.4em;
   /* background-color: rgba(8,73,130,1); */
-    background-color: var(--cmn-background);
+    /* background-color: var(--cmn-background); */
+
   text-decoration: none;
   border: none;
   border-radius: 0.5em;
-  color: #fff;
+  /* color: #fff; */
+  /* color: var(--cmn-background); */
   box-shadow: 0.5em 0.5em 0.5em rgba(0, 0, 0, 0.3);
- 
+
 }
 
 .btn-template::before {
@@ -118,14 +123,14 @@
 .btn-template:hover::before {
   width: 1.6em;
   height: 1.6em;
-  
+
 }
 
 .btn-template:active {
   box-shadow: 0.2em 0.2em 0.3em rgba(0, 0, 0, 0.3);
 
 }
-/* template button */ 
+/* template button */
 
 
 /* template */
@@ -133,7 +138,7 @@
   background-color: transparent ;
   border: 1px solid rgb(170, 168, 168);
   color: rgba(8,73,130,1);
-   
+
   border: none;
   border-radius: 5px;
   font-size: 30px;
@@ -160,7 +165,7 @@
 
 
 /* preview */
-/* From Uiverse.io by shah1345 */ 
+/* From Uiverse.io by shah1345 */
 .button2 {
   display: inline-block;
   transition: all 0.2s ease-in;
@@ -170,7 +175,7 @@
   color: #090909;
   padding: 0.4em;
   cursor: pointer;
-   
+
   border-radius: 0.5em;
   background: #e8e8e8;
   border: 1px solid #e8e8e8;
@@ -231,7 +236,7 @@
 }
 .previewmail{
 color: white;
- 
+
 font-size: 20px;
 
 }
@@ -261,17 +266,17 @@ font-size: 20px;
 .greeting {
   font-weight: bold;
   margin-bottom: 10px;
-   
+
 }
 
 .message {
   margin-bottom: 15px;
-   
+
 }
 
 
 .vehicle-info p {
-   
+
   font-size: 1rem;
   margin: 5px 0;
   color: #333;
@@ -320,7 +325,7 @@ font-size: 20px;
     gap: 3px;
    max-height: 70vh;
     overflow-y: auto;
- 
+
 }
 
 .alert-header {
@@ -329,44 +334,44 @@ font-size: 20px;
     border-radius: 6px;
     margin-bottom: 20px;
   }
-  
+
 
   .alert-header h2 {
     color: #c34e01;
     font-size: 1.5rem;
     text-align: center;
   }
-  
+
   .alert-body {
     font-size: 1rem;
     color: #333;
   }
-  
+
   .greeting {
     font-weight: bold;
     margin-bottom: 10px;
-     
+
   }
-  
+
   .message {
     margin-bottom: 15px;
-     
+
   }
-  
+
   .previewmail{
- 
+
   font-weight: 600;
   text-transform: uppercase;
   padding: 5px;
     }
 
   .vehicle-info p {
-     
+
     font-size: 1rem;
     margin: 5px 0;
     color: #333;
   }
- 
+
 
   .card {
     border-radius: 10px;

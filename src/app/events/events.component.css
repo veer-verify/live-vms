@@ -72,7 +72,7 @@
 }
 
 .action-btn {
-  background-color: #084982;
+  background-color:var(--cmn-background);
   color: #fff;
   border-radius: 6px;
   border-width: 0;

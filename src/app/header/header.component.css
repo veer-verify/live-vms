@@ -1,5 +1,5 @@
 .header {
-  background-color: var(--cmn-background);
+  background-color: var(--header-background);
   position: sticky;
   width: 100%;
   top: 0px;
