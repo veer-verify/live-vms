@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { StorageService } from 'src/services/storage.service';
 
 
@@ -11,6 +12,8 @@ import { StorageService } from 'src/services/storage.service';
 
 
 export class UserDashboardComponent {
+
+  environment = environment;
 
   constructor(
     public storage_service: StorageService

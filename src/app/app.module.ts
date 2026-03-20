@@ -75,6 +75,7 @@ import { DeviceInfoComponent } from './devices/device-info/device-info.component
 import { AddNewDeviceComponent } from './add-new-device/add-new-device.component';
 import { MgmttableComponent } from './mgmttable/mgmttable.component';
 import { EditFormComponent } from './edit-form/edit-form.component';
+import { SigninComponent } from './signin/signin.component';
 
 ModuleRegistry.registerModules([
   AllCommunityModule,
@@ -129,20 +130,19 @@ ModuleRegistry.registerModules([
     AddNewEventComponent,
     AddNewInstallationComponent,
     AddNewSiteComponent,
-  CountryStateCityComponent,
-  EditCameraComponent,
-  CreateFormComponent,
-  AddDeviceFormComponent,
-  EditDeviceFormComponent,
-  DevicesComponent,
-  CameraTransferComponent,
-  DeviceInfoComponent,
-  AddNewDeviceComponent,
-  MgmttableComponent,
-  EditFormComponent,
-  LoaderComponent
-
-
+    CountryStateCityComponent,
+    EditCameraComponent,
+    CreateFormComponent,
+    AddDeviceFormComponent,
+    EditDeviceFormComponent,
+    DevicesComponent,
+    CameraTransferComponent,
+    DeviceInfoComponent,
+    AddNewDeviceComponent,
+    MgmttableComponent,
+    EditFormComponent,
+    LoaderComponent,
+    SigninComponent
   ],
   imports: [
     NgxMatDatetimePickerModule,
@@ -158,10 +158,10 @@ ModuleRegistry.registerModules([
     NgxMatTimepickerModule,
     AgGridAngular,
     AgCharts,
-     NgCircleProgressModule,
+    NgCircleProgressModule,
 
-     // Specify ng-circle-progress as an import
-     NgCircleProgressModule.forRoot({
+    // Specify ng-circle-progress as an import
+    NgCircleProgressModule.forRoot({
       radius: 100,
       outerStrokeWidth: 6,
       innerStrokeWidth: 2,

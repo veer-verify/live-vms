@@ -7,14 +7,12 @@
   >
     <div class="d-flex justify-content-center my-1">
       <button class="colap-arr" (click)="collap_nav()">
-        <img
-          loading="lazy"
-          src="assets/icons/arrow_back.svg"
-          alt=""
-          width="16"
+        <span
+          class="material-symbols-outlined"
           [ngStyle]="{ rotate: showSidenav ? '' : '180deg' }"
-          style="vertical-align: sub"
-        />
+        >
+          arrow_back
+        </span>
       </button>
     </div>
 
@@ -24,11 +22,9 @@
         [routerLink]="['/user-dashboard/monitoring-info']"
         routerLinkActive="routeactive"
       >
-        <img
-          loading="lazy"
-          src="assets/icons/grip.svg"
-          matTooltip="Dashboard"
-        />
+        <span class="material-symbols-outlined" matTooltip="Dashboard">
+          dashboard
+        </span>
         <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
           >Dashboard</span
         >
@@ -40,60 +36,53 @@
       <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Devices</span>
     </a> -->
 
-      <ng-container>
-        <a
-          [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
-          [routerLink]="['/dashboard']"
-          routerLinkActive="routeactive"
+      <a
+        [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+        [routerLink]="['/dashboard']"
+        routerLinkActive="routeactive"
+      >
+        <span class="material-symbols-outlined" matTooltip="Sites">
+          apartment
+        </span>
+        <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
+          >Sites</span
         >
-          <img
-            loading="lazy"
-            src="assets/icons/building.svg"
-            matTooltip="Sites"
-          />
-          <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
-            >Sites</span
-          >
-        </a>
-      </ng-container>
+      </a>
 
       <a
         [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
         [routerLink]="['/user-dashboard/alerts-info']"
         routerLinkActive="routeactive"
       >
-        <img loading="lazy" src="assets/icons/bell.svg" matTooltip="Alerts" />
-
+        <span class="material-symbols-outlined" matTooltip="Alerts">
+          notifications_unread
+        </span>
         <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
           >Alerts</span
         >
       </a>
 
-      <!-- <a
+      <a
         [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
         [routerLink]="['/user-dashboard/insights']"
         routerLinkActive="routeactive"
       >
-        <img
-          loading="lazy"
-          src="assets/icons/grouped_bar_chart_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg"
-          matTooltip="Insights"
-        />
+        <span class="material-symbols-outlined" matTooltip="Insights">
+          bar_chart
+        </span>
         <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
           >Insights</span
         >
-      </a> -->
+      </a>
 
       <a
         [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
         [routerLink]="['/user-dashboard/sites']"
         routerLinkActive="routeactive"
       >
-        <img
-          loading="lazy"
-          src="assets/icons/location_home_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg"
-          matTooltip="Sites"
-        />
+        <span class="material-symbols-outlined" matTooltip="Sites Info">
+          info
+        </span>
         <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
           >Sites Info</span
         >

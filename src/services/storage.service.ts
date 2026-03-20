@@ -18,14 +18,14 @@ export interface Site {
 })
 export class StorageService {
 
-    login_loader_sub: BehaviorSubject<any> = new BehaviorSubject(false);
- table_loader_sub: BehaviorSubject<any> = new BehaviorSubject(false);
+  login_loader_sub: BehaviorSubject<any> = new BehaviorSubject(false);
+  table_loader_sub: BehaviorSubject<any> = new BehaviorSubject(false);
   current_sub: BehaviorSubject<any> = new BehaviorSubject(null);
 
   private readonly key = "verifai";
   environment = environment;
 
-    public currentSite$ = new BehaviorSubject<Site | null>(null);
+  public currentSite$ = new BehaviorSubject<Site | null>(null);
 
   getFile(file: string) {
     return `assets/themes/${environment.env}/${file}`;
@@ -208,20 +208,20 @@ export class StorageService {
   };
 
 
-    public set(name: any, data: any) {
+  public set(name: any, data: any) {
     // let x = btoa(encodeURIComponent(JSON.stringify(data)));
     // localStorage.setItem(name, x);
     localStorage.setItem(name, JSON.stringify(data));
   }
 
 
-    public get(data: any) {
+  public get(data: any) {
     // let x: any = localStorage.getItem(data);
     // return JSON.parse(decodeURIComponent(atob(x)));
     return JSON.parse(localStorage.getItem(data)!);
   }
 
-    getMetaDataArray(type: string) {
+  getMetaDataArray(type: string) {
     let data: any = JSON.parse(localStorage.getItem('metaData')!);
     return data?.filter((item: any) => item.typeName == type)[0]?.metadata
   }

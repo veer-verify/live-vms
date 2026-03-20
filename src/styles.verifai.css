@@ -1,41 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
 
 @font-face {
-  font-family: 'Neometric';
-  src: url('/neometric/Neometric-Light.otf') format('opentype');
+  font-family: "Neometric";
+  src: url("/neometric/Neometric-Light.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Neometric';
-  src: url('/neometric/Neometric-Regular.otf') format('opentype');
+  font-family: "Neometric";
+  src: url("/neometric/Neometric-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Neometric';
-  src: url('/neometric/Neometric-Medium.otf') format('opentype');
+  font-family: "Neometric";
+  src: url("/neometric/Neometric-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Neometric';
-  src: url('/neometric/Neometric-Bold.otf') format('opentype');
+  font-family: "Neometric";
+  src: url("/neometric/Neometric-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Neometric';
-  src: url('/neometric/Neometric-ExtraBold.otf') format('opentype');
+  font-family: "Neometric";
+  src: url("/neometric/Neometric-ExtraBold.otf") format("opentype");
   font-weight: 800;
   font-style: normal;
 }
-
-
 
 /* @font-face {
   font-family: ES;
@@ -47,13 +45,12 @@
   src: url('assets/font/Typold-Book500.otf') format("opentype");
 } */
 
-
 :root {
   /* --background: linear-gradient(125deg, rgba(237, 50, 55, 1) 20%, rgba(255, 255, 255, 1) 80%); */
-  --background:#eeeeee;
+  --background: #eeeeee;
   --header-background: #ffffff;
-  --table-background: #ED3237;
-  --cmn-background: #ED3237;
+  --table-background: #ed3237;
+  --cmn-background: #ed3237;
   --primary: #ed3237;
   --secondary: #ffffff;
   --route-color: #000000;
@@ -73,6 +70,7 @@ body {
   margin: 0;
   background-size: cover;
   background-image: var(--background);
+  overflow-y: hidden;
 }
 
 p {
@@ -89,17 +87,16 @@ a {
 }
 
 .title {
-  font-family: 'ES', sans-serif !important;
+  font-family: "ES", sans-serif !important;
 }
 
 .text {
-  font-family: 'TP', sans-serif !important;
+  font-family: "TP", sans-serif !important;
 }
 
 .pointer {
   cursor: pointer;
 }
-
 
 .w-250 {
   width: 250px;
@@ -109,7 +106,7 @@ a {
 
 .status {
   font-size: 12px;
-  color: #28231D;
+  color: #28231d;
   letter-spacing: 0.5px;
   width: 120px;
   font-weight: 600;
@@ -122,7 +119,7 @@ a {
 }
 
 .vl-green {
-  border-left: 2px solid #00A44C;
+  border-left: 2px solid #00a44c;
   height: 40px;
 }
 
@@ -132,17 +129,17 @@ a {
 }
 
 .vl-red {
-  border-left: 2px solid #EF2800;
+  border-left: 2px solid #ef2800;
   height: 40px;
 }
 
 .vl-yellow {
-  border-left: 2px solid #F5B400;
+  border-left: 2px solid #f5b400;
   height: 40px;
 }
 
 .vl-orange {
-  border-left: 2px solid #EF6000;
+  border-left: 2px solid #ef6000;
   height: 40px;
 }
 
@@ -187,18 +184,17 @@ a {
 }
 
 .dialog-content {
-  padding:  10px;
+  padding: 10px;
   max-width: 80vw;
   max-height: 80vh;
   overflow-y: auto;
-
 }
 .form-heading {
   font-size: 20px;
   text-transform: uppercase;
   color: #084982;
   font-weight: bold;
-   margin: 20px;
+  margin: 20px;
 }
 
 /*Dialog update-btn*/
@@ -222,7 +218,6 @@ a {
   border-width: 0;
   font-size: 12px;
   margin: 0 10px 10px 0;
-
 }
 
 .dialog-update-btn:active {

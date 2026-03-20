@@ -1,0 +1,62 @@
+<ng-container *ngIf="showLoader">
+  <app-loader></app-loader>
+</ng-container>
+
+<div class="login-container">
+  <div class="left-panel">
+    <div class="overlay"></div>
+  </div>
+
+  <div class="right-panel">
+    <div class="login-box">
+      <img
+        src="assets/themes/verifai/logo-white.png"
+        alt="VERIFAI LIVE"
+        class="logo"
+      />
+      <p class="auth-label">Welcome to sign in</p>
+
+      <form [formGroup]="loginForm">
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" placeholder="Enter" formControlName="userName" />
+          <span
+            class="required"
+            *ngIf="loginForm.get('userName')?.invalid && loginForm.dirty"
+            >*required</span
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Enter"
+            formControlName="password"
+          />
+          <span
+            class="required"
+            *ngIf="loginForm.get('password')?.invalid && loginForm.dirty"
+            >*required</span
+          >
+        </div>
+
+        <section class="bottom-info">
+          <div class="options">
+            <input type="checkbox" (change)="showPassword = !showPassword" />
+            <label class="m-0">Show Password</label>
+          </div>
+          <div class="forgot-password">
+            <!-- <a (click)="isLogin.set(false)" class="text-danger">
+              Forgot Password?
+            </a> -->
+          </div>
+        </section>
+
+        <button type="submit" class="login-btn" (click)="login()">
+          LOG IN
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,135 @@
+.login-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+/* Left side (image + overlay) */
+.left-panel {
+  flex: 2;
+  background: url("../../assets/themes/verifai/background.png") no-repeat center
+    center;
+  background-size: cover;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .left-panel {
+    display: none;
+  }
+}
+
+.left-panel .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.right-panel {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  padding: 16px;
+}
+
+.login-box {
+  width: 70%;
+  text-align: center;
+}
+
+.logo {
+  width: 200px;
+  margin-bottom: 50px;
+  margin-left: auto;
+}
+
+.forgot-password {
+  font-size: 12px;
+  font-weight: 400;
+  /* opacity: 0.5; */
+}
+
+.options {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  /* margin-bottom: 20px; */
+  font-size: 13px;
+  user-select: none;
+}
+
+.options input {
+  width: 14px !important;
+  height: 14px !important;
+  margin-right: 4px;
+}
+
+.options a {
+  color: #d62828;
+  text-decoration: none;
+}
+
+.login-btn,
+button[type="submit"] {
+  width: 100%;
+  padding: 12px !important;
+  background-color: #d62828 !important;
+  color: #fff !important;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none !important;
+  transition: 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #b71c1c;
+}
+
+.bottom-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+input {
+  font-family: "Neometric Regular" !important;
+  width: 100%;
+  outline: none;
+  border: 1px solid #d1d1d1;
+  padding: 6px;
+  font-size: 14px;
+}
+
+label {
+  display: block;
+  margin-top: 6px;
+  opacity: 0.8;
+  font-size: 12px;
+  text-align: left;
+}
+
+.form-group {
+  position: relative;
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #eeeeee;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.auth-label {
+  font-size: 24px;
+  opacity: 0.5;
+}
