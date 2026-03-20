@@ -56,7 +56,25 @@ import { InsightsComponent } from './insights/insights.component';
 import { SiteMapComponent } from './insights/site-map/site-map.component';
 import { AgGridAngular } from 'ag-grid-angular';
 import { AgCharts } from 'ag-charts-angular';
-
+import { CameraInsightsComponent } from './insights/camera-insights/camera-insights.component';
+import { SitesComponent } from './sites/sites.component';
+import { AddDeviceComponent } from './add-device/add-device.component';
+import { AddNewCameraComponent } from './add-new-camera/add-new-camera.component';
+import { AddNewEventComponent } from './add-new-event/add-new-event.component';
+import { AddNewInstallationComponent } from './add-new-installation/add-new-installation.component';
+import { AddNewSiteComponent } from './add-new-site/add-new-site.component';
+import { CountryStateCityComponent } from './country-state-city/country-state-city.component';
+import { EditCameraComponent } from './edit-camera/edit-camera.component';
+import { CreateFormComponent } from './create-form/create-form.component';
+import { AddDeviceFormComponent } from './add-device-form/add-device-form.component';
+import { EditDeviceFormComponent } from './edit-device-form/edit-device-form.component';
+import { DevicesComponent } from './devices/devices.component';
+import { NgCircleProgressModule } from 'ng-circle-progress';
+import { CameraTransferComponent } from './camera-transfer/camera-transfer.component';
+import { DeviceInfoComponent } from './devices/device-info/device-info.component';
+import { AddNewDeviceComponent } from './add-new-device/add-new-device.component';
+import { MgmttableComponent } from './mgmttable/mgmttable.component';
+import { EditFormComponent } from './edit-form/edit-form.component';
 
 ModuleRegistry.registerModules([
   AllCommunityModule,
@@ -103,7 +121,28 @@ ModuleRegistry.registerModules([
     SitesettingsComponent,
     ManualprocessComponent,
     InsightsComponent,
-    SiteMapComponent
+    SiteMapComponent,
+    CameraInsightsComponent,
+    SitesComponent,
+    AddDeviceComponent,
+    AddNewCameraComponent,
+    AddNewEventComponent,
+    AddNewInstallationComponent,
+    AddNewSiteComponent,
+  CountryStateCityComponent,
+  EditCameraComponent,
+  CreateFormComponent,
+  AddDeviceFormComponent,
+  EditDeviceFormComponent,
+  DevicesComponent,
+  CameraTransferComponent,
+  DeviceInfoComponent,
+  AddNewDeviceComponent,
+  MgmttableComponent,
+  EditFormComponent,
+  LoaderComponent
+
+
   ],
   imports: [
     NgxMatDatetimePickerModule,
@@ -119,6 +158,17 @@ ModuleRegistry.registerModules([
     NgxMatTimepickerModule,
     AgGridAngular,
     AgCharts,
+     NgCircleProgressModule,
+
+     // Specify ng-circle-progress as an import
+     NgCircleProgressModule.forRoot({
+      radius: 100,
+      outerStrokeWidth: 6,
+      innerStrokeWidth: 2,
+      outerStrokeColor: "#78C000",
+      innerStrokeColor: "#C7E596",
+      animationDuration: 300,
+    }),
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
     }),

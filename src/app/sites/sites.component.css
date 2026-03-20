@@ -1,0 +1,206 @@
+/* .table tbody tr td {
+  padding: 0 5px;
+} */
+
+.create-btn {
+  background-color: #084982;
+  color: #fff;
+  width: 120px;
+  padding: 8px 0;
+  border-radius: 25px;
+  border-width: 0;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.create-btn:active {
+  opacity: 0.8;
+}
+
+.create-centeral-box-button{
+  width: 100px;
+  border-radius: 8px;
+  background-color:#084982;
+  /* margin-bottom: 20px; */
+  color: aliceblue;
+  font-size: 12px;
+
+}
+
+.blod{
+font-weight: bold;
+}
+
+a {
+  /* border: none; */
+  /* outline: none;  */
+  color: #084982;
+  cursor: pointer;
+}
+
+table {
+  width: 100%; /* Optional: Makes the table take the full width */
+  border-collapse: collapse; /* Optional: Collapses borders */
+}
+
+th, td {
+  padding: 6px; /* Adjust padding as needed */
+  text-align: left; /* Align text to the left (optional) */
+}
+
+
+.text-ellipsis {
+  word-wrap: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+ /* Adjust as needed */
+}
+::ng-deep mat-expansion-panel-header {
+  min-height: 85px;
+  /* width: 46vw; */
+}
+
+.circle-container {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+mat-panel-description {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem; /* Space between items */
+  justify-content: space-between;
+  align-items: center;
+}
+
+.first-card {
+  background-color: rgb(247, 247, 240);
+  border-radius: 36px;
+  height: 46px;
+  width: 76px;
+  text-align: center;
+  padding: 6px;
+}
+
+.btn-card {
+  background-color: rgb(60, 189, 114);
+  border-radius: 36px;
+  height: 40px;
+  width: 56px;
+  text-align: center;
+  padding: 12px;
+  border-style: none;
+  border-width: 0px;
+}
+.grid-container{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+
+/* th {
+  white-space: normal;
+  word-break: break-word;
+  max-width: 85vw;
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* From Uiverse.io by Yaya12085 */
+.radio-inputs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.radio-inputs > * {
+  margin: 6px;
+}
+
+.radio-input:checked + .radio-tile {
+  border-color: #084982;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  color: #084982;
+  background-color: #084982;
+}
+
+
+
+.radio-input:checked + .radio-tile .radio-label {
+  color: #ffff;
+
+}
+
+
+
+
+.radio-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  width: 150px;
+  border-radius: 0.5rem;
+  border: 2px solid #b5bfd9;
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  transition: 0.15s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+
+.radio-tile:hover {
+  border-color: #084982;
+}
+
+.radio-tile:hover:before {
+  transform: scale(1);
+  opacity: 1;
+}
+
+
+
+.radio-label {
+
+  transition: 0.375s ease;
+  text-align: center;
+  font-size: 13px;
+}
+
+.radio-input {
+  clip: rect(0 0 0 0);
+  -webkit-clip-path: inset(100%);
+  clip-path: inset(100%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}

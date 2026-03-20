@@ -1,0 +1,60 @@
+<div class="table-resp">
+  <table class="table ">
+    <thead>
+      <tr>
+        <th scope="col" *ngFor="let field of fields">
+          <div class="d-inline-flex">
+            <p style="white-space: nowrap;">{{field?.label}}</p>
+            <a *ngIf="field.sort" (click)="sort(field.key)"><img src="assets\icons\sorticon.svg" alt=""
+                width="16px"></a>
+          </div>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody *ngIf="data.length !== 0 && !showLoader">
+      <tr *ngFor="let item of data | search: search">
+        <td *ngFor="let field of fields">
+          <ng-container>
+            <span [ngStyle]="{
+              'color': item[field?.key] == 'Online' ? 'white' : item[field?.key] == 'Offline' ? 'white' : 'black',
+              'background-color': item[field?.key] == 'Online' ? 'green' : item[field?.key] == 'Offline' ? 'red' : '',
+              'padding': item[field?.key] == 'Online' ? '5px' : item[field?.key] == 'Offline' ? '5px' : '',
+              'border-radius': item[field?.key] == 'Online' ? '5px' : item[field?.key] == 'Offline' ? '5px' : '',
+              }">
+              {{item[field?.key]}}</span>
+          </ng-container>
+
+          <ng-container *ngIf="field?.type === 'array'">
+            <p *ngFor="let sub of field.call(item)">{{sub[field?.keyword]}}</p>
+          </ng-container>
+
+          <ng-container *ngIf="field?.type === 'button'">
+            <a (click)="field?.call(item)">View</a>
+          </ng-container>
+
+          <ng-container *ngIf="field?.type === 'a'">
+            <a (click)="field?.call(item)">Test</a>
+          </ng-container>
+
+          <ng-container *ngIf="field?.type === 'actions'">
+            <div class="d-inline-flex">
+              <a class="mx-1 pointer" *ngFor="let el of field.actions" (click)="field.call(item, el)"
+                [matTooltip]="el"><img src="assets/icons/{{el}}.svg"></a>
+            </div>
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- err info -->
+  <div *ngIf="data?.length === 0 && !showLoader">
+    <p class="text-center">No Data</p>
+  </div>
+
+  <!-- loader -->
+  <!-- <div *ngIf="showLoader" class="d-flex justify-content-center align-items-center" style="height: 45vh;">
+    <app-loader></app-loader>
+  </div> -->
+</div>

@@ -12,7 +12,7 @@
       </tr>
     </thead>
 
-    <tbody *ngIf="data?.length !== 0 && !showLoader">
+    <tbody *ngIf="data.length !== 0 && !showLoader">
       <tr *ngFor="let item of data | search: search; let i=index;">
         <td *ngFor="let field of fields">
           <ng-container *ngIf="field.showSerial">{{ i + 1 }}</ng-container>
@@ -66,7 +66,7 @@
 
 </div>
 
-<ng-container *ngIf="data?.length === 0 && !showLoader">
+<ng-container *ngIf="data.length === 0 && !showLoader">
   <h2 class="text-center mt-5">No Data</h2>
 </ng-container>
 <ng-container *ngIf="showLoader">

@@ -1,0 +1,287 @@
+<!-- <app-login-loader *ngIf="showLoader"></app-login-loader> -->
+
+<div class="row formModal">
+    <div class="col-lg-6 col-4"></div>
+    <div class="col-lg-6 col-8 add-form" id="camera" @inOutPaneAnimation>
+        <div>
+            <a class="close-main pointer" (click)="closeForm()"><img src="assets/icons/close_form.svg" /></a>
+            <span class="form-heading">Configure Event For Camera - {{currentSite?.siteName}}</span>
+        </div>
+        <!-- form -->
+        <div>
+            <form autocomplete="off" [formGroup]="addAssetForm" >
+                <div class="row">
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Select Camera</mat-label>
+                            <mat-select formControlName="cameraId">
+                                <mat-option *ngFor="let item of cameras" [value]="item.cameraId" [disabled]="type === 'edit'">{{item.name}}</mat-option>
+                            </mat-select>
+                            <mat-error>Camera is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="row ml-5 mb-2">
+                        <div class="col-lg-6" style="font-size: 10px; font-weight: 700;">
+                            <p>Motion Detection</p>
+                            <mat-radio-group class="w-50" formControlName="motionDetection" (change)="clearNums(['motionDetectionArea', 'modelFps', 'skipFrames'])">
+                                <mat-radio-button class="ms-3" name="motionDetection" value="T">True</mat-radio-button>
+                                <mat-radio-button class="ms-3" name="motionDetection" value="F">False</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <div class="col-lg-6" style="font-size: 10px; font-weight: 700;">
+                            <p>Object Detection</p>
+                            <mat-radio-group class="w-50" formControlName="objectDetection">
+                                <mat-radio-button class="ms-3" name="objectDetection" value="T">True</mat-radio-button>
+                                <mat-radio-button class="ms-3" name="objectDetection" value="F">False</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
+                        <!-- total sec-->
+                        <span class="row m-0 col-lg-12"
+                            *ngIf="addAssetForm.get('motionDetection')?.value !== 'F' || addAssetForm.get('objectDetection')?.value !== 'F'">
+                            <!-- motion detection -->
+                            <span class="row m-0 col-lg-12">
+                                <div class="col-lg-6 col-md-6"
+                                    *ngIf="addAssetForm.get('motionDetection')?.value == 'T'">
+                                    <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>MotionDetectionArea</mat-label>
+                                        <input matInput formControlName="motionDetectionArea" type="number">
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- <div class="col-lg-6">
+                                    <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>Fps</mat-label>
+                                        <input matInput formControlName="modelFps" type="number">
+                                        <mat-error>fps is required</mat-error>
+                                    </mat-form-field>
+                                </div> -->
+                                <div class="col-lg-6">
+                                    <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>Model Fps</mat-label>
+                                        <input matInput formControlName="modelFps" type="text" min="1" max="10">
+                                        <mat-error *ngIf="addAssetForm.get('modelFps')?.hasError('required')">
+                                          Fps is required
+                                        </mat-error>
+                                        <mat-error *ngIf="addAssetForm.get('modelFps')?.hasError('min')">
+                                          Minimum allowed is 1
+                                        </mat-error>
+                                        <mat-error *ngIf="addAssetForm.get('modelFps')?.hasError('max')">
+                                          Maximum allowed is 10
+                                        </mat-error>
+                                      </mat-form-field>
+                                </div>
+<!-- 
+                                <div class="col-lg-6">
+                                    <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>Skip Frames</mat-label>
+                                        <input matInput formControlName="skipFrames" type="number">
+                                        <mat-error>skipFrames is required</mat-error>
+                                    </mat-form-field>
+                                </div> -->
+                            
+                                    <div class="col-lg-6">
+                                        <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>Skip Frames</mat-label>
+                                        <input matInput 
+                                                formControlName="skipFrames" 
+                                            type="number"
+                                                >
+                                          <mat-error *ngIf="addAssetForm.controls['skipFrames'].hasError('required')">
+                                            Skip Frames is required
+                                        </mat-error>
+                                          <mat-error *ngIf="addAssetForm.controls['skipFrames'].hasError('min')">
+                                            Minimum value is 1
+                                        </mat-error>
+                                          <mat-error *ngIf="addAssetForm.controls['skipFrames'].hasError('max')">
+                                            Maximum value is 10
+                                        </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    
+
+                                <p style="font-size: 10px; font-weight: 700;">Polygon/ROI</p>
+                                <div class="row mt-4">
+
+                                    <p style="font-size: 10px; font-weight: 700;">Mask</p>
+
+                                    <div class="col-lg-6 col-md-5">
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>In</mat-label>
+                                            <input matInput formControlName="maskIn">
+                                            <mat-error>maskIn is required</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-6 col-md-5">
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Out</mat-label>
+                                            <input matInput formControlName="maskOut">
+                                            <mat-error>MaskOut is required</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6">
+                                    <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>DummyEventsTime</mat-label>
+                                        <input matInput formControlName="dummyEventsTime" type="number">
+                                        <mat-error>DummyEventsTime is required</mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>EventDelayTime</mat-label>
+                                        <input matInput formControlName="eventDelayTime" type="number">
+                                        <mat-error>EventDelayTime is required</mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </span>
+
+                            <!-- object detection -->
+                            <span class="row m-0 col-lg-12" *ngIf="addAssetForm.get('objectDetection')?.value == 'T'">
+                                <div class="col-lg-6">
+                                    <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>Object Names</mat-label>
+                                        <mat-select formControlName="objectNames" multiple>
+                                            <mat-option *ngFor="let item of Object_Names"
+                                                [value]="item.keyId">{{item.value}}</mat-option>
+                                        </mat-select>
+                                        <mat-error>objectNames is required</mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <p style="font-size: 10px; font-weight: 700;">Model-Info</p>
+                                <div class="col-lg-6">
+                                    <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>Model Names</mat-label>
+                                        <mat-select formControlName="modelName">
+                                            <mat-option *ngFor="let item of model"
+                                                [value]="item.value">{{item.value}}</mat-option>
+                                        </mat-select>
+                                        <mat-error>ModelNames is required</mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>Model Path</mat-label>
+                                        <input matInput formControlName="modelPath" type="text">
+                                        <mat-error>Model Path is required</mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>Model Height</mat-label>
+                                        <input matInput formControlName="modelHeight" type="text">
+                                        <mat-error>Model Height is required</mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>Model Width</mat-label>
+                                        <input matInput formControlName="modelWidth" type="text">
+                                        <mat-error>Model Width is required</mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- <div class="col-lg-6">
+                                    <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>objectThreshold</mat-label>
+                                        <input matInput formControlName="eventsThreshold" type="number">
+                                    </mat-form-field>
+                                </div> -->
+                                <div class="col-lg-6">
+                                    <mat-form-field appearance="outline" class="w-100">
+                                    <mat-label>Object Threshold</mat-label>
+                                    <input matInput 
+                                            formControlName="eventsThreshold" 
+                                            type="number" 
+                                         >
+                                      <mat-error *ngIf="addAssetForm.controls['eventsThreshold'].hasError('required')">
+                                        Object threshold is required
+                                    </mat-error>
+                                      <mat-error *ngIf="addAssetForm.controls['eventsThreshold'].hasError('min')">
+                                        Value must be at least 0
+                                    </mat-error>
+                                      <mat-error *ngIf="addAssetForm.controls['eventsThreshold'].hasError('max')">
+                                        Value must not exceed 1
+                                    </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                
+
+                                <div class="col-lg-6 col-md-6">
+                                    <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>EventsPolygonPoints</mat-label>
+                                        <input matInput formControlName="eventsPolygonPoints">
+                                    </mat-form-field>
+                                </div>
+                            </span>
+                        </span>
+                    </div>
+                    <!--last-->
+                    <span
+                        *ngIf="addAssetForm.get('motionDetection')?.value !== 'F' || addAssetForm.get('objectDetection')?.value !== 'F'">
+                        <p style="font-size: 10px; font-weight: 700;">Where to Run</p>
+                        <div class="row ml-5 mb-2">
+                            <div class="col-lg-12" style="font-size: 10px; font-weight: 700;">
+                                <mat-radio-group class="w-50" formControlName="awsType" (change)="clearVals(['eventsDeviceName', 'eventsAwsServer', 'eventsAwsPort'])">
+                                    <mat-radio-button class="ms-3" [value]="1">Edge</mat-radio-button>
+                                    <mat-radio-button class="ms-3" [value]="2">AWS</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div class="col-lg-6" *ngIf="addAssetForm.get('awsType')?.value == 1">
+                                <!-- <mat-form-field appearance="outline" class="w-100">
+                                    <mat-label>EventsDeviceName</mat-label>
+                                    <input matInput formControlName="eventsDeviceName">
+                                </mat-form-field> -->
+
+                                 <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>EventsDeviceName</mat-label>
+                                        <mat-select formControlName="eventsDeviceName">
+                                            <mat-option *ngFor="let item of unitIdDw"
+                                                [value]="item.unitId">{{item.unitId}}</mat-option>
+                                        </mat-select>
+                                        <mat-error>unitId is required</mat-error>
+                                    </mat-form-field>
+                            </div>
+                            <div class="col-lg-6" *ngIf="addAssetForm.get('awsType')?.value == 2">
+                                <mat-form-field appearance="outline" class="w-100">
+                                    <mat-label>EventsAwsServer</mat-label>
+                                    <input matInput formControlName="eventsAwsServer">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-6" *ngIf="addAssetForm.get('awsType')?.value == 2">
+                                <mat-form-field appearance="outline" class="w-100">
+                                    <mat-label>EventsAwsPort</mat-label>
+                                    <input matInput formControlName="eventsAwsPort">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <h1>Events</h1>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100">
+                                    <mat-label>EventsImageUrl</mat-label>
+                                    <input matInput formControlName="eventsImageUrl">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-6">
+                                <mat-form-field appearance="outline" class="w-100">
+                                    <mat-label>Remarks</mat-label>
+                                    <input matInput formControlName="remarks">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </span>
+                    <div class="text-center my-5">
+                        <button class="add-btn" (click)="addCameraEventsConfigData()">{{type === 'create' ? 'add' : type === 'edit' ? 'update' : ''}}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- /form -->
+    </div>
+</div>

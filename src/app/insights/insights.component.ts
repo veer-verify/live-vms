@@ -50,7 +50,7 @@ export class InsightsComponent implements OnInit, OnDestroy {
   charts: any[] = [];
   myForm!: FormGroup;
   userData: any;
-
+selectedSiteId:any;
 
   ngOnInit(): void {
     this.userData = JSON.parse(sessionStorage.getItem('session')!);
@@ -71,7 +71,11 @@ export class InsightsComponent implements OnInit, OnDestroy {
       fromDate: [new Date()],
       toDate: [new Date()],
     });
-    this.getSitesListForUserName()
+    this.getSitesListForUserName();
+
+     this.myForm.get('siteId')?.valueChanges.subscribe(value => {
+    this.selectedSiteId = value;
+  });
 
   }
 

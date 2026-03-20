@@ -1,0 +1,52 @@
+[
+  {
+      "productID": 1000015,
+      "productName": "BOB",
+      "productBrand": "Org.",
+      "productSerialNo": "9999900000",
+      "emailId": "name1@email.com",
+      "productCat": "Audio",
+      "productDetails": "View",
+      "status": "Onhold"
+  },
+  {
+      "productID": 1000016,
+      "productName": "BOB",
+      "productBrand": "Org.",
+      "productSerialNo": "9999900000",
+      "emailId": "name1@email.com",
+      "productCat": "Audio",
+      "productDetails": "View",
+      "status": "Inactive"
+  },
+  {
+      "productID": 1000017,
+      "productName": "BOB",
+      "productBrand": "Org.",
+      "productSerialNo": "9999900000",
+      "emailId": "name1@email.com",
+      "productCat": "Audio",
+      "productDetails": "View",
+      "status": "Active"
+  },
+  {
+      "productID": 1000018,
+      "productName": "BOB",
+      "productBrand": "Org.",
+      "productSerialNo": "9999900000",
+      "emailId": "name1@email.com",
+      "productCat": "Audio",
+      "productDetails": "View",
+      "status": "Onhold"
+  },
+  {
+      "productID": 1000019,
+      "productName": "BOB",
+      "productBrand": "Org.",
+      "productSerialNo": "9999900000",
+      "emailId": "name1@email.com",
+      "productCat": "Audio",
+      "productDetails": "View",
+      "status": "Inactive"
+  }
+]

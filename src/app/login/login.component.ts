@@ -7,6 +7,7 @@ import { MetadataService } from 'src/services/metadata.service';
 import { StorageService } from 'src/services/storage.service';
 import { EventService } from 'src/services/event.service';
 import { BehaviorSubject } from 'rxjs';
+import { UserService } from 'src/services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,7 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private loginSer: LoginService,
+    private userser:UserService,
     private router: Router,
     public storageSer: StorageService,
     private alertSer: AlertService,
@@ -69,7 +71,7 @@ export class LoginComponent {
       });
     });
   }
-
+userData:any;
   showLoader: boolean = false;
   login() {
     // const localData = this.storageSer.getData('session');
@@ -80,14 +82,18 @@ export class LoginComponent {
     this.loginSer.login(this.loginForm.value).subscribe({
       next: (res) => {
         if (res.Status === 'Success') {
+          this.userData=res;
           this.storageSer.saveData('session', res);
           this.eventsFlow();
+          this.get_roles();
+          this.getMetadata();
           this.loginSer.manageUserSession('logIn').subscribe({
             next: (response) => {
               this.showLoader = false;
               if (response.statusCode == 200) {
                 let temp = this.storageSer.getData('session');
                 this.storageSer.saveData('session', { ...temp, ...response });
+
                 // this.storageSer.session_sub.next({ ...res, ...response });
                 this.router.navigate(['/user-dashboard/monitoring-info']);
               }
@@ -137,6 +143,18 @@ export class LoginComponent {
   //   })
   // }
 
+
+    rolesDetailsData:any = [];
+  get_roles() {
+    this.userser.get_roles(this.userData).subscribe((res: any) => {
+      this.rolesDetailsData = res.rolesDetails;
+      // console.log(this.rolesDetailsData)
+      if(res.status == 'Success'){
+        this.storageSer.set('role', res.rolesDetails)
+      }
+    })
+  }
+
   showPassword: boolean = false;
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -146,6 +164,7 @@ export class LoginComponent {
     this.metadata_service.getMetadata().subscribe({
       next: (res: any) => {
         this.storageSer.metadat_sub = res;
+         this.storageSer.set('metaData', res);
       },
     });
   }

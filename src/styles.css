@@ -191,10 +191,11 @@ a {
 }
 
 .dialog-content {
-  padding: 0 10px;
+  padding:  10px;
   max-width: 80vw;
   max-height: 80vh;
   overflow-y: auto;
+
 }
 
 .dialog-update-btn {
@@ -206,6 +207,14 @@ a {
   margin: 0 10px 10px 0;
   padding: 5px 10px;
 }
+.form-heading {
+  font-size: 20px;
+  text-transform: uppercase;
+  color: #084982;
+  font-weight: bold;
+  margin: 20px;
+}
+
 
 .dialog-update-submit {
   background-color: #08827c;
@@ -233,4 +242,42 @@ a {
 
 .dialog-close-btn:active {
   opacity: 0.8;
+}
+
+.formModal {
+
+  height: calc(100vh - 65px);
+  overflow-y: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 65px;
+  right: 0;
+  z-index: 999;
+  width: 100%;
+  margin: 0 !important;
+}
+
+.add-form {
+  background-color: #fff;
+}
+
+.dialog-submit-btn {
+  background-color: #084982;
+  color: #fff;
+  width: 70px;
+  padding: 6px 0;
+  border-radius: 5px;
+  border-width: 0;
+  font-size: 12px;
+  margin: 0 10px 10px 0;
+}
+.dialog-close-btn {
+  background-color: #d34124;
+  color: #fff;
+  width: 70px;
+  padding: 6px 0;
+  border-radius: 5px;
+  border-width: 0;
+  font-size: 12px;
+  margin: 0 10px 10px 0;
 }

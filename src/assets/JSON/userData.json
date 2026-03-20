@@ -1,0 +1,117 @@
+[
+  {
+    "username": "cooper",
+    "password": "Z%^gfd#12D",
+    "firstname": "Veer",
+    "lastname": "M",
+    "roleList": [
+        "default store"
+    ],
+    "email": "cooper@gmail.com",
+    "gender": "M",
+    "realm": "IVISUSA",
+    "contactNumber1": "+91 (999) 362-9900",
+    "contactNumber2": "",
+    "country": "India",
+    "addressLine1": "",
+    "addressLine2": "900 East 4th Street",
+    "district": "",
+    "state": "AP",
+    "city": "Mangalgiri",
+    "pin": "79761",
+    "employee": "T",
+    "employeeId": "ID",
+    "accesstoken": "",
+    "callingUsername": "ivisus",
+    "callingSystemDetail": "admin",
+    "safetyEscort": "F",
+    "status": "Active"
+  },
+
+  {
+    "username": "john",
+    "password": "Z%^gfd#12A",
+    "firstname": "John",
+    "lastname": "M",
+    "roleList": [
+        "default store"
+    ],
+    "email": "john@gmail.com",
+    "gender": "M",
+    "realm": "IVISUSA",
+    "contactNumber1": "+91 (999) 362-9900",
+    "contactNumber2": "",
+    "country": "India",
+    "addressLine1": "",
+    "addressLine2": "900 East 4th Street",
+    "district": "",
+    "state": "AP",
+    "city": "Mangalgiri",
+    "pin": "79761",
+    "employee": "T",
+    "employeeId": "ID",
+    "accesstoken": "",
+    "callingUsername": "ivisus",
+    "callingSystemDetail": "admin",
+    "safetyEscort": "F",
+    "status": "Active"
+  },
+
+  {
+    "username": "mark",
+    "password": "Z%^gfd#12B",
+    "firstname": "Mark",
+    "lastname": "M",
+    "roleList": [
+        "default store"
+    ],
+    "email": "mark@gmail.com",
+    "gender": "M",
+    "realm": "IVISUSA",
+    "contactNumber1": "+91 (999) 362-9900",
+    "contactNumber2": "",
+    "country": "India",
+    "addressLine1": "",
+    "addressLine2": "900 East 4th Street",
+    "district": "",
+    "state": "AP",
+    "city": "Mangalgiri",
+    "pin": "79761",
+    "employee": "T",
+    "employeeId": "ID",
+    "accesstoken": "",
+    "callingUsername": "ivisus",
+    "callingSystemDetail": "admin",
+    "safetyEscort": "F",
+    "status": "Active"
+  },
+
+  {
+    "username": "mike",
+    "password": "Z%^gfd#12B",
+    "firstname": "Mark",
+    "lastname": "M",
+    "roleList": [
+        "default store"
+    ],
+    "email": "mike@gmail.com",
+    "gender": "M",
+    "realm": "IVISUSA",
+    "contactNumber1": "+91 (999) 362-9900",
+    "contactNumber2": "",
+    "country": "India",
+    "addressLine1": "",
+    "addressLine2": "900 East 4th Street",
+    "district": "",
+    "state": "AP",
+    "city": "Mangalgiri",
+    "pin": "79761",
+    "employee": "T",
+    "employeeId": "ID",
+    "accesstoken": "",
+    "callingUsername": "ivisus",
+    "callingSystemDetail": "admin",
+    "safetyEscort": "F",
+    "status": "Active"
+  }
+]

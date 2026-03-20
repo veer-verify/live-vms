@@ -1,0 +1,179 @@
+.latlong {
+    background-color: #fff;
+    color: #084982;
+    height: 50px;
+    border-radius: 5px;
+    border: 1px solid #084982;
+    font-size: 13px;
+  }
+  
+  .lat, .long {
+    border: 1px solid #EFEFEF;
+      border-radius: 5px;
+      height: 50px;
+      width: 30.6%;
+      padding: 0;
+      margin: 6px 0 0 31px;
+  }
+  
+  .lat .form-control {
+    background-color: #F8F8F8;
+    width: 50%;
+    margin-left: -13px;
+    margin-top: -1px;
+  }
+  
+  .long .form-control {
+    background-color: #F8F8F8;
+    width: 50%;
+    margin-left: -13px;
+    margin-top: -1px;
+  }
+  
+  .add-form .row p {
+    font-size: 13px;
+    font-weight: 700;
+    color: #000;
+  }
+  
+  .service {
+    color: #000;
+  }
+  
+  .service .checklist, .service .card {
+    font-size: 13px;
+    color: #000;
+  }
+  
+  .pre-install .card .card-header {
+    font-size: 13px;
+    color: #000;
+  }
+  
+  .pre-install .card .card-body div label {
+    font-size: 13px;
+    color: #000000;
+  }
+  
+  .pre-install .card .card-body div {
+    margin: 3px 0;
+  }
+  
+  .file {
+    color: #c0bebe;
+    border: 1px dotted #e0e0e0;
+    border-radius: 5px;
+    text-align: center;
+    padding: 55px;
+    margin-top: 10px;
+  }
+  
+  .file-upload a {
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .btn {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  @media only screen and (max-width: 768px) {
+    .lat, .long {
+        border: 1px solid #EFEFEF;
+        border-radius: 5px;
+        height: 50px;
+        margin-left: 20px;
+        margin-top: 8px;
+        width: 29.5%;
+    }
+  }
+  
+  .card p {
+    margin: 0;
+  }
+  .card label {
+    margin: 0 5px;
+  }
+  
+  fieldset {
+    align-items: center;
+  }
+  
+  .accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+  }
+  
+  .active, .accordion:hover {
+    background-color: #ccc;
+  }
+  
+  .panel {
+    padding: 0 18px;
+    display: none;
+    background-color: white;
+    overflow: hidden;
+  }
+  
+  .escalation {
+    border: 1px solid #EFEFEF;
+    border-radius: 5px;
+    padding: 0px;
+    height: 47px;
+    width: 31.5%;
+    margin: 6px 0 0 19px;
+  }
+  
+  p {
+    letter-spacing: 0.5px;
+  }
+  
+  .existSecuity {
+    padding: 15px 17px;
+  }
+  
+  .existSecuity input, .existSecuity select {
+    margin-left: 4px;
+  }
+  
+  .closebtn {
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: -50px;
+  }
+  
+  .getLatLong{
+    padding: 2px;
+    background-color: #084982;
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 11px;
+    border: none;
+    padding: 11px;
+    margin-bottom: 20px;
+  
+  }
+  
+  .checkBoxSize{
+    font-size: 10px;
+    padding: 0px;
+  }
+  
+  .checkMargin
+  {
+    margin-right: 0px;
+  }
+
+  .spinner-border {
+    height: 10px !important;
+    width: 10px !important;
+  }

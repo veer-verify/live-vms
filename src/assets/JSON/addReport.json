@@ -1,0 +1,362 @@
+[
+  {
+      "url": "http://surl.li/hhpgi",
+      "mode": "BSR",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-20T10:57:23",
+      "hit_count": 0
+  },
+  {
+      "url": "https://noofscans1to3",
+      "mode": "ODR",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T16:45:09",
+      "hit_count": 248
+  },
+  {
+      "url": "https://noofscans1to3",
+      "mode": "ODR",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T16:45:14",
+      "hit_count": 249
+  },
+  {
+      "url": "https://noofscans1to3",
+      "mode": "ODR",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T16:45:21",
+      "hit_count": 250
+  },
+  {
+      "url": "https://noofscans3to6",
+      "mode": "ODR",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T16:45:26",
+      "hit_count": 251
+  },
+  {
+      "url": "https://noofscans3to6",
+      "mode": "ODR",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T16:45:30",
+      "hit_count": 252
+  },
+  {
+      "url": "https://noofscans3to6",
+      "mode": "ODR",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T16:45:38",
+      "hit_count": 253
+  },
+  {
+      "url": "https://noofscans6to9",
+      "mode": "ODR",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T16:45:49",
+      "hit_count": 254
+  },
+  {
+      "url": "https://noofscans6to9",
+      "mode": "ODR",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T16:45:55",
+      "hit_count": 255
+  },
+  {
+      "url": "https://completed9scans",
+      "mode": "ODR",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T16:46:05",
+      "hit_count": 256
+  },
+  {
+      "url": "https://noofscans1to3",
+      "mode": "ODR",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T16:46:12",
+      "hit_count": 257
+  },
+  {
+      "url": "https://shorturl.at/ejsX3",
+      "mode": "BS",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T16:47:16",
+      "hit_count": 258
+  },
+  {
+      "url": "http://surl.li/hhpgi",
+      "mode": "BSR",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T16:47:27",
+      "hit_count": 259
+  },
+  {
+      "url": "http://surl.li/hhpgi",
+      "mode": "BSR",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T16:53:49",
+      "hit_count": 260
+  },
+  {
+      "url": "https://noofscans1to3",
+      "mode": "ODR",
+      "user_device": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/114.0",
+      "chrome_data": "Firefox",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T17:44:30",
+      "hit_count": 261
+  },
+  {
+      "url": "https://noofscans1to3",
+      "mode": "ODR",
+      "user_device": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/114.0",
+      "chrome_data": "Firefox",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T17:44:36",
+      "hit_count": 262
+  },
+  {
+      "url": "https://noofscans1to3",
+      "mode": "ODR",
+      "user_device": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/114.0",
+      "chrome_data": "Firefox",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T17:44:43",
+      "hit_count": 263
+  },
+  {
+      "url": "https://noofscans3to6",
+      "mode": "ODR",
+      "user_device": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/114.0",
+      "chrome_data": "Firefox",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T17:44:55",
+      "hit_count": 264
+  },
+  {
+      "url": "https://noofscans3to6",
+      "mode": "ODR",
+      "user_device": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/114.0",
+      "chrome_data": "Firefox",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T17:45:00",
+      "hit_count": 265
+  },
+  {
+      "url": "https://noofscans3to6",
+      "mode": "ODR",
+      "user_device": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/114.0",
+      "chrome_data": "Firefox",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T17:45:05",
+      "hit_count": 266
+  },
+  {
+      "url": "https://noofscans6to9",
+      "mode": "ODR",
+      "user_device": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/114.0",
+      "chrome_data": "Firefox",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T17:45:10",
+      "hit_count": 267
+  },
+  {
+      "url": "https://noofscans6to9",
+      "mode": "ODR",
+      "user_device": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/114.0",
+      "chrome_data": "Firefox",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T17:45:14",
+      "hit_count": 268
+  },
+  {
+      "url": "https://completed9scans",
+      "mode": "ODR",
+      "user_device": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/114.0",
+      "chrome_data": "Firefox",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T17:45:20",
+      "hit_count": 269
+  },
+  {
+      "url": "https://noofscans1to3",
+      "mode": "ODR",
+      "user_device": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/114.0",
+      "chrome_data": "Firefox",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T17:45:25",
+      "hit_count": 270
+  },
+  {
+      "url": "https://noofscans1to3",
+      "mode": "BSR-scans",
+      "user_device": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/114.0",
+      "chrome_data": "Firefox",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T17:49:00",
+      "hit_count": 271
+  },
+  {
+      "url": "https://noofscans1to3",
+      "mode": "BSR-scans",
+      "user_device": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/114.0",
+      "chrome_data": "Firefox",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T17:49:09",
+      "hit_count": 272
+  },
+  {
+      "url": "http://surl.li/hhpcw",
+      "mode": "BSR-scans",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T18:07:55",
+      "hit_count": 273
+  },
+  {
+      "url": "http://surl.li/hhpcw",
+      "mode": "BSR-scans",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T18:13:17",
+      "hit_count": 274
+  },
+  {
+      "url": "http://surl.li/hhpcw",
+      "mode": "BSR-scans",
+      "user_device": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/114.0",
+      "chrome_data": "Firefox",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T18:13:21",
+      "hit_count": 275
+  },
+  {
+      "url": "http://surl.li/hhpcw",
+      "mode": "BSR-scans",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T18:13:24",
+      "hit_count": 276
+  },
+  {
+      "url": "https://shorturl.at/ejsX3",
+      "mode": "BSR-scans",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T18:16:02",
+      "hit_count": 277
+  },
+  {
+      "url": "https://shorturl.at/ejsX3",
+      "mode": "BSR-scans",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T18:16:22",
+      "hit_count": 278
+  },
+  {
+      "url": "https://shorturl.at/ejsX3",
+      "mode": "BSR-scans",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T18:16:52",
+      "hit_count": 279
+  },
+  {
+      "url": "http://surl.li/hhpgi",
+      "mode": "BSR-scans",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T18:16:59",
+      "hit_count": 280
+  },
+  {
+      "url": "http://surl.li/hhpgi",
+      "mode": "BSR-scans",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T18:17:21",
+      "hit_count": 281
+  },
+  {
+      "url": "https://completed9scans",
+      "mode": "BSR-scans",
+      "user_device": "PostmanRuntime/7.32.3",
+      "chrome_data": "PostmanRuntime",
+      "ip_address": "192.168.0.124",
+      "user_location": "India, Andhra Pradesh, Vijayawada",
+      "scan_time": "2023-06-19T18:17:31",
+      "hit_count": 282
+  }
+]

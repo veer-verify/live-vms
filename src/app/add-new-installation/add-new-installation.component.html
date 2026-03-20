@@ -1,0 +1,224 @@
+<div class="row formModal">
+    <div class="col-lg-6 col-4"></div>
+
+    <div class="col-lg-6 col-8 add-form" id="camera" @inOutPaneAnimation>
+        <div>
+            <a class="close-main pointer" (click)="closeForm()"><img src="assets/icons/close_form.svg" /></a>
+            <span class="form-heading">add advertisement</span>
+        </div>
+
+        <!-- form -->
+        <div>
+            <form autocomplete="off" [formGroup]="addAssetForm" (ngSubmit)="addNewAsset()">
+                <div class="row">
+                    <div class="col-lg-12 mb-1">
+                        <mat-label>Time</mat-label><br>
+                        <mat-radio-group name="radioOpt1" class="w-100" formControlName="ivisDevice">
+                            <mat-radio-button class="ms-3" name="ivisDevice" [value]="1">Yes</mat-radio-button>
+                            <mat-radio-button class="ms-3" name="ivisDevice" [value]="0">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <mat-form-field appearance="outline" class="w-100" formControlName="staticIP">
+                            <mat-label>Enter Description</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-lg-12 mb-1">
+                        <mat-label>Time</mat-label><br>
+                        <mat-radio-group name="radioOpt1" class="w-100" formControlName="active">
+                            <mat-radio-button class="ms-3" name="active" [value]="1">Yes</mat-radio-button>
+                            <mat-radio-button class="ms-3" name="active" [value]="0">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="col-lg-12 mb-1">
+                        <mat-label>Time</mat-label><br>
+                        <mat-radio-group name="radioOpt1" class="w-100" formControlName="live">
+                            <mat-radio-button class="ms-3" name="live" [value]="1">Yes</mat-radio-button>
+                            <mat-radio-button class="ms-3" name="live" [value]="0">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="col-lg-12 mb-1">
+                        <mat-label>Time</mat-label><br>
+                        <mat-radio-group name="radioOpt1" class="w-100" formControlName="storage">
+                            <mat-radio-button class="ms-3" name="storage" [value]="1">Yes</mat-radio-button>
+                            <mat-radio-button class="ms-3" name="storage" [value]="0">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <mat-form-field appearance="outline" class="w-100" formControlName="storage">
+                            <mat-label>Enter Description</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-lg-12 mb-1">
+                        <mat-label>deterrants</mat-label><br>
+                        <mat-radio-group name="radioOpt1" class="w-100" formControlName="deterrants">
+                            <mat-radio-button class="ms-3" name="deterrants" [value]="1">Yes</mat-radio-button>
+                            <mat-radio-button class="ms-3" name="deterrants" [value]="0">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <mat-form-field appearance="outline" class="w-100" formControlName="noOfDeterrants">
+                            <mat-label>noOfDeterrants</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-lg-12 mb-1">
+                        <mat-label>events</mat-label><br>
+                        <mat-radio-group name="radioOpt1" class="w-100" formControlName="events">
+                            <mat-radio-button class="ms-3" name="events" [value]="1">Yes</mat-radio-button>
+                            <mat-radio-button class="ms-3" name="events" [value]="0">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="col-lg-12 mb-1">
+                        <mat-label>Time</mat-label><br>
+                        <mat-radio-group name="radioOpt1" class="w-100" formControlName="timeId">
+                            <mat-radio-button class="ms-3" name="time" [value]="1">Yes</mat-radio-button>
+                            <mat-radio-button class="ms-3" name="time" [value]="0">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="col-lg-12 mb-1">
+                        <mat-label>Time</mat-label><br>
+                        <mat-radio-group name="radioOpt1" class="w-100" formControlName="timeId">
+                            <mat-radio-button class="ms-3" name="time" [value]="1">Yes</mat-radio-button>
+                            <mat-radio-button class="ms-3" name="time" [value]="0">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="col-lg-12 mb-1">
+                        <mat-label>Time</mat-label><br>
+                        <mat-radio-group name="radioOpt1" class="w-100" formControlName="timeId">
+                            <mat-radio-button class="ms-3" name="time" [value]="1">Yes</mat-radio-button>
+                            <mat-radio-button class="ms-3" name="time" [value]="0">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="col-lg-12 mb-1">
+                        <mat-label>Time</mat-label><br>
+                        <mat-radio-group name="radioOpt1" class="w-100" formControlName="timeId">
+                            <mat-radio-button class="ms-3" name="time" [value]="1">Yes</mat-radio-button>
+                            <mat-radio-button class="ms-3" name="time" [value]="0">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="col-lg-12 mb-1">
+                        <mat-label>Time</mat-label><br>
+                        <mat-radio-group name="radioOpt1" class="w-100" formControlName="timeId">
+                            <mat-radio-button class="ms-3" name="time" [value]="1">Yes</mat-radio-button>
+                            <mat-radio-button class="ms-3" name="time" [value]="0">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="col-lg-12 mb-1">
+                        <mat-label>Time</mat-label><br>
+                        <mat-radio-group name="radioOpt1" class="w-100" formControlName="timeId">
+                            <mat-radio-button class="ms-3" name="time" [value]="1">Yes</mat-radio-button>
+                            <mat-radio-button class="ms-3" name="time" [value]="0">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <mat-form-field appearance="outline" class="w-100" formControlName="storage">
+                            <mat-label>Enter Description</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-lg-12 mb-1">
+                        <mat-label>Time</mat-label><br>
+                        <mat-radio-group name="radioOpt1" class="w-100" formControlName="timeId">
+                            <mat-radio-button class="ms-3" name="time" [value]="1">Yes</mat-radio-button>
+                            <mat-radio-button class="ms-3" name="time" [value]="0">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="col-lg-12 mb-1">
+                        <mat-label>Time</mat-label><br>
+                        <mat-radio-group name="radioOpt1" class="w-100" formControlName="timeId">
+                            <mat-radio-button class="ms-3" name="time" [value]="1">Yes</mat-radio-button>
+                            <mat-radio-button class="ms-3" name="time" [value]="0">No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <mat-form-field appearance="outline" class="w-100" formControlName="storage">
+                            <mat-label>Enter Description</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <mat-form-field appearance="outline" class="w-100" formControlName="storage">
+                            <mat-label>Enter Description</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <mat-form-field appearance="outline" class="w-100" formControlName="storage">
+                            <mat-label>Enter Description</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <mat-form-field appearance="outline" class="w-100" formControlName="storage">
+                            <mat-label>Enter Description</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <mat-form-field appearance="outline" class="w-100" formControlName="storage">
+                            <mat-label>Enter Description</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <mat-form-field appearance="outline" class="w-100" formControlName="storage">
+                            <mat-label>Enter Description</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                    </div>
+
+
+                    <!-- <div class="col-lg-6 col-md-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <input matInput [matDatepicker]="picker1" placeholder="From Date" formControlName="fromDate">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+                <mat-error>From Date is required</mat-error>
+              </mat-form-field>
+            </div>
+  
+             <div class="col-lg-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Select time range</mat-label>
+                <mat-select formControlName="timeId">
+                  <mat-option *ngFor="let item of adsTime" [value]="item.keyId">{{ item.value }}</mat-option>
+                </mat-select>
+                <mat-error>Time is required</mat-error>
+              </mat-form-field>
+            </div> -->
+
+                    <div class="text-center my-5">
+                        <button class="add-btn">ADD</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- /form -->
+    </div>
+</div>

@@ -1,0 +1,37 @@
+.file {
+    padding: 12px;
+  }
+  
+  .invalid {
+    border: 1px dotted red;
+    border-radius: 5px;
+    text-align: center;
+    padding: 55px;
+    margin-top: 10px;
+  }
+  
+  .valid{
+    color: #c0bebe;
+    border: 1px dotted #ababab;
+    border-radius: 5px;
+    text-align: center;
+    padding: 55px;
+    margin-top: 10px;
+  }
+  
+  /* .date {
+    width: 202px;
+  }
+  
+  .file-upload a {
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .form-control {
+    box-shadow: none !important;
+    outline: none !important;
+  } */
+  
+  
+  

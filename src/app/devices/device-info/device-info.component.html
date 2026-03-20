@@ -1,0 +1,82 @@
+<div class="row formModal">
+  <div class="col-lg-6"></div>
+
+  <div class="col-lg-6 add-form" id="additionalSite" @inOutPaneAnimation>
+    <div class="d-flex align-items-center">
+      <div>
+        <a class="close-main pointer" (click)="closeAddDevice()">
+          <img src="assets/icons/close_form.svg">
+        </a>
+      </div>
+      <div>
+        <span class="form-heading">device id & name - device type</span>
+        <div style="margin-left: -40px;">Site Name</div>
+      </div>
+    </div>
+
+    <form action="">
+      <div class="tiles row">
+        <div class="col-lg-3">
+          <div class="tile-type">
+            <div>
+              <p>Temperature</p>
+              <img src="" alt="">
+            </div>
+            <p>41</p>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="tile-type">
+            <div>
+              <p>Temperature</p>
+              <img src="" alt="">
+            </div>
+            <p>41</p>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="tile-type">
+            <div>
+              <p>Temperature</p>
+              <img src="" alt="">
+            </div>
+            <p>41</p>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="tile-type">
+            <div>
+              <p>Temperature</p>
+              <img src="" alt="">
+            </div>
+            <p>41</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row charts">
+        <div class="d-flex justify-content-between mb-1 mt-3">
+          <div class="fw-bold">
+            <span>Graph</span>
+
+            <a class="graph-icon"><img src="assets/icons/temperature.svg" alt=""></a>
+            <a class="graph-icon"><img src="assets/icons/air.svg" alt=""></a>
+            <a class="graph-icon"><img src="assets/icons/light.svg" alt=""></a>
+            <a class="graph-icon"><img src="assets/icons/sound.svg" alt=""></a>
+          </div>
+
+          <div class="time-period-btn">
+            <button>24HRS</button>
+            <button>WEEK</button>
+            <button>MONTH</button>
+            <button>YEAR</button>
+          </div>
+        </div>
+
+        <div class="col-lg-12">
+          <div id="chart"></div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

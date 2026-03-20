@@ -146,7 +146,7 @@ a {
 .dialog-content {
   padding: 0 10px;
   max-width: 80vw;
-  max-height: 80vh;
+  max-height: 85vh;
   overflow-y: auto;
 }
 

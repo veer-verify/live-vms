@@ -1,0 +1,386 @@
+<div class="container-fluid">
+
+  <!-- header -->
+  <!-- <div class="d-flex justify-content-between align-items-center">
+    <div class="users-header">
+      <p class="m-0">Total Devices - <span>{{ newDeviceData?.length }}</span></p>
+    </div>
+
+    <div style="position: relative;">
+      <button class="create-btn" (click)="show('device')">Create Device</button>
+      <button class="create-btn mx-1" (click)="openSensor()">Sensors Data</button>
+    </div>
+  </div> -->
+
+  <!-- count -->
+ <div class="row my-2">
+
+  <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between">
+      <div class="col-lg-1 d-flex justify-content-start">
+      <div class="vl-green"></div>
+      <div class="mx-2">
+        <div class="status">Total Devices</div>
+        <div class="count">{{ statusCounts.length }}</div>
+      </div>
+    </div>
+    <div class="col-lg-1 d-flex justify-content-start">
+      <div class="vl-green"></div>
+      <div class="mx-2">
+        <div class="status">Online</div>
+        <div class="count">{{ statusCounts | count: 'deviceStatus' : 'ONLINE' }}</div>
+      </div>
+    </div>
+    <div class="col-lg-1 d-flex justify-content-start">
+      <div class="vl-red"></div>
+      <div class="mx-2">
+        <div class="status">Offline</div>
+        <div class="count">{{ statusCounts | count: 'deviceStatus' : 'offline' }}</div>
+      </div>
+    </div>
+    </div>
+
+
+    <div class="col-lg-3 d-flex justify-content-end">
+      <mat-form-field class="example-form-field w-100" appearance="outline">
+        <mat-label>Search</mat-label>
+        <input matInput type="text" [(ngModel)]="searchText">
+        <button matSuffix mat-icon-button>
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+  </div>
+
+
+</div>
+
+
+  <!-- filter -->
+  <div class="row">
+    <div class="col-lg-3">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Site</mat-label>
+        <input matInput #siteIdInput [matAutocomplete]="site" [(ngModel)]="paramBody.siteId"
+          (keyup)="searchSites($event)">
+        <button matSuffix mat-icon-button>
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-autocomplete #site="matAutocomplete">
+          <mat-option value="All" (click)="getStatus(paramBody)">All</mat-option>
+          <mat-option *ngFor="let item of newTableData | search: siteSearch" [value]="item.siteId"
+            (click)="getStatus(paramBody)">{{item.siteId}}-{{item.siteName}}</mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
+    <div class="col-lg-2">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Age/Duration</mat-label>
+        <mat-select [(ngModel)]="paramBody.time">
+          <mat-option value="All" (click)="getStatus(paramBody)">All</mat-option>
+          <mat-option *ngFor="let item of timeSearches" [value]="item.keyId"
+            (click)="getStatus(paramBody)">{{item.value}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-lg-2">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Status</mat-label>
+        <mat-select [(ngModel)]="paramBody.status">
+          <mat-option value="All" (click)="getStatus(paramBody)">All</mat-option>
+          <mat-option *ngFor="let item of deviceStatus" [value]="item.keyId"
+            (click)="getStatus(paramBody)">{{item.value}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+
+
+    <div class="col-lg-2">
+      <app-pagination [totalPages]="totalPages" (emitPage)="getPaginatedData($event)"></app-pagination>
+   </div>
+  </div>
+
+
+  <!-- <div class="status-tile row py-2 mx-1 mb-3 d-lg-flex d-none">
+    <div class="col-lg-1">
+      <p>Sites</p>
+      <p class="status-tile-count">2</p>
+    </div>
+
+    <div class="col-lg-1">
+      <p>Devices</p>
+      <p class="status-tile-count">2</p>
+    </div>
+
+    <div class="col-lg-2">
+      <p>Audio</p>
+      <p class="status-tile-count">2</p>
+      <div class="tile-sub-count row py-1 mt-1 me-3">
+        <div class="col-lg-6">
+          <img class="mb-1 me-1" src="assets/icons/green-dot.png" alt="" width="15px">
+          <span>1</span>
+        </div>
+
+        <div class="col-lg-6">
+          <img class="mb-1 me-1" src="assets/icons/red-dot.png" alt="" width="15px">
+          <span>0</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-2">
+      <p>Video</p>
+      <p class="status-tile-count">2</p>
+      <div class="tile-sub-count row py-1 mt-1 me-3">
+        <div class="col-lg-6">
+          <img class="mb-1 me-1" src="assets/icons/green-dot.png" alt="" width="15px">
+          <span>1</span>
+        </div>
+
+        <div class="col-lg-6">
+          <img class="mb-1 me-1" src="assets/icons/red-dot.png" alt="" width="15px">
+          <span>0</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-2">
+      <p>Wifi</p>
+      <p class="status-tile-count">2</p>
+      <div class="tile-sub-count row py-1 mt-1 me-3">
+        <div class="col-lg-6">
+          <img class="mb-1 me-1" src="assets/icons/green-dot.png" alt="" width="15px">
+          <span>1</span>
+        </div>
+
+        <div class="col-lg-6">
+          <img class="mb-1 me-1" src="assets/icons/red-dot.png" alt="" width="15px">
+          <span>0</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-2">
+      <p>Gaurd</p>
+      <p class="status-tile-count">2</p>
+      <div class="tile-sub-count row py-1 mt-1 me-3">
+        <div class="col-lg-6">
+          <img class="mb-1 me-1" src="assets/icons/green-dot.png" alt="" width="18px">
+          <span>1</span>
+        </div>
+
+        <div class="col-lg-6">
+          <img class="mb-1 me-1" src="assets/icons/red-dot.png" alt="" width="18px">
+          <span>0</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-2">
+      <p>Security</p>
+      <p class="status-tile-count">2</p>
+      <div class="tile-sub-count row py-1 mt-1 me-3">
+        <div class="col-lg-6">
+          <img class="mb-1 me-1" src="assets/icons/green-dot.png" alt="" width="18px">
+          <span>1</span>
+        </div>
+
+        <div class="col-lg-6">
+          <img class="mb-1 me-1" src="assets/icons/red-dot.png" alt="" width="18px">
+          <span>0</span>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- table -->
+  <div class="table-resp">
+    <table class="table table-hover" id="mytable">
+      <thead>
+        <tr class="form1">
+          <th *ngFor="let header of columns">
+            <div class="d-inline-flex">
+              <p class="text-nowrap">{{ header.label | titlecase}}</p>
+              <img (click)="sort(header.id);" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px" alt=""
+                *ngIf="header.sort">
+            </div>
+          </th>
+          <th>Info</th>
+        </tr>
+      </thead>
+
+      <tbody *ngIf="!showLoader">
+        <ng-container *ngFor="let item of newDeviceData | search : searchText; let i = index">
+          <ng-container *ngFor="let el of item.devicesData; let first = first">
+            <tr>
+              <!-- <td *ngIf="first" [attr.rowspan]="item.devicesData.length">
+                <p>{{ item.siteId }}</p>
+              </td> -->
+              <td *ngIf="first" [attr.rowspan]="item.devicesData.length">
+                <p>{{ item.siteName }}</p>
+              </td>
+
+              <td>
+                <p>{{ el.deviceId }}</p>
+              </td>
+              <td>
+                <p>{{ el.installationDate | date: 'mediumDate' }}</p>
+              </td>
+              <td>
+                <p>{{ el.siteLocalTime | date: 'medium' }}</p>
+              </td>
+              <td>
+                <p>{{ el.latestReconnectedTime | date: 'medium' }}</p>
+              </td>
+              <!-- <td>
+                <p>{{ el.latestUpOrDowntime }}
+                  <img *ngIf="el.latestUpOrDowntime" [src]="el.status === 'ONLINE' ? 'assets/icons/up-arrow.png' : 'assets/icons/down-arrow.png'" width="16" alt=""> -->
+                <!-- </p> -->
+              <!-- </td> -->
+              <!-- <td>
+                <p [style.color]="el.deviceStatus === 'ONLINE' ? 'green' : 'red'">{{ el.deviceStatus }}</p>
+              </td>
+              <td>
+              <p>{{ el.latestUpOrDowntime  }}</p>
+            </td>
+              <td>
+                <p [style.color]="el.status === 'ONLINE' ? 'green' : 'red'">{{ el.totalUptime }}</p>
+              </td> -->
+              <td>
+                <p>{{ el.totalDowntime }}</p>
+              </td>
+              <td>
+                <p class="text-primary pointer" (click)="openEditPopup(el)">View</p>
+              </td>
+              <td>
+                <img src="assets/icons/info-outline.svg" class="pointer" [title]="
+                'Latest re-connected time: ' + el.latestReconnectedTime + '\n' +
+                'Latest up / down time: ' + el.latestUpOrDowntime" alt="">
+                </td>
+              <!-- <td >
+                <p>{{ el.downTime }}</p>
+              </td> -->
+              <!-- <td >
+                 <img [src]="getLiveStatus(el)[0]?.Status ? 'assets/icons/green-dot.png' : 'assets/icons/red-dot.png'" width="16" alt="">
+              </td> -->
+
+              <!-- <td [attr.rowspan]="item.devicesData.length" (click)="openRebootDevice(el)">
+                <img class="pointer" style="opacity: 0.7;" src="assets/icons/restart.svg" width="25" height="25">
+              </td> -->
+
+              <!-- <td>
+                <a class="pointer mx-1" matTooltip="view" (click)="openViewPopup(el)">
+                  <img src="assets/icons/view.svg" alt="">
+                </a>
+                <a class="pointer mx-1" matTooltip="Edit" (click)="openEditPopup(el)">
+                  <img src="assets/icons/edit.svg" alt="">
+                </a>
+                <a class="pointer mx-1" matTooltip="Delete">
+                  <img src="assets/icons/delete.svg" alt="">
+                </a>
+              </td> -->
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+    <!-- error info -->
+    <div class="err-info" style="height: 40vh;" *ngIf="newDeviceData.length == 0 && !showLoader">
+      <h1 class="text-secondary">No Devices</h1>
+    </div>
+
+    <!-- loader -->
+    <div *ngIf="showLoader" class="d-flex justify-content-center align-items-center" style="height: 40vh;">
+      <app-loader></app-loader>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="showAddDevice">
+  <app-add-new-device (newItemEvent)="closenow('device'); listDeviceAdsInfo()"></app-add-new-device>
+</div>
+
+<div *ngIf="showDeviceInfo">
+  <app-device-info (newItemEvent)="closenow('device-info')"></app-device-info>
+</div>
+
+<ng-template #editSiteDialog>
+  <!-- <app-edit-device-form [currentItem]="currentItem"></app-edit-device-form> -->
+  <div class="dialog-title">{{currentItem?.deviceId}}</div>
+
+  <div class="dialog-content" style="height: 50vh;">
+    <div class="row">
+      <div class="col-lg-12">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Age/Duration</mat-label>
+          <mat-select [(ngModel)]="downParams.days">
+            <mat-option value="All" (click)="downtimesForDeviceId()">All</mat-option>
+            <mat-option *ngFor="let item of timeSearches" [value]="item.keyId"
+              (click)="downtimesForDeviceId()">{{item.value}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="table-res">
+      <table class="table table-hover">
+        <thead>
+          <tr class="form1">
+            <th *ngFor="let header of subColumns">
+              <div class="d-inline-flex">
+                <p class="text-nowrap">{{ header.label | titlecase}}</p>
+                <img (click)="sort(header.id);" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px" alt=""
+                  *ngIf="header.sort">
+              </div>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let cam of downTimes; let i = index">
+            <td>
+              <p>{{cam.first_connected}}</p>
+            </td>
+            <td>
+              <p>{{cam.lasttime_last_connected}}</p>
+            </td>
+            <td>
+              <p>{{cam.down_time}}</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <ng-container *ngIf="downTimes.length === 0">
+        <p class="text-center" style="height: 20vh;">No DATA!</p>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center justify-content-end">
+    <button class="dialog-close-btn" mat-dialog-close>Close</button>
+  </div>
+</ng-template>
+
+<ng-template #rebootDeviceDialog>
+  <div style="background-color: #084982;">
+    <p class="dialog-title">reboot device</p>
+  </div>
+
+  <div class="dialog-content">
+    <p>Do you want to reboot this device?</p>
+  </div>
+
+  <div class="d-flex align-items-center justify-content-end">
+    <div>
+      <button class="dialog-close-btn" mat-dialog-close>Close</button>
+    </div>
+    <div>
+      <button class="dialog-submit-btn" mat-dialog-close (click)="rebootDevice(currentItem.deviceId)">Reboot</button>
+    </div>
+  </div>
+</ng-template>

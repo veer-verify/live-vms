@@ -1,0 +1,138 @@
+<div class="dialog-title">modify camera - {{currentitem?.cameraId}}</div>
+
+<div class="row dialog-content" *ngIf="currentCamera">
+
+   <div class="col-lg-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>CameraId</mat-label>
+      <input matInput [(ngModel)]="currentCamera.cameraId" disabled>
+    </mat-form-field>
+  </div>
+  <div class="col-lg-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Display Name</mat-label>
+      <input matInput [(ngModel)]="currentCamera.name">
+    </mat-form-field>
+  </div>
+  <div class="col-lg-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>User Name</mat-label>
+      <input matInput [(ngModel)]="currentCamera.userName">
+    </mat-form-field>
+  </div>
+  <div class="col-lg-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Password</mat-label>
+      <input matInput [(ngModel)]="currentCamera.password">
+    </mat-form-field>
+  </div>
+  <div class="col-lg-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>S3 Request Name</mat-label>
+      <input matInput [(ngModel)]="currentCamera.s3RequestName">
+    </mat-form-field>
+  </div>
+  <div class="col-lg-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>FPS</mat-label>
+      <input matInput type="number" [(ngModel)]="currentCamera.fps">
+    </mat-form-field>
+  </div>
+  <!-- <div class="col-lg-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>PortNo</mat-label>
+      <input matInput type="number" [(ngModel)]="currentCamera.portNo">
+    </mat-form-field>
+  </div> -->
+  <div class="col-lg-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>HTTP PortNo</mat-label>
+      <input matInput type="number" [(ngModel)]="currentCamera.httpPortNo">
+    </mat-form-field>
+  </div>
+  <!-- <div class="col-lg-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Internal Port</mat-label>
+      <input matInput type="number" [(ngModel)]="currentCamera.internalPort">
+    </mat-form-field>
+  </div> -->
+  <div class="col-lg-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>RTSP URL</mat-label>
+      <input matInput [(ngModel)]="currentCamera.rtspUrl">
+    </mat-form-field>
+  </div>
+  <div class="col-lg-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>WebRTC URL</mat-label>
+      <input matInput [(ngModel)]="currentCamera.httpUrl">
+    </mat-form-field>
+  </div>
+  <div class="col-lg-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>HLS URL</mat-label>
+      <input matInput [(ngModel)]="currentCamera.hlsTunnel">
+    </mat-form-field>
+  </div>
+  <div class="col-lg-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Audio URL</mat-label>
+      <input matInput [(ngModel)]="currentCamera.audioUrl">
+    </mat-form-field>
+  </div>
+  <div class="col-lg-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Snapshot URL</mat-label>
+      <input matInput [(ngModel)]="currentCamera.snapshotUrl">
+    </mat-form-field>
+  </div>
+  <div class="col-lg-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Live Restart URL</mat-label>
+      <input matInput [(ngModel)]="currentCamera.liveRestartUrl">
+    </mat-form-field>
+  </div>
+  <div class="col-lg-6">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Config URL</mat-label>
+      <input matInput [(ngModel)]="currentCamera.camera_config_url">
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6" style="font-size: 10px; font-weight: 700;">
+      <mat-radio-group class="w-50" [(ngModel)]="currentCamera.monitoring">
+        <p>Monitoring</p>
+        <mat-radio-button class="ms-3" name="monitoring" value="T">True</mat-radio-button>
+        <mat-radio-button class="ms-3" name="monitoring" value="F" checked>False</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="col-lg-6" style="font-size: 10px; font-weight: 700;">
+      <mat-radio-group class="w-50" [(ngModel)]="currentCamera.events">
+        <p>Events</p>
+        <mat-radio-button class="ms-3" name="events" value="T">True</mat-radio-button>
+        <mat-radio-button class="ms-3" name="events" value="F" checked>False</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="col-lg-6" style="font-size: 10px; font-weight: 700;">
+      <mat-radio-group class="w-50" [(ngModel)]="currentCamera.timelapse">
+        <p>Timelapse</p>
+        <mat-radio-button class="ms-3" name="timelapse" value="T">True</mat-radio-button>
+        <mat-radio-button class="ms-3" name="timelapse" value="F" checked>False</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="col-lg-6" style="font-size: 10px; font-weight: 700;">
+        <mat-radio-group class="w-50" [(ngModel)]="currentCamera.ptz">
+          <p>PTZ</p>
+          <mat-radio-button class="ms-3" name="ptz" value="T">True</mat-radio-button>
+          <mat-radio-button class="ms-3" name="ptz" value="F" checked>False</mat-radio-button>
+        </mat-radio-group>
+      </div>
+  </div>
+</div>
+
+
+<div class="d-flex align-items-center justify-content-end">
+  <button class="dialog-close-btn" mat-dialog-close>Close</button>
+  <button class="dialog-submit-btn" mat-dialog-close (click)="updateCamera()">Update</button>
+</div>

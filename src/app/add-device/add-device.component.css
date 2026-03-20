@@ -1,0 +1,53 @@
+.add-btn {
+  background-color: #084982;
+  color: #fff;
+  width: 150px;
+  padding: 10px 0;
+  border-radius: 25px;
+  border-width: 0;
+  font-size: 12px;
+}
+
+.add-btn:hover {
+  opacity: 0.8;
+}
+
+.added-device {
+  padding: 0 0 30px 50px;
+}
+
+.device-title{
+  font-size: 14px;
+  font-weight: 400;
+  width: 200px;
+}
+
+.device-sub {
+  font-size: 15px;
+  color: #084982;
+  font-weight: 500;
+}
+
+.device-detail {
+  margin: 0 0 0 -45px;
+}
+
+.close {
+  position: relative;
+  right: 38px;
+  bottom: 8px;
+}
+
+.dialog-title {
+  padding: 10px;
+  font-weight: 600;
+  color: #fff;
+}
+
+::ng-deep .mat-mdc-tab-group.mat-tabs-with-background>.mat-mdc-tab-header {
+  background-color: #084982 !important;
+}
+
+::ng-deep .mat-mdc-tab-group.mat-tabs-with-background.mat-primary>.mat-mdc-tab-header .mdc-tab-indicator__content--underline {
+  border-color: #D34124 !important;
+}

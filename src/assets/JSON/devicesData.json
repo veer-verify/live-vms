@@ -1,0 +1,42 @@
+[
+  {
+    "deviceId": "120",
+    "deviceType": "Video",
+    "siteId_Name": "SR0015-Osaka Midland",
+    "status": "Offline",
+    "days": 0,
+    "time": "08:34"
+  },
+  {
+    "deviceId": "122",
+    "deviceType": "Audio",
+    "siteId_Name": "SR0015-Osaka Midland",
+    "status": "Online",
+    "days": 0,
+    "time": "08:34"
+  },
+  {
+    "deviceId": "125",
+    "deviceType": "Audio",
+    "siteId_Name": "SR0018-Barbee Pharmacy",
+    "status": "Offline",
+    "days": 0,
+    "time": "08:34"
+  },
+  {
+    "deviceId": "129",
+    "deviceType": "Video",
+    "siteId_Name": "SR0018-Barbee Pharmacy",
+    "status": "Online",
+    "days": 0,
+    "time": "08:34"
+  },
+  {
+    "deviceId": "132",
+    "deviceType": "Audio",
+    "siteId_Name": "SR0018-Barbee Pharmacy",
+    "status": "Online",
+    "days": 0,
+    "time": "08:34"
+  }
+]

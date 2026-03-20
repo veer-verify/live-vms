@@ -1,0 +1,50 @@
+[
+    {
+        "verticalName": "Restaurant",
+        "customerCount": "2",
+        "sitesCount": "1",
+        "camerasCount": "5",
+        "analyticsCount": "4",
+        "usersCount": "1"
+    },
+    {
+        "verticalName": "Grocery",
+        "customerCount": "2",
+        "sitesCount": "1",
+        "camerasCount": "5",
+        "analyticsCount": "4",
+        "usersCount": "1"
+    },
+    {
+        "verticalName": "Gas Station",
+        "customerCount": "2",
+        "sitesCount": "1",
+        "camerasCount": "5",
+        "analyticsCount": "4",
+        "usersCount": "1"
+    },
+    {
+        "verticalName": "Pharmacies",
+        "customerCount": "2",
+        "sitesCount": "1",
+        "camerasCount": "5",
+        "analyticsCount": "4",
+        "usersCount": "1"
+    },
+    {
+        "verticalName": "Stores",
+        "customerCount": "2",
+        "sitesCount": "1",
+        "camerasCount": "5",
+        "analyticsCount": "4",
+        "usersCount": "1"
+    },
+    {
+        "verticalName": "Restaurant",
+        "customerCount": "2",
+        "sitesCount": "1",
+        "camerasCount": "5",
+        "analyticsCount": "4",
+        "usersCount": "1"
+    }
+]

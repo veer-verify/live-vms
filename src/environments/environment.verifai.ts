@@ -33,7 +33,7 @@ export const environment = {
     // event_tags_url: `${localurl}:80/events_data`,
     // download_url: `${localurl}:80/common`,
     // eventImageUrl: `${localurl}:80/alert-images/`,
-
+    //  insightsUrl: `${localurl}/insights`,
 
     eventImageUrl: `${base_url}/dotimages/`,
     login_url: `${base_url}/userDetails`,
@@ -44,6 +44,12 @@ export const environment = {
     monitoring_url: `${base_url}/monitoring`,
     events_url: `https://stagingmq.ivisecurity.com/queueManagement`,
     event_tags_url: `${base_url}/events_data`,
+        insightsUrl: `${base_url}/insights`,
+          adsUrl: `${base_url}/proximityAdsMain`,
+ faqUrl: `${base_url}/faq`,
+   genericUrl: `${base_url}/supportRequests`,
+     sensorUrl:`${base_url}/sensors`,
+
 
     firstAlert: {
         time1: 160,

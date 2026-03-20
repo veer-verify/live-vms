@@ -73,4 +73,13 @@ export class AlertService {
       confirmButtonText: "Yes"
     });
   }
+
+   wait() {
+    Swal.fire({
+      text: "Please wait",
+      imageUrl: "assets/gif/ajax-loading-gif.gif",
+      showConfirmButton: false,
+      allowOutsideClick: false
+    })
+  }
 }

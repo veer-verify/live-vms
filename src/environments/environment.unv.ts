@@ -12,6 +12,11 @@ export const environment = {
   monitoring_url: `${base_url}/monitoring`,
   events_url: `https://stagingmq.uneeviu.com/queueManagement`,
   event_tags_url: `${base_url}/events_data`,
+    adsUrl: `${base_url}/proximityAdsMain`,
+ faqUrl: `${base_url}/faq`,
+  genericUrl: `${base_url}/supportRequests`,
+  sensorUrl:`${base_url}/sensors`,
+
 
   firstAlert: {
     time1: 160,

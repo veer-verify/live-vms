@@ -1,0 +1,52 @@
+a {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* table css */
+.table-resp {
+  max-height: calc(100vh - 250px);
+  /* max-width: 85vw; */
+  overflow-y: auto;
+}
+
+.table-resp table thead tr {
+  margin-top: 20px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  font-weight: 500;
+  /* background-color: var(--table-background); */
+}
+
+thead tr th p {
+  display: inline-flex;
+}
+
+thead tr th {
+  color: #fff;
+  font-size: 12px;
+  vertical-align: middle;
+  text-transform: capitalize;
+  background-color: var(--table-background);
+}
+
+.table tbody tr td {
+  vertical-align: middle;
+  /* height: 36px; */
+  font-size: 12px;
+  padding: 8px 10px;
+  text-transform: capitalize;
+  word-wrap: break-word;
+  max-width: 300px;
+}
+
+.table-icons {
+  text-align: center;
+  min-width: 100px;
+}
+
+/* .table-dark {
+  --bs-table-bg: var(--table-background);
+} */
+

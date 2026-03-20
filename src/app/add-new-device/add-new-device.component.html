@@ -1,0 +1,14 @@
+<div class="row formModal">
+  <div class="col-lg-6 col-4"></div>
+  <div class="col-lg-6 col-8 add-form" id="additionalSite" @inOutPaneAnimation>
+    <div>
+      <a class="close-main pointer" (click)="closeAddDevice()"><img src="assets/icons/close_form.svg"></a>
+      <span class="form-heading">add device</span>
+    </div>
+
+    <!-- Form -->
+    <div class="mt-2">
+        <app-add-device-form [type]="'add-new-device'" (newItemEvent)="closeAddDevice()"></app-add-device-form>
+    </div>
+  </div>
+</div>

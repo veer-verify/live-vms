@@ -52,7 +52,8 @@ export class VideoPlayerComponent {
     this.hitStream = true;
     this.requestICEServers();
 
-    this.time = this.storage_service.getTimeWithTime(this.timezone?.timezone)
+    this.time = this.storage_service.getTimeWithTime(this.timezone?.timezone);
+    console.log(this.videoData)
 
   }
 

@@ -65,6 +65,25 @@
           <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>
       </div>
+
+      <div class="col-lg-2">
+
+            <div class="d-inline-flex gap-2 ">
+              <button  class="icon-btn"
+                (click)="setPage('list')"
+                [ngStyle]="{ background: page === 'list' ? 'red' : '' }"
+              >
+                <img src="assets/icons/list_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg" alt="">
+              </button>
+              <button  class="icon-btn"
+                (click)="setPage('map')"
+                [ngStyle]="{ background: page === 'map' ? 'red' : '' }"
+              >
+             <img src="assets/icons/explore_nearby_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg" alt="">
+              </button>
+            </div>
+      </div>
+
     </div>
   </form>
 
@@ -104,6 +123,6 @@
   </ng-container>
 
   <ng-container *ngIf="page === 'map'">
-    <app-site-map></app-site-map>
+    <app-site-map [siteId]="selectedSiteId"></app-site-map>
   </ng-container>
 </section>

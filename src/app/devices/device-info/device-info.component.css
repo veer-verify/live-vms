@@ -1,0 +1,51 @@
+/* .tiles {
+  margin-left: 35px;
+} */
+
+.tile-type {
+  border: 1px solid #ebebf6;
+  border-radius: 5px;
+  background-color: #fafafd;
+  padding: 10px;
+}
+
+/* .graphs {
+  margin-left: 35px;
+} */
+
+.graph-icon img {
+  background-color: #ef6000;
+  border-radius: 3px;
+  margin: 0 5px;
+}
+
+.time-period-btn button{
+  margin-right: 10px;
+  border: none;
+  background-color: #000000;
+  color: #ffffff;
+  border-radius: 3px;
+  padding: 3px 5px;
+}
+
+#chart {
+  height: 275px;
+  border: 1px solid #EFEFEF;
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px #0000000D;
+  margin-bottom: 10px;
+}
+
+:host ::ng-deep .highcharts-credits{
+  fill: #00000000 !important;
+  pointer-events: none;
+}
+
+
+:host ::ng-deep .highcharts-credits{
+  fill: #00000000 !important;
+  pointer-events: none !important;
+}
+:host ::ng-deep .highcharts-root{
+  font-family: ms,sans-serif !important;
+}

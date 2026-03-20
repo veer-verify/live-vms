@@ -219,7 +219,10 @@ export class CameraService {
 
   eventsGenericEmail(payload: any) {
     // console.log(payload)
-    let url = `${environment.guard_monitoring_url}/eventsGenericEmail_1_0`;
+    // let url = `${environment.guard_monitoring_url}/eventsGenericEmail_1_0`;
+
+       let url = `http://192.168.0.229:3009/eventsGenericEmail_1_0`;
+
     let user = this.storageSer.getData('session');
 
     let params = new HttpParams();

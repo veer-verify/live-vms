@@ -1,0 +1,37 @@
+<div class="dialog-title">VIEW - {{dialog_input?.label}}</div>
+
+<div class="dialog-content">
+    <div class="row">
+        <ng-container>
+            <div class="col-6" *ngFor="let item of fields">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{ item }}</mat-label>
+                    <input matInput [(ngModel)]="dialog_input.body[item]" disabled>
+                </mat-form-field>
+            </div>
+        </ng-container>
+
+        <ng-container>
+            <div class="col-6" *ngFor="let item of arrayFields">
+                <!-- <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>{{ item.key }}</mat-label>
+                    <mat-select [(ngModel)]="dialog_input[item]" multiple>
+                        <mat-option *ngFor="let val of metadata" [value]="val.keyId">{{ val.value }}</mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+
+                <mat-form-field appearance="outline" class="w-100" *ngFor="let val of dialog_input.body[item]">
+                    <mat-label>{{ item }}</mat-label>
+                    <input matInput [(ngModel)]="val.roleName" disabled *ngIf="val.roleName">
+                    <input matInput [(ngModel)]="val.value" disabled *ngIf="val.value">
+                </mat-form-field>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<div class="d-flex align-items-center justify-content-end">
+    <div>
+        <button class="dialog-close-btn" mat-dialog-close>Close</button>
+    </div>
+</div>

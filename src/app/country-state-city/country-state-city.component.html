@@ -1,0 +1,32 @@
+<form [formGroup]="form" class="p-0">
+    <div class="row m-0">
+        <div class="col-lg-4">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Country</mat-label>
+                <mat-select formControlName="country" (selectionChange)="onCountryChange(); emitData()">
+                    <mat-option *ngFor="let country of countries" [value]="country.isoCode">{{ country.name
+                        }}</mat-option>
+                </mat-select>
+                <mat-error>*required</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-lg-4">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>State</mat-label>
+                <mat-select formControlName="state" (selectionChange)="onStateChange(); emitData()">
+                    <mat-option *ngFor="let state of states" [value]="state.isoCode">{{ state.name }}</mat-option>
+                </mat-select>
+                <mat-error>*required</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-lg-4">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>City</mat-label>
+                <mat-select formControlName="city" (selectionChange)="emitData()">
+                    <mat-option *ngFor="let city of cities" [value]="city.name">{{ city.name }}</mat-option>
+                </mat-select>
+                <mat-error>*required</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+</form>

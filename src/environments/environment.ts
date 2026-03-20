@@ -35,7 +35,10 @@ export const environment = {
   eventImageUrl: `${prod_url}/dotimages/`,
   event_tags_url: `${prod_url}/events_data`,
   insightsUrl: `${prod_url}/insights`,
-
+    adsUrl: `${prod_url}/proximityAdsMain`,
+ faqUrl: `${prod_url}/faq`,
+  genericUrl: `${prod_url}/supportRequests`,
+  sensorUrl:`${prod_url}/sensors`,
 
   firstAlert: {
     time1: 160,

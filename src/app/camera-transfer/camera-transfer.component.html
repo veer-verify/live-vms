@@ -1,0 +1,110 @@
+<div class="container">
+  <!-- <h1 class="title">📹 Camera Transfer System</h1> -->
+
+
+  <div class="col-lg-6 col-sm-12">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Select Centralbox</mat-label>
+      <mat-select [(value)]="unitId" (selectionChange)="getcamerasforunitId();newSystemName = 'New unitId';systemNameInput='';newUnitname=''">
+        <mat-option value="">Select</mat-option>
+        <mat-option *ngFor="let item of onGetCentralboxDetail | search: siteSearch" [value]="item.unitId">
+          {{ item.unitId }} - {{ item.unitName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+
+
+  <div class="boxes-container">
+
+    <div class="box old-box" [class.drag-over]="isDragOver('old')" (dragover)="onDragOver($event)"
+      (dragenter)="onDragEnter($event, 'old')" (dragleave)="onDragLeave($event, 'old')" (drop)="onDrop($event, 'old')">
+
+      <div class="counter">{{ getCameraCount('old') }}</div>
+      <div class="box-title">Old unitId</div>
+
+      <button class="transfer-all-btn" [disabled]="isTransferButtonDisabled('old')"
+        (click)="transferAllCameras('old', 'new')">
+        Transfer All to New →
+      </button>
+
+      <div class="selection-info" [class.show]="showSelectionInfo('old')">
+        {{ getSelectionInfoText('old') }}
+      </div>
+
+      <div class="cameras-container">
+        <div *ngFor="let camera of oldCameras" class="camera-item" [class.selected]="camera.selected"
+          [attr.draggable]="true" (dragstart)="onDragStart($event, camera, 'old')" (dragend)="onDragEnd($event)"
+          (click)="toggleCameraSelection(camera, 'old')">
+
+          <div class="camera-info">
+            <div class="camera-name">{{ camera?.cameraId }}</div>
+            <div class="camera-details">{{ camera?.cameraName }}</div>
+          </div>
+        </div>
+
+        <div *ngIf="oldCameras.length === 0" class="empty-message">
+          No cameras to transfer!
+        </div>
+      </div>
+    </div>
+
+    <!-- New System Box -->
+    <div class="box new-box" [class.drag-over]="isDragOver('new')" (dragover)="onDragOver($event)"
+      (dragenter)="onDragEnter($event, 'new')" (dragleave)="onDragLeave($event, 'new')" (drop)="onDrop($event, 'new')">
+
+      <div class="counter">{{ getCameraCount('new') }}</div>
+      <div class="box-title"><span>{{ newSystemName }}</span></div>
+
+      <div class="name-input-container">
+
+        <mat-form-field class="example-form-field" appearance="outline">
+          <mat-label>New unitId</mat-label>
+          <input matInput type="text" [(ngModel)]="systemNameInput" (ngModelChange)="updateSystemName()">
+          <button *ngIf="systemNameInput" matSuffix mat-icon-button aria-label="Clear" (click)="systemNameInput=''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+
+        <mat-form-field class="example-form-field" appearance="outline">
+          <mat-label>New unitName</mat-label>
+          <input matInput type="text" [(ngModel)]="newUnitname">
+          <button *ngIf="newUnitname" matSuffix mat-icon-button aria-label="Clear" (click)="newUnitname=''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+      </div>
+
+      <button class="transfer-all-btn" [disabled]="isTransferButtonDisabled('new')"
+        (click)="transferAllCameras('new', 'old')">
+        ← Transfer All to Old
+      </button>
+
+      <div class="selection-info" [class.show]="showSelectionInfo('new')">
+        {{ getSelectionInfoText('new') }}
+      </div>
+
+      <div class="cameras-container">
+        <div *ngFor="let camera of newCameras" class="camera-item" [class.selected]="camera.selected"
+          [attr.draggable]="true" (dragstart)="onDragStart($event, camera, 'new')" (dragend)="onDragEnd($event)"
+          (click)="toggleCameraSelection(camera, 'new')">
+
+          <div class="camera-info">
+            <div class="camera-name">{{ camera?.cameraId }}</div>
+            <div class="camera-details">{{ camera?.cameraName }}</div>
+          </div>
+        </div>
+
+        <div *ngIf="newCameras.length === 0" class="empty-message">
+          Drag cameras here to transfer them to the new centralbox
+        </div>
+      </div>
+      <div *ngIf="newCameras.length != 0" class="d-flex justify-content-end">
+        <button class="btn btn-sm btn-outline-success" (click)="migrateCentralbox()">Migrate</button>
+      </div>
+    </div>
+  </div>
+</div>

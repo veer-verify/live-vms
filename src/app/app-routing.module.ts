@@ -11,6 +11,7 @@ import { PlaybackInfoComponent } from './playback-info/playback-info.component';
 import { EventsComponent } from './events/events.component';
 import { NvrComponent } from './nvr/nvr.component';
 import { InsightsComponent } from './insights/insights.component';
+import { SitesComponent } from './sites/sites.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -28,6 +29,7 @@ const routes: Routes = [
       { path: 'observer', component: EventsComponent, canDeactivate: [AuthGuard] },
       { path: 'insights', component: InsightsComponent, canDeactivate: [AuthGuard] },
       { path: '', redirectTo: '/user-dashboard/monitoring-info', pathMatch: 'full' },
+      { path: 'sites', component: SitesComponent },
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

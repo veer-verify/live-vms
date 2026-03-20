@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { SiteService } from 'src/services/site.service';
+import { Component, Input, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
@@ -11,51 +12,55 @@ import { InsightService } from 'src/services/insight.service';
   templateUrl: './site-map.component.html',
   styleUrls: ['./site-map.component.css']
 })
-export class SiteMapComponent implements OnInit, OnDestroy {
+export class SiteMapComponent  {
 
   constructor(
     public storage_service: StorageService,
     private insight_service: InsightService,
+    private SiteService:SiteService
 
   ) { }
 
-  destroy$ = new Subject<void>();
+
   siteDetails: any;
   originalWidth = 9000;
   originalHeight = 7000;
+  @Input() siteId: any;
 
   ngOnInit(): void {
-    // this.storage_service.currentSite$
-    //   .pipe(filter((site) => !!site), takeUntil(this.destroy$))
-    //   .subscribe((res) => {
-    //     this.getSiteFloorMapDetails(res)
-    //   });
+
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+  if (changes['siteId']) {
+
+    this.getSiteFloorMapDetails(this.siteId);
+  }
+}
+
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+
   }
 
   getSiteFloorMapDetails(data: any) {
-    // this.siteDetails = null;
-    // this.storage_service.info$.next('');
-    // this.config_service.getSiteFloorMapDetails(data).subscribe({
-    //   next: (res) => {
-    //     if (res.statusCode === 200) {
-    //       this.siteDetails = res.siteDetails;
-    //       this.originalWidth = this.siteDetails.imageWidth;
-    //       this.originalHeight = this.siteDetails.imageHeight;
+    this.siteDetails = null;
 
-    //       // console.log(this.originalWidth, this.originalHeight);
-    //       if (!this.siteDetails.siteImage) {
-    //         this.storage_service.info$.next('no floor map for selected site!');
-    //       }
-    //     } else {
-    //       this.storage_service.info$.next('no floor map for selected site!');
-    //     }
-    //   }
-    // })
+    this.SiteService.getSiteFloorMapDetails(data).subscribe({
+      next: (res) => {
+        if (res.statusCode === 200) {
+          this.siteDetails = res.siteDetails;
+          this.originalWidth = this.siteDetails.imageWidth;
+          this.originalHeight = this.siteDetails.imageHeight;
+
+
+          if (!this.siteDetails.siteImage) {
+
+          }
+        } else {
+
+        }
+      }
+    })
   }
 
   currentCam: any;

@@ -76,11 +76,26 @@
       >
         <img
           loading="lazy"
-          src="assets/icons/grouped_bar_chart.svg"
+          src="assets/icons/grouped_bar_chart_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg"
           matTooltip="Insights"
         />
         <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
           >Insights</span
+        >
+      </a>
+
+      <a
+        [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+        [routerLink]="['/user-dashboard/sites']"
+        routerLinkActive="routeactive"
+      >
+        <img
+          loading="lazy"
+          src="assets/icons/location_home_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg"
+          matTooltip="Sites"
+        />
+        <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
+          >Sites Info</span
         >
       </a>
 

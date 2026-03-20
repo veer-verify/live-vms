@@ -1,0 +1,196 @@
+<div class="row formModal">
+  <div class="col-lg-4 col-4"></div>
+
+  <div class="col-lg-8 col-8 add-form" id="sites" @inOutPaneAnimation>
+
+    <div>
+      <a class="close-main pointer" (click)="closeCamera()"><img src="assets/icons/close_form.svg" /></a>
+      <span class="form-heading">Add Camers - {{currentSiteFrom?.siteName}}</span>
+    </div>
+
+    <div>
+      <form [formGroup]="createCamera">
+        <div class="row">
+          <div class="col-lg-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Unit Id</mat-label>
+              <input matInput formControlName="unitId">
+              <mat-error>*required</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>S3 Request Name</mat-label>
+              <input matInput formControlName="s3RequestName">
+            </mat-form-field>
+          </div>
+          <div class="col-lg-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Username</mat-label>
+              <input matInput formControlName="userName">
+              <mat-error>*required</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Password</mat-label>
+              <input matInput formControlName="password">
+              <mat-error>*required</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-12">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>RTSP URL</mat-label>
+              <input matInput formControlName="rtspUrl">
+              <mat-error>*required</mat-error>
+            </mat-form-field>
+          </div>
+
+
+          <div class="col-lg-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>WebRTC/HTTP URL</mat-label>
+              <input matInput formControlName="videoServerName">
+              <mat-error>*required</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>HTTP Port No</mat-label>
+              <input matInput type="number" formControlName="httpPortNo">
+            </mat-form-field>
+          </div>
+          <div class="col-lg-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>HLS URL</mat-label>
+              <input matInput formControlName="hlsTunnel">
+              <mat-error>*required</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Audio URL</mat-label>
+              <input matInput formControlName="audioUrl">
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Config URL</mat-label>
+              <input matInput type="text" formControlName="camera_config_url">
+              <mat-error>*required</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Live Restart URL</mat-label>
+              <input matInput type="text" formControlName="liveRestartUrl">
+              <mat-error>*required</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row ml-5 mb-2">
+          <div class="col-lg-6" style="font-size: 10px; font-weight: 700;">
+            <p>Monitoring</p>
+            <mat-radio-group class="w-50" formControlName="monitoring">
+              <mat-radio-button class="ms-3" name="monitoring" value="T">True</mat-radio-button>
+              <mat-radio-button class="ms-3" name="monitoring" value="F" checked>False</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div class="col-lg-6" style="font-size: 10px; font-weight: 700;">
+            <p>Events</p>
+            <mat-radio-group class="w-50" formControlName="events">
+              <mat-radio-button class="ms-3" name="events" value="T">True</mat-radio-button>
+              <mat-radio-button class="ms-3" name="events" value="F" checked>False</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div class="col-lg-6" style="font-size: 10px; font-weight: 700;">
+            <p>Timelapse</p>
+            <mat-radio-group class="w-50" formControlName="timelapse">
+              <mat-radio-button class="ms-3" name="logs" value="T">True</mat-radio-button>
+              <mat-radio-button class="ms-3" name="logs" value="F" checked>False</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <!-- <div class="col-lg-6" style="font-size: 10px; font-weight: 700;">
+            <p>PTZ</p>
+            <mat-radio-group class="w-50" formControlName="ptz">
+              <mat-radio-button class="ms-3" name="ptz" value="T">True</mat-radio-button>
+              <mat-radio-button class="ms-3" name="ptz" value="F" checked>False</mat-radio-button>
+            </mat-radio-group>
+          </div> -->
+        </div>
+
+        <div class="row">
+          <div class="col-lg-10 ">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>No of Cameras</mat-label>
+              <input matInput type="number" formControlName="noOfCameras" #noOfCams>
+              <mat-error>*required</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-lg-2 p-0 ">
+            <button class="btn btn-primary w-100" (click)="getCamerasForSiteId(currentSiteFrom)">ADD</button>
+          </div>
+        </div>
+      </form>
+
+
+      <div class="table-resp" style="overflow-x: auto;" *ngIf="camList.length !== 0">
+        <table class="table table-hover">
+          <thead>
+            <tr class="form1">
+              <th>Camera Id</th>
+              <th>User Name</th>
+              <th>Password</th>
+              <th>Camera Name</th>
+              <th>RTSP</th>
+              <th>WebRTC URL</th>
+              <th>HLS URL</th>
+              <th>Audio URL</th>
+              <th>Live Restart URL</th>
+              <th>Config URL</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let cam of camList; let i=index;">
+              <td>{{cam?.cameraId}}</td>
+              <td>{{cam?.userName}}</td>
+              <td>{{cam?.password}}</td>
+              <td>{{cam?.displayName}}</td>
+              <td>{{cam?.rtspUrl}}</td>
+              <td>{{cam?.videoServerName}}</td>
+              <td>{{cam?.hlsTunnel}}</td>
+              <td>{{cam?.audioUrl}}</td>
+              <td>{{cam?.liveRestartUrl}}</td>
+              <td>{{cam?.camera_config_url}}</td>
+              <td>
+                <div class="d-inline-flex">
+                  <button class="btn btn-success p-1" style="font-size: 10px;" (click)="submit(cam, $event)">
+                    Save
+                  </button>
+                  <button class="btn btn-danger p-1 ms-1" style="font-size: 10px;" (click)="openEditPopup(cam)">
+                    Edit
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="showLoader" class="text-center fw-bold mt-5">Loading...</div>
+
+      <div class="text-center" *ngIf="camList.length !== 0">
+        <button class="btn btn-dark my-2" (click)="closeCamera()">Done</button>
+      </div>
+    </div>
+  </div>

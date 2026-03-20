@@ -44,3 +44,8 @@
     border-bottom-right-radius: 0px !important;
     border-bottom-left-radius: 8px !important;
 }
+
+
+::ng-deep .mat-mdc-menu-panel {
+  max-width: 100% !important;
+}

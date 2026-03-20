@@ -1,0 +1,15 @@
+.added-device {
+  padding: 0 50px;
+}
+
+.device-title{
+  font-size: 14px;
+  font-weight: 400;
+  width: 200px;
+}
+
+.device-sub {
+  font-size: 15px;
+  color: #084982;
+  font-weight: 500;
+}
