@@ -12,13 +12,14 @@
 
 :root {
   --background: linear-gradient(325deg, #1e3f73 100%, #ffffff 0%);
+  --header-background: #1e3f73;
   --cmn-background: #1e3f73;
   --table-background: #1e3f73;
   --loader-background: rgba(72, 116, 182, 0.8);
-  --route-color: #7d8d9b;
+  --route-background: #ffffff;
 }
 
-*:not(.material-icons) {
+*:not(.material-icons, .material-symbols-outlined) {
   font-family: "TP", sans-serif !important;
 }
 

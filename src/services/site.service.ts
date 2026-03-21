@@ -11,9 +11,9 @@ import { DatePipe } from '@angular/common';
 })
 export class SiteService {
 
-    cameras_sub: BehaviorSubject<any> = new BehaviorSubject([]);
+  cameras_sub: BehaviorSubject<any> = new BehaviorSubject([]);
 
-  constructor(private http: HttpClient, private storageSer: StorageService,private datePipe: DatePipe) { }
+  constructor(private http: HttpClient, private storageSer: StorageService, private datePipe: DatePipe) { }
 
   public getSites(payload?: any): any {
     let url = `${environment.site_url}/getSitesListForUserName_2_0/`;
@@ -396,7 +396,7 @@ export class SiteService {
     return this.http.put(url, null, { params });
   }
 
-    getSiteFloorMapDetails(payload: any): Observable<any> {
+  getSiteFloorMapDetails(payload: any): Observable<any> {
     let url = `${environment.site_url}/getSiteFloorMapDetails_1_0`;
     let params = new HttpParams().set('siteId', payload);
     return this.http.get(url, { params });
@@ -415,7 +415,7 @@ export class SiteService {
   }
 
 
-    getSitesListForUserName(payload?: any) {
+  getSitesListForUserName(payload?: any) {
     let url = `${environment.site_url}/getSitesListForUserName_2_0/`;
     let user = this.storageSer.getUser();
 
@@ -444,10 +444,10 @@ export class SiteService {
   getCentralbox(payload: any) {
     let url = `${environment.site_url}/getCentralBox_1_0/${payload.siteId}`;
 
-        return this.http.get(url);
+    return this.http.get(url);
   }
 
-    addCentralBox(payload: any) {
+  addCentralBox(payload: any) {
     let url = `${environment.site_url}/addCentralBox_1_0`;
     let user = this.storageSer.getUser();
 
@@ -455,7 +455,7 @@ export class SiteService {
     return this.http.post(url, payload);
   }
 
-    listSiteServices(payload: any) {
+  listSiteServices(payload: any) {
     let url = `${environment.site_url}/listSiteServices_1_0`;
     let params = new HttpParams().set('siteId', payload?.siteId);
     return this.http.get(url, { params: params });
@@ -466,7 +466,7 @@ export class SiteService {
     return this.http.post(url, payload)
   }
 
-    listSiteCheckList(payload: any) {
+  listSiteCheckList(payload: any) {
     let url = `${environment.site_url}/listSiteCheckList_1_0/`;
     let user = this.storageSer.getUser();
 
@@ -485,7 +485,7 @@ export class SiteService {
     return this.http.get(url, { params: params })
   }
 
-    listSiteCheckListHistory(payload: any) {
+  listSiteCheckListHistory(payload: any) {
     let url = `${environment.site_url}/listSiteCheckListHistory_1_0/`;
     let params = new HttpParams();
     if (payload?.deviceId) {
@@ -515,13 +515,13 @@ export class SiteService {
     return this.http.put(url, myObj)
   }
 
-    getValidationCheckList() {
+  getValidationCheckList() {
     let url = `${environment.site_url}/getValidationCheckList_1_0/`;
     return this.http.get(url)
   }
 
 
-    getValidationCheckListForCategory(payload: any) {
+  getValidationCheckListForCategory(payload: any) {
     let url = `${environment.site_url}/getValidationCheckList_1_0/`;
     let params = new HttpParams();
     if (payload?.name) {
@@ -536,7 +536,7 @@ export class SiteService {
     return this.http.get(url, { params: params })
   }
 
-    listSupportAdminUsers() {
+  listSupportAdminUsers() {
     let url = `${environment.login_url}/listSupportAdminUsers_1_0`;
     let params = new HttpParams();
     params = params.set('type', '35');
@@ -549,7 +549,7 @@ export class SiteService {
     return this.http.post(url, payload)
   }
 
-    updateSiteCheckListFor(payload: any) {
+  updateSiteCheckListFor(payload: any) {
     let url = `${environment.site_url}/updateSiteCheckList_1_0/`;
     let user = this.storageSer.getUser()
 
@@ -557,12 +557,12 @@ export class SiteService {
   }
 
 
-   getSiteFullDetails(payload: any) {
+  getSiteFullDetails(payload: any) {
     let url = `${environment.site_url}/getSiteFullDetails_1_0/${payload.siteId}`;
     return this.http.get(url)
   }
 
-   gettimeZones() {
+  gettimeZones() {
     return this.http.get("assets/JSON/timezones.json");
   }
 
@@ -574,60 +574,60 @@ export class SiteService {
     return this.http.get(url, { params: params });
   }
 
-    updateCameraEventsConfigData(payload: any) {
+  updateCameraEventsConfigData(payload: any) {
     let url = `${environment.site_url}/updateCameraEventsConfigData_1_0/${payload?.cameraId}`;
     return this.http.put(url, payload)
   }
 
-    updateSiteDetails(payload: any) {
+  updateSiteDetails(payload: any) {
     let url = `${environment.site_url}/updateSiteDetails_1_0/${payload.siteId}`;
     return this.http.put(url, payload)
   }
 
-     updateCentralbox(payload:any){
+  updateCentralbox(payload: any) {
 
 
-     let url = `${environment.site_url}/updateCentralBox_1_0`;
-     let user = this.storageSer.getUser();
-     payload.modifiedBy = user?.UserId;
+    let url = `${environment.site_url}/updateCentralBox_1_0`;
+    let user = this.storageSer.getUser();
+    payload.modifiedBy = user?.UserId;
     payload.installationDate = this.datePipe.transform(
-  payload.installationDate,
-  'yyyy-MM-dd HH:mm:ss'
+      payload.installationDate,
+      'yyyy-MM-dd HH:mm:ss'
 
-);
+    );
 
-    return this.http.post(url,payload);
+    return this.http.post(url, payload);
 
-   }
+  }
 
 
-     getS3BucketNames(){
+  getS3BucketNames() {
 
-    let url =`${environment.login_url}/getS3BucketNames_1_0`;
+    let url = `${environment.login_url}/getS3BucketNames_1_0`;
 
     return this.http.get(url);
 
   }
-  creates3Defaultpath(payload:any){
+  creates3Defaultpath(payload: any) {
 
-    let url =`${environment.login_url}/addS3defaultPath_1_0`;
+    let url = `${environment.login_url}/addS3defaultPath_1_0`;
     let user = this.storageSer.getUser();
     // payload.createdBy = user?.UserId;
-    return this.http.post(url,payload);
+    return this.http.post(url, payload);
 
   }
 
-    addCameraEventsConfigData(payload: any) {
+  addCameraEventsConfigData(payload: any) {
     let url = `${environment.site_url}/addCameraEventsConfigData_1_0`;
     return this.http.post(url, payload)
   }
 
-    getAccountData() {
+  getAccountData() {
     let url = `${environment.site_url}/getAccountData_1_0`
     return this.http.get(url)
   }
 
-    createSite(payload: any) {
+  createSite(payload: any) {
     let url = `${environment.site_url}/addSite_1_0`;
     let user = this.storageSer.getUser();
 
@@ -635,7 +635,7 @@ export class SiteService {
     return this.http.post(url, payload)
   }
 
-    updateCamera(payload: any,payload1:any) {
+  updateCamera(payload: any, payload1: any) {
 
     let url = `${environment.site_url}/updateCameraData_1_0/${payload1}`;
     // delete payload.httpUrl;
@@ -643,28 +643,28 @@ export class SiteService {
   }
 
 
-  getCamerasforunitId(payload:any){
+  getCamerasforunitId(payload: any) {
 
-    let url=`${environment.site_url}/getCamerasForUnitId_1_0`;
+    let url = `${environment.site_url}/getCamerasForUnitId_1_0`;
     let params = new HttpParams();
     params = params.set('siteId', payload?.siteId);
     params = params.set('unitId', payload?.unitId);
-    return this.http.get(url,{params});
+    return this.http.get(url, { params });
   }
 
-  migrateCentralbox(payload:any){
+  migrateCentralbox(payload: any) {
 
-    let url =`${environment.site_url}/replaceCentralBox_1_0`;
+    let url = `${environment.site_url}/replaceCentralBox_1_0`;
     let user = this.storageSer.getUser();
     payload.createdBy = user?.UserId;
-    return this.http.post(url,payload);
+    return this.http.post(url, payload);
 
   }
 
-    createCamera(payload: any) {
+  createCamera(payload: any) {
     let url = `${environment.site_url}/addCamera_1_0`;
     return this.http.post(url, payload)
   }
 
-    //mgmt client
+  //mgmt client
 }

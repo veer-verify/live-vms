@@ -12,12 +12,12 @@ import { InsightService } from 'src/services/insight.service';
   templateUrl: './site-map.component.html',
   styleUrls: ['./site-map.component.css']
 })
-export class SiteMapComponent  {
+export class SiteMapComponent {
 
   constructor(
     public storage_service: StorageService,
     private insight_service: InsightService,
-    private SiteService:SiteService
+    private SiteService: SiteService
 
   ) { }
 
@@ -26,23 +26,28 @@ export class SiteMapComponent  {
   originalWidth = 9000;
   originalHeight = 7000;
   @Input() siteId: any;
+  @Input() fromDate: any;
+  @Input() toDate: any;
+  @Input() camera: any;
 
   ngOnInit(): void {
 
   }
 
   ngOnChanges(changes: SimpleChanges) {
-  if (changes['siteId']) {
-
-    this.getSiteFloorMapDetails(this.siteId);
+    if (changes['siteId']) {
+      this.getSiteFloorMapDetails(this.siteId);
+    }
+    this.currentCam = this.siteDetails?.cameras.find((item: any) => item.cameraId === this.camera);
   }
-}
 
   ngOnDestroy(): void {
 
   }
 
+  errInfo: any
   getSiteFloorMapDetails(data: any) {
+    this.errInfo = '';
     this.siteDetails = null;
 
     this.SiteService.getSiteFloorMapDetails(data).subscribe({
@@ -54,10 +59,28 @@ export class SiteMapComponent  {
 
 
           if (!this.siteDetails.siteImage) {
-
+            this.errInfo = 'no floor map for selected site!';
           }
         } else {
+          this.errInfo = 'no floor map for selected site!';
+        }
+      }
+    })
+  }
 
+  analyticsData: any = [];
+  biAnalyticsReport() {
+    // this.storage_service.info$.next('');
+    this.insight_service.biAnalyticsReport({ fromDate: this.fromDate, toDate: this.toDate, cameraId: this.currentCam?.cameraId }).subscribe({
+      next: (res) => {
+        if (res.Status === "Success") {
+          this.analyticsData = res.AnalyticsReportList;
+          this.addBtn = true;
+          if (this.analyticsData.length === 0) {
+            // this.storage_service.info$.next('no data!');
+          }
+        } else {
+          // this.storage_service.info$.next('no data!');
         }
       }
     })
@@ -66,9 +89,10 @@ export class SiteMapComponent  {
   currentCam: any;
   onCameraClick(cam: string) {
     this.currentCam = null;
-    // this.addBtn = true;
+    this.addBtn = true;
     setTimeout(() => {
       this.currentCam = cam;
+      this.biAnalyticsReport();
     }, 100)
   }
 

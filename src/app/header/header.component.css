@@ -5,7 +5,7 @@
   top: 0px;
   z-index: 99;
   height: 65px;
-box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 .logo {
@@ -31,10 +31,14 @@ box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   height: 150px;
 }
 
-.profile .image img{
+.profile .image img {
   background: #fff;
   border-radius: 50%;
   padding: 10px;
+}
+
+.profile button {
+  color: #fff;
 }
 
 ::ng-deep .mat-mdc-unelevated-button:not(:disabled) {

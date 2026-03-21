@@ -36,6 +36,8 @@
 .colap-arr {
   /* background-color: white;
   border-radius: 50%; */
+  background: transparent;
+  color: #ffffff;
   padding: 5px;
   border: none;
   transition: all 300ms ease-in-out;
@@ -51,43 +53,38 @@
 
 .list-group-item {
   background-color: transparent;
-  color: black;
+  color: #ffffff;
   border: none;
-  margin: 8px;
+  margin: 8px 4px;
   display: flex;
   align-items: center;
-  transition: all 300ms ease-in-out;
+  justify-content: center;
+  transition: all 100ms ease-in-out;
+
+  &:hover {
+    background-color: var(--route-background);
+    color: #000000;
+    border-radius: 5px;
+  }
 }
 
-.list-group-item-active {
+/* .list-group-item-active {
   background-color: transparent;
-  color: #fff;
+  color: #ffffff;
   border: none;
   margin: 4px;
   transition: all 300ms ease-in-out;
   text-align: center;
   margin: 8px 4px;
   padding: 4px;
-}
-
-.list-group img {
-  width: 20px;
-}
-
-.list-group :hover {
-  background-color: var(--primary);
-  border-radius: 5px;
-}
+} */
 
 .routeactive {
-  background-color: var(--primary);
+  background-color: var(--route-background);
+  color: #000000;
   border-radius: 5px;
   text-align: center;
 }
-
-/* .list-group img {
-  margin-right: 10px;
-} */
 
 .srch ::ng-deep .mat-mdc-form-field-subscript-wrapper {
   display: none !important;

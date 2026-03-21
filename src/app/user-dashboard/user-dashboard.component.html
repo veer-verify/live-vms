@@ -18,7 +18,7 @@
 
     <div class="list-group">
       <a
-        [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+        class="list-group-item"
         [routerLink]="['/user-dashboard/monitoring-info']"
         routerLinkActive="routeactive"
       >
@@ -30,19 +30,19 @@
         >
       </a>
 
-      <!-- <a [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+      <!-- <a class="list-group-item"
       [routerLink]="['/user-dashboard/nvr']" routerLinkActive="routeactive">
       <img loading="lazy" src="assets/icons/device.svg" matTooltip="Devices" />
       <span style="font-weight: 500; margin-left: 10px;" *ngIf="showSidenav">Devices</span>
     </a> -->
 
       <a
-        [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+        class="list-group-item"
         [routerLink]="['/dashboard']"
         routerLinkActive="routeactive"
       >
-        <span class="material-symbols-outlined" matTooltip="Sites">
-          apartment
+        <span class="material-symbols-outlined" matTooltip="Live">
+          video_camera_back
         </span>
         <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
           >Sites</span
@@ -50,7 +50,7 @@
       </a>
 
       <a
-        [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+        class="list-group-item"
         [routerLink]="['/user-dashboard/alerts-info']"
         routerLinkActive="routeactive"
       >
@@ -62,8 +62,8 @@
         >
       </a>
 
-      <a
-        [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+      <!-- <a
+        class="list-group-item"
         [routerLink]="['/user-dashboard/insights']"
         routerLinkActive="routeactive"
       >
@@ -73,15 +73,15 @@
         <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
           >Insights</span
         >
-      </a>
+      </a> -->
 
       <a
-        [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+        class="list-group-item"
         [routerLink]="['/user-dashboard/sites']"
         routerLinkActive="routeactive"
       >
-        <span class="material-symbols-outlined" matTooltip="Sites Info">
-          info
+        <span class="material-symbols-outlined" matTooltip="Sites">
+          apartment
         </span>
         <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
           >Sites Info</span
@@ -95,15 +95,13 @@
 
       <ng-container *ngIf="user?.userLevel === 2">
         <a
-          [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+          class="list-group-item"
           [routerLink]="['/user-dashboard/pre-dispatch']"
           routerLinkActive="routeactive"
         >
-          <img
-            loading="lazy"
-            src="assets/icons/outgoing_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg"
-            matTooltip="Pre-Dispatch"
-          />
+          <span class="material-symbols-outlined" matTooltip="Pre-Dispatch">
+            schedule_send
+          </span>
           <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
             >Pre-Dispatch</span
           >
@@ -112,15 +110,13 @@
 
       <ng-container *ngIf="user?.userLevel === 3">
         <a
-          [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+          class="list-group-item"
           [routerLink]="['/user-dashboard/dispatch']"
           routerLinkActive="routeactive"
         >
-          <img
-            loading="lazy"
-            src="assets/icons/truck-ramp-box.svg"
-            matTooltip="Dispatch"
-          />
+          <span class="material-symbols-outlined" matTooltip="Dispatch">
+            display_external_input
+          </span>
           <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
             >Dispatch</span
           >
@@ -129,15 +125,13 @@
 
       <ng-container *ngIf="user?.userLevel === 4">
         <a
-          [ngClass]="showSidenav ? 'list-group-item' : 'list-group-item-active'"
+          class="list-group-item"
           [routerLink]="['/user-dashboard/observer']"
           routerLinkActive="routeactive"
         >
-          <img
-            loading="lazy"
-            src="assets/icons/eye_tracking_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg"
-            matTooltip="Observer"
-          />
+          <span class="material-symbols-outlined" matTooltip="Observer">
+            tab_search
+          </span>
           <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
             >Observer</span
           >

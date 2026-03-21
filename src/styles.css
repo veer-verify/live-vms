@@ -34,18 +34,16 @@
   --header-background: #084982;
   --table-background: #084982;
   --cmn-background: #084982;
-  --primary: #084982;
-  --secondary: #ffff;
   --loader-background: linear-gradient(
     90deg,
     rgba(28, 74, 130, 0.9) 0%,
     rgba(131, 96, 110, 0.9) 50%,
     rgba(208, 67, 41, 0.9) 100%
   );
-  --route-color: #5584ad;
+  --route-background: #ffffff;
 }
 
-*:not(.material-icons) {
+*:not(.material-icons, .material-symbols-outlined) {
   font-family: "TP", sans-serif !important;
 }
 
@@ -191,11 +189,10 @@ a {
 }
 
 .dialog-content {
-  padding:  10px;
+  padding: 10px;
   max-width: 80vw;
   max-height: 80vh;
   overflow-y: auto;
-
 }
 
 .dialog-update-btn {
@@ -214,7 +211,6 @@ a {
   font-weight: bold;
   margin: 20px;
 }
-
 
 .dialog-update-submit {
   background-color: #08827c;
@@ -245,7 +241,6 @@ a {
 }
 
 .formModal {
-
   height: calc(100vh - 65px);
   overflow-y: auto;
   background-color: rgba(0, 0, 0, 0.4);

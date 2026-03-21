@@ -50,7 +50,7 @@ export class InsightsComponent implements OnInit, OnDestroy {
   charts: any[] = [];
   myForm!: FormGroup;
   userData: any;
-selectedSiteId:any;
+  selectedSiteId: any;
 
   ngOnInit(): void {
     this.userData = JSON.parse(sessionStorage.getItem('session')!);
@@ -73,9 +73,9 @@ selectedSiteId:any;
     });
     this.getSitesListForUserName();
 
-     this.myForm.get('siteId')?.valueChanges.subscribe(value => {
-    this.selectedSiteId = value;
-  });
+    this.myForm.get('siteId')?.valueChanges.subscribe(value => {
+      this.selectedSiteId = value;
+    });
 
   }
 
@@ -93,7 +93,7 @@ selectedSiteId:any;
   }
 
   siteIdToNav: Array<any> = new Array();
-  // errInfo: any;
+  errInfo: any;
   getSitesListForUserName() {
     this.storage_service.status_text = 'loading...';
     this.siteSer.getSites(this.userData).subscribe(
@@ -109,12 +109,12 @@ selectedSiteId:any;
           this.getNonWorkingDays();
         } else if (res.Status === 'Failed') {
           this.storage_service.status_text = 'no data!';
-          // this.errInfo = res.message;
+          this.errInfo = res.message;
         }
       },
       (err: any) => {
         this.storage_service.status_text = 'failed to load data!';
-        // this.errInfo = 'CONNECTION TIMED OUT!';
+        this.errInfo = 'CONNECTION TIMED OUT!';
       }
     );
   }
@@ -131,6 +131,7 @@ selectedSiteId:any;
 
   getNonWorkingDays() {
     // this.storage_service.info$.next('');
+    this.errInfo = '';
     this.analyticsData = [];
     this.charts = [];
     this.insight_service.getNonWorkingDays({ siteId: this.myForm.get('siteId')?.value }).subscribe({
@@ -138,8 +139,9 @@ selectedSiteId:any;
         if (res.status === "Success") {
           this.myForm.get('fromDate')?.setValue(new Date(res.LastWorkingDay));
           this.biAnalyticsReport();
-          this.getCamerasForSiteId({ siteId: this.myForm.get('siteId')?.value });
+          this.getCamerasForSiteId(this.myForm.get('siteId')?.value);
         } else {
+          this.errInfo = res.message;
           // this.storage_service.info$.next(res.message);
         }
       }
@@ -166,7 +168,7 @@ selectedSiteId:any;
   generateCharts() {
     this.charts = this.analyticsData.map((section: any) => {
       const chartData = section.data.map((d: any) => ({
-        label: d.type,
+        label: `${d.type} (${d.total})`,
         value: Number(d.total)
       }));
 
@@ -180,15 +182,23 @@ selectedSiteId:any;
               angleKey: 'value',
               calloutLabelKey: 'label',
               innerRadiusRatio: 0.6,
+              outerRadiusRatio: 0.8,
               calloutLabel: {
                 enabled: false
               }
-            }
+            },
           ],
           legend: {
-            position: 'right'
-          }
-        }
+            position: 'right',
+            maxWidth: 350,
+            item: {
+              label: {
+                fontFamily: 'Neometric Medium',
+                fontSize: 14
+              }
+            }
+          },
+        },
       };
     });
   }

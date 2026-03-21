@@ -53,8 +53,6 @@ export class VideoPlayerComponent {
     this.requestICEServers();
 
     this.time = this.storage_service.getTimeWithTime(this.timezone?.timezone);
-    console.log(this.videoData)
-
   }
 
   ngAfterViewInit() {

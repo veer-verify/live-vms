@@ -31,10 +31,10 @@ export const environment = {
     eventImageUrl: `${dev_url}/dotimages/`,
     events_url: `${event_url}/queueManagement`,
     insightsUrl: `${dev_url}/insights`,
-      adsUrl: `${dev_url}/proximityAdsMain`,
- faqUrl: `${dev_url}/faq`,
-  genericUrl: `${dev_url}/supportRequests`,
-    sensorUrl:`${dev_url}/sensors`,
+    adsUrl: `${dev_url}/proximityAdsMain`,
+    faqUrl: `${dev_url}/faq`,
+    genericUrl: `${dev_url}/supportRequests`,
+    sensorUrl: `${dev_url}/sensors`,
 
     firstAlert: {
         time1: 1,

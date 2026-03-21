@@ -22,16 +22,19 @@
   /* background-color: #ffffff; */
 }
 
-.icon-btn{
+.icon-btn {
   background: transparent;
-  border: none;
+  border: 1px solid #ababab;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 4px;
+  border-radius: 4px;
+  height: 45px;
+  width: 60px;
 }
 
-.icon-btn img{
+.icon-btn img {
   width: 24px;
   height: 24px;
   display: block;
@@ -60,4 +63,21 @@
 
 .donut-chart {
   height: 220px;
+}
+
+.text-container {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%);
+}
+
+.text-detail {
+  font-family: TP, sans-serif;
+  text-transform: uppercase;
+  color: #ababab;
+  font-size: 18px;
+  background-color: transparent;
+  font-weight: 700;
+  color: #ed3237;
 }

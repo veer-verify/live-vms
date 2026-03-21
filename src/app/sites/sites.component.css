@@ -3,7 +3,7 @@
 } */
 
 .create-btn {
-  background-color: #084982;
+  background-color: var(--cmn-background);
   color: #fff;
   width: 120px;
   padding: 8px 0;
@@ -17,24 +17,23 @@
   opacity: 0.8;
 }
 
-.create-centeral-box-button{
+.create-centeral-box-button {
   width: 100px;
   border-radius: 8px;
-  background-color:#084982;
+  background-color: var(--cmn-background);
   /* margin-bottom: 20px; */
   color: aliceblue;
   font-size: 12px;
-
 }
 
-.blod{
-font-weight: bold;
+.blod {
+  font-weight: bold;
 }
 
 a {
   /* border: none; */
   /* outline: none;  */
-  color: #084982;
+  color: var(--cmn-background);
   cursor: pointer;
 }
 
@@ -43,11 +42,11 @@ table {
   border-collapse: collapse; /* Optional: Collapses borders */
 }
 
-th, td {
+th,
+td {
   padding: 6px; /* Adjust padding as needed */
   text-align: left; /* Align text to the left (optional) */
 }
-
 
 .text-ellipsis {
   word-wrap: break-word;
@@ -55,7 +54,7 @@ th, td {
   overflow: hidden;
   text-overflow: ellipsis;
   display: block;
- /* Adjust as needed */
+  /* Adjust as needed */
 }
 ::ng-deep mat-expansion-panel-header {
   min-height: 85px;
@@ -95,37 +94,17 @@ mat-panel-description {
   border-style: none;
   border-width: 0px;
 }
-.grid-container{
+.grid-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
-
 
 /* th {
   white-space: normal;
   word-break: break-word;
   max-width: 85vw;
 } */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* From Uiverse.io by Yaya12085 */
 .radio-inputs {
@@ -149,15 +128,9 @@ mat-panel-description {
   background-color: #084982;
 }
 
-
-
 .radio-input:checked + .radio-tile .radio-label {
   color: #ffff;
-
 }
-
-
-
 
 .radio-tile {
   display: flex;
@@ -175,7 +148,6 @@ mat-panel-description {
   position: relative;
 }
 
-
 .radio-tile:hover {
   border-color: #084982;
 }
@@ -185,10 +157,7 @@ mat-panel-description {
   opacity: 1;
 }
 
-
-
 .radio-label {
-
   transition: 0.375s ease;
   text-align: center;
   font-size: 13px;

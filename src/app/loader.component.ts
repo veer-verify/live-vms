@@ -24,7 +24,7 @@ import { Component } from '@angular/core';
       width: inherit;
       height: inherit;
       border-radius: 0.15em;
-      background-image: linear-gradient(325deg, #084982, #D34124);
+      background-image: var(--background);
       animation: var(--speed) ease-out infinite spin;
       will-change: transform;
     }

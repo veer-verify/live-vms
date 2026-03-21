@@ -1,9 +1,19 @@
 <div class="map-container">
+  <div class="text-container" *ngIf="errInfo">
+    <p class="text-detail">{{ errInfo }}</p>
+  </div>
+
   <ng-container *ngIf="siteDetails?.siteImage">
     <img [src]="siteDetails?.siteImage | image | async" class="map-image" />
 
-    <div *ngFor="let cam of siteDetails?.cameras" class="camera" [style.top.%]="findx(cam?.camImagePoints?.x)"
-      [style.left.%]="findy(cam?.camImagePoints?.y)" (click)="onCameraClick(cam)" [matMenuTriggerFor]="menu">
+    <div
+      *ngFor="let cam of siteDetails?.cameras"
+      class="camera"
+      [style.top.%]="findx(cam?.camImagePoints?.x)"
+      [style.left.%]="findy(cam?.camImagePoints?.y)"
+      (click)="onCameraClick(cam)"
+      [matMenuTriggerFor]="menu"
+    >
       <img src="assets\icons\cctv.png" width="24px" />
     </div>
   </ng-container>
@@ -19,13 +29,21 @@
   } -->
 
   <mat-menu #menu="matMenu">
-    <div style="width: 800px; height: 500px; overflow: hidden; background: #000000">
-      <app-video-player [videoData]="currentCam?.httpUrl+'/'" [liveControl]="1" *ngIf="currentCam"></app-video-player>
+    <div
+      style="width: 500px; height: 300px; overflow: hidden; background: #000000"
+    >
+      <app-video-player
+        [videoData]="currentCam?.httpUrl + '/'"
+        [liveControl]="1"
+        *ngIf="currentCam"
+      ></app-video-player>
     </div>
   </mat-menu>
 </div>
 
 <app-camera-insights
-    (closeModal)="closeAddUserModal($event)"
-    *ngIf="addBtn"
-  ></app-camera-insights>
+  (closeModal)="closeAddUserModal($event)"
+  [analyticsData]="analyticsData"
+  [camera]="currentCam"
+  *ngIf="addBtn"
+></app-camera-insights>

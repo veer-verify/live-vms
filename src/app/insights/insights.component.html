@@ -1,9 +1,11 @@
 <section>
-  <!-- <app-err-info></app-err-info> -->
+  <div class="text-container" *ngIf="errInfo && page === 'list'">
+    <p class="text-detail">{{ errInfo }}</p>
+  </div>
 
   <form [formGroup]="myForm">
     <div class="row mx-0 mt-2 w-100">
-      <div class="col-lg-2 ps-0">
+      <div class="col-lg-3 ps-0">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Site</mat-label>
           <mat-select
@@ -18,7 +20,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col-lg-2 ps-0">
+      <div class="col-lg-2 ps-0" *ngIf="page === 'list'">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Camera</mat-label>
           <mat-select
@@ -33,7 +35,7 @@
         </mat-form-field>
       </div>
 
-      <div class="col-lg-2">
+      <div class="col-lg-2" *ngIf="page === 'list'">
         <mat-form-field appearance="outline">
           <mat-label>From</mat-label>
           <input
@@ -49,7 +51,7 @@
           <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
       </div>
-      <div class="col-lg-2">
+      <div class="col-lg-2" *ngIf="page === 'list'">
         <mat-form-field appearance="outline">
           <mat-label>To</mat-label>
           <input
@@ -67,23 +69,29 @@
       </div>
 
       <div class="col-lg-2">
-
-            <div class="d-inline-flex gap-2 ">
-              <button  class="icon-btn"
-                (click)="setPage('list')"
-                [ngStyle]="{ background: page === 'list' ? 'red' : '' }"
-              >
-                <img src="assets/icons/list_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg" alt="">
-              </button>
-              <button  class="icon-btn"
-                (click)="setPage('map')"
-                [ngStyle]="{ background: page === 'map' ? 'red' : '' }"
-              >
-             <img src="assets/icons/explore_nearby_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg" alt="">
-              </button>
-            </div>
+        <div class="d-inline-flex gap-2">
+          <button
+            class="icon-btn"
+            (click)="setPage('list')"
+            [ngStyle]="{
+              background: page === 'list' ? 'red' : '',
+              color: page === 'list' ? 'white' : 'black',
+            }"
+          >
+            <span class="material-symbols-outlined"> list_alt </span>
+          </button>
+          <button
+            class="icon-btn"
+            (click)="setPage('map')"
+            [ngStyle]="{
+              background: page === 'map' ? 'red' : '',
+              color: page === 'map' ? 'white' : 'black',
+            }"
+          >
+            <span class="material-symbols-outlined"> file_map </span>
+          </button>
+        </div>
       </div>
-
     </div>
   </form>
 
@@ -123,6 +131,11 @@
   </ng-container>
 
   <ng-container *ngIf="page === 'map'">
-    <app-site-map [siteId]="selectedSiteId"></app-site-map>
+    <app-site-map
+      [fromDate]="myForm.get('fromDate')?.value"
+      [toDate]="myForm.get('toDate')?.value"
+      [camera]="myForm.get('cameraId')?.value"
+      [siteId]="selectedSiteId"
+    ></app-site-map>
   </ng-container>
 </section>
