@@ -1,5 +1,4 @@
 <div class="container-fluid">
-
   <!-- header -->
   <div class="d-flex justify-content-between my-2">
     <div class="users-header">
@@ -17,14 +16,18 @@
           <div class="vl-red"></div>
           <div class="mx-2">
             <div class="status">Active</div>
-            <div class="count">{{ newTableData | count: 'siteStatus' : 'Active' }}</div>
+            <div class="count">
+              {{ newTableData | count: "siteStatus" : "Active" }}
+            </div>
           </div>
         </div>
         <div class="col-lg-2 d-flex justify-content-start">
           <div class="vl-yellow"></div>
           <div class="mx-2">
             <div class="status">Inactive</div>
-            <div class="count">{{ newTableData | count: 'siteStatus' : 'Inactive' }}</div>
+            <div class="count">
+              {{ newTableData | count: "siteStatus" : "Inactive" }}
+            </div>
           </div>
         </div>
       </div>
@@ -44,14 +47,25 @@
       <div class="col-lg-3 col-sm-12">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Select site</mat-label>
-          <input matInput #siteIdInput [matAutocomplete]="site" [(ngModel)]="siteNg" (keyup)="searchSites($event)">
+          <input
+            matInput
+            #siteIdInput
+            [matAutocomplete]="site"
+            [(ngModel)]="siteNg"
+            (keyup)="searchSites($event)"
+          />
           <button matSuffix mat-icon-button>
             <mat-icon>arrow_drop_down</mat-icon>
           </button>
           <mat-autocomplete #site="matAutocomplete">
-            <mat-option value="" (click)="getSitesListForUserName()">All</mat-option>
-            <mat-option *ngFor="let item of tableData | search: siteSearch" [value]="item.siteId"
-              (click)="getSitesListForUserName()">
+            <mat-option value="" (click)="getSitesListForUserName()"
+              >All</mat-option
+            >
+            <mat-option
+              *ngFor="let item of tableData | search: siteSearch"
+              [value]="item.siteId"
+              (click)="getSitesListForUserName()"
+            >
               {{ item.siteId }} - {{ item.siteName }}
             </mat-option>
           </mat-autocomplete>
@@ -61,8 +75,11 @@
       <div class="col-lg-3 col-sm-12">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Select Status</mat-label>
-          <mat-select [(value)]="status" (selectionChange)="getSitesListForUserName()">
-            <mat-option value="">Select</mat-option>
+          <mat-select
+            [(value)]="status"
+            (selectionChange)="getSitesListForUserName()"
+          >
+            <mat-option value="">All</mat-option>
             <mat-option value="Active">Active</mat-option>
             <mat-option value="Inactive">InActive</mat-option>
           </mat-select>
@@ -70,9 +87,13 @@
       </div>
 
       <div class="col-lg-3 col-sm-12">
-        <mat-form-field class="example-form-field" appearance="outline" class="w-100">
+        <mat-form-field
+          class="example-form-field"
+          appearance="outline"
+          class="w-100"
+        >
           <mat-label>Search</mat-label>
-          <input matInput type="text" [(ngModel)]="searchText">
+          <input matInput type="text" [(ngModel)]="searchText" />
           <button matSuffix mat-icon-button>
             <mat-icon>search</mat-icon>
           </button>
@@ -82,19 +103,22 @@
   </div>
   <!-- /form -->
 
-
   <!-- table -->
-  <app-mgmttable [fields]="fields" [data]="newTableData" [search]="searchText"></app-mgmttable>
+  <app-mgmttable
+    [fields]="fields"
+    [data]="newTableData"
+    [search]="searchText"
+  ></app-mgmttable>
 </div>
 
 <ng-template #viewCamerasDialog>
-  <div class="dialog-title">{{currentItem?.siteName}}</div>
+  <div class="dialog-title">{{ currentItem?.siteName }}</div>
 
   <div class="dialog-content">
     <div class="table-resp">
       <table class="table table-hover">
         <thead>
-          <tr class="form1" style="position: sticky;top: 0;">
+          <tr class="form1" style="position: sticky; top: 0">
             <th>Camera</th>
             <!-- <th>User Name</th>
             <th>Password</th> -->
@@ -107,28 +131,34 @@
           </tr>
         </thead>
 
-        <tbody style="overflow-y: auto;">
-          <tr *ngFor="let cam of cameras; let i=index">
-            <td>{{cam.cameraId}}</td>
+        <tbody style="overflow-y: auto">
+          <tr *ngFor="let cam of cameras; let i = index">
+            <td>{{ cam.cameraId }}</td>
             <!-- <td>{{cam.userName}}</td>
               <td>{{cam.password}}</td> -->
             <td>
-              <p>{{cam.name}}</p>
+              <p>{{ cam.name }}</p>
             </td>
             <td>
-              <p>{{cam.rtspUrl}}</p>
+              <p>{{ cam.rtspUrl }}</p>
             </td>
             <td>
-              <p>{{cam.httpUrl}}</p>
+              <p>{{ cam.httpUrl }}</p>
             </td>
             <td>
-              <p>{{cam.hlsTunnel}}</p>
+              <p>{{ cam.hlsTunnel }}</p>
             </td>
             <td>
-              <p>{{cam.audioUrl}}</p>
+              <p>{{ cam.audioUrl }}</p>
             </td>
-            <td><a class="mx-1 pointer" (click)="openEditCamera(cam)" matTooltip="Edit"><img
-                  src="assets/icons/edit.svg"></a></td>
+            <td>
+              <a
+                class="mx-1 pointer"
+                (click)="openEditCamera(cam)"
+                matTooltip="Edit"
+                ><img src="assets/icons/edit.svg"
+              /></a>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -141,27 +171,44 @@
 </ng-template>
 
 <ng-template #viewCentralBoxDialog>
-  <div style="background-color: #084982;">
+  <div style="background-color: #084982">
     <p class="dialog-title m-0">central box</p>
   </div>
 
   <div class="dialog-content">
     <div class="d-flex justify-content-end mb-1">
-      <button class="create-centeral-box-button" (click)="openAddCentralbox()">Create</button>
+      <button class="create-centeral-box-button" (click)="openAddCentralbox()">
+        Create
+      </button>
     </div>
 
     <div class="table-resp">
       <table class="table table-hover" id="mytable">
         <thead>
-          <tr class="form1" style="background-image: linear-gradient(to right, #084982, #D34124);">
+          <tr
+            class="form1"
+            style="
+              background-image: linear-gradient(to right, #084982, #d34124);
+            "
+          >
             <th>No</th>
             <th>
               <span>unitId</span>
-              <img (click)="sort('url')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
+              <img
+                (click)="sort('url')"
+                class="pointer ms-1"
+                src="assets/icons/sorticon.svg"
+                width="15px"
+              />
             </th>
             <th>
               <span>unitName</span>
-              <img (click)="sort('mode')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
+              <img
+                (click)="sort('mode')"
+                class="pointer ms-1"
+                src="assets/icons/sorticon.svg"
+                width="15px"
+              />
             </th>
             <th class="text-center">Add Camera</th>
             <th class="text-center">Add S3 defaultPath</th>
@@ -172,7 +219,7 @@
 
         <tbody>
           <tr *ngFor="let cust of onGetCentralboxDetail; let i = index">
-            <td>{{i+1}}</td>
+            <td>{{ i + 1 }}</td>
             <td>
               <p>{{ cust.unitId }}</p>
             </td>
@@ -183,20 +230,26 @@
 
             <td class="text-center">
               <a (click)="show('camera', cust)" mat-dialog-close>
-                <img src="assets/icons/add.svg" width="40">
+                <img src="assets/icons/add.svg" width="40" />
               </a>
             </td>
             <td class="text-center" *ngIf="cust.nameTag">
-              <p>{{cust.nameTag}}</p>
+              <p>{{ cust.nameTag }}</p>
             </td>
             <td class="text-center" *ngIf="!cust.nameTag">
               <a (click)="openS3(cust)">
-                <img src="assets/icons/add.svg" width="40">
+                <img src="assets/icons/add.svg" width="40" />
               </a>
             </td>
-            <td class="text-center">{{cust?.status}}</td>
-            <td><a class="mx-1 pointer" (click)="openEditCentralBox(cust)" matTooltip="Edit"><img
-                  src="assets/icons/edit.svg"></a></td>
+            <td class="text-center">{{ cust?.status }}</td>
+            <td>
+              <a
+                class="mx-1 pointer"
+                (click)="openEditCentralBox(cust)"
+                matTooltip="Edit"
+                ><img src="assets/icons/edit.svg"
+              /></a>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -210,37 +263,45 @@
   </div>
 </ng-template>
 
-<ng-template #addCentralBoxDialog style="width: 300px;height:300px;">
-  <div style="background-color: #084982;">
-    <p class="dialog-title">create central box - {{currentItem?.siteName}}</p>
+<ng-template #addCentralBoxDialog style="width: 300px; height: 300px">
+  <div style="background-color: #084982">
+    <p class="dialog-title">create central box - {{ currentItem?.siteName }}</p>
   </div>
-
 
   <div class="radio-inputs">
     <label>
-      <input class="radio-input" type="radio" name="engine" (click)="radioselection(1)" [checked]="radiocheck==1">
+      <input
+        class="radio-input"
+        type="radio"
+        name="engine"
+        (click)="radioselection(1)"
+        [checked]="radiocheck == 1"
+      />
       <span class="radio-tile">
-
         <span class="radio-label">Create Centralbox</span>
       </span>
     </label>
     <label>
-      <input class="radio-input" type="radio" name="engine" (click)="radioselection(2)" [checked]="radiocheck==2">
+      <input
+        class="radio-input"
+        type="radio"
+        name="engine"
+        (click)="radioselection(2)"
+        [checked]="radiocheck == 2"
+      />
       <span class="radio-tile">
-
         <span class="radio-label">Migrate Centralbox</span>
       </span>
     </label>
   </div>
 
-
-  <div class="dialog-content" *ngIf="radiocheck==1">
+  <div class="dialog-content" *ngIf="radiocheck == 1">
     <form class="p-0" [formGroup]="createCenteralBox">
       <div class="row m-0">
         <div class="col-lg-12">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Unit Id</mat-label>
-            <input matInput formControlName="unitId">
+            <input matInput formControlName="unitId" />
             <mat-error>*required</mat-error>
           </mat-form-field>
         </div>
@@ -248,87 +309,88 @@
         <div class="col-lg-12">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Unit Location Name </mat-label>
-            <input matInput formControlName="unitName">
+            <input matInput formControlName="unitName" />
             <mat-error>*required</mat-error>
           </mat-form-field>
         </div>
       </div>
 
-
       <div class="d-flex align-items-center justify-content-end">
         <button class="dialog-close-btn" mat-dialog-close>Close</button>
-        <button class="dialog-submit-btn" (click)="createCentralBox()">Create</button>
+        <button class="dialog-submit-btn" (click)="createCentralBox()">
+          Create
+        </button>
       </div>
     </form>
   </div>
 
-  <div *ngIf="radiocheck==2">
-
-    <app-camera-transfer [onGetCentralboxDetail]="onGetCentralboxDetail"
-      [currentItem]="currentItem"></app-camera-transfer>
+  <div *ngIf="radiocheck == 2">
+    <app-camera-transfer
+      [onGetCentralboxDetail]="onGetCentralboxDetail"
+      [currentItem]="currentItem"
+    ></app-camera-transfer>
   </div>
-
 </ng-template>
 
 <ng-template #editSiteDialog>
-  <div style="background-color: #084982;">
-    <p class="dialog-title">MODIFY SITE FOR - {{currentSite?.siteName}}</p>
+  <div style="background-color: #084982">
+    <p class="dialog-title">MODIFY SITE FOR - {{ currentSite?.siteName }}</p>
   </div>
 
   <div class="row m-0 dialog-content" *ngIf="currentSite">
     <div class="col-lg-6">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Site Id</mat-label>
-        <input matInput [(ngModel)]="currentItem.siteId" disabled>
+        <input matInput [(ngModel)]="currentItem.siteId" disabled />
       </mat-form-field>
     </div>
 
     <div class="col-lg-6">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Site Name</mat-label>
-        <input matInput [(ngModel)]="currentSite.siteName" disabled>
+        <input matInput [(ngModel)]="currentSite.siteName" disabled />
       </mat-form-field>
     </div>
 
     <div class="col-lg-6">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Site Short Name</mat-label>
-        <input matInput [(ngModel)]="currentSite.siteShortName">
+        <input matInput [(ngModel)]="currentSite.siteShortName" />
       </mat-form-field>
     </div>
 
     <div class="col-lg-6">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Unit Id</mat-label>
-        <input matInput [(ngModel)]="currentSite.unitId">
+        <input matInput [(ngModel)]="currentSite.unitId" />
       </mat-form-field>
     </div>
 
     <div class="col-lg-6">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Phone No</mat-label>
-        <input matInput [(ngModel)]="currentSite.phoneNo">
+        <input matInput [(ngModel)]="currentSite.phoneNo" />
       </mat-form-field>
     </div>
 
     <div class="col-lg-6">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Email</mat-label>
-        <input matInput [(ngModel)]="currentSite.email">
+        <input matInput [(ngModel)]="currentSite.email" />
       </mat-form-field>
     </div>
 
     <div class="col-lg-6">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Account Id</mat-label>
-        <input matInput [(ngModel)]="currentSite.accountId">
+        <input matInput [(ngModel)]="currentSite.accountId" />
       </mat-form-field>
     </div>
 
     <div class="col-lg-6">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Website</mat-label>
-        <input matInput [(ngModel)]="currentSite.website">
+        <input matInput [(ngModel)]="currentSite.website" />
       </mat-form-field>
     </div>
 
@@ -342,7 +404,7 @@
     <div class="col-lg-6">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label> Status</mat-label>
-        <input matInput [(ngModel)]="currentSite.status">
+        <input matInput [(ngModel)]="currentSite.status" />
       </mat-form-field>
     </div>
 
@@ -398,13 +460,20 @@
 
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Time Zone</mat-label>
-        <input matInput [matAutocomplete]="timeZone" [(ngModel)]="currentSite.timezone">
+        <input
+          matInput
+          [matAutocomplete]="timeZone"
+          [(ngModel)]="currentSite.timezone"
+        />
         <button matSuffix mat-icon-button>
           <mat-icon>arrow_drop_down</mat-icon>
         </button>
         <mat-autocomplete #timeZone="matAutocomplete">
-          <mat-option *ngFor="let time of timeZones | search: currentSite.timezone" [value]="time.value">{{ time.value
-            }}</mat-option>
+          <mat-option
+            *ngFor="let time of timeZones | search: currentSite.timezone"
+            [value]="time.value"
+            >{{ time.value }}</mat-option
+          >
         </mat-autocomplete>
       </mat-form-field>
     </div>
@@ -412,8 +481,15 @@
     <div class="col-lg-6">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Select country</mat-label>
-        <mat-select [(ngModel)]="currentSite.country" (selectionChange)="onCountryChange()">
-          <mat-option *ngFor="let country of countries" [value]="country.isoCode">{{ country.name }}</mat-option>
+        <mat-select
+          [(ngModel)]="currentSite.country"
+          (selectionChange)="onCountryChange()"
+        >
+          <mat-option
+            *ngFor="let country of countries"
+            [value]="country.isoCode"
+            >{{ country.name }}</mat-option
+          >
         </mat-select>
       </mat-form-field>
     </div>
@@ -421,8 +497,13 @@
     <div class="col-lg-6">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Select state</mat-label>
-        <mat-select [(ngModel)]="currentSite.state" (selectionChange)="onStateChange()">
-          <mat-option *ngFor="let state of states" [value]="state.isoCode">{{ state.name }}</mat-option>
+        <mat-select
+          [(ngModel)]="currentSite.state"
+          (selectionChange)="onStateChange()"
+        >
+          <mat-option *ngFor="let state of states" [value]="state.isoCode">{{
+            state.name
+          }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
@@ -431,7 +512,9 @@
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Select city</mat-label>
         <mat-select [(ngModel)]="currentSite.district">
-          <mat-option *ngFor="let state of cities" [value]="state.name">{{ state.name }}</mat-option>
+          <mat-option *ngFor="let state of cities" [value]="state.name">{{
+            state.name
+          }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
@@ -439,7 +522,7 @@
     <div class="col-lg-6">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Remarks</mat-label>
-        <input matInput [(ngModel)]="currentSite.remarks">
+        <input matInput [(ngModel)]="currentSite.remarks" />
       </mat-form-field>
     </div>
   </div>
@@ -449,17 +532,23 @@
       <button class="dialog-close-btn" mat-dialog-close>Close</button>
     </div>
     <div>
-      <button class="dialog-submit-btn" mat-dialog-close (click)="confirmEditRow()">Update</button>
+      <button
+        class="dialog-submit-btn"
+        mat-dialog-close
+        (click)="confirmEditRow()"
+      >
+        Update
+      </button>
     </div>
   </div>
 </ng-template>
 
 <ng-template #updateSiteCheckListForm>
-  <div style="background-color: #084982;">
+  <div style="background-color: #084982">
     <p class="dialog-title m-0">Edit</p>
   </div>
 
-  <div class="dialog-content" *ngIf="currentItemDevice" style="width:45vw;">
+  <div class="dialog-content" *ngIf="currentItemDevice" style="width: 45vw">
     <div class="row">
       <!-- <div class="col-lg-4">
         <mat-form-field appearance="outline" class="w-100">
@@ -470,7 +559,7 @@
       <div class="col-lg-6">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>DeviceId</mat-label>
-          <input matInput [(ngModel)]="currentItemDevice.deviceId" disabled>
+          <input matInput [(ngModel)]="currentItemDevice.deviceId" disabled />
         </mat-form-field>
       </div>
       <!-- <div class="col-lg-4">
@@ -482,28 +571,43 @@
       <div class="col-lg-6">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Remarks</mat-label>
-          <input matInput [(ngModel)]="currentItemDevice.remarks" [disabled]="currentItemDevice.scope === 'F'">
+          <input
+            matInput
+            [(ngModel)]="currentItemDevice.remarks"
+            [disabled]="currentItemDevice.scope === 'F'"
+          />
         </mat-form-field>
       </div>
       <div class="col-lg-4">
-        <mat-radio-group [(ngModel)]="currentItemDevice.scope" (ngModelChange)="onScopeChange($event)">
-          <mat-label>Scope</mat-label><br>
+        <mat-radio-group
+          [(ngModel)]="currentItemDevice.scope"
+          (ngModelChange)="onScopeChange($event)"
+        >
+          <mat-label>Scope</mat-label><br />
           <mat-radio-button value="T">Yes</mat-radio-button>
           <mat-radio-button value="F">No</mat-radio-button>
         </mat-radio-group>
       </div>
       <div class="col-lg-4">
-        <mat-radio-group [(ngModel)]="currentItemDevice.configured" [disabled]="currentItemDevice.scope === 'F'"
-          (ngModelChange)="onScopeChange($event)">
-          <mat-label>Configured</mat-label><br>
+        <mat-radio-group
+          [(ngModel)]="currentItemDevice.configured"
+          [disabled]="currentItemDevice.scope === 'F'"
+          (ngModelChange)="onScopeChange($event)"
+        >
+          <mat-label>Configured</mat-label><br />
           <mat-radio-button value="T">Yes</mat-radio-button>
           <mat-radio-button value="F">No</mat-radio-button>
         </mat-radio-group>
       </div>
       <div class="col-lg-4">
-        <mat-radio-group [(ngModel)]="currentItemDevice.working"
-          [disabled]="currentItemDevice.scope === 'F' || currentItemDevice.configured === 'F'">
-          <mat-label>Working</mat-label><br>
+        <mat-radio-group
+          [(ngModel)]="currentItemDevice.working"
+          [disabled]="
+            currentItemDevice.scope === 'F' ||
+            currentItemDevice.configured === 'F'
+          "
+        >
+          <mat-label>Working</mat-label><br />
           <mat-radio-button value="T">Yes</mat-radio-button>
           <mat-radio-button value="F">No</mat-radio-button>
         </mat-radio-group>
@@ -516,13 +620,19 @@
       <button class="dialog-close-btn" mat-dialog-close>Close</button>
     </div>
     <div>
-      <button class="dialog-submit-btn" mat-dialog-close (click)="updateSiteCheckList()">Update</button>
+      <button
+        class="dialog-submit-btn"
+        mat-dialog-close
+        (click)="updateSiteCheckList()"
+      >
+        Update
+      </button>
     </div>
   </div>
 </ng-template>
 
 <ng-template #viewSiteServices>
-  <div style="background-color: #084982;">
+  <div style="background-color: #084982">
     <p class="dialog-title m-0">View</p>
   </div>
 
@@ -531,25 +641,25 @@
       <div class="col-lg-6">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>siteId</mat-label>
-          <input matInput disabled [(ngModel)]="currentItem.siteId">
+          <input matInput disabled [(ngModel)]="currentItem.siteId" />
         </mat-form-field>
       </div>
       <div class="col-lg-6">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Site Name</mat-label>
-          <input matInput [(ngModel)]="currentItem.siteName" disabled>
+          <input matInput [(ngModel)]="currentItem.siteName" disabled />
         </mat-form-field>
       </div>
       <div class="col-lg-2">
         <mat-radio-group [(ngModel)]="currentItem.live">
-          <mat-label>Live</mat-label><br>
+          <mat-label>Live</mat-label><br />
           <mat-radio-button value="T">Yes</mat-radio-button>
           <mat-radio-button value="F">No</mat-radio-button>
         </mat-radio-group>
       </div>
       <div class="col-lg-2 mb-5">
         <mat-radio-group [(ngModel)]="currentItem.alerts">
-          <mat-label>Alerts</mat-label><br>
+          <mat-label>Alerts</mat-label><br />
           <mat-radio-button value="T">Yes</mat-radio-button>
           <mat-radio-button value="F">No</mat-radio-button>
         </mat-radio-group>
@@ -557,35 +667,35 @@
 
       <div class="col-lg-2">
         <mat-radio-group [(ngModel)]="currentItem.insights">
-          <mat-label>Insights</mat-label><br>
+          <mat-label>Insights</mat-label><br />
           <mat-radio-button value="T">Yes</mat-radio-button>
           <mat-radio-button value="F">No</mat-radio-button>
         </mat-radio-group>
       </div>
       <div class="col-lg-2">
         <mat-radio-group [(ngModel)]="currentItem.cameraConfig">
-          <mat-label>Camera Config</mat-label><br>
+          <mat-label>Camera Config</mat-label><br />
           <mat-radio-button value="T">Yes</mat-radio-button>
           <mat-radio-button value="F">No</mat-radio-button>
         </mat-radio-group>
       </div>
       <div class="col-lg-2">
         <mat-radio-group [(ngModel)]="currentItem.deviceHealth">
-          <mat-label>Device Health</mat-label><br>
+          <mat-label>Device Health</mat-label><br />
           <mat-radio-button value="T">Yes</mat-radio-button>
           <mat-radio-button value="F">No</mat-radio-button>
         </mat-radio-group>
       </div>
       <div class="col-lg-2 mb-5">
         <mat-radio-group [(ngModel)]="currentItem.advertisements">
-          <mat-label>Advertisements</mat-label><br>
+          <mat-label>Advertisements</mat-label><br />
           <mat-radio-button value="T">Yes</mat-radio-button>
           <mat-radio-button value="F">No</mat-radio-button>
         </mat-radio-group>
       </div>
       <div class="col-lg-2">
         <mat-radio-group [(ngModel)]="currentItem.sensors">
-          <mat-label>Sensors</mat-label><br>
+          <mat-label>Sensors</mat-label><br />
           <mat-radio-button value="T">Yes</mat-radio-button>
           <mat-radio-button value="F">No</mat-radio-button>
         </mat-radio-group>
@@ -593,42 +703,42 @@
 
       <div class="col-lg-2">
         <mat-radio-group [(ngModel)]="currentItem.ivisBox">
-          <mat-label>ivisBox</mat-label><br>
+          <mat-label>ivisBox</mat-label><br />
           <mat-radio-button value="T">Yes</mat-radio-button>
           <mat-radio-button value="F">No</mat-radio-button>
         </mat-radio-group>
       </div>
       <div class="col-lg-2">
         <mat-radio-group [(ngModel)]="currentItem.simDetails">
-          <mat-label>simDetails</mat-label><br>
+          <mat-label>simDetails</mat-label><br />
           <mat-radio-button value="T">Yes</mat-radio-button>
           <mat-radio-button value="F">No</mat-radio-button>
         </mat-radio-group>
       </div>
       <div class="col-lg-2">
         <mat-radio-group [(ngModel)]="currentItem.safetyEscort">
-          <mat-label>Safety Escort</mat-label><br>
+          <mat-label>Safety Escort</mat-label><br />
           <mat-radio-button value="T">Yes</mat-radio-button>
           <mat-radio-button value="F">No</mat-radio-button>
         </mat-radio-group>
       </div>
       <div class="col-lg-2">
         <mat-radio-group [(ngModel)]="currentItem.timeLapse">
-          <mat-label>Timelapse</mat-label><br>
+          <mat-label>Timelapse</mat-label><br />
           <mat-radio-button value="T">Yes</mat-radio-button>
           <mat-radio-button value="F">No</mat-radio-button>
         </mat-radio-group>
       </div>
       <div class="col-lg-2">
         <mat-radio-group [(ngModel)]="currentItem.subscribed">
-          <mat-label>subscribed</mat-label><br>
+          <mat-label>subscribed</mat-label><br />
           <mat-radio-button value="T">Yes</mat-radio-button>
           <mat-radio-button value="F">No</mat-radio-button>
         </mat-radio-group>
       </div>
       <div class="col-lg-2">
         <mat-radio-group [(ngModel)]="currentItem.nvr">
-          <mat-label>NVR</mat-label><br>
+          <mat-label>NVR</mat-label><br />
           <mat-radio-button value="T">Yes</mat-radio-button>
           <mat-radio-button value="F">No</mat-radio-button>
         </mat-radio-group>
@@ -641,100 +751,183 @@
       <button class="dialog-close-btn" mat-dialog-close>Close</button>
     </div>
     <div>
-      <button class="dialog-submit-btn" mat-dialog-close (click)="updateSiteServices()">Update</button>
+      <button
+        class="dialog-submit-btn"
+        mat-dialog-close
+        (click)="updateSiteServices()"
+      >
+        Update
+      </button>
     </div>
   </div>
 </ng-template>
 
 <ng-template #viewSiteValidation>
-  <div style="background-color: #084982;">
-    <p class="dialog-title text-center" style="font-size: 18px;">Device &nbsp;Configuration&nbsp; Dashboard</p>
+  <div style="background-color: #084982">
+    <p class="dialog-title text-center" style="font-size: 18px">
+      Device &nbsp;Configuration&nbsp; Dashboard
+    </p>
   </div>
 
   <div class="p-1">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <div>
-        <p style="font-size: 16px; font-weight: 500;">{{currentItem?.siteName}} - {{currentItem?.siteId}}</p>
-        <p style="font-size: 16px; font-weight: 500;">Total No Of Devices - {{validationChecklistDataNew?.length ?
-          validationChecklistDataNew?.length : '0'}}</p>
+        <p style="font-size: 16px; font-weight: 500">
+          {{ currentItem?.siteName }} - {{ currentItem?.siteId }}
+        </p>
+        <p style="font-size: 16px; font-weight: 500">
+          Total No Of Devices -
+          {{
+            validationChecklistDataNew?.length
+              ? validationChecklistDataNew?.length
+              : "0"
+          }}
+        </p>
         <!-- <p  style="font-size: 16px; font-weight: 500;">{{userName}} - {{currentUser}}</p> -->
       </div>
-      <button (click)="addSiteCheckList()" class="create-btn">Configure Device</button>
-
+      <button (click)="addSiteCheckList()" class="create-btn">
+        Configure Device
+      </button>
     </div>
-    <div style="max-height: 40vh; overflow-y: auto;">
+    <div style="max-height: 40vh; overflow-y: auto">
       <mat-accordion>
-        <mat-expansion-panel *ngFor="let device of validationChecklistDataNew" (opened)="panelOpenState.set(true)"
-          (closed)="panelOpenState.set(false)">
+        <mat-expansion-panel
+          *ngFor="let device of validationChecklistDataNew"
+          (opened)="panelOpenState.set(true)"
+          (closed)="panelOpenState.set(false)"
+        >
           <mat-expansion-panel-header>
             <mat-panel-description>
               <div>
-                <p style="color:#084982; font-size: 12px;">DeviceId</p>
-                <p style="font-size: 12px;">{{ device?.deviceId }} </p>
+                <p style="color: #084982; font-size: 12px">DeviceId</p>
+                <p style="font-size: 12px">{{ device?.deviceId }}</p>
               </div>
               <div>
-                <p style="color:#2e72ad; font-size: 12px;">Installed Date</p>
-                <p style="font-size: 12px;">{{ device?.installationDate }}</p>
+                <p style="color: #2e72ad; font-size: 12px">Installed Date</p>
+                <p style="font-size: 12px">{{ device?.installationDate }}</p>
               </div>
               <div>
-                <p style="color:#084982; font-size: 12px;">ConfiguredBy</p>
-                <p style="font-size: 12px;">{{ device?.configuredByName }}</p>
+                <p style="color: #084982; font-size: 12px">ConfiguredBy</p>
+                <p style="font-size: 12px">{{ device?.configuredByName }}</p>
               </div>
               <div>
-                <p style="color:#084982; font-size: 12px;" class="text-center">Reviewed By</p>
-                <p class="text-center" style="font-size: 12px;">{{ device?.reviewedByName ? device.reviewedByName : '-'
-                  }}</p>
+                <p style="color: #084982; font-size: 12px" class="text-center">
+                  Reviewed By
+                </p>
+                <p class="text-center" style="font-size: 12px">
+                  {{ device?.reviewedByName ? device.reviewedByName : "-" }}
+                </p>
               </div>
               <div>
-                <p style="color:#084982; font-size: 12px;">Scope</p>
-                <circle-progress [percent]="device.scopePercentage" [radius]="15" [outerStrokeWidth]="2"
-                  [innerStrokeWidth]="0" [outerStrokeColor]="'#78C000'" [innerStrokeColor]="'#C7E596'"
-                  [animation]="true" [animationDuration]="300" [showSubtitle]="false" [titleFontSize]="'11'">
+                <p style="color: #084982; font-size: 12px">Scope</p>
+                <circle-progress
+                  [percent]="device.scopePercentage"
+                  [radius]="15"
+                  [outerStrokeWidth]="2"
+                  [innerStrokeWidth]="0"
+                  [outerStrokeColor]="'#78C000'"
+                  [innerStrokeColor]="'#C7E596'"
+                  [animation]="true"
+                  [animationDuration]="300"
+                  [showSubtitle]="false"
+                  [titleFontSize]="'11'"
+                >
                 </circle-progress>
               </div>
               <div>
-                <p style="color:#084982; font-size: 12px;">ConfiguredStatus</p>
-                <circle-progress [percent]="device.configuredPercentage" [radius]="15" [outerStrokeWidth]="2"
-                  [innerStrokeWidth]="0" [outerStrokeColor]="'#78C000'" [innerStrokeColor]="'#C7E596'"
-                  [animation]="true" [animationDuration]="300" [showSubtitle]="false" [titleFontSize]="'11'">
+                <p style="color: #084982; font-size: 12px">ConfiguredStatus</p>
+                <circle-progress
+                  [percent]="device.configuredPercentage"
+                  [radius]="15"
+                  [outerStrokeWidth]="2"
+                  [innerStrokeWidth]="0"
+                  [outerStrokeColor]="'#78C000'"
+                  [innerStrokeColor]="'#C7E596'"
+                  [animation]="true"
+                  [animationDuration]="300"
+                  [showSubtitle]="false"
+                  [titleFontSize]="'11'"
+                >
                 </circle-progress>
               </div>
               <div>
-                <p style="color:#084982; font-size: 12px;">WorkingStatus</p>
-                <circle-progress [percent]="device.workingPercentage" [radius]="15" [outerStrokeWidth]="2"
-                  [innerStrokeWidth]="0" [outerStrokeColor]="'#78C000'" [innerStrokeColor]="'#C7E596'"
-                  [animation]="true" [animationDuration]="300" [titleFontSize]="'11'" [showSubtitle]="false">
+                <p style="color: #084982; font-size: 12px">WorkingStatus</p>
+                <circle-progress
+                  [percent]="device.workingPercentage"
+                  [radius]="15"
+                  [outerStrokeWidth]="2"
+                  [innerStrokeWidth]="0"
+                  [outerStrokeColor]="'#78C000'"
+                  [innerStrokeColor]="'#C7E596'"
+                  [animation]="true"
+                  [animationDuration]="300"
+                  [titleFontSize]="'11'"
+                  [showSubtitle]="false"
+                >
                 </circle-progress>
               </div>
               <div>
-                <p style="color:#084982; font-size: 12px;">ReviewStatus</p>
-                <circle-progress [percent]="device.reviewPercentage" [radius]="15" [outerStrokeWidth]="2"
-                  [innerStrokeWidth]="0" [outerStrokeColor]="'#78C000'" [innerStrokeColor]="'#C7E596'"
-                  [animation]="true" [animationDuration]="300" [titleFontSize]="'11'" [showSubtitle]="false">
+                <p style="color: #084982; font-size: 12px">ReviewStatus</p>
+                <circle-progress
+                  [percent]="device.reviewPercentage"
+                  [radius]="15"
+                  [outerStrokeWidth]="2"
+                  [innerStrokeWidth]="0"
+                  [outerStrokeColor]="'#78C000'"
+                  [innerStrokeColor]="'#C7E596'"
+                  [animation]="true"
+                  [animationDuration]="300"
+                  [titleFontSize]="'11'"
+                  [showSubtitle]="false"
+                >
                 </circle-progress>
               </div>
               <div>
-                <p style="color:#084982; font-size: 12px;">Total</p>
-                <circle-progress [percent]="device.totalPercentage" [radius]="15" [outerStrokeWidth]="2"
-                  [innerStrokeWidth]="0" [outerStrokeColor]="'#78C000'" [innerStrokeColor]="'#C7E596'"
-                  [animation]="true" [animationDuration]="100" [showSubtitle]="false" [titleFontSize]="'11'">
+                <p style="color: #084982; font-size: 12px">Total</p>
+                <circle-progress
+                  [percent]="device.totalPercentage"
+                  [radius]="15"
+                  [outerStrokeWidth]="2"
+                  [innerStrokeWidth]="0"
+                  [outerStrokeColor]="'#78C000'"
+                  [innerStrokeColor]="'#C7E596'"
+                  [animation]="true"
+                  [animationDuration]="100"
+                  [showSubtitle]="false"
+                  [titleFontSize]="'11'"
+                >
                 </circle-progress>
               </div>
             </mat-panel-description>
           </mat-expansion-panel-header>
           <!-- [disabled]="!device.edit" -->
           <div class="d-flex justify-content-end align-items-center">
-            <button (click)="openEditForSiteValidation(device)"
-              *ngIf="currentRole?.category === 'Admin' && currentRole?.department === 'IT-Config'"
-              class="btn btn-primary">Edit</button>
-            <button (click)="openEditForSiteValidation(device)"
-              *ngIf="currentRole?.category !== 'Admin' && currentRole?.department !== 'IT-Config'"
-              class="btn btn-primary" [disabled]="!device.edit">Edit</button>
+            <button
+              (click)="openEditForSiteValidation(device)"
+              *ngIf="
+                currentRole?.category === 'Admin' &&
+                currentRole?.department === 'IT-Config'
+              "
+              class="btn btn-primary"
+            >
+              Edit
+            </button>
+            <button
+              (click)="openEditForSiteValidation(device)"
+              *ngIf="
+                currentRole?.category !== 'Admin' &&
+                currentRole?.department !== 'IT-Config'
+              "
+              class="btn btn-primary"
+              [disabled]="!device.edit"
+            >
+              Edit
+            </button>
           </div>
           <div class="dialog-content">
             <table>
               <thead>
-                <tr style="background-color: #084982; ">
+                <tr style="background-color: #084982">
                   <th>Services</th>
                   <th class="text-center">Scope</th>
                   <th class="text-center">Configured Status</th>
@@ -748,23 +941,47 @@
               <tbody>
                 <tr *ngFor="let checklist of device.validationChecklists">
                   <td>{{ checklist.validationParameter }}</td>
-                  <td *ngIf="checklist.scope == true ">
-                    <p class="text-center"><img src="assets\icons\switch-on.png" alt="" width="28px"></p>
+                  <td *ngIf="checklist.scope == true">
+                    <p class="text-center">
+                      <img
+                        src="assets\icons\switch-on.png"
+                        alt=""
+                        width="28px"
+                      />
+                    </p>
                   </td>
-                  <td *ngIf="checklist.scope == false ">
-                    <p class="text-center"> <img src="assets/icons/switch.png" width="28px"></p>
+                  <td *ngIf="checklist.scope == false">
+                    <p class="text-center">
+                      <img src="assets/icons/switch.png" width="28px" />
+                    </p>
                   </td>
-                  <td *ngIf="checklist.configured == true ">
-                    <p class="text-center"><img src="assets/icons/green-dot.png" alt="" width="14px"></p>
+                  <td *ngIf="checklist.configured == true">
+                    <p class="text-center">
+                      <img
+                        src="assets/icons/green-dot.png"
+                        alt=""
+                        width="14px"
+                      />
+                    </p>
                   </td>
-                  <td *ngIf="checklist.configured == false ">
-                    <p class="text-center"><img src="assets/icons/red-dot.png" alt="" width="14px"></p>
+                  <td *ngIf="checklist.configured == false">
+                    <p class="text-center">
+                      <img src="assets/icons/red-dot.png" alt="" width="14px" />
+                    </p>
                   </td>
-                  <td *ngIf="checklist.working == true ">
-                    <p class="text-center"><img src="assets/icons/green-dot.png" alt="" width="14px"></p>
+                  <td *ngIf="checklist.working == true">
+                    <p class="text-center">
+                      <img
+                        src="assets/icons/green-dot.png"
+                        alt=""
+                        width="14px"
+                      />
+                    </p>
                   </td>
-                  <td *ngIf="checklist.working == false ">
-                    <p class="text-center"><img src="assets/icons/red-dot.png" alt="" width="14px"></p>
+                  <td *ngIf="checklist.working == false">
+                    <p class="text-center">
+                      <img src="assets/icons/red-dot.png" alt="" width="14px" />
+                    </p>
                   </td>
                   <!-- <td *ngIf="checklist.reviewStatus == false ">
                     <p class="text-center"><img
@@ -778,18 +995,30 @@
                   </td> -->
                   <td>
                     <p>
-                      <input type="checkbox" class="form-check-input text-center" style="margin-left: 10px;"
-                        [(ngModel)]="checklist.reviewStatus" disabled>
+                      <input
+                        type="checkbox"
+                        class="form-check-input text-center"
+                        style="margin-left: 10px"
+                        [(ngModel)]="checklist.reviewStatus"
+                        disabled
+                      />
                     </p>
                   </td>
                   <td class="text-ellipsis" [matTooltip]="checklist.remarks">
-                    <p class="text-center">{{ checklist.remarks ? checklist.remarks : '-'}}</p>
+                    <p class="text-center">
+                      {{ checklist.remarks ? checklist.remarks : "-" }}
+                    </p>
                   </td>
                   <!-- <td class="text-center">
                     <img src="assets/icons/edit.svg" alt="" matTooltip="Edit"
                       (click)="openEdit({dev: device, chk: checklist})">
                   </td> -->
-                  <td (click)="listSiteCheckListHistory(device, checklist)" matTooltip="View History">View</td>
+                  <td
+                    (click)="listSiteCheckListHistory(device, checklist)"
+                    matTooltip="View History"
+                  >
+                    View
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -806,38 +1035,74 @@
 </ng-template>
 
 <ng-template #viewSiteHistory>
-  <div style="background-color: #084982;">
+  <div style="background-color: #084982">
     <p class="dialog-title m-0">History</p>
   </div>
   <div class="dialog-content">
     <div class="table-resp">
       <table class="table table-hover">
         <thead>
-          <tr class="form1" style="background-image: linear-gradient(to right, #084982, #D34124);">
+          <tr
+            class="form1"
+            style="
+              background-image: linear-gradient(to right, #084982, #d34124);
+            "
+          >
             <th class="text-center">
-              <p>Services
-                <img (click)="sort('validationParameter')" class="pointer ms-1" src="assets/icons/sorticon.svg"
-                  width="15px">
+              <p>
+                Services
+                <img
+                  (click)="sort('validationParameter')"
+                  class="pointer ms-1"
+                  src="assets/icons/sorticon.svg"
+                  width="15px"
+                />
               </p>
             </th>
             <th class="text-center">
               <span>Scope</span>
-              <img (click)="sort('scope')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
+              <img
+                (click)="sort('scope')"
+                class="pointer ms-1"
+                src="assets/icons/sorticon.svg"
+                width="15px"
+              />
             </th>
             <th class="text-center">
               <span>Configured Status</span>
-              <img (click)="sort('configured')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
+              <img
+                (click)="sort('configured')"
+                class="pointer ms-1"
+                src="assets/icons/sorticon.svg"
+                width="15px"
+              />
             </th>
             <th class="text-center">
               <span>Working Status</span>
-              <img (click)="sort('working')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
+              <img
+                (click)="sort('working')"
+                class="pointer ms-1"
+                src="assets/icons/sorticon.svg"
+                width="15px"
+              />
             </th>
             <th class="text-center">
               <span>CreatedBy</span>
-              <img (click)="sort('createdByName')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
+              <img
+                (click)="sort('createdByName')"
+                class="pointer ms-1"
+                src="assets/icons/sorticon.svg"
+                width="15px"
+              />
             </th>
-            <th class="text-center">ModifiedBy
-              <img (click)="sort('modifiedByName')" class="pointer ms-1" src="assets/icons/sorticon.svg" width="15px">
+            <th class="text-center">
+              ModifiedBy
+              <img
+                (click)="sort('modifiedByName')"
+                class="pointer ms-1"
+                src="assets/icons/sorticon.svg"
+                width="15px"
+              />
             </th>
             <!-- <th class="text-center">
             <span>assignedTo</span>
@@ -852,34 +1117,49 @@
         </thead>
         <tbody>
           <tr *ngFor="let cust of siteHistoryData; let i = index">
-            <td class="text-center">{{cust.validationParameter}}</td>
+            <td class="text-center">{{ cust.validationParameter }}</td>
             <!-- <td class="text-center">{{cust.scope === 'T' ? 'TRUE' : 'FALSE'}}</td>
         <td class="text-center">{{cust.configured === 'T' ? 'TRUE' : 'FALSE'}}</td>
         <td class="text-center">{{cust.working === 'T' ? 'TRUE' : 'FALSE'}}</td> -->
-            <td *ngIf="cust.scope == true ">
-              <p class="text-center"><img src="assets/icons/green-dot.png" alt="" width="14px"></p>
+            <td *ngIf="cust.scope == true">
+              <p class="text-center">
+                <img src="assets/icons/green-dot.png" alt="" width="14px" />
+              </p>
             </td>
-            <td *ngIf="cust.scope == false ">
-              <p class="text-center"> <img src="assets/icons/red-dot.png" width="14px"></p>
+            <td *ngIf="cust.scope == false">
+              <p class="text-center">
+                <img src="assets/icons/red-dot.png" width="14px" />
+              </p>
             </td>
-            <td *ngIf="cust.configured == true ">
-              <p class="text-center"><img src="assets/icons/green-dot.png" alt="" width="14px"></p>
+            <td *ngIf="cust.configured == true">
+              <p class="text-center">
+                <img src="assets/icons/green-dot.png" alt="" width="14px" />
+              </p>
             </td>
-            <td *ngIf="cust.configured == false ">
-              <p class="text-center"><img src="assets/icons/red-dot.png" alt="" width="14px"></p>
+            <td *ngIf="cust.configured == false">
+              <p class="text-center">
+                <img src="assets/icons/red-dot.png" alt="" width="14px" />
+              </p>
             </td>
-            <td *ngIf="cust.working == true ">
-              <p class="text-center"><img src="assets/icons/green-dot.png" alt="" width="14px"></p>
+            <td *ngIf="cust.working == true">
+              <p class="text-center">
+                <img src="assets/icons/green-dot.png" alt="" width="14px" />
+              </p>
             </td>
-            <td *ngIf="cust.working == false ">
-              <p class="text-center"><img src="assets/icons/red-dot.png" alt="" width="14px"></p>
+            <td *ngIf="cust.working == false">
+              <p class="text-center">
+                <img src="assets/icons/red-dot.png" alt="" width="14px" />
+              </p>
             </td>
-            <td class="text-center">{{cust.createdByName ? cust.createdByName : '-'}}</td>
-            <td class="text-center">{{cust.modifiedByName ? cust.modifiedByName : '-'}}</td>
+            <td class="text-center">
+              {{ cust.createdByName ? cust.createdByName : "-" }}
+            </td>
+            <td class="text-center">
+              {{ cust.modifiedByName ? cust.modifiedByName : "-" }}
+            </td>
             <!-- <td class="text-center">{{cust.assignedTo ? cust.assignedTo : '-'}}</td>
             <td class="text-center">{{cust.assignedByName ? cust.assignedByName : '-'}}</td> -->
-            <td class="text-center">{{cust.remarks ? cust.remarks : '-'}}</td>
-
+            <td class="text-center">{{ cust.remarks ? cust.remarks : "-" }}</td>
           </tr>
         </tbody>
       </table>
@@ -894,29 +1174,33 @@
 </ng-template>
 
 <ng-template #addSiteCheckListForm>
-  <div style="background-color: #084982;">
+  <div style="background-color: #084982">
     <p class="dialog-title m-0">ADD Service To Device</p>
   </div>
-  <div class="dialog-content" style="width: 45vw;">
+  <div class="dialog-content" style="width: 45vw">
     <div class="row">
       <div class="col-lg-6">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>SiteId</mat-label>
-          <input matInput [(ngModel)]="currentItem.siteId" disabled>
+          <input matInput [(ngModel)]="currentItem.siteId" disabled />
         </mat-form-field>
       </div>
       <div class="col-lg-6">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>siteName</mat-label>
-          <input matInput [(ngModel)]="currentItem.siteName" disabled>
+          <input matInput [(ngModel)]="currentItem.siteName" disabled />
         </mat-form-field>
       </div>
       <div class="col-lg-6">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Select</mat-label>
           <mat-select required [(ngModel)]="deviceFor">
-            <mat-option *ngFor="let item of categoriesSub" [value]="item.name"
-              (click)="getValidationCheckListForCategory(item)">{{ item.name }}</mat-option>
+            <mat-option
+              *ngFor="let item of categoriesSub"
+              [value]="item.name"
+              (click)="getValidationCheckListForCategory(item)"
+              >{{ item.name }}</mat-option
+            >
           </mat-select>
           <mat-error>Select device To is required</mat-error>
         </mat-form-field>
@@ -925,15 +1209,24 @@
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Select Device</mat-label>
           <mat-select [(ngModel)]="myObj.deviceId">
-            <mat-option *ngFor="let item of centralBoxData" [value]="item.unitId"
-              [disabled]="isDeviceAlreadySelected(item.unitId)">{{ item.unitId }}</mat-option>
+            <mat-option
+              *ngFor="let item of centralBoxData"
+              [value]="item.unitId"
+              [disabled]="isDeviceAlreadySelected(item.unitId)"
+              >{{ item.unitId }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
       </div>
       <div class="table-resp" *ngIf="validationData.length != 0">
         <table class="table table-hover">
           <thead>
-            <tr class="form1" style="background-image: linear-gradient(to right, #084982, #D34124);">
+            <tr
+              class="form1"
+              style="
+                background-image: linear-gradient(to right, #084982, #d34124);
+              "
+            >
               <th>
                 <p>Services</p>
               </th>
@@ -952,30 +1245,53 @@
           <tbody>
             <tr *ngFor="let cust of validationData; let i = index">
               <td>
-                {{cust.validationParameter}}
+                {{ cust.validationParameter }}
               </td>
               <td>
-                <input type="checkbox" class="form-check-input" style="margin-left: 10px;" [(ngModel)]="cust.scope">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  style="margin-left: 10px"
+                  [(ngModel)]="cust.scope"
+                />
               </td>
               <td>
-                <input type="checkbox" class="form-check-input" style="margin-left: 10px;" [(ngModel)]="cust.configured"
-                  [disabled]="!cust.scope" (ngModelChange)="onScopeChange($event, cust)">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  style="margin-left: 10px"
+                  [(ngModel)]="cust.configured"
+                  [disabled]="!cust.scope"
+                  (ngModelChange)="onScopeChange($event, cust)"
+                />
               </td>
               <td>
-                <input type="checkbox" class="form-check-input" style="margin-left: 10px;" [(ngModel)]="cust.working"
-                  [disabled]="!cust.scope || !cust.configured">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  style="margin-left: 10px"
+                  [(ngModel)]="cust.working"
+                  [disabled]="!cust.scope || !cust.configured"
+                />
               </td>
-              <td class="text-center"><input type="text" placeholder="Enter" [(ngModel)]="cust.remarks"></td>
+              <td class="text-center">
+                <input
+                  type="text"
+                  placeholder="Enter"
+                  [(ngModel)]="cust.remarks"
+                />
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
-
     </div>
   </div>
 
-  <div class="d-flex align-items-center justify-content-between" *ngIf=" validationData.length != 0">
-
+  <div
+    class="d-flex align-items-center justify-content-between"
+    *ngIf="validationData.length != 0"
+  >
     <!-- <div class="col-lg-3 mx-2 mt-2">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Assign To</mat-label>
@@ -986,37 +1302,57 @@
       </mat-form-field>
     </div> -->
     <div class="mx-2">
-      <button style="background-color:#084982; color: white;  width: 80px;
-      padding: 6px 0;
-      border-radius: 5px;
-      border-width: 0;
-      font-size: 14px;
-      margin: 0 10px 10px 0;" (click)="add(0,'save')">
+      <button
+        style="
+          background-color: #084982;
+          color: white;
+          width: 80px;
+          padding: 6px 0;
+          border-radius: 5px;
+          border-width: 0;
+          font-size: 14px;
+          margin: 0 10px 10px 0;
+        "
+        (click)="add(0, 'save')"
+      >
         <i class="fa fa-spinner fa-spin" *ngIf="showLoader"></i>
         Save
       </button>
     </div>
     <div>
-      <button style="background-color:#0aa14e; color: white;  width: 160px;
-      padding: 6px 0;
-      border-radius: 5px;
-      border-width: 0;
-      font-size: 14px;
-      margin: 0 10px 10px 0;" (click)="addService1()">
+      <button
+        style="
+          background-color: #0aa14e;
+          color: white;
+          width: 160px;
+          padding: 6px 0;
+          border-radius: 5px;
+          border-width: 0;
+          font-size: 14px;
+          margin: 0 10px 10px 0;
+        "
+        (click)="addService1()"
+      >
         Assign & Save
       </button>
     </div>
     <div>
-      <button style="background-color:#084982; color: white;  width: 140px;
-      padding: 6px 0;
-      border-radius: 5px;
-      border-width: 0;
-      font-size: 14px;
-      margin: 0 10px 10px 0;" (click)="addReview()">
+      <button
+        style="
+          background-color: #084982;
+          color: white;
+          width: 140px;
+          padding: 6px 0;
+          border-radius: 5px;
+          border-width: 0;
+          font-size: 14px;
+          margin: 0 10px 10px 0;
+        "
+        (click)="addReview()"
+      >
         Send For Review
       </button>
     </div>
-
   </div>
   <div class="d-flex align-items-center justify-content-end">
     <button class="dialog-close-btn" mat-dialog-close>Close</button>
@@ -1024,29 +1360,34 @@
 </ng-template>
 
 <ng-template #editSiteCheckListForm>
-  <div style="background-color: #084982;">
+  <div style="background-color: #084982">
     <p class="dialog-title m-0">Edit</p>
   </div>
-  <div class="dialog-content" style="width: 45vw;">
+  <div class="dialog-content" style="width: 45vw">
     <div class="row">
       <div class="col-lg-6">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>SiteId</mat-label>
-          <input matInput [(ngModel)]="currentItem.siteId" disabled>
+          <input matInput [(ngModel)]="currentItem.siteId" disabled />
         </mat-form-field>
       </div>
       <div class="col-lg-6">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>siteName</mat-label>
-          <input matInput [(ngModel)]="currentItem.siteName" disabled>
+          <input matInput [(ngModel)]="currentItem.siteName" disabled />
         </mat-form-field>
       </div>
       <div class="col-lg-6">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Select</mat-label>
           <mat-select required [(ngModel)]="deviceFor">
-            <mat-option *ngFor="let item of categoriesSub" [value]="item.name" [disabled]="item.name !== deviceFor"
-              (click)="getValidationCheckListForCategory(item)">{{ item.name }}</mat-option>
+            <mat-option
+              *ngFor="let item of categoriesSub"
+              [value]="item.name"
+              [disabled]="item.name !== deviceFor"
+              (click)="getValidationCheckListForCategory(item)"
+              >{{ item.name }}</mat-option
+            >
           </mat-select>
           <mat-error>Select device To is required</mat-error>
         </mat-form-field>
@@ -1054,14 +1395,19 @@
       <div class="col-lg-6">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>deviceId</mat-label>
-          <input matInput [(ngModel)]="currentDevice" disabled>
+          <input matInput [(ngModel)]="currentDevice" disabled />
         </mat-form-field>
       </div>
 
-      <div class="table-resp" *ngIf=" editCheckList.length > 0">
+      <div class="table-resp" *ngIf="editCheckList.length > 0">
         <table class="table table-hover">
           <thead>
-            <tr class="form1" style="background-image: linear-gradient(to right, #084982, #D34124);">
+            <tr
+              class="form1"
+              style="
+                background-image: linear-gradient(to right, #084982, #d34124);
+              "
+            >
               <th>
                 <p>Services</p>
               </th>
@@ -1084,27 +1430,63 @@
           <tbody>
             <tr *ngFor="let cust of editCheckList; let i = index">
               <td>
-                {{cust?.validationParameter}}
+                {{ cust?.validationParameter }}
               </td>
               <td>
-                <input type="checkbox" class="form-check-input" style="margin-left: 10px;" [(ngModel)]="cust.scope"
-                  (ngModelChange)="getChangedList(cust)">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  style="margin-left: 10px"
+                  [(ngModel)]="cust.scope"
+                  (ngModelChange)="getChangedList(cust)"
+                />
               </td>
               <td>
-                <input type="checkbox" class="form-check-input" style="margin-left: 10px;" [(ngModel)]="cust.configured"
-                  [disabled]="!cust.scope" (ngModelChange)="onScopeChange($event, cust); getChangedList(cust)">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  style="margin-left: 10px"
+                  [(ngModel)]="cust.configured"
+                  [disabled]="!cust.scope"
+                  (ngModelChange)="
+                    onScopeChange($event, cust); getChangedList(cust)
+                  "
+                />
               </td>
               <td>
-                <input type="checkbox" class="form-check-input" style="margin-left: 10px;" [(ngModel)]="cust.working"
-                  [disabled]="!cust.scope || !cust.configured" (ngModelChange)="getChangedList(cust)">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  style="margin-left: 10px"
+                  [(ngModel)]="cust.working"
+                  [disabled]="!cust.scope || !cust.configured"
+                  (ngModelChange)="getChangedList(cust)"
+                />
               </td>
 
-              <td class="text-center"><input type="checkbox" placeholder="Enter" [(ngModel)]="cust.reviewStatus"
-                  [disabled]="currentRole?.category !== 'Admin' || !cust.scope || !cust.configured || !cust.working"
-                  (ngModelChange)="getChangedList(cust)"></td>
+              <td class="text-center">
+                <input
+                  type="checkbox"
+                  placeholder="Enter"
+                  [(ngModel)]="cust.reviewStatus"
+                  [disabled]="
+                    currentRole?.category !== 'Admin' ||
+                    !cust.scope ||
+                    !cust.configured ||
+                    !cust.working
+                  "
+                  (ngModelChange)="getChangedList(cust)"
+                />
+              </td>
 
-              <td class="text-center"><input type="text" placeholder="Enter" [(ngModel)]="cust.remarks"
-                  (ngModelChange)="getChangedList(cust)"></td>
+              <td class="text-center">
+                <input
+                  type="text"
+                  placeholder="Enter"
+                  [(ngModel)]="cust.remarks"
+                  (ngModelChange)="getChangedList(cust)"
+                />
+              </td>
             </tr>
           </tbody>
         </table>
@@ -1112,7 +1494,6 @@
     </div>
   </div>
   <div class="d-flex align-items-center justify-content-between">
-
     <!-- <div class="col-lg-3 mx-2 mt-2">
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Assign To</mat-label>
@@ -1123,37 +1504,74 @@
     </mat-form-field>
   </div> -->
     <div class="mx-2">
-      <button style="background-color:#084982; color: white;  width: 80px;
-    padding: 6px 0;
-    border-radius: 5px;
-    border-width: 0;
-    font-size: 14px;
-    margin: 0 10px 10px 0;" (click)="updateSiteCheckListFor(0)">Save</button>
+      <button
+        style="
+          background-color: #084982;
+          color: white;
+          width: 80px;
+          padding: 6px 0;
+          border-radius: 5px;
+          border-width: 0;
+          font-size: 14px;
+          margin: 0 10px 10px 0;
+        "
+        (click)="updateSiteCheckListFor(0)"
+      >
+        Save
+      </button>
     </div>
     <div>
-      <button style="background-color:#0aa14e; color: white;  width: 160px;
-    padding: 6px 0;
-    border-radius: 5px;
-    border-width: 0;
-    font-size: 14px;
-    margin: 0 10px 10px 0;" (click)="addService2()">Assign & Save</button>
+      <button
+        style="
+          background-color: #0aa14e;
+          color: white;
+          width: 160px;
+          padding: 6px 0;
+          border-radius: 5px;
+          border-width: 0;
+          font-size: 14px;
+          margin: 0 10px 10px 0;
+        "
+        (click)="addService2()"
+      >
+        Assign & Save
+      </button>
     </div>
     <div>
-      <button style="background-color:#084982; color: white;  width: 140px;
-    padding: 6px 0;
-    border-radius: 5px;
-    border-width: 0;
-    font-size: 14px;
-    margin: 0 10px 10px 0;" (click)="addReview2()">Send For Review</button>
+      <button
+        style="
+          background-color: #084982;
+          color: white;
+          width: 140px;
+          padding: 6px 0;
+          border-radius: 5px;
+          border-width: 0;
+          font-size: 14px;
+          margin: 0 10px 10px 0;
+        "
+        (click)="addReview2()"
+      >
+        Send For Review
+      </button>
     </div>
     <div class="mx-2">
-      <button style="background-color: rgb(236, 167, 76); color: white;  width: 80px;
-    padding: 6px 0;
-    border-radius: 5px;
-    border-width: 0;
-    font-size: 14px;
-    margin: 0 10px 10px 0;" (click)="updateSiteCheckListFor(3)" *ngIf="currentRole?.category === 'Admin'"
-        [disabled]="!isAllValid()">completed</button>
+      <button
+        style="
+          background-color: rgb(236, 167, 76);
+          color: white;
+          width: 80px;
+          padding: 6px 0;
+          border-radius: 5px;
+          border-width: 0;
+          font-size: 14px;
+          margin: 0 10px 10px 0;
+        "
+        (click)="updateSiteCheckListFor(3)"
+        *ngIf="currentRole?.category === 'Admin'"
+        [disabled]="!isAllValid()"
+      >
+        completed
+      </button>
     </div>
   </div>
   <div class="d-flex align-items-center justify-content-end">
@@ -1162,7 +1580,7 @@
 </ng-template>
 
 <ng-template #assignFirst>
-  <div style="background-color: #084982;">
+  <div style="background-color: #084982">
     <p class="dialog-title m-0">Assign</p>
   </div>
   <mat-dialog-content>
@@ -1172,8 +1590,13 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Assign To</mat-label>
             <mat-select [(ngModel)]="myObj.assignedTo" required>
-              <mat-option *ngFor="let item of roleDetails" [value]="item" [disabled]="item.UserId == currentUser"> {{
-                item?.userName || 'Unknown Department' }}</mat-option>
+              <mat-option
+                *ngFor="let item of roleDetails"
+                [value]="item"
+                [disabled]="item.UserId == currentUser"
+              >
+                {{ item?.userName || "Unknown Department" }}</mat-option
+              >
             </mat-select>
             <mat-error>Assigned To is required</mat-error>
           </mat-form-field>
@@ -1187,14 +1610,19 @@
       <button class="dialog-close-btn" mat-dialog-close>Close</button>
     </div>
     <div>
-      <button class="dialog-submit-btn" (click)="add(1,'assign')" mat-dialog-close><i class="fa fa-spinner fa-spin"
-          *ngIf="showLoader"></i>Submit</button>
+      <button
+        class="dialog-submit-btn"
+        (click)="add(1, 'assign')"
+        mat-dialog-close
+      >
+        <i class="fa fa-spinner fa-spin" *ngIf="showLoader"></i>Submit
+      </button>
     </div>
   </div>
 </ng-template>
 
 <ng-template #assignFirstForReview>
-  <div style="background-color: #084982;">
+  <div style="background-color: #084982">
     <p class="dialog-title m-0">Send To Review</p>
   </div>
   <mat-dialog-content>
@@ -1204,8 +1632,14 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Send To Review</mat-label>
             <mat-select [(ngModel)]="myObj.assignedTo" required>
-              <mat-option *ngFor="let item of adminData" [value]="item" [disabled]="item.UserId == currentUser"
-                (click)="get_roles(item)"> {{ item?.userName || 'Unknown Department' }}</mat-option>
+              <mat-option
+                *ngFor="let item of adminData"
+                [value]="item"
+                [disabled]="item.UserId == currentUser"
+                (click)="get_roles(item)"
+              >
+                {{ item?.userName || "Unknown Department" }}</mat-option
+              >
             </mat-select>
             <mat-error>Assigned To is required</mat-error>
           </mat-form-field>
@@ -1219,13 +1653,19 @@
       <button class="dialog-close-btn" mat-dialog-close>Close</button>
     </div>
     <div>
-      <button class="dialog-submit-btn" (click)="add(2,'review')" mat-dialog-close>Submit</button>
+      <button
+        class="dialog-submit-btn"
+        (click)="add(2, 'review')"
+        mat-dialog-close
+      >
+        Submit
+      </button>
     </div>
   </div>
 </ng-template>
 
 <ng-template #assignSecond>
-  <div style="background-color: #084982;">
+  <div style="background-color: #084982">
     <p class="dialog-title m-0">Assign To</p>
   </div>
   <mat-dialog-content>
@@ -1236,14 +1676,17 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Assign To</mat-label>
             <mat-select [(ngModel)]="myObjForEdit.assignedTo" required>
-              <mat-option *ngFor="let item of roleDetails" [value]="item"
-                [disabled]="item.UserId == currentUser">{{item.userName}}</mat-option>
+              <mat-option
+                *ngFor="let item of roleDetails"
+                [value]="item"
+                [disabled]="item.UserId == currentUser"
+                >{{ item.userName }}</mat-option
+              >
             </mat-select>
             <mat-error>Assigned To is required</mat-error>
           </mat-form-field>
         </div>
       </div>
-
     </div>
     <!-- </mat-card> -->
   </mat-dialog-content>
@@ -1252,14 +1695,19 @@
       <button class="dialog-close-btn" mat-dialog-close>Close</button>
     </div>
     <div>
-      <button class="dialog-submit-btn" (click)="updateSiteCheckListFor(1)" mat-dialog-close><i
-          class="fa fa-spinner fa-spin" *ngIf="showLoader"></i>Submit</button>
+      <button
+        class="dialog-submit-btn"
+        (click)="updateSiteCheckListFor(1)"
+        mat-dialog-close
+      >
+        <i class="fa fa-spinner fa-spin" *ngIf="showLoader"></i>Submit
+      </button>
     </div>
   </div>
 </ng-template>
 
 <ng-template #assignSecondForReview>
-  <div style="background-color: #084982;">
+  <div style="background-color: #084982">
     <p class="dialog-title m-0">Send To Review</p>
   </div>
   <mat-dialog-content>
@@ -1269,8 +1717,14 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Send To Review</mat-label>
             <mat-select [(ngModel)]="myObjForEdit.assignedTo" required>
-              <mat-option *ngFor="let item of adminData" [value]="item" [disabled]="item.UserId == currentUser"
-                (click)="get_roles(item)"> {{ item?.userName || 'Unknown Department' }}</mat-option>
+              <mat-option
+                *ngFor="let item of adminData"
+                [value]="item"
+                [disabled]="item.UserId == currentUser"
+                (click)="get_roles(item)"
+              >
+                {{ item?.userName || "Unknown Department" }}</mat-option
+              >
             </mat-select>
             <mat-error>Assigned To is required</mat-error>
           </mat-form-field>
@@ -1284,14 +1738,20 @@
       <button class="dialog-close-btn" mat-dialog-close>Close</button>
     </div>
     <div>
-      <button class="dialog-submit-btn" (click)="updateSiteCheckListFor(2)" mat-dialog-close>Submit</button>
+      <button
+        class="dialog-submit-btn"
+        (click)="updateSiteCheckListFor(2)"
+        mat-dialog-close
+      >
+        Submit
+      </button>
     </div>
   </div>
 </ng-template>
 
 <ng-template #eventsDialog>
-  <div style="background-color: #084982;">
-    <p class="dialog-title m-0">{{currentItem?.siteName}}</p>
+  <div style="background-color: #084982">
+    <p class="dialog-title m-0">{{ currentItem?.siteName }}</p>
   </div>
 
   <div class="dialog-content">
@@ -1299,7 +1759,11 @@
       <button (click)="show('event', 'create')" mat-dialog-close>Create</button>
     </div>
 
-    <app-mgmttable [fields]="eventFields" [data]="cameraEventsDetailsData" [search]="eventSearch"></app-mgmttable>
+    <app-mgmttable
+      [fields]="eventFields"
+      [data]="cameraEventsDetailsData"
+      [search]="eventSearch"
+    ></app-mgmttable>
   </div>
 
   <div class="d-flex align-items-center justify-content-end">
@@ -1310,37 +1774,39 @@
 </ng-template>
 
 <ng-template #centralboxupdate>
-
-  <div style="background-color: #084982;">
-    <p class="dialog-title">MODIFY SITE FOR - {{centralBoxupdate?.unitName}} - {{centralBoxupdate?.centralBoxId}}</p>
+  <div style="background-color: #084982">
+    <p class="dialog-title">
+      MODIFY SITE FOR - {{ centralBoxupdate?.unitName }} -
+      {{ centralBoxupdate?.centralBoxId }}
+    </p>
   </div>
 
   <div class="row m-0 dialog-content" *ngIf="centralBoxupdate">
     <div class="col-lg-6 col-sm-12">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>unitName</mat-label>
-        <input matInput [(ngModel)]="centralBoxupdate.unitName">
+        <input matInput [(ngModel)]="centralBoxupdate.unitName" />
       </mat-form-field>
     </div>
 
     <div class="col-lg-6 col-sm-12">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>unitId</mat-label>
-        <input matInput [(ngModel)]="centralBoxupdate.unitId" disabled>
+        <input matInput [(ngModel)]="centralBoxupdate.unitId" disabled />
       </mat-form-field>
     </div>
 
     <div class="col-lg-6 col-sm-12">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>description</mat-label>
-        <input matInput [(ngModel)]="centralBoxupdate.description">
+        <input matInput [(ngModel)]="centralBoxupdate.description" />
       </mat-form-field>
     </div>
 
     <div class="col-lg-6 col-sm-12">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>centralBoxUrl</mat-label>
-        <input matInput [(ngModel)]="centralBoxupdate.centralBoxUrl">
+        <input matInput [(ngModel)]="centralBoxupdate.centralBoxUrl" />
       </mat-form-field>
     </div>
     <div class="col-lg-6 col-sm-12">
@@ -1359,21 +1825,31 @@
     <div class="col-lg-6 col-sm-12">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>noOfActiveCameras</mat-label>
-        <input matInput type="number" [(ngModel)]="centralBoxupdate.noOfActiveCameras" disabled>
+        <input
+          matInput
+          type="number"
+          [(ngModel)]="centralBoxupdate.noOfActiveCameras"
+          disabled
+        />
       </mat-form-field>
     </div>
 
     <div class="col-lg-6 col-sm-12">
-
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Installed date</mat-label>
-        <input matInput [matDatepicker]="picker" [(ngModel)]="centralBoxupdate.installationDate"
-          placeholder="MM/DD/YYYY">
+        <input
+          matInput
+          [matDatepicker]="picker"
+          [(ngModel)]="centralBoxupdate.installationDate"
+          placeholder="MM/DD/YYYY"
+        />
         <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-
     </div>
 
     <div class="col-lg-6 col-sm-12">
@@ -1381,7 +1857,7 @@
         <mat-label>s3 Default path</mat-label>
         <mat-select [(value)]="centralBoxupdate.s3AccessId">
           <mat-option *ngFor="let path of s3defaultpath" [value]="path.id">
-            {{path.nameTags}}
+            {{ path.nameTags }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -1397,84 +1873,88 @@
     <div class="col-lg-6 col-sm-12">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>s3 request_name</mat-label>
-        <input matInput [(ngModel)]="centralBoxupdate.requestName">
+        <input matInput [(ngModel)]="centralBoxupdate.requestName" />
       </mat-form-field>
     </div>
 
     <div class="col-lg-6 col-sm-12">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>folder</mat-label>
-        <input matInput [(ngModel)]="centralBoxupdate.folder">
+        <input matInput [(ngModel)]="centralBoxupdate.folder" />
       </mat-form-field>
     </div>
 
     <div class="col-lg-6 col-sm-12">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>ec2InstanceUrl</mat-label>
-        <input matInput [(ngModel)]="centralBoxupdate.ec2InstanceUrl" disabled>
+        <input
+          matInput
+          [(ngModel)]="centralBoxupdate.ec2InstanceUrl"
+          disabled
+        />
       </mat-form-field>
     </div>
-
-
 
     <div class="col-lg-6 col-sm-12">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>s3 bucket_name</mat-label>
-        <input matInput [(ngModel)]="centralBoxupdate.bucket_name" disabled>
+        <input matInput [(ngModel)]="centralBoxupdate.bucket_name" disabled />
       </mat-form-field>
     </div>
 
     <div class="col-lg-6 col-sm-12">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>snapshotRequestName</mat-label>
-        <input matInput [(ngModel)]="centralBoxupdate.snapshotRequestName">
+        <input matInput [(ngModel)]="centralBoxupdate.snapshotRequestName" />
       </mat-form-field>
     </div>
 
     <div class="col-lg-6 col-sm-12">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>snapshotFolder</mat-label>
-        <input matInput [(ngModel)]="centralBoxupdate.snapshotFolder">
+        <input matInput [(ngModel)]="centralBoxupdate.snapshotFolder" />
       </mat-form-field>
     </div>
 
     <div class="col-lg-6 col-sm-12">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>remarks</mat-label>
-        <input matInput [(ngModel)]="centralBoxupdate.remarks">
+        <input matInput [(ngModel)]="centralBoxupdate.remarks" />
       </mat-form-field>
     </div>
-
-
-
 
     <div class="d-flex align-items-center justify-content-end">
       <div>
         <button class="dialog-close-btn" mat-dialog-close>Close</button>
       </div>
       <div>
-        <button class="dialog-submit-btn" mat-dialog-close (click)="centralboxupdatedata()">Update</button>
+        <button
+          class="dialog-submit-btn"
+          mat-dialog-close
+          (click)="centralboxupdatedata()"
+        >
+          Update
+        </button>
       </div>
     </div>
-
   </div>
-
 </ng-template>
 
 <ng-template #s3Default>
-
-  <div style="background-color: #084982;">
-    <p class="dialog-title">MODIFY SITE FOR - {{s3Defaultcreate?.siteId}} - {{s3Defaultcreate?.unitName}}</p>
+  <div style="background-color: #084982">
+    <p class="dialog-title">
+      MODIFY SITE FOR - {{ s3Defaultcreate?.siteId }} -
+      {{ s3Defaultcreate?.unitName }}
+    </p>
   </div>
 
   <div class="row m-0 dialog-content">
-
     <div class="col-lg-12">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>s3 Default path</mat-label>
         <mat-select [(value)]="s3select">
           <mat-option *ngFor="let path of s3defaultpath" [value]="path.id">
-            {{path.nameTags}}
+            {{ path.nameTags }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -1485,32 +1965,50 @@
         <button class="dialog-close-btn" mat-dialog-close>Close</button>
       </div>
       <div>
-        <button class="dialog-submit-btn" mat-dialog-close (click)="s3Defaultcreateadd()">Update</button>
+        <button
+          class="dialog-submit-btn"
+          mat-dialog-close
+          (click)="s3Defaultcreateadd()"
+        >
+          Update
+        </button>
       </div>
     </div>
   </div>
-
 </ng-template>
 
-
 <div *ngIf="showAddSite">
-  <app-add-new-site (newItemEvent)="closenow('site'); getSitesListForUserName()"></app-add-new-site>
+  <app-add-new-site
+    (newItemEvent)="closenow('site'); getSitesListForUserName()"
+  ></app-add-new-site>
 </div>
 
 <div *ngIf="showAddDevice">
-  <app-add-device [fromSites]="inputToDevices" (newItemEvent)="closenow('device')"></app-add-device>
+  <app-add-device
+    [fromSites]="inputToDevices"
+    (newItemEvent)="closenow('device')"
+  ></app-add-device>
 </div>
 
 <div *ngIf="showInstallation">
-  <app-add-new-installation (newItemEvent)="closenow('installation')"></app-add-new-installation>
+  <app-add-new-installation
+    (newItemEvent)="closenow('installation')"
+  ></app-add-new-installation>
 </div>
 
 <div *ngIf="showCamera">
-  <app-add-new-camera (newItemEvent)="closenow('camera')" [centeralBoxFrom]="currentItem1"
-    [currentSiteFrom]="currentItem"></app-add-new-camera>
+  <app-add-new-camera
+    (newItemEvent)="closenow('camera')"
+    [centeralBoxFrom]="currentItem1"
+    [currentSiteFrom]="currentItem"
+  ></app-add-new-camera>
 </div>
 
 <div *ngIf="showEvent">
-  <app-add-new-event [currentSite]="currentItem" [data]="currentEvent" [type]="formType"
-    (newItemEvent)="closenow('event')"></app-add-new-event>
+  <app-add-new-event
+    [currentSite]="currentItem"
+    [data]="currentEvent"
+    [type]="formType"
+    (newItemEvent)="closenow('event')"
+  ></app-add-new-event>
 </div>

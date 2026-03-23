@@ -41,7 +41,6 @@
   border: none;
 }
 
-
 .device-btn {
   position: absolute;
   left: 20px;
@@ -84,7 +83,6 @@
 }
 
 .side-nav {
-
   font-size: 12px;
   height: calc(100vh - 35px);
   overflow-y: auto;
@@ -116,7 +114,7 @@
 
 .grid-btn-active {
   background-color: var(--cmn-background);
-  color: var(--secondary);
+  color: #ffffff;
 }
 
 .main-container {
@@ -131,7 +129,6 @@
 }
 
 .cam-name {
-
   color: #000;
   font-size: 11px;
   letter-spacing: 1px;
@@ -244,7 +241,6 @@ select {
   }
 }
 
-
 .grid-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -338,7 +334,10 @@ select {
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 4px;
-  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
 .cdk-drag-placeholder {
@@ -377,7 +376,6 @@ select {
   right: 0px;
 }
 
-
 /* sidepanel */
 .sidepanel-btn {
   padding: 2px 4px;
@@ -392,7 +390,6 @@ select {
   box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
   transition: all 250ms;
   overflow: hidden;
-
 }
 
 .sidepanel-btn::before {
@@ -407,7 +404,7 @@ select {
   z-index: -1;
   -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
   box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
-  transition: all 250ms
+  transition: all 250ms;
 }
 
 .sidepanel-btn:hover::before {
@@ -427,7 +424,6 @@ select {
     transform: rotate(360deg);
   }
 }
-
 
 /* ng-deep */
 .icon ::ng-deep .mat-icon {
@@ -470,7 +466,9 @@ select {
   width: 300px !important;
 }
 
-::ng-deep .mat-mdc-standard-chip.mdc-evolution-chip--with-primary-graphic .mdc-evolution-chip__action--primary {
+::ng-deep
+  .mat-mdc-standard-chip.mdc-evolution-chip--with-primary-graphic
+  .mdc-evolution-chip__action--primary {
   width: 100% !important;
 }
 

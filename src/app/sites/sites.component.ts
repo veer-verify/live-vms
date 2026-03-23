@@ -1,17 +1,14 @@
 import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { SiteService } from 'src/services/site.service';
-
 import { StorageService } from 'src/services/storage.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertService } from 'src/services/alert.service';
-// import { UserService } from 'src/services/user.service';
 import { EditCameraComponent } from '../edit-camera/edit-camera.component';
 import { MetadataService } from 'src/services/metadata.service';
 import { HttpClient } from '@angular/common/http';
 import { CreateFormComponent } from '../create-form/create-form.component';
-// import { AdvertisementsService } from 'src/services/advertisements.service';
-import { Country, State, City }  from 'country-state-city';
+import { Country, State, City } from 'country-state-city';
 import { AssetService } from 'src/services/asset.service';
 import { UserService } from 'src/services/user.service';
 
@@ -42,7 +39,7 @@ export class SitesComponent implements OnInit {
       type: 'array',
       call: (data: any) => data.centralBoxInfo,
       keyword: 'unitId',
-      sort: true
+      sort: false
     },
 
     // {
@@ -95,7 +92,7 @@ export class SitesComponent implements OnInit {
     //   sort: false,
     //   call: (data: any) => this.getCameraEventsConfigData(data)
     // },
-       {
+    {
       key: 'siteStatus',
       label: 'Status',
       type: '',
@@ -108,7 +105,7 @@ export class SitesComponent implements OnInit {
       type: 'actions',
       sort: false,
       call: (data: any, type: string) => {
-        switch(type) {
+        switch (type) {
           case 'view':
             this.openViewPopup(data);
             break;
@@ -165,7 +162,7 @@ export class SitesComponent implements OnInit {
       type: 'actions',
       sort: false,
       call: (data: any, type: string) => {
-        switch(type) {
+        switch (type) {
           case 'view':
             this.eventViewDialog(data);
             break;
@@ -184,7 +181,7 @@ export class SitesComponent implements OnInit {
     private assetSer: AssetService,
     public dialog: MatDialog,
     private storageSer: StorageService,
-    private fb:FormBuilder,
+    private fb: FormBuilder,
     private alertSer: AlertService,
     private userSer: UserService,
     private metaSer: MetadataService,
@@ -194,7 +191,7 @@ export class SitesComponent implements OnInit {
 
   }
 
-  status:any="";
+  status: any = "";
   tableData: any = [];
   newTableData: any = [];
   showLoader: boolean = false;
@@ -203,24 +200,24 @@ export class SitesComponent implements OnInit {
 
   tempSite: any;
   createCenteralBox!: FormGroup;
-  currentUser:any
-  user:any
-  role:any
+  currentUser: any
+  user: any
+  role: any
   // newRoleData :any =[]
-  roleDetails:any =[]
-  adminData:any = []
-  type:any = 1
-  currentRole:any
-  userName:any
+  roleDetails: any = []
+  adminData: any = []
+  type: any = 1
+  currentRole: any
+  userName: any
   ngOnInit(): void {
     this.user = this.storageSer.getUser();
     this.role = this.storageSer.get('role');
     this.roleDetails = this.role?.filter((item: any) => item.categoryName == 'Member')[0]?.details;
     this.adminData = this.role?.filter((item: any) => item.categoryName == 'Admin')[0]?.details;
-    this.currentRole = this.user?.roleList.filter((item:any) => item.department == 'IT-Config' && item.category == 'Admin')[0];
+    this.currentRole = this.user?.roleList.filter((item: any) => item.department == 'IT-Config' && item.category == 'Admin')[0];
     this.currentUser = this.user.UserId;
     this.userName = this.user.UserName;
-      this.gets3Bucket();
+    this.gets3Bucket();
 
     // this.tempSite = this.storageSer.get('temp_sites');
     // this.siteData = this.storageSer.get('temp_sites')?.sort((a: any, b: any) => a.siteId < b.siteId ? -1 : a.siteId > b.siteId ? 1 : 0);
@@ -229,7 +226,7 @@ export class SitesComponent implements OnInit {
     this.getSitesListForUserName()
     this.onMetadataChange();
 
-    this.createCenteralBox=this.fb.group({
+    this.createCenteralBox = this.fb.group({
       unitName: new FormControl('', Validators.required),
       siteId: new FormControl(''),
       unitId: new FormControl('', Validators.required),
@@ -244,7 +241,7 @@ export class SitesComponent implements OnInit {
 
 
 
-// BharadwajAPIS
+  // BharadwajAPIS
   currentItem: any;
   @ViewChild('viewCamerasDialog') viewCamerasDialog = {} as TemplateRef<any>;
   cameras: any = [];
@@ -276,7 +273,7 @@ export class SitesComponent implements OnInit {
   ];
   openEditCamera(item: any) {
 
-    this.storageSer.current_sub.next({ type: 'site', data: {...item} });
+    this.storageSer.current_sub.next({ type: 'site', data: { ...item } });
     this.dialog.open(EditCameraComponent);
 
     // this.storageSer.edit_sub.next({ data: item, dropdownData: this.dropdownFields_camera, updateUrl: 'camera/updateCameraData_1_0', getUrl: 'getCamerasForSiteId_1_0' });
@@ -306,23 +303,23 @@ export class SitesComponent implements OnInit {
   // }
 
 
-  final:any
+  final: any
   getSitesListForUserName() {
     // this.showLoader = true;
     this.storageSer.table_loader_sub.next(true);
-    this.siteSer.getSitesListForUserName({siteId:this.siteNg,siteStatus: this.status}).subscribe((res: any) => {
+    this.siteSer.getSitesListForUserName({ siteId: this.siteNg, siteStatus: this.status }).subscribe((res: any) => {
       // this.showLoader = false;
       this.storageSer.table_loader_sub.next(false);
-      if(res?.Status == 'Success') {
+      if (res?.Status == 'Success') {
         this.tableData = res.sites
         // this.tableData = res.sites.sort((a:any, b:any) => a.siteId - b.siteId );
-        this.newTableData = this.tableData.sort((a:any, b:any) => a.siteId < b.siteId  ? -1 : 1);
-      }else{
-        this.newTableData=[];
+        this.newTableData = this.tableData.sort((a: any, b: any) => a.siteId < b.siteId ? -1 : 1);
+      } else {
+        this.newTableData = [];
       }
-      }, (err: any) => {
-        // this.showLoader = false;
-        this.storageSer.table_loader_sub.next(false);
+    }, (err: any) => {
+      // this.showLoader = false;
+      this.storageSer.table_loader_sub.next(false);
     });
   }
 
@@ -354,12 +351,12 @@ export class SitesComponent implements OnInit {
   @ViewChild('addCentralBoxDialog') addCentralBoxDialog = {} as TemplateRef<any>;
   openAddCentralbox() {
     this.createCenteralBox.reset({
-  noOfActiveCameras: 1
-});
+      noOfActiveCameras: 1
+    });
     this.dialog.open(this.addCentralBoxDialog)
     this.siteSer.getCentralbox(this.currentItem).subscribe((res: any) => {
-      })
-    }
+    })
+  }
 
   @ViewChild('viewCentralBoxDialog') viewCentralBoxDialog = {} as TemplateRef<any>;
   onGetCentralboxDetail: any = [];
@@ -373,11 +370,11 @@ export class SitesComponent implements OnInit {
   }
 
   createCentralBox() {
-    if(!this.createCenteralBox.valid) return;
+    if (!this.createCenteralBox.valid) return;
     this.createCenteralBox.value.siteId = this.currentItem.siteId;
 
     this.siteSer.addCentralBox(this.createCenteralBox.value).subscribe((res: any) => {
-      if(res.statusCode === 200) {
+      if (res.statusCode === 200) {
         this.alertSer.success(res.message);
         this.dialog.closeAll();
         this.getCentalBox(this.currentItem);
@@ -394,17 +391,17 @@ export class SitesComponent implements OnInit {
   @ViewChild('viewSiteServices') viewSiteServices = {} as TemplateRef<any>;
   listSiteServices(item: any) {
     this.currentItem = item;
-    this.siteSer.listSiteServices(item).subscribe((res:any)=> {
+    this.siteSer.listSiteServices(item).subscribe((res: any) => {
       this.currentItem = res.siteServicesList
     })
     this.dialog.open(this.viewSiteServices)
   }
 
   updateSiteServices() {
-    this.siteSer.updateSiteServices(this.currentItem).subscribe((res:any)=> {
-      if(res.statusCode === 200) {
+    this.siteSer.updateSiteServices(this.currentItem).subscribe((res: any) => {
+      if (res.statusCode === 200) {
         this.alertSer.success(res.message);
-        this.siteSer.listSiteServices(this.currentItem).subscribe((res:any)=> {
+        this.siteSer.listSiteServices(this.currentItem).subscribe((res: any) => {
           this.currentItem = res.siteServicesList
         })
         // this.listSiteServices(this.currentItem)
@@ -416,22 +413,18 @@ export class SitesComponent implements OnInit {
 
 
 
-  validationChecklistData:any = []
-  validationChecklistDataNew :any = [];
-
+  validationChecklistData: any = []
+  validationChecklistDataNew: any = [];
   @ViewChild('viewSiteValidation') viewSiteValidation = {} as TemplateRef<any>;
-  listSiteCheckList(data:any) {
+  listSiteCheckList(data: any) {
     this.validationChecklistDataNew = [];
     this.currentItem = data
     this.siteSer.listSiteCheckList(data).subscribe((res: any) => {
-
-      if(res.statusCode==200){
-
+      if (res.statusCode == 200) {
         this.validationChecklistData = res;
         this.validationChecklistDataNew = this.validationChecklistData?.devices;
         this.sortValidationChecklists()
       }
-
     })
     this.dialog.open(this.viewSiteValidation)
   }
@@ -459,10 +452,10 @@ export class SitesComponent implements OnInit {
   }
 
 
-  siteHistoryData:any = [];
+  siteHistoryData: any = [];
   @ViewChild('viewSiteHistory') viewSiteHistory = {} as TemplateRef<any>;
   listSiteCheckListHistory(device: any, data: any) {
-    this.siteSer.listSiteCheckListHistory({...device, ...data}).subscribe((res:any) => {
+    this.siteSer.listSiteCheckListHistory({ ...device, ...data }).subscribe((res: any) => {
       this.siteHistoryData = res.history.sort((a: any, b: any) => {
         const timeA = new Date(a.modifiedTime || a.createdTime).getTime();
         const timeB = new Date(b.modifiedTime || b.createdTime).getTime();
@@ -474,23 +467,23 @@ export class SitesComponent implements OnInit {
 
 
 
-  originalItemDevice:any = []
-  currentItemDevice:any
-  currentItemDeviceDetails:any = []
+  originalItemDevice: any = []
+  currentItemDevice: any
+  currentItemDeviceDetails: any = []
   @ViewChild('updateSiteCheckListForm') updateSiteCheckListForm = {} as TemplateRef<any>;
-  openEdit(device:any) {
-    this.currentItemDevice = {...device.dev, ...device.chk}
+  openEdit(device: any) {
+    this.currentItemDevice = { ...device.dev, ...device.chk }
     this.originalItemDevice = JSON.parse(JSON.stringify(this.currentItemDevice));
     this.dialog.open(this.updateSiteCheckListForm)
   }
   updateSiteCheckList() {
-      // Check for changes
-  if (JSON.stringify(this.currentItemDevice) === JSON.stringify(this.originalItemDevice)) {
-    this.alertSer.error("Please update a field to make changes");
-    return;
-  }
-    this.siteSer.updateSiteCheckList(this.currentItemDevice).subscribe((res:any) => {
-      if(res.statusCode === 200) {
+    // Check for changes
+    if (JSON.stringify(this.currentItemDevice) === JSON.stringify(this.originalItemDevice)) {
+      this.alertSer.error("Please update a field to make changes");
+      return;
+    }
+    this.siteSer.updateSiteCheckList(this.currentItemDevice).subscribe((res: any) => {
+      if (res.statusCode === 200) {
         this.alertSer.success(res.message);
         this.siteSer.listSiteCheckList(this.currentItem).subscribe((res: any) => {
           this.validationChecklistData = res;
@@ -523,16 +516,16 @@ export class SitesComponent implements OnInit {
   }
 
 
-  centralBoxData:any = []
+  centralBoxData: any = []
   @ViewChild('addSiteCheckListForm') addSiteCheckListForm = {} as TemplateRef<any>;
   addSiteCheckList() {
     this.deviceFor = 'Defender'
     this.centralBoxData = [];
-    this.siteSer.getCentralBoxForSiteId(this.currentItem).subscribe((res:any) => {
+    this.siteSer.getCentralBoxForSiteId(this.currentItem).subscribe((res: any) => {
       this.centralBoxData = res.centralBox
     })
     // this.get()
-    this.getValidationCheckListForCategory({name: 'Defender'})
+    this.getValidationCheckListForCategory({ name: 'Defender' })
     // this.listSupportAdminUsers()
     this.dialog.open(this.addSiteCheckListForm)
     this.myObj.deviceId = null
@@ -540,7 +533,7 @@ export class SitesComponent implements OnInit {
 
   }
 
-  validationChecklistDat:any = [];
+  validationChecklistDat: any = [];
   get() {
     // this.validationQuestions = [];
     this.siteSer.getValidationCheckList().subscribe((res: any) => {
@@ -549,9 +542,9 @@ export class SitesComponent implements OnInit {
     })
   }
 
-  validationData:any = []
-  getValidationCheckListForCategory(item?:any) {
-    this.siteSer.getValidationCheckListForCategory(item).subscribe((res:any) => {
+  validationData: any = []
+  getValidationCheckListForCategory(item?: any) {
+    this.siteSer.getValidationCheckListForCategory(item).subscribe((res: any) => {
       // console.log(res);
       this.validationData = res.validationChecklist
 
@@ -562,13 +555,13 @@ export class SitesComponent implements OnInit {
     return this.validationData.some((item: any) => item.deviceId === deviceId);
   }
 
-  newAdminData : any = []
-  rolesDetailsData:any = [];
-  get_roles(item:any) {
+  newAdminData: any = []
+  rolesDetailsData: any = [];
+  get_roles(item: any) {
     // console.log(this.currentUser)
     this.userSer.get_roles(item).subscribe((res: any) => {
       this.rolesDetailsData = res.rolesDetails[0]?.details;
-      this.newAdminData = this.rolesDetailsData.map((element:any) => element.email
+      this.newAdminData = this.rolesDetailsData.map((element: any) => element.email
       );
       // console.log(this.rolesDetailsData)
       // if(res.status == 'Success'){
@@ -577,26 +570,26 @@ export class SitesComponent implements OnInit {
     })
   }
 
-  myObj:any = {
-    siteId:null,
-    deviceId:null,
+  myObj: any = {
+    siteId: null,
+    deviceId: null,
     // category :null,
-    createdBy:null,
+    createdBy: null,
     callingSystem: 'mgmt',
-    assignedToMail:null,
+    assignedToMail: null,
 
     assignedTo: null,
-    sentToReview:null,
-    description:'Test',
+    sentToReview: null,
+    description: 'Test',
     service_cat_id: 19,
-    service_subcat_id:104,
+    service_subcat_id: 104,
     checklists: [],
     remarks: null,
     ccMails: [],
   }
 
 
-  deviceFor:any = 'Defender';
+  deviceFor: any = 'Defender';
   serviceCategories = [
     { id: 19, name: 'Site Validation' },
     { id: 20, name: 'Other Service' },
@@ -609,31 +602,31 @@ export class SitesComponent implements OnInit {
   ];
 
   categoriesSub = [
-    { id: 21, name: 'Defender'},
-    { id: 22, name: 'FixedInstall'},
+    { id: 21, name: 'Defender' },
+    { id: 22, name: 'FixedInstall' },
   ];
 
-  listSupportAdminUsersData : any =[]
-  newSupport:any = []
+  listSupportAdminUsersData: any = []
+  newSupport: any = []
   listSupportAdminUsers() {
-    this.siteSer.listSupportAdminUsers().subscribe((res:any) => {
+    this.siteSer.listSupportAdminUsers().subscribe((res: any) => {
       // console.log(res)
-      this.listSupportAdminUsersData = res.roleDetails?.flatMap((item:any) => item.users)
+      this.listSupportAdminUsersData = res.roleDetails?.flatMap((item: any) => item.users)
       this.newSupport = this.listSupportAdminUsersData.slice(-3);
       // console.log(this.newSupport)
     })
   }
-// Function to reset `deviceFor` when changing options
-onDeviceChange(selectedValue: string) {
-  this.deviceFor = selectedValue; // Update value when selection changes
-}
+  // Function to reset `deviceFor` when changing options
+  onDeviceChange(selectedValue: string) {
+    this.deviceFor = selectedValue; // Update value when selection changes
+  }
 
   add(i: any, type: string) {
-  const isAnyScopeTrue = this.validationData.some((item: any) => item.scope === true);
-  if (!isAnyScopeTrue) {
-    this.alertSer.error('Please Select at least one Scope');
-    return; // Stop further execution if all scope are false
-  }
+    const isAnyScopeTrue = this.validationData.some((item: any) => item.scope === true);
+    if (!isAnyScopeTrue) {
+      this.alertSer.error('Please Select at least one Scope');
+      return; // Stop further execution if all scope are false
+    }
 
     switch (i) {
       case 0:
@@ -651,17 +644,17 @@ onDeviceChange(selectedValue: string) {
           this.myObj.ccMails = null;
         }
         break;
-        case 2:
-          this.myObj.sentToReview = 'true';
-          if (this.myObj.assignedTo && typeof this.myObj.assignedTo === 'object') {
-            this.myObj.assignedToMail = this.myObj.assignedTo.email ;
-            this.myObj.assignedTo = this.myObj.assignedTo.UserId;
-          } else {
-            this.myObj.assignedToMail = null;
-            this.myObj.assignedTo = null;
-          }
-          this.myObj.ccMails = this.newAdminData || null;
-          break;
+      case 2:
+        this.myObj.sentToReview = 'true';
+        if (this.myObj.assignedTo && typeof this.myObj.assignedTo === 'object') {
+          this.myObj.assignedToMail = this.myObj.assignedTo.email;
+          this.myObj.assignedTo = this.myObj.assignedTo.UserId;
+        } else {
+          this.myObj.assignedToMail = null;
+          this.myObj.assignedTo = null;
+        }
+        this.myObj.ccMails = this.newAdminData || null;
+        break;
       default:
         break;
     }
@@ -714,58 +707,58 @@ onDeviceChange(selectedValue: string) {
   }
 
   isAllValid(): boolean {
-  // Get all checked (true) and unchecked (false) scopes
-  const totalScopes = this.editCheckList.length;
-  const checkedScopes = this.editCheckList.filter((item: any) => item.scope === true);
-  const uncheckedScopes = this.editCheckList.filter((item: any) => item.scope === false);
+    // Get all checked (true) and unchecked (false) scopes
+    const totalScopes = this.editCheckList.length;
+    const checkedScopes = this.editCheckList.filter((item: any) => item.scope === true);
+    const uncheckedScopes = this.editCheckList.filter((item: any) => item.scope === false);
 
-  // If no scopes exist, disable the button
-  if (totalScopes === 0) {
-    return false;
-  }
+    // If no scopes exist, disable the button
+    if (totalScopes === 0) {
+      return false;
+    }
 
-  // If at least one scope is unchecked, allow enabling the button
-  if (uncheckedScopes.length > 0) {
-    // Ensure all checked scopes meet the conditions
-    return checkedScopes.every((item: any) =>
+    // If at least one scope is unchecked, allow enabling the button
+    if (uncheckedScopes.length > 0) {
+      // Ensure all checked scopes meet the conditions
+      return checkedScopes.every((item: any) =>
+        item.working === true &&
+        item.configured === true &&
+        item.reviewStatus === true
+      );
+    }
+
+    // If all scopes are checked, follow the original rule (everything must be true)
+    return checkedScopes.length === totalScopes && checkedScopes.every((item: any) =>
       item.working === true &&
       item.configured === true &&
       item.reviewStatus === true
     );
   }
 
-  // If all scopes are checked, follow the original rule (everything must be true)
-  return checkedScopes.length === totalScopes && checkedScopes.every((item: any) =>
-    item.working === true &&
-    item.configured === true &&
-    item.reviewStatus === true
-  );
-  }
 
-
-  myObjForEdit:any = {
-    deviceId:null,
-    modifiedBy:null,
+  myObjForEdit: any = {
+    deviceId: null,
+    modifiedBy: null,
     assignedTo: null,
-    assignedToMail:null,
+    assignedToMail: null,
     // reviewStatus:null,
-    status:null,
+    status: null,
     sentToReview: null,
-    siteId:null,
+    siteId: null,
     checklists: [],
     ccMails: []
   }
 
-  currentDevice:any;
-  finalData:any = []
+  currentDevice: any;
+  finalData: any = []
   editCheckList: any = []
-  editData:any=[];
+  editData: any = [];
   openEditForSiteValidation(data: any) {
     // console.log(data)
     // data.edit = true;
     this.currentDevice = data.deviceId;
 
-    this.editCheckList =[];
+    this.editCheckList = [];
     this.siteSer.listSiteCheckList(this.currentItem).subscribe((res: any) => {
       // console.log(res)
       this.editData = res.devices
@@ -796,40 +789,40 @@ onDeviceChange(selectedValue: string) {
 
 
   @ViewChild('editSiteCheckListForm') editSiteCheckListForm = {} as TemplateRef<any>;
-  updateSiteCheckListFor(value:any) {
-      // this.editData.forEach((device:any) => device.edit = false);
+  updateSiteCheckListFor(value: any) {
+    // this.editData.forEach((device:any) => device.edit = false);
 
-  // ✅ Check if all items have scope === false
-  const allScopeFalse = this.editCheckList.every((item: any) => item.scope === false);
+    // ✅ Check if all items have scope === false
+    const allScopeFalse = this.editCheckList.every((item: any) => item.scope === false);
 
-  if (allScopeFalse) {
-    this.alertSer.error('At least one item should be in scope. Please select at least one.');
-    return; // ❌ Stop API call if all scopes are false
-  }
+    if (allScopeFalse) {
+      this.alertSer.error('At least one item should be in scope. Please select at least one.');
+      return; // ❌ Stop API call if all scopes are false
+    }
 
-      switch (value) {
-        case 0:
-          this.myObjForEdit.sentToReview = null
-          this.myObjForEdit.status = 1
-          this.myObjForEdit.assignedToMail = null;
-          this.myObjForEdit.assignedTo = null;
+    switch (value) {
+      case 0:
+        this.myObjForEdit.sentToReview = null
+        this.myObjForEdit.status = 1
+        this.myObjForEdit.assignedToMail = null;
+        this.myObjForEdit.assignedTo = null;
+        this.myObjForEdit.ccMails = null;
+        break;
+
+      case 1:
+        this.myObjForEdit.sentToReview = 'false'
+        this.myObjForEdit.status = 2
+        if (this.myObjForEdit.assignedTo && typeof this.myObjForEdit.assignedTo === 'object') {
+          this.myObjForEdit.assignedToMail = this.myObjForEdit.assignedTo.email || null;
+          this.myObjForEdit.assignedTo = this.myObjForEdit.assignedTo.UserId || null;
           this.myObjForEdit.ccMails = null;
+        }
         break;
-
-        case 1:
-          this.myObjForEdit.sentToReview = 'false'
-          this.myObjForEdit.status = 2
-          if (this.myObjForEdit.assignedTo && typeof this.myObjForEdit.assignedTo === 'object') {
-            this.myObjForEdit.assignedToMail = this.myObjForEdit.assignedTo.email || null;
-            this.myObjForEdit.assignedTo = this.myObjForEdit.assignedTo.UserId || null;
-            this.myObjForEdit.ccMails = null;
-          }
-        break;
-        case 2:
+      case 2:
         this.myObjForEdit.sentToReview = 'true';
         this.myObjForEdit.status = 3;
         if (this.myObjForEdit.assignedTo && typeof this.myObjForEdit.assignedTo === 'object') {
-          this.myObjForEdit.assignedToMail = this.myObjForEdit.assignedTo.email ;
+          this.myObjForEdit.assignedToMail = this.myObjForEdit.assignedTo.email;
           this.myObjForEdit.assignedTo = this.myObjForEdit.assignedTo.UserId;
         } else {
           this.myObjForEdit.assignedToMail = null;
@@ -838,44 +831,44 @@ onDeviceChange(selectedValue: string) {
         this.myObjForEdit.ccMails = this.newAdminData || null;
         break;
 
-        case 3:
-          this.myObjForEdit.sentToReview = 'true'
-          this.myObjForEdit.status = 4
-          this.myObjForEdit.assignedToMail = null;
-          this.myObjForEdit.assignedTo = null;
-          this.myObjForEdit.ccMails = null;
+      case 3:
+        this.myObjForEdit.sentToReview = 'true'
+        this.myObjForEdit.status = 4
+        this.myObjForEdit.assignedToMail = null;
+        this.myObjForEdit.assignedTo = null;
+        this.myObjForEdit.ccMails = null;
         break;
 
-          default:
-          break;
-      }
-
-        // ✅ Loop over checklist and set configured & working false where scope is false
-  this.editCheckList.forEach((item: any) => {
-    if (item.scope === false) {
-      item.configured = false;
-      item.working = false;
-      item.reviewStatus = false;
+      default:
+        break;
     }
-  });
-      // if(this.myObjForEdit.assignedTo) {
-      //   this.myObjForEdit.assignedToMail = this.myObjForEdit.assignedTo.email ? this.myObjForEdit.assignedTo.email : null
-      //   this.myObjForEdit.assignedTo = this.myObjForEdit.assignedTo.UserId? this.myObjForEdit.assignedTo.UserId : null;
-      //   this.myObjForEdit.ccMail= this.newAdminData ?this.newAdminData : null
-      // }
+
+    // ✅ Loop over checklist and set configured & working false where scope is false
+    this.editCheckList.forEach((item: any) => {
+      if (item.scope === false) {
+        item.configured = false;
+        item.working = false;
+        item.reviewStatus = false;
+      }
+    });
+    // if(this.myObjForEdit.assignedTo) {
+    //   this.myObjForEdit.assignedToMail = this.myObjForEdit.assignedTo.email ? this.myObjForEdit.assignedTo.email : null
+    //   this.myObjForEdit.assignedTo = this.myObjForEdit.assignedTo.UserId? this.myObjForEdit.assignedTo.UserId : null;
+    //   this.myObjForEdit.ccMail= this.newAdminData ?this.newAdminData : null
+    // }
 
 
-      this.myObjForEdit.checklists = this.editCheckList.filter((item: any) => item.isChanged == true);
-      this.siteSer.updateSiteCheckListFor(this.myObjForEdit).subscribe((res:any) => {
-        this.dialog.closeAll()
-        this.showLoader = false
-        if(res.statusCode === 200) {
-          this.alertSer.success(res.message);
-          this.listSiteCheckList(this.currentItem);
-        } else {
-          this.alertSer.error(res.message);
-        }
-      })
+    this.myObjForEdit.checklists = this.editCheckList.filter((item: any) => item.isChanged == true);
+    this.siteSer.updateSiteCheckListFor(this.myObjForEdit).subscribe((res: any) => {
+      this.dialog.closeAll()
+      this.showLoader = false
+      if (res.statusCode === 200) {
+        this.alertSer.success(res.message);
+        this.listSiteCheckList(this.currentItem);
+      } else {
+        this.alertSer.error(res.message);
+      }
+    })
     // }
 
   }
@@ -883,7 +876,7 @@ onDeviceChange(selectedValue: string) {
 
   onScopeChange(value: any, data?: any): void {
     // console.log(value)
-    if(!value) {
+    if (!value) {
       data.working = false
     }
 
@@ -922,19 +915,19 @@ onDeviceChange(selectedValue: string) {
   // }
 
   readonly panelOpenState = signal(false);
-  formatSubtitle = (percent: number) : string => {
-    if(percent >= 100){
+  formatSubtitle = (percent: number): string => {
+    if (percent >= 100) {
       return "Congratulations!"
-    } else if(percent >= 50){
+    } else if (percent >= 50) {
       return "Half"
-    } else if(percent > 0){
+    } else if (percent > 0) {
       return "Just began"
     } else {
       return "Not started"
     }
   }
 
-  showHistory:boolean = false;
+  showHistory: boolean = false;
   openHistory() {
     this.showHistory = !this.showHistory
   }
@@ -975,43 +968,43 @@ onDeviceChange(selectedValue: string) {
   }
 
   filterSites(site: any) {
-    if(site != 'All') {
-      this.newTableData =  this.tableData.filter((item: any) => item.siteId == site);
+    if (site != 'All') {
+      this.newTableData = this.tableData.filter((item: any) => item.siteId == site);
     } else {
       this.newTableData = this.tableData;
     }
   }
 
   // siteObj: any;
-  showEvent:boolean = false
+  showEvent: boolean = false
   showAddSite: boolean = false;
   showAddDevice: boolean = false;
   showInstallation: boolean = false;
   showCamera: boolean = false;
   currentItem1: any;
   show(value: string, type?: any) {
-    if(value == 'site') {
+    if (value == 'site') {
       this.showAddSite = true
     }
-    if(value == 'device') {
+    if (value == 'device') {
       this.showAddDevice = true
     }
-    if(value == 'installation') {
+    if (value == 'installation') {
       this.showInstallation = true
     }
-    if(value == 'camera') {
+    if (value == 'camera') {
       this.showCamera = true;
       this.dialog.closeAll();
       this.currentItem1 = type;
     }
-    if(value == 'event') {
+    if (value == 'event') {
       this.showEvent = true;
       this.formType = type;
     }
   }
 
 
-  isAdded:boolean  = true
+  isAdded: boolean = true
   closenow(type: string) {
     if (type == 'site') {
       this.showAddSite = false
@@ -1019,13 +1012,13 @@ onDeviceChange(selectedValue: string) {
     if (type == 'device') {
       this.showAddDevice = false
     }
-    if(type == 'installation') {
+    if (type == 'installation') {
       this.showInstallation = false
     }
-    if(type == 'camera') {
+    if (type == 'camera') {
       this.showCamera = false
     }
-    if(type == 'event') {
+    if (type == 'event') {
       this.showEvent = false
     }
   }
@@ -1064,7 +1057,7 @@ onDeviceChange(selectedValue: string) {
 
   openViewPopup(data: any) {
     this.storageSer.login_loader_sub.next(true);
-    this.siteSer.getSiteFullDetails(data).subscribe((res:any) => {
+    this.siteSer.getSiteFullDetails(data).subscribe((res: any) => {
       this.storageSer.login_loader_sub.next(false);
       this.currentItem = res.siteDetails;
       this.dialog.open(CreateFormComponent, {
@@ -1076,7 +1069,7 @@ onDeviceChange(selectedValue: string) {
     })
   }
 
-  currentSite:any;
+  currentSite: any;
   timeZones: any;
   getTimeZones() {
     this.siteSer.gettimeZones().subscribe((res: any) => {
@@ -1085,9 +1078,9 @@ onDeviceChange(selectedValue: string) {
   }
 
 
-  currentSiteId:any
+  currentSiteId: any
   @ViewChild('eventsDialog') eventsDialog = {} as TemplateRef<any>;
-  cameraEventsDetailsData:any = [];
+  cameraEventsDetailsData: any = [];
   getCameraEventsConfigData(data: any) {
     // console.log(data)
     this.cameraEventsDetailsData = [];
@@ -1095,8 +1088,8 @@ onDeviceChange(selectedValue: string) {
     this.currentItem = data;
     this.storageSer.login_loader_sub.next(true);
     this.siteSer.getCameraEventsConfigData(data?.siteId).subscribe((res: any) => {
-          this.storageSer.login_loader_sub.next(false);
-      if(res.statusCode == 200) {
+      this.storageSer.login_loader_sub.next(false);
+      if (res.statusCode == 200) {
         this.cameraEventsDetailsData = res.cameraEventsDetails;
         this.dialog.open(this.eventsDialog);
       } else {
@@ -1107,8 +1100,8 @@ onDeviceChange(selectedValue: string) {
   }
 
 
-  detailsForSecond:any
-  eventViewDialog(cust:any) {
+  detailsForSecond: any
+  eventViewDialog(cust: any) {
     // this.dialog.closeAll();
     this.detailsForSecond = cust;
     this.dialog.open(CreateFormComponent, {
@@ -1122,18 +1115,18 @@ onDeviceChange(selectedValue: string) {
   @ViewChild('editSiteDialog') editSiteDialog = {} as TemplateRef<any>;
   openEditPopup(item: any) {
     this.currentItem = JSON.parse(JSON.stringify(item));
-    this.siteSer.getSiteFullDetails(item).subscribe((res:any)=> {
-      this.currentSite=res.siteDetails;
+    this.siteSer.getSiteFullDetails(item).subscribe((res: any) => {
+      this.currentSite = res.siteDetails;
       this.getTimeZones();
     })
     this.dialog.open(this.editSiteDialog);
 
   }
 
-  currentEvent:any
+  currentEvent: any
   // @ViewChild('eventsEditDialog') eventsEditDialog = {} as TemplateRef<any>;
   formType!: string;
-  eventEditDialog(item:any) {
+  eventEditDialog(item: any) {
     console.log(item)
     this.dialog.closeAll();
     this.currentEvent = item;
@@ -1154,9 +1147,9 @@ onDeviceChange(selectedValue: string) {
   }
 
   updateCameraEventsConfigData() {
-    this.siteSer.updateCameraEventsConfigData(this.currentEvent).subscribe((res:any) => {
+    this.siteSer.updateCameraEventsConfigData(this.currentEvent).subscribe((res: any) => {
       // console.log(res)
-      if(res.status_code == 200) {
+      if (res.status_code == 200) {
         this.getSitesListForUserName()
         this.alertSer.success(res?.message);
       } else {
@@ -1165,10 +1158,10 @@ onDeviceChange(selectedValue: string) {
     })
   }
 
-  resultSite:any;
+  resultSite: any;
   confirmEditRow() {
-    this.siteSer.updateSiteDetails(this.currentSite).subscribe((res:any)=>{
-      if(res.statusCode == 200) {
+    this.siteSer.updateSiteDetails(this.currentSite).subscribe((res: any) => {
+      if (res.statusCode == 200) {
         this.getSitesListForUserName()
         this.alertSer.success(res?.message);
       } else {
@@ -1269,7 +1262,7 @@ onDeviceChange(selectedValue: string) {
   //   this.stateList = x.flatMap((el: any) => el.states);
   // }
 
-    /** state country and city */
+  /** state country and city */
   countries: any = Country.getAllCountries();
   states: any = null;
   cities: any = null;
@@ -1284,13 +1277,13 @@ onDeviceChange(selectedValue: string) {
 
 
   sorted = false;
-  sort(label:any) {
+  sort(label: any) {
     this.sorted = !this.sorted;
     var x = this.siteHistoryData;
-    if(this.sorted==false){
-      x.sort((a:string, b:string) => a[label] > b[label] ? 1 : a[label] < b[label] ? -1 : 0);
-    }else{
-      x.sort((a:string, b:string) => b[label] > a[label] ? 1 : b[label] < a[label] ? -1 : 0);
+    if (this.sorted == false) {
+      x.sort((a: string, b: string) => a[label] > b[label] ? 1 : a[label] < b[label] ? -1 : 0);
+    } else {
+      x.sort((a: string, b: string) => b[label] > a[label] ? 1 : b[label] < a[label] ? -1 : 0);
     }
   }
 
@@ -1308,88 +1301,88 @@ onDeviceChange(selectedValue: string) {
   onMetadataChange() {
     let data = this.storageSer.get('metaData');
     data?.forEach((item: any) => {
-      if(item.type == 131) {
+      if (item.type == 131) {
         this.Model_Width = item.metadata;
-      } else if(item.type == 130) {
+      } else if (item.type == 130) {
         this.Model_Height = item.metadata;
-      }  else if(item.type == 132) {
+      } else if (item.type == 132) {
         this.Object_Names = item.metadata;
-      } else if(item.type == 13) {
+      } else if (item.type == 13) {
         this.ageRange = item.metadata;
-      } else if(item.type == 7) {
+      } else if (item.type == 7) {
         this.modelObjectType = item.metadata;
-      } else if(item.type == 18) {
+      } else if (item.type == 18) {
         this.model = item.metadata;
-      } else if(item.type == 19) {
+      } else if (item.type == 19) {
         this.modelResolution = item.metadata;
-      } else if(item.type == 20) {
+      } else if (item.type == 20) {
         this.softwareVersion = item.metadata;
-      } else if(item.type == 21) {
+      } else if (item.type == 21) {
         this.weatherInterval = item.metadata;
-      } else if(item.type == 129) {
+      } else if (item.type == 129) {
         this.Queue_Name = item.metadata;
       }
     })
   }
 
 
-  siteUsers:any=[];
-  getSiteUserDetails(data:any){
-    this.userSer.getSiteUserDetails(data).subscribe((res:any)=>{
-      this.siteUsers=res.usersDetails;
+  siteUsers: any = [];
+  getSiteUserDetails(data: any) {
+    this.userSer.getSiteUserDetails(data).subscribe((res: any) => {
+      this.siteUsers = res.usersDetails;
     })
   }
-centralBoxupdate:any;
+  centralBoxupdate: any;
 
-@ViewChild('centralboxupdate')  centralboxupdate = {} as TemplateRef<any>;
+  @ViewChild('centralboxupdate') centralboxupdate = {} as TemplateRef<any>;
 
-  openEditCentralBox(data:any){
+  openEditCentralBox(data: any) {
     this.dialog.closeAll();
     this.dialog.open(this.centralboxupdate);
-    this.centralBoxupdate=data;
+    this.centralBoxupdate = data;
   }
 
-  centralboxupdatedata(){
+  centralboxupdatedata() {
 
-    let payload={
+    let payload = {
       ...this.centralBoxupdate,
       ...this.currentItem,
-        modifiedBy:0
+      modifiedBy: 0
     }
 
-    this.siteSer.updateCentralbox(payload).subscribe((res:any)=>{
+    this.siteSer.updateCentralbox(payload).subscribe((res: any) => {
 
 
-      if(res.statusCode==200){
+      if (res.statusCode == 200) {
         this.alertSer.success(res.message);
         // this.getCentalBox(this.currentItem);
       }
-      else{
-          this.alertSer.error(res.message);
+      else {
+        this.alertSer.error(res.message);
       }
-    },(err:any)=>{
+    }, (err: any) => {
 
     })
 
   }
 
-@ViewChild('s3Default')  s3Default = {} as TemplateRef<any>;
+  @ViewChild('s3Default') s3Default = {} as TemplateRef<any>;
 
-s3defaultpath:any;
-s3Defaultcreate:any;
-s3select:any;
+  s3defaultpath: any;
+  s3Defaultcreate: any;
+  s3select: any;
 
-  openS3(data:any){
-    this.s3select=null;
-    this.s3Defaultcreate=data
+  openS3(data: any) {
+    this.s3select = null;
+    this.s3Defaultcreate = data
     this.dialog.open(this.s3Default);
   }
 
-  gets3Bucket(){
+  gets3Bucket() {
 
-    this.siteSer.getS3BucketNames().subscribe((res:any)=>{
-      if(res.statusCode==200){
-        this.s3defaultpath=res.s3BucketNames;
+    this.siteSer.getS3BucketNames().subscribe((res: any) => {
+      if (res.statusCode == 200) {
+        this.s3defaultpath = res.s3BucketNames;
 
       }
     });
@@ -1397,14 +1390,14 @@ s3select:any;
 
   }
 
-  s3Defaultcreateadd(){
+  s3Defaultcreateadd() {
 
-    this.siteSer.creates3Defaultpath({bucketName:this.s3select,unitId:this.s3Defaultcreate.unitId}).subscribe((res:any)=>{
-      if(res.statusCode==200){
+    this.siteSer.creates3Defaultpath({ bucketName: this.s3select, unitId: this.s3Defaultcreate.unitId }).subscribe((res: any) => {
+      if (res.statusCode == 200) {
         this.alertSer.success(res.message);
-         this.getCentalBox(this.currentItem);
+        this.getCentalBox(this.currentItem);
       }
-      else{
+      else {
         this.alertSer.error(res.message);
       }
     })
@@ -1413,20 +1406,20 @@ s3select:any;
   }
 
 
-  radiocheck:number=1;
-radioselection(i:number){
-switch(i) {
-  case 1:
-  this.radiocheck=1;
-    break;
-  case 2:
-this.radiocheck=2;
-    break;
-  default:
+  radiocheck: number = 1;
+  radioselection(i: number) {
+    switch (i) {
+      case 1:
+        this.radiocheck = 1;
+        break;
+      case 2:
+        this.radiocheck = 2;
+        break;
+      default:
 
-}
+    }
 
-}
+  }
 
 
 }
