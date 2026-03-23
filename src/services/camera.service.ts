@@ -26,7 +26,7 @@ export class CameraService {
     private http: HttpClient,
     private storageSer: StorageService,
     private datePipe: DatePipe,
-  ) { }
+  ) {}
 
   siren_sub = new BehaviorSubject<boolean>(false);
 
@@ -219,10 +219,7 @@ export class CameraService {
 
   eventsGenericEmail(payload: any) {
     // console.log(payload)
-    // let url = `${environment.guard_monitoring_url}/eventsGenericEmail_1_0`;
-
-       let url = `http://192.168.0.229:3009/eventsGenericEmail_1_0`;
-
+    let url = `${environment.guard_monitoring_url}/eventsGenericEmail_1_0`;
     let user = this.storageSer.getData('session');
 
     let params = new HttpParams();
@@ -275,7 +272,7 @@ export class CameraService {
   }
 
   getEmailData(payload: any) {
-    console.log(payload)
+    console.log(payload);
     let url = `${environment.guard_monitoring_url}/getEmailData_1_0`;
     let timer;
     payload?.siteId == 36444 ? (timer = 10) : (timer = 120);
