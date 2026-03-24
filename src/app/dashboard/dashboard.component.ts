@@ -340,16 +340,14 @@ export class DashboardComponent {
 
   audioIndex: number = -1;
   audio(data: any) {
-    this.audioIndex = this.getCurrentPageItems.indexOf(data);
+    this.audioIndex = this.getCurrentPageItems.findIndex((el: any) => el.cameraId === data.cameraId);
     this.camSer.siren_sub.next(true);
 
     this.http
       .get(`${environment.site_url}/play_1_0/${data.cameraId}`)
       .subscribe({
         next: (res: any) => {
-          setTimeout(() => {
-            this.camSer.siren_sub.next(false);
-          }, 120000);
+          this.camSer.siren_sub.next(false);
           this.audioIndex = -1;
           if (res.statusCode === 200) {
             this.alertSrvc.snackSuccess(res.message);
@@ -358,9 +356,7 @@ export class DashboardComponent {
           }
         },
         error: (err) => {
-          setTimeout(() => {
-            this.camSer.siren_sub.next(false);
-          }, 120000);
+          this.camSer.siren_sub.next(false);
           this.audioIndex = -1;
           this.alertSrvc.snackError('Siren not Played!');
         },
@@ -564,8 +560,8 @@ export class DashboardComponent {
                       user: user?.UserId,
                       actionTag: 2,
                       subActionTag: 23,
-                      activityDetTime: '',
-                      alarm: 'N',
+                      activityDetTime: (!sites.includes(data.siteId) && data.audioUrl) ? time : '',
+                      alarm: (!sites.includes(data.siteId) && data.audioUrl) ? 'P' : 'N',
                       landingTime: time,
                       reviewStart: time,
                       reviewEnd: time,

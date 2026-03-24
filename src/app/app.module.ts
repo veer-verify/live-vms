@@ -9,16 +9,10 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './header/header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoaderComponent } from 'src/utilities/loader/loader.component';
-import { SortPipe } from 'src/utilities/pipes/sort.pipe';
-import { RemoveDuplicatesPipe } from 'src/utilities/pipes/remove-duplicates.pipe';
-import { MaterialModule } from './material.module';
 import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { VideoPlayerComponent } from 'src/utilities/video-player/video-player.component';
 import { DummyVideoComponent } from 'src/utilities/dummy-video/dummy-video.component';
-import { SanitizePipe } from 'src/utilities/pipes/sanitize.pipe';
 import { IncidentComponent } from './incident/incident.component';
-import { SearchPipe } from 'src/utilities/pipes/search.pipe';
-import { OrderByPipe } from 'src/utilities/pipes/order-by.pipe';
 import { DeviceStatusComponent } from './device-status/device-status.component';
 import { SidepanelComponent } from './sidepanel/sidepanel.component';
 import { CamerasComponent } from './cameras/cameras.component';
@@ -29,26 +23,21 @@ import { ActiontagComponent } from './actiontag/actiontag.component';
 import { ActionViewComponent } from './action-view/action-view.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { DayRangeSliderComponent } from './day-range-slider/day-range-slider.component';
-import { ImagePipe } from 'src/utilities/pipes/image.pipe';
 import { PaginationComponent } from 'src/utilities/pagination/pagination.component';
 import { MonitoringInfoComponent } from './monitoring-info/monitoring-info.component';
 import { AlertsInfoComponent } from './alerts-info/alerts-info.component';
 import { PlaybackInfoComponent } from './playback-info/playback-info.component';
 import { CommonModule } from '@angular/common';
-import { EventsComponent } from './events/events.component';
 import { LiveComponent } from 'src/utilities/live/live.component';
-import { StatusComponent } from 'src/utilities/status/status.component';
 import { TableComponent } from '../utilities/table/table.component';
 import { TemplateComponent } from './template/template.component';
 import { TextAndNumberOnlyDirective } from 'src/utilities/pipes/text-and-number-only.directive';
 import { TokenInterceptor } from 'src/utilities/token.interceptor';
 import { TextonlyDirective } from 'src/utilities/pipes/textonly.directive';
 import { NvrComponent } from './nvr/nvr.component';
-import { CountPipe } from 'src/utilities/pipes/count.pipe';
 import { PlannedsiteComponent } from './plannedsite/plannedsite.component';
 import { SitesettingsComponent } from './sitesettings/sitesettings.component';
 import { ManualprocessComponent } from './manualprocess/manualprocess/manualprocess.component';
-
 import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
@@ -76,6 +65,8 @@ import { AddNewDeviceComponent } from './add-new-device/add-new-device.component
 import { MgmttableComponent } from './mgmttable/mgmttable.component';
 import { EditFormComponent } from './edit-form/edit-form.component';
 import { SigninComponent } from './signin/signin.component';
+import { MaterialModule } from 'src/shared-module/shared.module';
+import { EventsModule } from 'src/events-module/events.module';
 
 ModuleRegistry.registerModules([
   AllCommunityModule,
@@ -92,12 +83,6 @@ ModuleRegistry.registerModules([
     VideoPlayerComponent,
     DummyVideoComponent,
     DeviceStatusComponent,
-    SortPipe,
-    SearchPipe,
-    SanitizePipe,
-    ImagePipe,
-    RemoveDuplicatesPipe,
-    OrderByPipe,
     SidepanelComponent,
     CamerasComponent,
     UserDashboardComponent,
@@ -110,14 +95,11 @@ ModuleRegistry.registerModules([
     MonitoringInfoComponent,
     AlertsInfoComponent,
     PlaybackInfoComponent,
-    EventsComponent,
     LiveComponent,
-    StatusComponent,
     TemplateComponent,
     TextAndNumberOnlyDirective,
     TextonlyDirective,
     NvrComponent,
-    CountPipe,
     PlannedsiteComponent,
     SitesettingsComponent,
     ManualprocessComponent,
@@ -142,9 +124,11 @@ ModuleRegistry.registerModules([
     MgmttableComponent,
     EditFormComponent,
     LoaderComponent,
-    SigninComponent
+    SigninComponent,
   ],
   imports: [
+    MaterialModule,
+    EventsModule,
     NgxMatDatetimePickerModule,
     NgxMatMomentModule,
     BrowserModule,
@@ -153,14 +137,11 @@ ModuleRegistry.registerModules([
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    MaterialModule,
     CommonModule,
     NgxMatTimepickerModule,
     AgGridAngular,
     AgCharts,
     NgCircleProgressModule,
-
-    // Specify ng-circle-progress as an import
     NgCircleProgressModule.forRoot({
       radius: 100,
       outerStrokeWidth: 6,

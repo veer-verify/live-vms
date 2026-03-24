@@ -75,7 +75,7 @@
         >
       </a> -->
 
-      <a
+      <!-- <a
         class="list-group-item"
         [routerLink]="['/user-dashboard/sites']"
         routerLinkActive="routeactive"
@@ -86,7 +86,7 @@
         <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
           >Sites Info</span
         >
-      </a>
+      </a> -->
 
       <!-- <a class="list-group-item " [routerLink]="['/user-dashboard/device-status']" routerLinkActive="routeactive">
         <img loading="lazy" src="assets/icons/floppy-disk.svg">
@@ -96,7 +96,7 @@
       <ng-container *ngIf="user?.userLevel === 2">
         <a
           class="list-group-item"
-          [routerLink]="['/user-dashboard/pre-dispatch']"
+          [routerLink]="['/user-dashboard/events/pre-dispatch']"
           routerLinkActive="routeactive"
         >
           <span class="material-symbols-outlined" matTooltip="Pre-Dispatch">
@@ -111,7 +111,7 @@
       <ng-container *ngIf="user?.userLevel === 3">
         <a
           class="list-group-item"
-          [routerLink]="['/user-dashboard/dispatch']"
+          [routerLink]="['/user-dashboard/events/dispatch']"
           routerLinkActive="routeactive"
         >
           <span class="material-symbols-outlined" matTooltip="Dispatch">
@@ -126,7 +126,7 @@
       <ng-container *ngIf="user?.userLevel === 4">
         <a
           class="list-group-item"
-          [routerLink]="['/user-dashboard/observer']"
+          [routerLink]="['/user-dashboard/events/observer']"
           routerLinkActive="routeactive"
         >
           <span class="material-symbols-outlined" matTooltip="Observer">

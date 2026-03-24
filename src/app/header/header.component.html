@@ -23,28 +23,28 @@
         width="36px"
       />
     </button>
-
-    <mat-menu #beforeMenu>
-      <div class="profile">
-        <div class="image">
-          <div class="text-center">
-            <span class="material-symbols-outlined" style="font-size: 70px">
-              account_circle
-            </span>
-          </div>
-          <div class="p-2">
-            <p>
-              User:&nbsp;<span class="fw-bold">{{ userData?.UserName }}</span>
-            </p>
-            <p>
-              Email:&nbsp;<span class="fw-bold">{{ userData?.email }}</span>
-            </p>
-          </div>
-        </div>
-        <div>
-          <button class="w-100 py-2 btn" (click)="logout()">Logout</button>
-        </div>
-      </div>
-    </mat-menu>
   </div>
 </div>
+
+<mat-menu #beforeMenu>
+  <div class="profile">
+    <div class="image">
+      <div class="text-center">
+        <span class="material-symbols-outlined" style="font-size: 70px">
+          account_circle
+        </span>
+      </div>
+      <div class="p-2">
+        <p>
+          User:&nbsp;<span class="fw-bold">{{ userData?.UserName }}</span>
+        </p>
+        <p>
+          Email:&nbsp;<span class="fw-bold">{{ userData?.email }}</span>
+        </p>
+      </div>
+    </div>
+    <div>
+      <button class="w-100 py-2 btn" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</mat-menu>

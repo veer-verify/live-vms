@@ -8,7 +8,6 @@ import { UserDashboardComponent } from './user-dashboard/user-dashboard.componen
 import { MonitoringInfoComponent } from './monitoring-info/monitoring-info.component';
 import { AlertsInfoComponent } from './alerts-info/alerts-info.component';
 import { PlaybackInfoComponent } from './playback-info/playback-info.component';
-import { EventsComponent } from './events/events.component';
 import { NvrComponent } from './nvr/nvr.component';
 import { InsightsComponent } from './insights/insights.component';
 import { SitesComponent } from './sites/sites.component';
@@ -18,7 +17,6 @@ import { SigninComponent } from './signin/signin.component';
 
 const routes: Routes = [
   // { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   {
     path: 'user-dashboard', component: UserDashboardComponent, canActivate: [AuthGuard],
     children: [
@@ -27,14 +25,13 @@ const routes: Routes = [
       { path: 'playback-info', component: PlaybackInfoComponent },
       { path: 'device-status', component: DeviceStatusComponent },
       { path: 'nvr', component: NvrComponent },
-      { path: 'pre-dispatch', component: EventsComponent, canDeactivate: [AuthGuard] },
-      { path: 'dispatch', component: EventsComponent, canDeactivate: [AuthGuard] },
-      { path: 'observer', component: EventsComponent, canDeactivate: [AuthGuard] },
-      { path: 'insights', component: InsightsComponent, canDeactivate: [AuthGuard] },
+      { path: 'insights', component: InsightsComponent },
       { path: 'sites', component: SitesComponent },
+      { path: 'events', loadChildren: () => import('../events-module/events.module').then((c) => c.EventsModule) },
       { path: '', redirectTo: '/user-dashboard/monitoring-info', pathMatch: 'full' },
     ]
   },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   // { path: '**', component: LoginComponent }
 ];
