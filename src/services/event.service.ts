@@ -239,4 +239,15 @@ export class EventService {
     params = params.set('siteId', payload?.siteId);
     return this.http.get(url, { params });
   }
+
+  playbackvideo(payload:any){
+    const url=`${environment.download_url}/custom_playback_urls_1_0`;
+     let params = new HttpParams();
+    params = params.set('cameraId', payload?.cameraId);
+    params = params.set('siteId', payload?.siteId);
+    params = params.set('eventTime', this.datePipe.transform(payload?.actionTime,'yyyy-MM-dd HH:mm:ss')!);
+    params=params.set('minutesBeforeEvent',payload?.minutesBeforeEvent);
+    params=params.set('currentTime',payload?.currentTime);
+    return this.http.get(url, { params });
+  }
 }

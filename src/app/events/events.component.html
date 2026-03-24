@@ -89,6 +89,10 @@
                 NativeApp
               </button>
 
+              <!-- <button class="btn btn-sm dialog-update-btn" (click)="openplayback()">
+                PlayBack
+              </button> -->
+
               <button *ngFor="let btn of actionTagsNew" type="button" class="btn btn-sm dialog-update-btn"
                 [matMenuTriggerFor]="falseMenu" (click)="getCurrentType(btn)" [ngStyle]="{
                   'background-color':

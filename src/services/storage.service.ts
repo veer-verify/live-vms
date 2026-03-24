@@ -99,6 +99,10 @@ export class StorageService {
     return JSON.parse(sessionStorage.getItem(data)!);
   }
 
+  public getmetaData(data: any) {
+    return JSON.parse(localStorage.getItem(data)!);
+  }
+
   public removeData(key: string) {
     sessionStorage.removeItem(key);
   }

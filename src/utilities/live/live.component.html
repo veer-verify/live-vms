@@ -3,14 +3,23 @@
     <p>{{data?.siteName}}</p>
     <a mat-dialog-close><img loading="lazy" src="assets/icons/close.svg" width="20" alt=""></a>
   </div>
+<div class="d-flex">
 
   <div [ngClass]="data.liveControl === 2 ? 'gridcontainer' : 'singlelive'">
     <div class="border" *ngFor="let item of liveData">
+
+           <button class="playbackbutton"  (click)="openplayback()">
+        ▶
+      </button>
+
       <app-video-player [videoData]="item.httpUrl + '/'" [liveControl]="data.liveControl"></app-video-player>
     </div>
 
-    <ng-container>
-      <!-- <app-status [text]="statusTxt"></app-status> -->
-    </ng-container>
   </div>
+  <ng-container *ngIf="showplayback">
+    <!-- <app-status [text]="statusTxt"></app-status> -->
+
+    <app-playback-info (myEvent)="closeplayback()"></app-playback-info>
+  </ng-container>
+</div>
 </div>

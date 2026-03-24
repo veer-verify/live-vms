@@ -19,3 +19,20 @@
   width: min(50vw, 80vw);
   height: 70vh;
 }
+
+
+.playbackbutton{
+
+/* position: absolute; */
+ top: 50%;
+ left: 40%;
+  transform: translate(50%,-50%);
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  font-size: 24px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+
+}

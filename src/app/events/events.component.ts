@@ -14,6 +14,7 @@ import { HttpClient } from '@angular/common/http';
 import html2canvas from 'html2canvas';
 import { SiteService } from 'src/services/site.service';
 import { ManualprocessComponent } from '../manualprocess/manualprocess/manualprocess.component';
+import { PlaybackInfoComponent } from '../playback-info/playback-info.component';
 
 @Component({
   selector: 'app-events',
@@ -717,6 +718,14 @@ console.log(this.currentItem)
           }
         });
     }
+  }
+
+
+  openplayback(){
+    this.dialog.open(PlaybackInfoComponent, {
+      data: this.currentItem,
+      disableClose: false,
+    });
   }
 
   ngOnDestroy() {

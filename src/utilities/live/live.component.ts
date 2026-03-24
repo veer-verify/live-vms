@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { PlaybackInfoComponent } from 'src/app/playback-info/playback-info.component';
 import { SiteService } from 'src/services/site.service';
 
 @Component({
@@ -16,7 +17,7 @@ export class LiveComponent {
   ) { }
 
   ngOnInit() {
-    this.getCamerasForSiteId(this.data); 
+    this.getCamerasForSiteId(this.data);
   }
 
   liveData: any = [];
@@ -36,6 +37,13 @@ export class LiveComponent {
         this.statusTxt = 'failed to load cameras!';
       }
     });
+  }
+showplayback:boolean=false;
+  openplayback(){
+this.showplayback=true;
+  }
+  closeplayback(){
+    this.showplayback=false;
   }
 
 }
