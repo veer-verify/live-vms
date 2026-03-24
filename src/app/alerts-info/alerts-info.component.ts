@@ -115,7 +115,7 @@ export class AlertsInfoComponent {
   camData: Array<any> = new Array();
   camerasListForSites(siteId: any) {
     this.siteSer
-      .getCamerasForSiteId({ siteId: siteId })
+      .getCamerasForSiteId(siteId)
       .subscribe((res: any) => {
         this.camData = res;
       });

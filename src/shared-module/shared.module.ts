@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { A11yModule } from '@angular/cdk/a11y';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { PortalModule } from '@angular/cdk/portal';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -41,10 +40,49 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { LayoutModule } from '@angular/cdk/layout';
+import { ImagePipe } from 'src/utilities/pipes/image.pipe';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { StatusComponent } from 'src/utilities/status/status.component';
+import { OrderByPipe } from 'src/utilities/pipes/order-by.pipe';
+import { RemoveDuplicatesPipe } from 'src/utilities/pipes/remove-duplicates.pipe';
+import { SanitizePipe } from 'src/utilities/pipes/sanitize.pipe';
+import { SearchPipe } from 'src/utilities/pipes/search.pipe';
+import { SortPipe } from 'src/utilities/pipes/sort.pipe';
+import { CountPipe } from 'src/utilities/pipes/count.pipe';
 
 @NgModule({
+  declarations: [
+    //components
+    StatusComponent,
+
+    //pipes
+    ImagePipe,
+    SortPipe,
+    SearchPipe,
+    SanitizePipe,
+    RemoveDuplicatesPipe,
+    OrderByPipe,
+    CountPipe
+  ],
   exports: [
-    A11yModule,
+    //modules
+    FormsModule,
+    CommonModule,
+
+    //components
+    StatusComponent,
+
+    //pipes
+    ImagePipe,
+    SortPipe,
+    SearchPipe,
+    SanitizePipe,
+    RemoveDuplicatesPipe,
+    OrderByPipe,
+    CountPipe,
+
+    //material
     CdkStepperModule,
     CdkTableModule,
     CdkTreeModule,
@@ -86,7 +124,7 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatTreeModule,
     PortalModule,
     ScrollingModule,
-    LayoutModule
+    LayoutModule,
   ]
 })
 export class MaterialModule { }
