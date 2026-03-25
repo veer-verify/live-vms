@@ -45,7 +45,7 @@
           video_camera_back
         </span>
         <span style="font-weight: 500; margin-left: 10px" *ngIf="showSidenav"
-          >Sites</span
+          >Live</span
         >
       </a>
 
@@ -93,7 +93,7 @@
         <span style="font-weight: 500; margin-left: 10px;" matTooltip="" *ngIf="showSidenav">Devices</span>
       </a> -->
 
-      <ng-container>
+      <ng-container *ngIf="user?.userLevel === 2">
         <a
           class="list-group-item"
           [routerLink]="['/user-dashboard/events/pre-dispatch']"
