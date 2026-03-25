@@ -9,7 +9,11 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './header/header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoaderComponent } from 'src/utilities/loader/loader.component';
-import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
+import {
+  DatePipe,
+  HashLocationStrategy,
+  LocationStrategy,
+} from '@angular/common';
 import { VideoPlayerComponent } from 'src/utilities/video-player/video-player.component';
 import { DummyVideoComponent } from 'src/utilities/dummy-video/dummy-video.component';
 import { IncidentComponent } from './incident/incident.component';
@@ -64,14 +68,10 @@ import { AddNewDeviceComponent } from './add-new-device/add-new-device.component
 import { MgmttableComponent } from './mgmttable/mgmttable.component';
 import { EditFormComponent } from './edit-form/edit-form.component';
 import { SigninComponent } from './signin/signin.component';
-import { MaterialModule } from 'src/shared-module/shared.module';
-import { EventsModule } from 'src/events-module/events.module';
+import { SharedModule } from 'src/shared-module/shared.module';
 import { CountryStateCityComponent } from 'src/utilities/country-state-city/country-state-city.component';
-import { StatusComponent } from 'src/utilities/status/status.component';
 
-ModuleRegistry.registerModules([
-  AllCommunityModule,
-]);
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 @NgModule({
   declarations: [
@@ -126,11 +126,9 @@ ModuleRegistry.registerModules([
     EditFormComponent,
     LoaderComponent,
     SigninComponent,
-    StatusComponent
   ],
   imports: [
-    MaterialModule,
-    EventsModule,
+    SharedModule,
     NgxMatDatetimePickerModule,
     NgxMatMomentModule,
     BrowserModule,
@@ -139,7 +137,7 @@ ModuleRegistry.registerModules([
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    CommonModule,
+    // CommonModule,
     NgxMatTimepickerModule,
     AgGridAngular,
     AgCharts,
@@ -148,8 +146,8 @@ ModuleRegistry.registerModules([
       radius: 100,
       outerStrokeWidth: 6,
       innerStrokeWidth: 2,
-      outerStrokeColor: "#78C000",
-      innerStrokeColor: "#C7E596",
+      outerStrokeColor: '#78C000',
+      innerStrokeColor: '#C7E596',
       animationDuration: 300,
     }),
     NgxEchartsModule.forRoot({
@@ -159,15 +157,15 @@ ModuleRegistry.registerModules([
   providers: [
     {
       provide: LocationStrategy,
-      useClass: HashLocationStrategy
+      useClass: HashLocationStrategy,
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
-      multi: true
+      multi: true,
     },
-    DatePipe
+    DatePipe,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

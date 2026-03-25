@@ -54,7 +54,7 @@ import { CountPipe } from 'src/utilities/pipes/count.pipe';
 @NgModule({
   declarations: [
     //components
-    // StatusComponent,
+    StatusComponent,
 
     //pipes
     ImagePipe,
@@ -63,15 +63,15 @@ import { CountPipe } from 'src/utilities/pipes/count.pipe';
     SanitizePipe,
     RemoveDuplicatesPipe,
     OrderByPipe,
-    CountPipe
+    CountPipe,
   ],
+  imports: [CommonModule],
   exports: [
     //modules
-    FormsModule,
     CommonModule,
 
     //components
-    // StatusComponent,
+    StatusComponent,
 
     //pipes
     ImagePipe,
@@ -125,6 +125,6 @@ import { CountPipe } from 'src/utilities/pipes/count.pipe';
     PortalModule,
     ScrollingModule,
     LayoutModule,
-  ]
+  ],
 })
-export class MaterialModule { }
+export class SharedModule {}
