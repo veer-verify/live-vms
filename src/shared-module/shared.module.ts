@@ -54,7 +54,7 @@ import { CountPipe } from 'src/utilities/pipes/count.pipe';
 @NgModule({
   declarations: [
     //components
-    StatusComponent,
+    // StatusComponent,
 
     //pipes
     ImagePipe,
@@ -71,7 +71,7 @@ import { CountPipe } from 'src/utilities/pipes/count.pipe';
     CommonModule,
 
     //components
-    StatusComponent,
+    // StatusComponent,
 
     //pipes
     ImagePipe,

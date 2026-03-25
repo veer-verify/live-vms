@@ -1,0 +1,31 @@
+<div
+  class="video-container"
+  (mouseenter)="showControls = true"
+  (mouseleave)="showControls = false"
+>
+  <!-- <div class="dialog-header">
+    <p>{{data?.siteName}}</p>
+    <a (click)="closedialog()"><img loading="lazy" src="assets/icons/close.svg" width="20" alt=""></a>
+  </div> -->
+
+  <video
+    #videoElement
+    [src]="videos[currentIndex]"
+    [controls]="showLoader ? false : true"
+    autoplay
+    muted
+    loop
+  ></video>
+
+  <ng-container *ngIf="videos.length > 1">
+    <!-- Left Arrow -->
+    <button *ngIf="showControls" class="nav left" (click)="prevVideo()">
+      <span class="material-symbols-outlined"> keyboard_arrow_left </span>
+    </button>
+
+    <!-- Right Arrow -->
+    <button *ngIf="showControls" class="nav right" (click)="nextVideo()">
+      <span class="material-symbols-outlined"> keyboard_arrow_right </span>
+    </button>
+  </ng-container>
+</div>

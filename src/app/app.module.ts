@@ -26,7 +26,7 @@ import { DayRangeSliderComponent } from './day-range-slider/day-range-slider.com
 import { PaginationComponent } from 'src/utilities/pagination/pagination.component';
 import { MonitoringInfoComponent } from './monitoring-info/monitoring-info.component';
 import { AlertsInfoComponent } from './alerts-info/alerts-info.component';
-import { PlaybackInfoComponent } from './playback-info/playback-info.component';
+import { PlaybackInfoComponent } from '../utilities/playback-info/playback-info.component';
 import { CommonModule } from '@angular/common';
 import { LiveComponent } from 'src/utilities/live/live.component';
 import { TableComponent } from '../utilities/table/table.component';
@@ -52,7 +52,6 @@ import { AddNewCameraComponent } from './add-new-camera/add-new-camera.component
 import { AddNewEventComponent } from './add-new-event/add-new-event.component';
 import { AddNewInstallationComponent } from './add-new-installation/add-new-installation.component';
 import { AddNewSiteComponent } from './add-new-site/add-new-site.component';
-import { CountryStateCityComponent } from './country-state-city/country-state-city.component';
 import { EditCameraComponent } from './edit-camera/edit-camera.component';
 import { CreateFormComponent } from './create-form/create-form.component';
 import { AddDeviceFormComponent } from './add-device-form/add-device-form.component';
@@ -67,6 +66,8 @@ import { EditFormComponent } from './edit-form/edit-form.component';
 import { SigninComponent } from './signin/signin.component';
 import { MaterialModule } from 'src/shared-module/shared.module';
 import { EventsModule } from 'src/events-module/events.module';
+import { CountryStateCityComponent } from 'src/utilities/country-state-city/country-state-city.component';
+import { StatusComponent } from 'src/utilities/status/status.component';
 
 ModuleRegistry.registerModules([
   AllCommunityModule,
@@ -125,6 +126,7 @@ ModuleRegistry.registerModules([
     EditFormComponent,
     LoaderComponent,
     SigninComponent,
+    StatusComponent
   ],
   imports: [
     MaterialModule,

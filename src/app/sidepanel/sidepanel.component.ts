@@ -49,7 +49,7 @@ export class SidepanelComponent {
     private SiteSer: SiteService,
     private metadaSer: MetadataService,
     private alaram: AlertService
-  ) {}
+  ) { }
 
   ngOnInit() {
     // this.getSitesforUser();
@@ -281,7 +281,7 @@ export class SidepanelComponent {
       this.SiteSer.createGuardEmailsData(payload).subscribe((res: any) => {
         if (res.statusCode == 200) {
           this.alaram.snackSuccess(res.message);
-           this.sidePanelClosed.emit(false);
+          this.sidePanelClosed.emit(false);
           this.startTime = '00:00';
           this.endTime = '00:00';
         }
@@ -480,10 +480,7 @@ export class SidepanelComponent {
   }
 
   addHours() {
-
-
     this.timeSlots.push(`${this.startTime1}-${this.endTime1}`);
-
     this.startTime = '00:00';
     this.endTime = '00:00';
   }

@@ -194,7 +194,7 @@
             [cdkDropListConnectedTo]="[siteList]"
             (cdkDropListDropped)="moveAllCams()"
           >
-            <mat-panel-title cdkDrag>
+            <mat-panel-title cdkDrag [cdkDragDisabled]="showCamLoader">
               <div [title]="site?.siteName">
                 {{ site?.siteName }}
               </div>

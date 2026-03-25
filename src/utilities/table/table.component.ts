@@ -7,8 +7,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class TableComponent {
 
-  @Input({ required: true }) fields!: any[];
-  @Input({ required: true }) data!: any[];
+  @Input({ required: true }) fields: any;
+  @Input({ required: true }) data: any;
   @Input() index!: number;
   @Input() showLoader!: any;
   @Input() search!: any;

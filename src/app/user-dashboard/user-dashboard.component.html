@@ -93,7 +93,7 @@
         <span style="font-weight: 500; margin-left: 10px;" matTooltip="" *ngIf="showSidenav">Devices</span>
       </a> -->
 
-      <ng-container *ngIf="user?.userLevel === 2">
+      <ng-container>
         <a
           class="list-group-item"
           [routerLink]="['/user-dashboard/events/pre-dispatch']"

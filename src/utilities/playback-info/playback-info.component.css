@@ -1,10 +1,10 @@
 .video-container {
   position: relative;
-  width: 600px;
-  height: 600px;
-  /* margin: auto; */
+  width: 30vw;
+  height: 100%;
   box-sizing: content-box;
 }
+
 .dialog-header {
   background-color: #fff;
   padding: 5px;
@@ -14,25 +14,26 @@
   position: sticky;
   top: 0;
 }
+
 video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 10px;
 }
 
-/* Arrow buttons */
 .nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
   font-size: 24px;
   padding: 10px;
   cursor: pointer;
   border-radius: 50%;
+  animation-name: show;
+  animation-duration: 500ms;
 }
 
 .left {
@@ -41,4 +42,13 @@ video {
 
 .right {
   right: 10px;
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

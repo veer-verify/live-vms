@@ -14,7 +14,7 @@ import { HttpClient } from '@angular/common/http';
 import html2canvas from 'html2canvas';
 import { SiteService } from 'src/services/site.service';
 import { ManualprocessComponent } from '../manualprocess/manualprocess/manualprocess.component';
-import { PlaybackInfoComponent } from '../playback-info/playback-info.component';
+import { PlaybackInfoComponent } from '../../utilities/playback-info/playback-info.component';
 
 @Component({
   selector: 'app-events',
@@ -118,40 +118,45 @@ export class EventsComponent {
           },
         });
       }
+      if (this.eventData.length === 0) {
+        this.storage_service.status_text = 'no events!'
+      } else {
+        this.storage_service.status_text = ''
+      }
       this.storage_service.events_sub.next(this.eventData.length);
     }, 2000);
   }
 
   eventData: any = [
     // {
-    //     "siteId": 36347,
-    //     "siteName": "Barbee Pharmacy & Gifts",
-    //     "timezone": "America/New_York",
-    //     "httpUrl": "https://gisusorin1017live-repo.us1.pitunnel.com/GISUSORIN1017C1",
-    //     "cameraId": "GISUSORIN1017C1",
-    //     "color": "green",
-    //     "id": "603101a8-694a-4585-b430-737c31ca3771",
-    //     "imageName": "GISUSORIN1017C1_603101a8-694a-4585-b430-737c31ca3771_2025-10-15_08-29-36_green.png",
-    //     "timestamp": "2025-10-15 08:29:36",
-    //     "userLevels": 0,
-    //     "actionTag": "suspicious",
-    //     "actionTime": "2025-10-15 08:29:38",
-    //     "eventTag": "",
-    //     "userLevelAlarmInfo": [
-    //         {
-    //             "level": 1,
-    //             "user": 1614,
-    //             "alarm": "N",
-    //             "landingTime": "2025-10-15 08:29:36",
-    //             "reviewStart": "2025-10-15 08:29:36",
-    //             "reviewEnd": "2025-10-15 08:29:36",
-    //             "actionTag": 2,
-    //             "subActionTag": 23,
-    //             "notes": "",
-    //             "activityDetTime": "2025-10-15 08:29:36"
-    //         }
-    //     ],
-    //     "userName": "vamsiv@ivisecurity.com"
+    //   "siteId": 36320,
+    //   "siteName": "Barbee Pharmacy & Gifts",
+    //   "timezone": "America/New_York",
+    //   "httpUrl": "https://gisusorin1017live-repo.us1.pitunnel.com/GISUSORIN1017C1",
+    //   "cameraId": "GISUS7017C4",
+    //   "color": "green",
+    //   "id": "603101a8-694a-4585-b430-737c31ca3771",
+    //   "imageName": "GISUSORIN1017C1_603101a8-694a-4585-b430-737c31ca3771_2025-10-15_08-29-36_green.png",
+    //   "timestamp": "2026-03-25 04:28:57",
+    //   "userLevels": 0,
+    //   "actionTag": "suspicious",
+    //   "actionTime": "2026-03-25 04:28:57",
+    //   "eventTag": "",
+    //   "userLevelAlarmInfo": [
+    //     {
+    //       "level": 1,
+    //       "user": 1614,
+    //       "alarm": "P",
+    //       "landingTime": "2026-03-25 04:28:57",
+    //       "reviewStart": "2026-03-25 04:28:57",
+    //       "reviewEnd": "2026-03-25 04:28:57",
+    //       "actionTag": 2,
+    //       "subActionTag": 23,
+    //       "notes": "",
+    //       "activityDetTime": "2026-03-25 04:28:57"
+    //     }
+    //   ],
+    //   "userName": "vamsiv@ivisecurity.com"
     // }
   ];
 
@@ -530,7 +535,6 @@ export class EventsComponent {
           notes: this.notes,
           userName: user?.UserName,
         });
-    console.log(this.currentItem)
     this.currentItem.time = this.currentItem.timestamp;
     this.storage_service.show_loader = true;
     this.event_service
@@ -729,7 +733,7 @@ export class EventsComponent {
   }
 
 
-  openplayback(){
+  openplayback() {
     this.dialog.open(PlaybackInfoComponent, {
       data: this.currentItem,
       disableClose: false,

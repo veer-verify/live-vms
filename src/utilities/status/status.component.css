@@ -6,4 +6,14 @@
   left: 55%;
   transform: translate(-50%, -50%);
   text-transform: uppercase;
+  color: rgb(201, 26, 26);
+  animation-name: blink;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
 }

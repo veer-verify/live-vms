@@ -1,25 +1,46 @@
 <div class="live-container">
   <div class="dialog-header">
-    <p>{{data?.siteName}}</p>
-    <a mat-dialog-close><img loading="lazy" src="assets/icons/close.svg" width="20" alt=""></a>
+    <p>
+      {{ data?.siteName }} -
+      <span *ngIf="currentCamera">{{ currentCamera?.cameraId }}</span>
+    </p>
+    <a mat-dialog-close
+      ><img loading="lazy" src="assets/icons/close.svg" width="20" alt=""
+    /></a>
   </div>
-<div class="d-flex">
 
-  <div [ngClass]="data.liveControl === 2 ? 'gridcontainer' : 'singlelive'">
-    <div class="border" *ngFor="let item of liveData">
+  <div class="d-flex">
+    <div [ngClass]="data.liveControl === 2 ? 'gridcontainer' : 'singlelive'">
+      <div *ngFor="let item of liveData">
+        <div
+          style="position: relative; border: 2px solid transparent"
+          [style.borderColor]="
+            currentCamera?.cameraId === item.cameraId ? 'red' : 'transparent'
+          "
+        >
+          <a
+            class="playbackbutton"
+            (click)="openplayback(item)"
+            matTooltip="Playback"
+          >
+            <span class="material-symbols-outlined"> fast_rewind </span>
+          </a>
 
-           <button class="playbackbutton"  (click)="openplayback()">
-        ▶
-      </button>
-
-      <app-video-player [videoData]="item.httpUrl + '/'" [liveControl]="data.liveControl"></app-video-player>
+          <app-video-player
+            [videoData]="item.httpUrl + '/'"
+            [liveControl]="data.liveControl"
+          ></app-video-player>
+        </div>
+      </div>
     </div>
 
-  </div>
-  <ng-container *ngIf="showplayback">
-    <!-- <app-status [text]="statusTxt"></app-status> -->
+    <ng-container *ngIf="showplayback">
+      <!-- <app-status [text]="statusTxt"></app-status> -->
 
-    <app-playback-info (myEvent)="closeplayback()"></app-playback-info>
-  </ng-container>
-</div>
+      <app-playback-info
+        [data]="merged"
+        (myEvent)="closeplayback()"
+      ></app-playback-info>
+    </ng-container>
+  </div>
 </div>

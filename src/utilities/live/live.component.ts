@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { PlaybackInfoComponent } from 'src/app/playback-info/playback-info.component';
 import { SiteService } from 'src/services/site.service';
 
 @Component({
@@ -26,7 +25,7 @@ export class LiveComponent {
     this.statusTxt = 'loading...';
     this.siteSer.getLiveCams(data).subscribe({
       next: (res: any) => {
-        if(res.length === 0) {
+        if (res.length === 0) {
           this.statusTxt = 'no cameras found!';
         } else {
           this.statusTxt = '';
@@ -38,12 +37,20 @@ export class LiveComponent {
       }
     });
   }
-showplayback:boolean=false;
-  openplayback(){
-this.showplayback=true;
+  showplayback: boolean = false;
+  currentCamera: any;
+  merged: any;
+  openplayback(camera: any) {
+    this.showplayback = false;
+
+    setTimeout(() => {
+      this.currentCamera = camera;
+      this.merged = { ...this.currentCamera, ...this.data };
+      this.showplayback = true;
+    }, 100)
   }
-  closeplayback(){
-    this.showplayback=false;
+  closeplayback() {
+    this.showplayback = false;
   }
 
 }
