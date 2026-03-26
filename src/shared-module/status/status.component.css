@@ -6,7 +6,10 @@
   left: 55%;
   transform: translate(-50%, -50%);
   text-transform: uppercase;
-  color: rgb(201, 26, 26);
+  color: #084982;
+}
+
+.blink {
   animation-name: blink;
   animation-duration: 1000ms;
   animation-iteration-count: infinite;

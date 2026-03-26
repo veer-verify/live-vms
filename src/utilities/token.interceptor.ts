@@ -114,8 +114,7 @@ import {
   Observable,
   switchMap,
   take,
-  throwError,
-  fromEvent
+  throwError
 } from 'rxjs';
 import { StorageService } from 'src/services/storage.service';
 import { LoginService } from 'src/services/login.service';

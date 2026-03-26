@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
-import { EventsComponent } from 'src/app/events/events.component';
+import { EventsComponent } from 'src/events-module/events/events.component';
 import { SharedModule } from 'src/shared-module/shared.module';
 import { AuthGuard } from 'src/utilities/auth.guard';
+import { PlaybackInfoComponent } from './playback-info/playback-info.component';
+import { LiveComponent } from './live/live.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [EventsComponent],
-  imports: [SharedModule, RouterModule.forChild(routes), FormsModule],
+  declarations: [
+    EventsComponent,
+    LiveComponent,
+    PlaybackInfoComponent
+  ],
+  imports: [
+    RouterModule.forChild(routes),
+    SharedModule
+  ],
 })
-export class EventsModule {}
+export class EventsModule { }

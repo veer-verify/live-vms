@@ -11,12 +11,7 @@
   </div>
 
   <div class="user-detail">
-    <button
-      class="user-btn p-0"
-      [matMenuTriggerFor]="beforeMenu"
-      (menuOpened)="onMenuOpened()"
-      (menuClosed)="onMenuClosed()"
-    >
+    <button class="user-btn p-0" [matMenuTriggerFor]="beforeMenu">
       <img
         loading="lazy"
         [src]="storageSer.getFile('profile.svg')"

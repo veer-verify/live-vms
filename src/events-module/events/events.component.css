@@ -1,21 +1,14 @@
-.text {
-  font-size: 24px;
-  font-weight: 700;
-  position: absolute;
-  top: 50%;
-  left: 55%;
-  transform: translate(-50%, -50%);
-  text-transform: uppercase;
-  color: rgb(201, 26, 26);
-  animation-name: blink;
-  animation-duration: 1000ms;
-  animation-iteration-count: infinite;
-}
-
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
+.manual-btn {
+  position: fixed;
+  width: 6%;
+  right: 6%;
+  background: red;
+  border: none;
+  top: 2%;
+  z-index: 99;
+  padding: 4px;
+  background-color: #ffffff;
+  border-radius: 4px;
 }
 
 .side-panel {

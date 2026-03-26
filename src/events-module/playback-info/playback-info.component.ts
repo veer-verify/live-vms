@@ -1,5 +1,4 @@
-import { Component, ElementRef, EventEmitter, Inject, Input, Output, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { EventService } from 'src/services/event.service';
 import { StorageService } from 'src/services/storage.service';
 
@@ -11,7 +10,6 @@ import { StorageService } from 'src/services/storage.service';
 export class PlaybackInfoComponent {
 
   constructor(
-    // @Inject(MAT_DIALOG_DATA) public data: any,
     private event: EventService,
     private storage: StorageService
   ) { }
@@ -22,11 +20,7 @@ export class PlaybackInfoComponent {
   time: any;
   currentIndex = 0;
   showControls = false;
-  videos: any = [
-    // '/assets/clips/clip-1.mp4',
-    // '/assets/clips/clip-2.mp4',
-    // '/assets/clips/clip-3.mp4',
-  ];
+  videos: any = [];
   playbacktime: any;
 
   ngOnChanges() {
@@ -38,25 +32,23 @@ export class PlaybackInfoComponent {
   ngOnInit() {
   }
 
-  showLoader = false;
+  showVideoControl = false;
   playbackvideoApi() {
     this.videos = [];
-    this.videos.push('/assets/clips/loading.mp4');
-    this.showLoader = true;
-    this.event.playbackvideo({ ...this.data, minutesBeforeEvent: this.playbacktime.value, currentTime: this.time })
+    this.videos.push('assets/clips/loading.mp4');
+    this.showVideoControl = false;
+    this.event.playbackvideo({ ...this.data, minutesBeforeEvent: this.playbacktime?.value, currentTime: this.time })
       .subscribe({
         next: (res: any) => {
-          this.showLoader = false;
+          this.videos = [];
           if (res.statusCode === 200) {
-            this.videos = [];
+            this.showVideoControl = true;
             this.videos = res.eventUrls;
           } else {
-            this.videos.push('/assets/clips/clip-1.mp4');
+            this.videos.push('assets/clips/error.mp4');
           }
         },
-        error: (err) => {
-          this.showLoader = false;
-        }
+        error: (err) => { }
       })
   }
 
@@ -85,13 +77,13 @@ export class PlaybackInfoComponent {
   }
 
   getTypes() {
-    const metadata = this.storage.getmetaData('metaData');
+    const metadata = this.storage.getData('metaData');
     metadata.forEach((item: any) => {
       if (item.typeName === 'CustomPlaybackTime') {
         [this.playbacktime] = item.metadata;
-        this.playbackvideoApi();
       }
     });
+    this.playbackvideoApi();
   }
 
 }

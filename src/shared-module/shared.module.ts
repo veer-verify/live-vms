@@ -41,20 +41,25 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { LayoutModule } from '@angular/cdk/layout';
 import { ImagePipe } from 'src/utilities/pipes/image.pipe';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { StatusComponent } from 'src/utilities/status/status.component';
+import { CommonModule, DatePipe } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { StatusComponent } from 'src/shared-module/status/status.component';
 import { OrderByPipe } from 'src/utilities/pipes/order-by.pipe';
 import { RemoveDuplicatesPipe } from 'src/utilities/pipes/remove-duplicates.pipe';
 import { SanitizePipe } from 'src/utilities/pipes/sanitize.pipe';
 import { SearchPipe } from 'src/utilities/pipes/search.pipe';
 import { SortPipe } from 'src/utilities/pipes/sort.pipe';
 import { CountPipe } from 'src/utilities/pipes/count.pipe';
+import { HttpClientModule } from '@angular/common/http';
+import { TextAndNumberOnlyDirective } from 'src/utilities/pipes/text-and-number-only.directive';
+import { TextonlyDirective } from 'src/utilities/pipes/textonly.directive';
+import { VideoPlayerComponent } from './video-player/video-player.component';
 
 @NgModule({
   declarations: [
     //components
     StatusComponent,
+    VideoPlayerComponent,
 
     //pipes
     ImagePipe,
@@ -64,14 +69,27 @@ import { CountPipe } from 'src/utilities/pipes/count.pipe';
     RemoveDuplicatesPipe,
     OrderByPipe,
     CountPipe,
+
+    //directives
+    TextAndNumberOnlyDirective,
+    TextonlyDirective,
   ],
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+  ],
   exports: [
     //modules
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
 
     //components
     StatusComponent,
+    VideoPlayerComponent,
 
     //pipes
     ImagePipe,
@@ -81,6 +99,11 @@ import { CountPipe } from 'src/utilities/pipes/count.pipe';
     RemoveDuplicatesPipe,
     OrderByPipe,
     CountPipe,
+    DatePipe,
+
+    //directives
+    TextAndNumberOnlyDirective,
+    TextonlyDirective,
 
     //material
     CdkStepperModule,
@@ -126,5 +149,8 @@ import { CountPipe } from 'src/utilities/pipes/count.pipe';
     ScrollingModule,
     LayoutModule,
   ],
+  providers: [
+    DatePipe
+  ]
 })
-export class SharedModule {}
+export class SharedModule { }

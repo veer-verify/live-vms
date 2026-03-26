@@ -23,7 +23,7 @@ export class NvrComponent {
     private alertSer: AlertService,
     private metadaSer: MetadataService,
     private siteSer: SiteService
-  ) {}
+  ) { }
 
   userData: any;
   showLoader: boolean = false;
@@ -31,7 +31,7 @@ export class NvrComponent {
   currentTime: any;
   objectNames = ['Person', 'Vehicle'];
   ngOnInit() {
-    this.userData = JSON.parse(localStorage.getItem('user')!);
+    this.userData = JSON.parse(sessionStorage.getItem('user')!);
     this.getSitesListForUserName();
     this.getTags();
   }
@@ -44,11 +44,11 @@ export class NvrComponent {
     this.showLoader = true;
     this.siteSer.getSites(this.userData).subscribe((res: any) => {
       this.showLoader = false;
-      if(res.Status === 'Success') {
+      if (res.Status === 'Success') {
         this.siteIdToNav = res?.sites.sort((a: any, b: any) => a.siteName > b.siteName ? 1 : a.siteName < b.siteName ? -1 : 0);
         this.camerasListForSites(this.siteIdToNav[0]);
         this.footageList(this.siteIdToNav[0], 0);
-      } else if(res.Status === 'Failed') {
+      } else if (res.Status === 'Failed') {
         this.errInfo = res.message;
       }
     }, (err: any) => {
@@ -56,7 +56,7 @@ export class NvrComponent {
       this.errInfo = 'CONNECTION TIMED OUT!';
     })
   }
-  
+
   camData: any = [];
   camerasListForSites(siteId: any) {
     this.siteSer.getCamerasForSiteId(siteId).subscribe((res: any) => {
@@ -84,7 +84,7 @@ export class NvrComponent {
     this.showLoader1 = true;
     this.siteSer.nvrList(data).subscribe((res: any) => {
       this.showLoader1 = false;
-      if(res.statusCode == 200) {
+      if (res.statusCode == 200) {
         this.eventData = res.nvrDetails;
         this.newEventData = this.eventData;
         this.errInfo = null;
@@ -105,9 +105,9 @@ export class NvrComponent {
   filter() {
     this.currentPage = 1;
     this.showLoader = true;
-    this.eventSer.incidentList({siteId: this.currentSite?.siteId, cameraId: this.cameraId, actionTag: this.actionTag, fromDate: this.fromDate, toDate: this.toDate}).subscribe((res: any) => {
+    this.eventSer.incidentList({ siteId: this.currentSite?.siteId, cameraId: this.cameraId, actionTag: this.actionTag, fromDate: this.fromDate, toDate: this.toDate }).subscribe((res: any) => {
       this.showLoader = false;
-      if(res.statusCode === 200) {
+      if (res.statusCode === 200) {
         this.newEventData = res.IncidentList.sort((a: any, b: any) => a.createdTime > b.createdTime ? -1 : a.createdTime < b.createdTime ? 1 : 0);
       } else {
         this.newEventData = [];
@@ -129,7 +129,7 @@ export class NvrComponent {
   }
 
   setPage(page: number): void {
-    if(page <= this.totalPages && page !== 0) {
+    if (page <= this.totalPages && page !== 0) {
       this.showLoader1 = true;
       setTimeout(() => {
         this.showLoader1 = false;
@@ -149,7 +149,7 @@ export class NvrComponent {
   @ViewChild('editDialog') editDialog = {} as TemplateRef<any>;
   currentItem: any;
   openEditDialog(data: any) {
-    this.currentItem ={...data} ;
+    this.currentItem = { ...data };
     this.matdialog.open(this.editDialog);
   }
 
@@ -159,12 +159,12 @@ export class NvrComponent {
     this.currentDeletingFile = data;
     this.matdialog.open(this.confirmationDialog);
   }
-  
+
   updateIncidents() {
     this.showLoader = true;
     this.siteSer.updateNVRDetails(this.currentItem).subscribe((res: any) => {
       this.showLoader = false;
-      if(res.statusCode === 200) {
+      if (res.statusCode === 200) {
         this.alertSer.success(res.message)
         this.footageList(this.currentSite, this.navActive);
       } else {

@@ -8,10 +8,12 @@
     <a (click)="closedialog()"><img loading="lazy" src="assets/icons/close.svg" width="20" alt=""></a>
   </div> -->
 
+  <p class="playback-text">Playback</p>
+
   <video
     #videoElement
     [src]="videos[currentIndex]"
-    [controls]="showLoader ? false : true"
+    [controls]="showVideoControl"
     autoplay
     muted
     loop

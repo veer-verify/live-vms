@@ -3,7 +3,7 @@
 <!-- <p class="text">{{ storage_service.status_text }}</p> -->
 <button
   matTooltip="ManualEvent"
-  class="btn btn-sm btn-primary rounded"
+  class="manual-btn"
   (click)="openManualevent()"
   *ngIf="path === 'pre-dispatch'"
 >
@@ -155,8 +155,7 @@
               >
                 {{ btn?.categoryName }}
               </button>
-
-              <mat-menu #falseMenu xPosition="before">
+              <mat-menu #falseMenu>
                 <div class="row m-0" *ngIf="subActionTags">
                   <button
                     class="col-lg-12 action-btn"
@@ -175,11 +174,11 @@
               <button
                 type="button"
                 class="btn btn-sm dialog-update-btn"
-                [matMenuTriggerFor]="menu"
+                [matMenuTriggerFor]="liveMenu"
               >
                 Live
               </button>
-              <mat-menu #menu="matMenu">
+              <mat-menu #liveMenu>
                 <button mat-menu-item (click)="openLiveDialog(1)">
                   Current Camera
                 </button>

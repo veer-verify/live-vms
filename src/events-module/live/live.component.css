@@ -14,16 +14,17 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   justify-content: center;
-  height: 70vh;
   overflow-y: auto;
   width: min(50vw, 80vw);
-  /* width: 100%; */
+  height: 70vh;
   background-color: #000;
+  border-right: 1px solid #ffffff;
 }
 
 .singlelive {
   width: min(50vw, 80vw);
-  /* height: 70vh; */
+  background-color: #000;
+  height: 70vh;
 }
 
 .playbackbutton {

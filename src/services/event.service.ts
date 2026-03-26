@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { Subject, switchMap, takeUntil, timer } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,7 @@ export class EventService {
     private datePipe: DatePipe,
   ) { }
 
+  eventPooling$ = new Subject<void>();
   getDispatchData() {
     let url = `${environment.events_url}/getVms_DispatchQueueData_1_0/`;
     let path = this.router.url.split('/').at(-1);
@@ -27,7 +29,16 @@ export class EventService {
           ? this.storageSer.getData(4)
           : this.storageSer.getData(3),
     );
-    return this.http.get(url, { params: params });
+    return timer(0, 3000).pipe(
+      switchMap(() => this.http.get(url, { params: params })),
+      takeUntil(this.eventPooling$)
+    )
+  }
+
+  stopEventPooling() {
+    this.eventPooling$.next();
+    this.eventPooling$.complete();
+    this.eventPooling$ = new Subject<void>()
   }
 
   addQueusInfoRedis(payload: any) {
@@ -166,6 +177,7 @@ export class EventService {
     return this.http.post(url, payload);
   }
 
+  userPooling$ = new Subject<void>();
   aliveUser() {
     const url = `${environment.event_tags_url}/userActiveStatus_1_0`;
     let user = this.storageSer.getData('session');
@@ -175,7 +187,16 @@ export class EventService {
     };
     payload.userId = user?.UserId;
     payload.sessionId = user?.sessionId;
-    return this.http.post(url, payload);
+    return timer(0, 60000).pipe(
+      switchMap(() => this.http.post(url, payload)),
+      takeUntil(this.userPooling$)
+    )
+  }
+
+  stopUserPooling() {
+    this.userPooling$.next();
+    this.userPooling$.complete();
+    this.userPooling$ = new Subject<void>()
   }
 
   refreshUser() {
@@ -246,7 +267,7 @@ export class EventService {
     params = params.set('cameraId', payload?.cameraId);
     params = params.set('siteId', payload?.siteId);
     params = params.set('eventTime', this.datePipe.transform(payload?.actionTime, 'yyyy-MM-dd HH:mm:ss')!);
-    params = params.set('minutesBeforeEvent', payload?.minutesBeforeEvent);
+    params = params.set('minutesBeforeEvent', payload?.minutesBeforeEvent ?? 2);
     params = params.set('currentTime', payload?.currentTime);
     return this.http.get(url, { params });
   }

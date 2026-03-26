@@ -1,0 +1,9 @@
+<ng-container *ngIf="storage_service.status_text">
+  <p
+    [ngClass]="
+      storage_service.status_text === 'no events' ? 'text blink' : 'text'
+    "
+  >
+    {{ storage_service.status_text }}
+  </p>
+</ng-container>

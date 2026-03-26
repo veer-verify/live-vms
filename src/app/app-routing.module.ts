@@ -7,7 +7,7 @@ import { DeviceStatusComponent } from './device-status/device-status.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { MonitoringInfoComponent } from './monitoring-info/monitoring-info.component';
 import { AlertsInfoComponent } from './alerts-info/alerts-info.component';
-import { PlaybackInfoComponent } from '../utilities/playback-info/playback-info.component';
+import { PlaybackInfoComponent } from '../events-module/playback-info/playback-info.component';
 import { NvrComponent } from './nvr/nvr.component';
 import { InsightsComponent } from './insights/insights.component';
 import { SitesComponent } from './sites/sites.component';

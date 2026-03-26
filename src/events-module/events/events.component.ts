@@ -2,19 +2,18 @@ import { DatePipe } from '@angular/common';
 import { Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { debounceTime, first, fromEvent, interval, map, take, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AlertService } from 'src/services/alert.service';
 import { CameraService } from 'src/services/camera.service';
 import { EventService } from 'src/services/event.service';
 import { MetadataService } from 'src/services/metadata.service';
 import { StorageService } from 'src/services/storage.service';
-import { LiveComponent } from 'src/utilities/live/live.component';
+import { LiveComponent } from 'src/events-module/live/live.component';
 import { HttpClient } from '@angular/common/http';
 import html2canvas from 'html2canvas';
 import { SiteService } from 'src/services/site.service';
-import { ManualprocessComponent } from '../manualprocess/manualprocess/manualprocess.component';
-import { PlaybackInfoComponent } from '../../utilities/playback-info/playback-info.component';
+import { ManualprocessComponent } from '../../app/manualprocess/manualprocess/manualprocess.component';
+import { PlaybackInfoComponent } from '../playback-info/playback-info.component';
 
 @Component({
   selector: 'app-events',
@@ -22,6 +21,7 @@ import { PlaybackInfoComponent } from '../../utilities/playback-info/playback-in
   styleUrls: ['./events.component.css'],
 })
 export class EventsComponent {
+
   constructor(
     public storage_service: StorageService,
     private metadata_service: MetadataService,
@@ -35,34 +35,27 @@ export class EventsComponent {
     private siteser: SiteService,
   ) { }
 
-  intervalId: any;
-  eventInterval: any;
-  eventPolling = true;
+
+  environment = environment.eventImageUrl;
   path: any;
   user: any;
-  environment = environment.eventImageUrl;
+  eventData: any = [];
+
   ngOnInit() {
     this.path = this.router.url.split('/').at(-1);
     this.user = this.storage_service.getUser();
 
-    this.event_service
-      .consumeConsoleEvents({
-        userId: 0,
-        consoleType: '',
-        consumeType: 'refresh',
-      })
-      .subscribe((res: any) => { });
-
     this.getActionTagCategories();
-    this.getDispatchData();
-
     this.poolEvents();
-
     this.aliveUser();
+    this.consumeConsoleEvents();
+  }
 
-    this.intervalId = setInterval(() => {
-      this.aliveUser();
-    }, 60000);
+  ngDoCheck() {
+    if (this.eventData.length === 6) {
+      this.event_service.stopEventPooling();
+    }
+    this.storage_service.events_sub.next(this.eventData.length);
   }
 
   openManualevent() {
@@ -78,105 +71,21 @@ export class EventsComponent {
     this.event_service.aliveUser().subscribe();
   }
 
-  poolEvents() {
-    this.eventInterval = setInterval(() => {
-      let menu = this.storage_service.getData('menu');
-      if (this.eventData.length < 6 && !menu) {
-        if (!this.eventPolling) return;
-        this.eventPolling = false;
-        this.event_service.getDispatchData().subscribe({
-          next: (res: any) => {
-            this.eventPolling = true;
-            if (res.length !== 0) {
-              this.storage_service.status_text = '';
-              this.event_service
-                .addQueusInfoRedis({
-                  userId: 0,
-                  level: '',
-                  queueInfo: { ...res[0] },
-                  queueName: '',
-                  consoleType: '',
-                })
-                .subscribe();
-              res.forEach((item: any) => {
-                item.landingTime = this.storage_service.getTimeWithTimezone(item.timezone);
-                item.audioPlayed = false;
-
-                if (!this.eventData.some((el: any) => el.id === item.id)) {
-                  this.eventData.push(item);
-                }
-              })
-
-              if (this.eventData.length === 1) {
-                const [event] = this.eventData;
-                this.displayCurrent(event);
-              }
-            }
-          },
-          error: (err) => {
-            this.eventPolling = true;
-          },
-        });
-      }
-      if (this.eventData.length === 0) {
-        this.storage_service.status_text = 'no events!'
-      } else {
-        this.storage_service.status_text = ''
-      }
-      this.storage_service.events_sub.next(this.eventData.length);
-    }, 2000);
+  consumeConsoleEvents() {
+    this.event_service
+      .consumeConsoleEvents({
+        userId: 0,
+        consoleType: '',
+        consumeType: 'refresh',
+      })
+      .subscribe();
   }
 
-  eventData: any = [
-    // {
-    //   "siteId": 36320,
-    //   "siteName": "Barbee Pharmacy & Gifts",
-    //   "timezone": "America/New_York",
-    //   "httpUrl": "https://gisusorin1017live-repo.us1.pitunnel.com/GISUSORIN1017C1",
-    //   "cameraId": "GISUS7017C4",
-    //   "color": "green",
-    //   "id": "603101a8-694a-4585-b430-737c31ca3771",
-    //   "imageName": "GISUSORIN1017C1_603101a8-694a-4585-b430-737c31ca3771_2025-10-15_08-29-36_green.png",
-    //   "timestamp": "2026-03-25 04:28:57",
-    //   "userLevels": 0,
-    //   "actionTag": "suspicious",
-    //   "actionTime": "2026-03-25 04:28:57",
-    //   "eventTag": "",
-    //   "userLevelAlarmInfo": [
-    //     {
-    //       "level": 1,
-    //       "user": 1614,
-    //       "alarm": "P",
-    //       "landingTime": "2026-03-25 04:28:57",
-    //       "reviewStart": "2026-03-25 04:28:57",
-    //       "reviewEnd": "2026-03-25 04:28:57",
-    //       "actionTag": 2,
-    //       "subActionTag": 23,
-    //       "notes": "",
-    //       "activityDetTime": "2026-03-25 04:28:57"
-    //     }
-    //   ],
-    //   "userName": "vamsiv@ivisecurity.com"
-    // }
-  ];
-
-  getDispatchData() {
-    this.storage_service.status_text = 'loading...';
+  poolEvents() {
     this.event_service.getDispatchData().subscribe({
       next: (res: any) => {
         if (res.length !== 0) {
           this.storage_service.status_text = '';
-          res.forEach((item: any) => {
-            item.landingTime = this.storage_service.getTimeWithTimezone(item.timezone);
-            item.audioPlayed = false;
-
-            if (!this.eventData.some((el: any) => el.id === item.id)) {
-              this.eventData.push(item);
-            }
-          })
-
-          this.displayCurrent(this.eventData[0]);
-          this.storage_service.events_sub.next(this.eventData.length);
           this.event_service
             .addQueusInfoRedis({
               userId: 0,
@@ -186,14 +95,29 @@ export class EventsComponent {
               consoleType: '',
             })
             .subscribe();
-        } else {
-          this.storage_service.status_text = 'no events!';
+          res.forEach((item: any) => {
+            item.landingTime = this.storage_service.getTimeWithTimezone(item.timezone);
+            item.audioPlayed = false;
+
+            if (!this.eventData.some((el: any) => el.id === item.id)) {
+              this.eventData.push(item);
+            }
+          })
+
+          if (this.eventData.length === 1) {
+            const [event] = this.eventData;
+            this.displayCurrent(event);
+          }
         }
       },
-      error: (err: any) => {
-        this.storage_service.status_text = 'failed to load event!';
-      },
+      error: () => { },
     });
+    if (this.eventData.length === 0) {
+      this.storage_service.status_text = 'no events'
+    } else {
+      this.storage_service.status_text = ''
+    }
+
   }
 
   currentItem: any;
@@ -202,7 +126,6 @@ export class EventsComponent {
   emailObject: any;
   alertType: any;
   alertSubType: any;
-  // eventIndex!: number;
 
   @ViewChild('currentBtn') currentBtn!: ElementRef;
   displayCurrent(data: any) {
@@ -214,10 +137,9 @@ export class EventsComponent {
     setTimeout(() => {
       this.storage_service.status_text = '';
       this.currentItem = data;
-      // this.eventIndex = this.eventData.indexOf(this.currentItem);
       this.getCurrentSiteAlerts(data);
       this.listActionTags(data);
-    }, 500);
+    }, 100);
   }
 
   getCurrentSiteAlerts(data: any) {
@@ -242,28 +164,28 @@ export class EventsComponent {
     this.currentActionTag = null;
   }
 
-  closeEvent(data: any) {
-    if (!data) return;
-    this.currentItem = data;
-    let index = this.eventData.indexOf(this.currentItem);
+  // closeEvent(data: any) {
+  //   if (!data) return;
+  //   this.currentItem = data;
+  //   let index = this.eventData.indexOf(this.currentItem);
 
-    if (this.eventData.length === index + 1) {
-      this.eventData.splice(index, 1);
-      this.currentItem = this.eventData[index - 1];
-    } else {
-      this.eventData.splice(index, 1);
-      this.currentItem = this.eventData[index];
-    }
+  //   if (this.eventData.length === index + 1) {
+  //     this.eventData.splice(index, 1);
+  //     this.currentItem = this.eventData[index - 1];
+  //   } else {
+  //     this.eventData.splice(index, 1);
+  //     this.currentItem = this.eventData[index];
+  //   }
 
-    if (this.eventData.length === 0) {
-      this.storage_service.status_text = 'no events!';
-    }
-  }
+  //   if (this.eventData.length === 0) {
+  //     this.storage_service.status_text = 'no events';
+  //   }
+  // }
 
   cancelEvent() {
     this.resetVals();
 
-    let index = this.eventData.indexOf(this.currentItem);
+    const index = this.eventData.findIndex((el: any) => el.id === this.currentItem?.id);
     if (this.eventData.length === index + 1) {
       this.eventData.splice(index, 1);
       this.currentItem = this.eventData[index - 1];
@@ -272,8 +194,13 @@ export class EventsComponent {
       this.currentItem = this.eventData[index];
     }
 
+    if (this.eventData.length < 6) {
+      this.event_service.stopEventPooling();
+      this.poolEvents();
+    };
+
     if (this.eventData.length === 0) {
-      this.storage_service.status_text = 'no events!';
+      this.storage_service.status_text = 'no events';
     }
   }
 
@@ -356,17 +283,13 @@ export class EventsComponent {
         })
         .subscribe({
           next: (res: any) => {
-            // this.cancelEvent();
-            // this.displayCurrent(this.currentItem)
             if (res.statusCode === 200) {
               this.alert_service.snackSuccess(res.message);
             } else {
               this.alert_service.error(res.message);
             }
           },
-          error: (err) => {
-            // this.cancelEvent();
-            // this.displayCurrent(this.currentItem);
+          error: () => {
             this.alert_service.error('Sending Email Failed!');
           },
         });
@@ -374,6 +297,7 @@ export class EventsComponent {
       this.alert_service.error('Email data not Found');
     }
   }
+
   notes: string = '';
   updateEventFullDetails(type: number | string) {
     if (type === 2) return;
@@ -584,7 +508,7 @@ export class EventsComponent {
     this.currentItem.liveControl = i;
     this.dialog.open(LiveComponent, {
       data: this.currentItem,
-      disableClose: false,
+      disableClose: true,
     });
   }
 
@@ -743,9 +667,8 @@ export class EventsComponent {
   ngOnDestroy() {
     this.eventData = [];
     this.storage_service.events_sub.next(this.eventData.length);
-    clearInterval(this.eventInterval);
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
+
+    this.event_service.stopUserPooling();
+    this.event_service.stopEventPooling();
   }
 }

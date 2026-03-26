@@ -1,6 +1,7 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertService } from 'src/services/alert.service';
+import { EventService } from 'src/services/event.service';
 import { LoginService } from 'src/services/login.service';
 import { StorageService } from 'src/services/storage.service';
 
@@ -12,36 +13,27 @@ import { StorageService } from 'src/services/storage.service';
 export class HeaderComponent {
 
   constructor(
-    private router: Router,
     private loginSer: LoginService,
     public storageSer: StorageService,
-    private alert_service: AlertService
+    private alert_service: AlertService,
+    private event_service: EventService
   ) { }
 
   userData: any;
-  isMenuOpen: boolean = false;
+  showLoader: boolean = false;
+
   ngOnInit() {
     this.userData = this.storageSer.getData('session');
-    this.storageSer.saveData('menu', this.isMenuOpen);
   }
 
-  onMenuOpened() {
-    this.isMenuOpen = true;
-    this.storageSer.saveData('menu', this.isMenuOpen);
-  }
-
-  onMenuClosed() {
-    this.isMenuOpen = false;
-    this.storageSer.saveData('menu', this.isMenuOpen);
-  }
-
-  showLoader: boolean = false;
   logout() {
+    this.event_service.stopEventPooling();
     const length = this.storageSer.events_sub.getValue();
     if (length !== 0) return this.alert_service.warn('Please clear the events before logout!');
+
     this.showLoader = true;
     this.loginSer.manageUserSession('logOut').subscribe({
-      error: (err: any) => {
+      error: () => {
         this.showLoader = false;
         this.loginSer.logout();
       },

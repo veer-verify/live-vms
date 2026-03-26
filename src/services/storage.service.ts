@@ -99,9 +99,9 @@ export class StorageService {
     return JSON.parse(sessionStorage.getItem(data)!);
   }
 
-  public getmetaData(data: any) {
-    return JSON.parse(localStorage.getItem(data)!);
-  }
+  // public getmetaData(data: any) {
+  //   return JSON.parse(sessionStorage.getItem(data)!);
+  // }
 
   public removeData(key: string) {
     sessionStorage.removeItem(key);
@@ -214,19 +214,19 @@ export class StorageService {
 
   public set(name: any, data: any) {
     // let x = btoa(encodeURIComponent(JSON.stringify(data)));
-    // localStorage.setItem(name, x);
-    localStorage.setItem(name, JSON.stringify(data));
+    // sessionStorage.setItem(name, x);
+    sessionStorage.setItem(name, JSON.stringify(data));
   }
 
 
   public get(data: any) {
-    // let x: any = localStorage.getItem(data);
+    // let x: any = sessionStorage.getItem(data);
     // return JSON.parse(decodeURIComponent(atob(x)));
-    return JSON.parse(localStorage.getItem(data)!);
+    return JSON.parse(sessionStorage.getItem(data)!);
   }
 
   getMetaDataArray(type: string) {
-    let data: any = JSON.parse(localStorage.getItem('metaData')!);
+    let data: any = JSON.parse(sessionStorage.getItem('metaData')!);
     return data?.filter((item: any) => item.typeName == type)[0]?.metadata
   }
 }

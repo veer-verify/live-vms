@@ -29,8 +29,8 @@ export class LoginService {
   }
 
   logout() {
-    this.storageSer.clearData();
     this.router.navigate(['./login']);
+    this.storageSer.clearData();
   }
 
   manageUserSession(type: string): Observable<any> {
@@ -62,7 +62,10 @@ export class LoginService {
 
   getAccessforRefreshToken(payload: any): Observable<any> {
     const url = environment.login_url + '/getAccessforRefreshToken';
-    if (!payload) return throwError(() => alert('Session data missing!!!'));
+    if (!payload) return throwError(() => {
+      // alert('Session data missing!!!');
+      this.logout();
+    });
     const params = new HttpParams().set('refresh_token', payload?.RefreshToken).set('modifiedBy', payload?.UserId ? payload?.UserId : 0);
     return this.http.post(url, null, { params: params });
   }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { EventsComponent } from 'src/app/events/events.component';
+import { EventsComponent } from 'src/events-module/events/events.component';
 import { LoginService } from 'src/services/login.service';
 import { StorageService } from 'src/services/storage.service';
 
