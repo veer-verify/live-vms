@@ -1,8 +1,7 @@
 const dev_url: string = "https://usstaging.ivisecurity.com";
 const event_url: string = "https://stagingmq.ivisecurity.com";
-// const localurl: string = "http://192.168.0.245"
-
-const localurl: string = "http://localhost"
+// const localurl: string = "http://192.168.0.244:8234"
+// const local = "http://192.168.0.244:8667"
 
 export const environment = {
     env: 'ivis',
@@ -29,7 +28,7 @@ export const environment = {
     monitoring_url: `${dev_url}/monitoring`,
     event_tags_url: `${dev_url}/events_data`,
     eventImageUrl: `${dev_url}/dotimages/`,
-    events_url: `${event_url}/queueManagement`,
+    events_url: `https://stagingmq.uneeviu.com/queueManagement`,
     insightsUrl: `${dev_url}/insights`,
     adsUrl: `${dev_url}/proximityAdsMain`,
     faqUrl: `${dev_url}/faq`,

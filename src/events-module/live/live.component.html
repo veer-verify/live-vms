@@ -1,8 +1,13 @@
 <div class="live-container">
-  <div class="dialog-header" cdkDrag>
+  <div
+    class="dialog-header"
+    cdkDrag
+    cdkDragRootElement=".cdk-overlay-pane"
+    cdkDragHandle
+  >
     <p>
-      {{ data?.siteName }} -
-      <span *ngIf="currentCamera">{{ currentCamera?.cameraId }}</span>
+      {{ data?.siteName }}
+      <span *ngIf="currentCamera"> - {{ currentCamera?.cameraId }}</span>
     </p>
     <a mat-dialog-close
       ><img loading="lazy" src="assets/icons/close.svg" width="20" alt=""

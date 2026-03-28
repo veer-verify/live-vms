@@ -34,6 +34,7 @@ export class AuthGuard {
     currentState: RouterStateSnapshot,
     nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (component?.eventData?.length !== 0 && component?.eventData) {
+      alert('Please clear the events!');
       return false;
     }
     return true;

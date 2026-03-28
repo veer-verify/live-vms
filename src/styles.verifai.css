@@ -65,6 +65,10 @@ a {
   padding: 10px;
 }
 
+.row {
+  margin: 0;
+}
+
 .status {
   font-size: 12px;
   color: #28231d;
@@ -162,12 +166,10 @@ a {
 .dialog-update-btn {
   background-color: #084982;
   color: #fff;
-  /* width: 70px; */
-  /* padding: 6px 0; */
   border-radius: 16px;
   border-width: 0;
   font-size: 12px;
-  margin: 0 10px 10px 0;
+  /* margin: 0 10px 10px 0; */
   padding: 5px 10px;
 }
 
@@ -215,9 +217,11 @@ a {
   width: 100%;
   margin: 0 !important;
 }
+
 .add-form {
   background-color: #fff;
 }
+
 .dialog-submit-btn {
   background-color: #084982;
   color: #fff;
@@ -228,6 +232,7 @@ a {
   font-size: 12px;
   margin: 0 10px 10px 0;
 }
+
 .dialog-close-btn {
   background-color: #d34124;
   color: #fff;
@@ -237,4 +242,19 @@ a {
   border-width: 0;
   font-size: 12px;
   margin: 0 10px 10px 0;
+}
+
+.closebtn {
+  outline: none;
+  padding: 4px 10px;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid whitesmoke;
+  text-transform: uppercase;
+  background-color: white;
+  border-radius: 50%;
+  color: black;
+  font-weight: 300;
+  font-size: 18px;
+  box-shadow: 0.1em 0.1em 0.2em rgba(0, 0, 0, 0.3);
 }

@@ -48,7 +48,10 @@ export class PlaybackInfoComponent {
             this.videos.push('assets/clips/error.mp4');
           }
         },
-        error: (err) => { }
+        error: () => {
+          this.videos = [];
+          this.videos.push('assets/clips/error.mp4');
+        }
       })
   }
 

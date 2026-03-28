@@ -1,17 +1,60 @@
-<!-- style="position: absolute; top: 18px; right: 66px; z-index: 99;" -->
 <app-status></app-status>
-<!-- <p class="text">{{ storage_service.status_text }}</p> -->
-<button
-  matTooltip="ManualEvent"
-  class="manual-btn"
-  (click)="openManualevent()"
-  *ngIf="path === 'pre-dispatch'"
->
-  ME
-</button>
 
 <ng-container *ngIf="eventData.length !== 0">
-  <div class="d-flex justify-content-start"></div>
+  <div class="d-flex justify-content-start gap-2">
+    <mat-chip-listbox multiple>
+      <mat-chip-option
+        *ngFor="let item of actionsTaken"
+        [selected]="item.selected"
+        (selectionChange)="onSelectionChange(item, $event)"
+      >
+        <div class="d-flex align-items-center gap-3">
+          <span>{{ item?.name }}</span>
+
+          <!-- TIME DISPLAY -->
+          <span *ngIf="item.time && !item.editing">
+            - {{ item?.time | date: "medium" }}
+
+            <span
+              class="material-symbols-outlined"
+              style="font-size: 14px; cursor: pointer"
+              (click)="enableEdit(item, $event)"
+            >
+              edit
+            </span>
+          </span>
+
+          <!-- TIME EDIT -->
+          <span *ngIf="item.editing">
+            <input
+              type="datetime-local"
+              [value]="formatDate(item.time)"
+              (click)="$event.stopPropagation()"
+              (change)="updateTime(item, $event)"
+            />
+
+            <span
+              class="material-symbols-outlined"
+              style="font-size: 14px; cursor: pointer"
+              (click)="saveEdit(item, $event)"
+            >
+              check
+            </span>
+          </span>
+
+          <!-- RESPONDED TOGGLE -->
+          <span
+            class="material-symbols-outlined"
+            style="font-size: 18px"
+            (click)="toggleResponded(item, $event)"
+            *ngIf="item.selected"
+          >
+            {{ item?.status ? "check_circle" : "radio_button_unchecked" }}
+          </span>
+        </div>
+      </mat-chip-option>
+    </mat-chip-listbox>
+  </div>
 
   <div class="row mt-2">
     <div class="col-lg-2 d-none d-lg-block side-panel">
@@ -179,10 +222,10 @@
                 Live
               </button>
               <mat-menu #liveMenu>
-                <button mat-menu-item (click)="openLiveDialog(1)">
+                <button class="action-btn" (click)="openLiveDialog(1)">
                   Current Camera
                 </button>
-                <button mat-menu-item (click)="openLiveDialog(2)">
+                <button class="action-btn" (click)="openLiveDialog(2)">
                   Total Cameras
                 </button>
               </mat-menu>

@@ -41,6 +41,20 @@
   color: #fff;
 }
 
+.user-detail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.manual-btn {
+  border: none;
+  padding: 4px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  width: 80px;
+}
+
 ::ng-deep .mat-mdc-unelevated-button:not(:disabled) {
   background-color: #084982 !important;
 }

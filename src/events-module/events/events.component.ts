@@ -45,6 +45,7 @@ export class EventsComponent {
     this.path = this.router.url.split('/').at(-1);
     this.user = this.storage_service.getUser();
 
+    this.getTypes();
     this.getActionTagCategories();
     this.poolEvents();
     this.aliveUser();
@@ -56,15 +57,6 @@ export class EventsComponent {
       this.event_service.stopEventPooling();
     }
     this.storage_service.events_sub.next(this.eventData.length);
-  }
-
-  openManualevent() {
-    this.dialog.open(ManualprocessComponent, {
-      width: '600px',
-      maxHeight: '600px',
-      disableClose: true,
-      panelClass: 'custom-dialog'
-    });
   }
 
   aliveUser() {
@@ -138,7 +130,7 @@ export class EventsComponent {
       this.storage_service.status_text = '';
       this.currentItem = data;
       this.getCurrentSiteAlerts(data);
-      this.listActionTags(data);
+      // this.listActionTags(data);
     }, 100);
   }
 
@@ -202,6 +194,9 @@ export class EventsComponent {
     if (this.eventData.length === 0) {
       this.storage_service.status_text = 'no events';
     }
+
+    this.actionsTaken = Array.from(this.actionsTakenTypes, (el: any) => ({ name: el.value, selected: false, time: null, status: false, editing: false }));
+
   }
 
   isPlaying: boolean = false;
@@ -301,6 +296,12 @@ export class EventsComponent {
   notes: string = '';
   updateEventFullDetails(type: number | string) {
     if (type === 2) return;
+
+    const finalizedActions = this.actionsTaken.filter((el: any) => {
+      delete el.editing;
+      return el.selected;
+    });
+
     if (type === 'second-level') {
       this.eventsGenericEmail('complete');
     }
@@ -309,6 +310,7 @@ export class EventsComponent {
     let endTime = this.storage_service.getTimeWithTimezone(
       this.currentItem?.timezone,
     );
+
     this.path === 'pre-dispatch'
       ? this.currentItem?.userLevelAlarmInfo.push({
         level: 2,
@@ -324,6 +326,8 @@ export class EventsComponent {
         userName: user?.UserName,
         alertTag: this.alertType,
         subAlertTag: this.alertSubType,
+        actionsTakenInfo: finalizedActions
+
       })
       : this.path === 'dispatch'
         ? this.currentItem?.userLevelAlarmInfo.push({
@@ -338,6 +342,8 @@ export class EventsComponent {
           subActionTag: this.currentSubActionTag?.subCategoryId,
           notes: this.notes,
           userName: user?.UserName,
+          actionsTakenInfo: finalizedActions
+
         })
         : this.currentItem?.userLevelAlarmInfo.push({
           level: 4,
@@ -351,6 +357,7 @@ export class EventsComponent {
           subActionTag: this.currentSubActionTag?.subCategoryId,
           notes: this.notes,
           userName: user?.UserName,
+          actionsTakenInfo: finalizedActions
         });
 
     // this.currentItem.imageName = null;
@@ -362,7 +369,7 @@ export class EventsComponent {
         consoleType: '',
         consumeType: '',
       })
-      .subscribe((res: any) => { });
+      .subscribe();
 
     this.storage_service.show_loader = true;
     this.event_service
@@ -373,8 +380,7 @@ export class EventsComponent {
         subActionTag: this.currentSubActionTag?.subCategoryId,
         objectName: this.object,
         actionTagTime: this.actionTagTime,
-        // activityDetTime: this.sirenTime ?? '',
-        userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo,
+        userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
       })
       .subscribe({
         next: () => {
@@ -402,6 +408,12 @@ export class EventsComponent {
   }
 
   write2Dispatch(queue_name: string) {
+    const finalizedActions = this.actionsTaken.filter((el: any) => {
+      delete el.editing
+      return el.selected
+    });
+
+
     if (this.path === 'pre-dispatch') {
       this.eventsGenericEmail('escalate');
     }
@@ -413,7 +425,7 @@ export class EventsComponent {
         consoleType: '',
         consumeType: '',
       })
-      .subscribe((res: any) => { });
+      .subscribe();
 
     let user = this.storage_service.getData('session');
     let endTime = this.storage_service.getTimeWithTimezone(
@@ -433,6 +445,8 @@ export class EventsComponent {
         userName: user?.UserName,
         alertTag: this.alertType,
         subAlertTag: this.alertSubType,
+        actionsTakenInfo: finalizedActions
+
       })
       : this.path === 'dispatch'
         ? this.currentItem?.userLevelAlarmInfo.push({
@@ -446,6 +460,8 @@ export class EventsComponent {
           subActionTag: this.currentSubActionTag?.subCategoryId,
           notes: this.notes,
           userName: user?.UserName,
+          actionsTakenInfo: finalizedActions
+
         })
         : this.currentItem?.userLevelAlarmInfo.push({
           level: 4,
@@ -458,6 +474,8 @@ export class EventsComponent {
           subActionTag: this.currentSubActionTag?.subCategoryId,
           notes: this.notes,
           userName: user?.UserName,
+          actionsTakenInfo: finalizedActions
+
         });
     this.currentItem.time = this.currentItem.timestamp;
     this.storage_service.show_loader = true;
@@ -512,32 +530,73 @@ export class EventsComponent {
     });
   }
 
-  listActionTags(data: any) {
-    // this.camera_service
-    //   .listActionTags(data)
-    //   .subscribe((res: any) => {
-    //     if (res.statusCode === 200) {
-    //       // this.getTypes();
-    //       this.actionTags = res.data.flatMap((item: any) => item.actionTags);
-    //     }
-    //   });
-  }
+  // listActionTags(data: any) {
+  // this.camera_service
+  //   .listActionTags(data)
+  //   .subscribe((res: any) => {
+  //     if (res.statusCode === 200) {
+  //       // this.getTypes();
+  //       this.actionTags = res.data.flatMap((item: any) => item.actionTags);
+  //     }
+  //   });
+  // }
 
   actionTags: any = [];
   alertTypes: any = [];
   alertSubTypes: any = [];
-  // getTypes() {
-  //   this.metadata_service.getMetadata().subscribe((res: any) => {
-  //     res.forEach((item: any) => {
-  //       if (item.type === 98) {
-  //         this.alertTypes = item.metadata;
-  //       }
-  //       if (item.type === 99) {
-  //         this.alertSubTypes = item.metadata;
-  //       }
-  //     });
-  //   });
-  // }
+  actionsTakenTypes: any = [];
+  actionsTaken: any = [];
+  getTypes() {
+    this.metadata_service.getMetadata().subscribe((res: any) => {
+      res.forEach((item: any) => {
+        // if (item.type === 98) {
+        //   this.alertTypes = item.metadata;
+        // }
+        // if (item.type === 99) {
+        //   this.alertSubTypes = item.metadata;
+        // }
+        if (item.typeName === 'ActionsTaken') {
+          this.actionsTakenTypes = item.metadata;
+        }
+      });
+
+      this.actionsTaken = Array.from(this.actionsTakenTypes, (el: any) => ({ name: el.value, selected: false, time: null, status: false, editing: false }));
+    });
+  }
+
+  onSelectionChange(item: any, event: any) {
+    item.selected = event.selected;
+    if (item.selected) {
+      item.time = this.storage_service.getTimeWithTimezone(this.currentItem?.timezone);
+    } else {
+      item.time = null;
+    }
+  }
+
+  enableEdit(item: any, event: Event) {
+    event.stopPropagation();
+    item.editing = true;
+  }
+
+  formatDate(date: any) {
+    if (!date) return '';
+    const d = new Date(date);
+    return d.toISOString().slice(0, 16);
+  }
+
+  updateTime(item: any, event: any) {
+    item.time = new Date(event.target.value);
+  }
+
+  saveEdit(item: any, event: Event) {
+    event.stopPropagation();
+    item.editing = false;
+  }
+
+  toggleResponded(item: any, event: Event) {
+    event.stopPropagation();
+    item.status = !item.status;
+  }
 
   actionTagsNew: any = [];
   subActionTags: any = [];

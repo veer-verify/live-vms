@@ -104,13 +104,12 @@ export class EventService {
   }
 
   updateEventFullDetails(payload: any) {
-    let url = `${environment.event_tags_url}/updateEventFullDetails_1_0/`;
-    let user = this.storageSer.getData('session');
-    let path = this.router.url.split('/').at(-1);
-    // let eventStart = this.datePipe.transform(new Date(payload?.timestamp), 'yyyy-MM-dd hh:mm:ss');
-    let currentTime = this.storageSer.getTimeWithTimezone(payload?.timezone);
+    const url = `${environment.event_tags_url}/updateEventFullDetails_1_0/`;
+    const user = this.storageSer.getData('session');
+    const path = this.router.url.split('/').at(-1);
+    const currentTime = this.storageSer.getTimeWithTimezone(payload?.timezone);
 
-    let obj = {
+    const obj = {
       siteName: payload?.siteName,
       siteId: payload?.siteId,
       objectName: payload?.objectName,
@@ -120,7 +119,6 @@ export class EventService {
       userLevels: path === 'pre-dispatch' ? 2 : 3,
       falseActivityTime: payload?.type == 1 ? payload?.actionTagTime : '',
       suspiciousTime: payload?.type !== 1 ? payload?.actionTagTime : '',
-      // activityDetTime: payload?.activityDetTime,
       callResponseTime: '',
       callNoResponseTime: '',
       eventStartTime: payload?.timestamp,
@@ -130,8 +128,6 @@ export class EventService {
       videoFile: payload?.imageName,
       createdBy: user?.UserId,
       remarks: '',
-      // createdTime: currentTime,
-      // landingTime: payload?.landingTime,
       eventType: payload?.eventType,
       timezone: payload?.timezone,
       subActionTag: payload?.subActionTag,
@@ -142,8 +138,8 @@ export class EventService {
   }
 
   getActionTagCategories(payload?: any) {
-    let url = `${environment.event_tags_url}/getActionTagCategories_1_0`;
-    let path = this.router.url.split('/').at(-1);
+    const url = `${environment.event_tags_url}/getActionTagCategories_1_0`;
+    const path = this.router.url.split('/').at(-1);
     let params = new HttpParams();
     params = params.set('userLevel', path === 'pre-dispatch' ? 2 : 3);
     if (payload?.actionTagId) {

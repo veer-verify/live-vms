@@ -16,7 +16,7 @@ export class TableComponent {
   isSort: boolean = false;
 
   ngOnInit() {
-    console.log(this.data);
+    // console.log(this.data);
   }
 
   sort(label: any) {

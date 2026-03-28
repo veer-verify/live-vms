@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Router } from '@angular/router';
+// import { Router } from '@angular/router';
 import { BehaviorSubject, interval, map } from 'rxjs';
-import { LoginService } from './login.service';
+// import { LoginService } from './login.service';
 import { DatePipe } from '@angular/common';
 import CryptoJS from 'crypto-js';
 import moment from 'moment-timezone';
@@ -99,10 +99,6 @@ export class StorageService {
     return JSON.parse(sessionStorage.getItem(data)!);
   }
 
-  // public getmetaData(data: any) {
-  //   return JSON.parse(sessionStorage.getItem(data)!);
-  // }
-
   public removeData(key: string) {
     sessionStorage.removeItem(key);
   }
@@ -130,8 +126,8 @@ export class StorageService {
 
   /** level of users */
 
-  router = inject(Router);
-  login_service = inject(LoginService);
+  // router = inject(Router);
+  // login_service = inject(LoginService);
 
   public getUser(): any {
     return this.getData('session');

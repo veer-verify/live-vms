@@ -28,7 +28,7 @@ import { MonitoringInfoComponent } from './monitoring-info/monitoring-info.compo
 import { AlertsInfoComponent } from './alerts-info/alerts-info.component';
 import { TableComponent } from '../utilities/table/table.component';
 import { TemplateComponent } from './template/template.component';
-import { TokenInterceptor } from 'src/utilities/token.interceptor';
+import { TokenInterceptor } from 'src/utilities/interceptors/token.interceptor';
 import { NvrComponent } from './nvr/nvr.component';
 import { PlannedsiteComponent } from './plannedsite/plannedsite.component';
 import { SitesettingsComponent } from './sitesettings/sitesettings.component';

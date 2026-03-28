@@ -11,6 +11,14 @@
   </div>
 
   <div class="user-detail">
+    <button
+      matTooltip="ManualEvent"
+      class="manual-btn"
+      (click)="openManualevent()"
+      *ngIf="path === 'pre-dispatch'"
+    >
+      ME
+    </button>
     <button class="user-btn p-0" [matMenuTriggerFor]="beforeMenu">
       <img
         loading="lazy"
