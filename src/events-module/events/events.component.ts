@@ -14,6 +14,7 @@ import html2canvas from 'html2canvas';
 import { SiteService } from 'src/services/site.service';
 import { ManualprocessComponent } from '../../app/manualprocess/manualprocess/manualprocess.component';
 import { PlaybackInfoComponent } from '../playback-info/playback-info.component';
+import moment from 'moment';
 
 @Component({
   selector: 'app-events',
@@ -306,8 +307,8 @@ export class EventsComponent {
       this.eventsGenericEmail('complete');
     }
 
-    let user = this.storage_service.getData('session');
-    let endTime = this.storage_service.getTimeWithTimezone(
+    const user = this.storage_service.getData('session');
+    const endTime = this.storage_service.getTimeWithTimezone(
       this.currentItem?.timezone,
     );
 
@@ -576,6 +577,7 @@ export class EventsComponent {
   enableEdit(item: any, event: Event) {
     event.stopPropagation();
     item.editing = true;
+    // item.time = this.storage_service.getTimeWithTimezone(this.currentItem?.timezone);
   }
 
   formatDate(date: any) {
@@ -585,7 +587,8 @@ export class EventsComponent {
   }
 
   updateTime(item: any, event: any) {
-    item.time = new Date(event.target.value);
+    const modifiedTime = new Date(event.target.value);
+    item.time = this.datePipe.transform(modifiedTime, 'yyyy-MM-dd HH:mm:ss');
   }
 
   saveEdit(item: any, event: Event) {
@@ -607,7 +610,7 @@ export class EventsComponent {
       next: (res: any) => {
         if (res.statusCode === 200) {
           this.actionTagsNew = res.actionTagCategories.filter(
-            (item: any) => item.categoryId !== 3,
+            (item: any) => item.categoryId !== 3
           );
         }
       },

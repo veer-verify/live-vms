@@ -1,7 +1,8 @@
 <app-status></app-status>
 
 <ng-container *ngIf="eventData.length !== 0">
-  <div class="d-flex justify-content-start gap-2">
+  <!-- actions taken -->
+  <div class="d-flex justify-content-start gap-2" *ngIf="user.userLevel === 3">
     <mat-chip-listbox multiple>
       <mat-chip-option
         *ngFor="let item of actionsTaken"
@@ -28,7 +29,6 @@
           <span *ngIf="item.editing">
             <input
               type="datetime-local"
-              [value]="formatDate(item.time)"
               (click)="$event.stopPropagation()"
               (change)="updateTime(item, $event)"
             />

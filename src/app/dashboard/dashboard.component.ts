@@ -340,6 +340,10 @@ export class DashboardComponent {
 
   audioIndex: number = -1;
   audio(data: any) {
+    const hours = JSON.parse(data?.audioHours ?? '[]');
+    const currentHour = this.storageSer.getHour(data?.timezone);
+    if (hours.includes(currentHour)) return;
+
     this.audioIndex = this.getCurrentPageItems.findIndex((el: any) => el.cameraId === data.cameraId);
     this.camSer.siren_sub.next(true);
 
@@ -535,7 +539,13 @@ export class DashboardComponent {
   }
 
   postScreenshot(data: any, file: any) {
-    const sites = [36432, 36505, 36554, 36523];
+    console.log(data)
+    // const sites = [36432, 36505, 36554, 36523];
+    const hours = JSON.parse(data?.audioHours ?? '[]');
+    const currentHour = this.storageSer.getHour(data?.timezone);
+
+    const actionsTaken = [{ name: 'Deterrent Activated', selected: false, time: null, status: false }];
+
     const user = this.storageSer.getData('session');
     const time = this.storageSer.getTimeWithTimezone(data?.timezone);
     data.time = time;
@@ -545,8 +555,11 @@ export class DashboardComponent {
         if (res.statusCode === 200) {
           if (this.listType === 6) {
             if (data.color == 'green') {
-              if (!sites.includes(data.siteId)) {
+              if (!hours.includes(currentHour) && data.audioHoursFlag === 'T') {
                 this.audio(data);
+                actionsTaken[0].selected = true;
+                actionsTaken[0].status = true;
+                actionsTaken[0].time = this.storageSer.getTimeWithTimezone(data?.timezone);
               }
               this.event_service
                 .write2Dispatch({
@@ -560,13 +573,14 @@ export class DashboardComponent {
                       user: user?.UserId,
                       actionTag: 2,
                       subActionTag: 23,
-                      activityDetTime: (!sites.includes(data.siteId) && data.audioUrl) ? time : '',
-                      alarm: (!sites.includes(data.siteId) && data.audioUrl) ? 'P' : 'N',
+                      activityDetTime: (!hours.includes(currentHour) && data.audioHoursFlag === 'T') ? time : '',
+                      alarm: (!hours.includes(currentHour) && data.audioHoursFlag === 'T') ? 'P' : 'N',
                       landingTime: time,
                       reviewStart: time,
                       reviewEnd: time,
                       notes: '',
                       userName: user?.UserName,
+                      actionsTakenInfo: actionsTaken
                     },
                   ],
                 })

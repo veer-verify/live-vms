@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { Subject, switchMap, takeUntil, timer } from 'rxjs';
+import { mergeMap, Subject, switchMap, takeUntil, timer } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -184,7 +184,7 @@ export class EventService {
     payload.userId = user?.UserId;
     payload.sessionId = user?.sessionId;
     return timer(0, 60000).pipe(
-      switchMap(() => this.http.post(url, payload)),
+      mergeMap(() => this.http.post(url, payload)),
       takeUntil(this.userPooling$)
     )
   }

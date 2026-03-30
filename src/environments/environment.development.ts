@@ -28,7 +28,7 @@ export const environment = {
     monitoring_url: `${dev_url}/monitoring`,
     event_tags_url: `${dev_url}/events_data`,
     eventImageUrl: `${dev_url}/dotimages/`,
-    events_url: `https://stagingmq.uneeviu.com/queueManagement`,
+    events_url: `https://stagingmq.ivisecurity.com/queueManagement`,
     insightsUrl: `${dev_url}/insights`,
     adsUrl: `${dev_url}/proximityAdsMain`,
     faqUrl: `${dev_url}/faq`,

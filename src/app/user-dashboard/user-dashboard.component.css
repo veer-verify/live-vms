@@ -58,7 +58,7 @@
   margin: 8px 4px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   transition: all 100ms ease-in-out;
 
   &:hover {

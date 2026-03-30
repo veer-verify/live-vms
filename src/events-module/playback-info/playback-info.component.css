@@ -6,13 +6,28 @@
   background: #000;
 }
 
-.playback-text {
+.pagination-text {
   position: absolute;
-  right: 4px;
+  left: 4px;
   top: 4px;
   color: red;
   font-weight: 700;
   font-size: 12px;
+  padding: 2px;
+  background: white;
+  border-radius: 4px;
+}
+
+.playback-text {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  padding: 2px;
+  color: red;
+  background: white;
+  font-weight: 700;
+  font-size: 12px;
+  border-radius: 4px;
   text-transform: uppercase;
   animation-name: show;
   animation-duration: 1000ms;
@@ -21,7 +36,7 @@
 
 .dialog-header {
   background-color: #fff;
-  padding: 5px;
+  padding: 4px;
   display: flex;
   align-items: center;
   justify-content: space-between;

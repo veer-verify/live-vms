@@ -69,6 +69,7 @@ export class StorageService {
     // } else {
     //   return moment().tz(timezone).format('YYYY-MM-DD HH:mm:ss')
     // }
+    if (!timezone) return alert('Timezone not found!');
     return moment().tz(timezone).format('YYYY-MM-DD HH:mm:ss');
   }
 

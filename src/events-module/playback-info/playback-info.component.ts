@@ -24,7 +24,6 @@ export class PlaybackInfoComponent {
   playbacktime: any;
 
   ngOnChanges() {
-    // console.log(this.data);
     this.time = this.storage.getTimeWithTimezone(this.data?.timezone);
     this.getTypes();
   }
@@ -35,7 +34,7 @@ export class PlaybackInfoComponent {
   showVideoControl = false;
   playbackvideoApi() {
     this.videos = [];
-    this.videos.push('assets/clips/loading.mp4');
+    this.videos.push('assets/clips/load-video.mp4');
     this.showVideoControl = false;
     this.event.playbackvideo({ ...this.data, minutesBeforeEvent: this.playbacktime?.value, currentTime: this.time })
       .subscribe({

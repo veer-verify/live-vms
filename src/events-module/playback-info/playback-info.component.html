@@ -8,6 +8,10 @@
     <a (click)="closedialog()"><img loading="lazy" src="assets/icons/close.svg" width="20" alt=""></a>
   </div> -->
 
+  <ng-container></ng-container>
+  <p class="pagination-text" *ngIf="showVideoControl">
+    {{ currentIndex + 1 }} of {{ videos.length }}
+  </p>
   <p class="playback-text">Playback</p>
 
   <video
