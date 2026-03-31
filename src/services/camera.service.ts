@@ -267,12 +267,13 @@ export class CameraService {
 
     formData.append('userSendMailLevel', payload?.type);
     formData.append('address', JSON.stringify(payload?.address));
+    // formData.append('callingSystemDetail', 'vms');
 
     return this.http.post(url, formData, { params: params });
   }
 
   getEmailData(payload: any) {
-    console.log(payload);
+    // console.log(payload);
     let url = `${environment.guard_monitoring_url}/getEmailData_1_0`;
     let timer;
     payload?.siteId == 36444 ? (timer = 10) : (timer = 120);
@@ -302,6 +303,7 @@ export class CameraService {
     params = params.set('currentTime', payload?.currentTime);
     params = params.set('timer', timer);
     params = params.set('imageName', payload?.imageName);
+    params = params.set('callingSystemDetail', 'vms');
     return this.http.get(url, { params: params });
   }
 
