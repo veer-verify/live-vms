@@ -26,7 +26,7 @@ export class CameraService {
     private http: HttpClient,
     private storageSer: StorageService,
     private datePipe: DatePipe,
-  ) {}
+  ) { }
 
   siren_sub = new BehaviorSubject<boolean>(false);
 
@@ -218,7 +218,7 @@ export class CameraService {
   }
 
   eventsGenericEmail(payload: any) {
-    // console.log(payload)
+    // console.log(payload);
     let url = `${environment.guard_monitoring_url}/eventsGenericEmail_1_0`;
     let user = this.storageSer.getData('session');
 
@@ -251,11 +251,14 @@ export class CameraService {
     formData.append('footer', payload?.emailFooter);
     formData.append('senderEmail', payload?.senderEmail);
     formData.append('textDetails', JSON.stringify(payload?.textDetails));
-    // formData.append('bcc', payload?.BCC);
-    // formData.append('Cc', payload?.Cc);
     formData.append('recipientEmails', payload?.recipientEmails?.join(', '));
     formData.append('Bcc', payload?.BCC?.join(','));
     formData.append('Cc', payload?.Cc?.join(','));
+    formData.append('userSendMailLevel', payload?.type);
+    formData.append('address', JSON.stringify(payload?.address));
+    formData.append('resolutionNotes', payload?.emailResolution);
+    formData.append('actionTaken', JSON.stringify(payload?.actionTaken));
+    // formData.append('callingSystemDetail', 'vms');
     for (var i = 0; i < payload?.screenshots?.length; i++) {
       formData.append(
         'files',
@@ -264,10 +267,6 @@ export class CameraService {
         ),
       );
     }
-
-    formData.append('userSendMailLevel', payload?.type);
-    formData.append('address', JSON.stringify(payload?.address));
-    // formData.append('callingSystemDetail', 'vms');
 
     return this.http.post(url, formData, { params: params });
   }

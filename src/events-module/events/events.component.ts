@@ -258,13 +258,16 @@ export class EventsComponent {
             // this.bccEmails = (emails.BCC || []).filter((e: any) => e && e.trim() !== '');
           }
         },
-        error: (err) => [this.alert_service.snackError('connection failed!')],
+        error: () => [this.alert_service.snackError('connection failed!')],
       });
     }
   }
 
   eventsGenericEmail(type: string) {
     if (this.emailData?.recipientEmails?.length) {
+      // const output = this.currentItem?.userLevelAlarmInfo.flatMap((item: any) => item?.actionsTakenInfo).filter((item: any) => item?.status).map((el: any) => el.name).join(',');
+      const output = this.currentItem?.userLevelAlarmInfo.flatMap((item: any) => item?.actionsTakenInfo);
+
       this.camera_service
         .eventsGenericEmail({
           ...this.emailObject,
@@ -275,6 +278,7 @@ export class EventsComponent {
           ...{ address: this.cameraDetails?.address },
           ...{ objectName: this.object },
           // ...{ selectedAction: this.selectedActionTag },
+          actionTaken: output,
           textDetails: this.smsDetails,
         })
         .subscribe({
@@ -361,8 +365,6 @@ export class EventsComponent {
           actionsTakenInfo: finalizedActions
         });
 
-    // this.currentItem.imageName = null;
-
     this.event_service
       .consumeConsoleEvents({
         userId: 0,
@@ -380,7 +382,7 @@ export class EventsComponent {
         actionTag: this.currentActionTag?.categoryId,
         subActionTag: this.currentSubActionTag?.subCategoryId,
         objectName: this.object,
-        actionTagTime: this.actionTagTime,
+        userActionTime: this.userActionTime,
         userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
       })
       .subscribe({
@@ -392,20 +394,13 @@ export class EventsComponent {
           this.displayCurrent(this.currentItem);
           this.alert_service.snackSuccess('Event Updated successfully!');
         },
-        error: (err) => {
+        error: () => {
           this.storage_service.show_loader = false;
           this.cancelEvent();
           this.displayCurrent(this.currentItem);
           this.alert_service.snackError('Failed!');
         },
       });
-  }
-
-  actionTagTime: any;
-  getTime() {
-    this.actionTagTime = this.storage_service.getTimeWithTimezone(
-      this.currentItem?.timezone,
-    );
   }
 
   write2Dispatch(queue_name: string) {
@@ -492,7 +487,7 @@ export class EventsComponent {
           this.cancelEvent();
           this.alert_service.snackSuccess('Event Sent successfully!');
         },
-        error: (err) => {
+        error: () => {
           this.cancelEvent();
           this.storage_service.show_loader = false;
         },
@@ -618,6 +613,7 @@ export class EventsComponent {
   }
 
   cameraDetails: any;
+  userActionTime: any;
   getCurrentType(type: any) {
     this.currentSubActionTag = null;
     this.cameraDetails = null;
@@ -625,14 +621,19 @@ export class EventsComponent {
     this.alertSubType = null;
     this.emailData = null;
     this.notes = '';
-    this.getTime();
+
     this.currentActionTag = type;
-    let filteredData = this.actionTagsNew.filter(
-      (item: any) => item.categoryId === type.categoryId,
+    this.userActionTime = this.storage_service.getTimeWithTimezone(
+      this.currentItem?.timezone,
+    );
+
+    const filteredData = this.actionTagsNew.filter(
+      (item: any) => item?.categoryId === type?.categoryId,
     );
     this.subActionTags = filteredData.flatMap(
       (el: any) => el.actionTagSubCategories,
     );
+
     this.event_service
       .getMonitoringInfo(this.currentItem)
       .subscribe((res: any) => {
@@ -716,14 +717,6 @@ export class EventsComponent {
           }
         });
     }
-  }
-
-
-  openplayback() {
-    this.dialog.open(PlaybackInfoComponent, {
-      data: this.currentItem,
-      disableClose: false,
-    });
   }
 
   ngOnDestroy() {

@@ -327,7 +327,7 @@
                   </button> -->
                   <button
                     class="frame-icon"
-                    *ngIf="item.audioHoursFlag === 'T'"
+                    *ngIf="item.audioUrl"
                     (click)="audio(item)"
                     matTooltip="Siren"
                     [disabled]="audioIndex === c"

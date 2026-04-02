@@ -40,8 +40,7 @@
 }
 
 .box-title {
-
-font-size: 0.9rem;
+  font-size: 0.9rem;
   margin-bottom: 20px;
   text-align: center;
   padding: 10px;
@@ -59,13 +58,12 @@ font-size: 0.9rem;
 }
 
 .camera-item {
-  background:#084982;
+  background: #084982;
   color: white;
   padding: 10px;
   margin: 10px 0;
   border-radius: 10px;
   cursor: grab;
-  user-select: none;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -73,25 +71,23 @@ font-size: 0.9rem;
   box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
 }
 
-
-
 .camera-item:active {
   cursor: grabbing;
   transform: scale(0.98);
 }
 
 .camera-item.selected {
-  background: #FF9800;
+  background: #ff9800;
 }
 
 .selection-info {
   background: rgba(255, 152, 0, 0.1);
-  border: 2px solid #FF9800;
+  border: 2px solid #ff9800;
   border-radius: 10px;
   padding: 10px;
   margin: 10px 0;
   text-align: center;
-  color: #F57C00;
+  color: #f57c00;
   display: none;
 }
 
@@ -99,15 +95,12 @@ font-size: 0.9rem;
   display: block;
 }
 
-
 .camera-info {
   flex: 1;
   text-align: center;
 }
 
-
 .camera-details {
-
   opacity: 0.9;
   margin-top: 4px;
 }
@@ -155,8 +148,6 @@ font-size: 0.9rem;
   color: white;
   padding: 5px 12px;
   border-radius: 10px;
-
-
 }
 
 .transfer-all-btn {
@@ -169,7 +160,6 @@ font-size: 0.9rem;
   margin: 15px 0;
   width: 100%;
   transition: all 0.3s ease;
-
 }
 
 .transfer-all-btn:hover:not(:disabled) {
@@ -220,10 +210,9 @@ font-size: 0.9rem;
   transition: all 0.3s ease;
   white-space: nowrap;
 }
-.update-name-btn:hover{
-    transform: translateY(-2px);
+.update-name-btn:hover {
+  transform: translateY(-2px);
 }
-
 
 @media (max-width: 768px) {
   .boxes-container {
@@ -237,6 +226,6 @@ font-size: 0.9rem;
   }
 }
 
-.name-input-container ::ng-deep .mat-mdc-form-field-subscript-wrapper{
-display: none !important;
+.name-input-container ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  display: none !important;
 }

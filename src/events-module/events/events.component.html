@@ -141,6 +141,15 @@
                     alt=""
                   />
                 </button>
+
+                <button
+                  class="icon"
+                  (click)="openLiveDialog(1)"
+                  matTooltip="Playback"
+                >
+                  <img loading="lazy" src="assets/icons/playback.svg" alt="" />
+                </button>
+
                 <button
                   class="icon"
                   (click)="downloadImg()"
@@ -159,6 +168,7 @@
                       ? maxmizeScreen('')
                       : maxmizeScreen('event-image')
                   "
+                  matTooltip="Full Screen"
                 >
                   <img
                     [src]="
@@ -179,10 +189,6 @@
                 NativeApp
               </button>
 
-              <!-- <button class="btn btn-sm dialog-update-btn" (click)="openplayback()">
-                PlayBack
-              </button> -->
-
               <button
                 *ngFor="let btn of actionTagsNew"
                 type="button"
@@ -198,6 +204,7 @@
               >
                 {{ btn?.categoryName }}
               </button>
+
               <mat-menu #falseMenu>
                 <div class="row m-0" *ngIf="subActionTags">
                   <button
@@ -211,7 +218,6 @@
                     {{ btn?.subCategoryName }}
                   </button>
                 </div>
-                <!-- <p *ngIf="subActionTags.length === 0" class="text-center p-5">Loading...</p> -->
               </mat-menu>
 
               <button

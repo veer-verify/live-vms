@@ -156,15 +156,6 @@
     ></app-template>
   </ng-container>
 
-  <ng-container *ngIf="isSidePanelOpen1">
-    <app-template
-      [isSidePanelOpen]="isSidePanelOpen1"
-      (sidePanelClosed)="onCloseSidePanel1($event)"
-      [devicesList]="cameraList"
-      [details]="currentItem"
-    ></app-template>
-  </ng-container>
-
   <ng-container *ngIf="manualProcessopen">
     <app-manualprocess
       [isSidePanelOpen]="manualProcessopen"

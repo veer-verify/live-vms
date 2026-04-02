@@ -10,7 +10,7 @@ import { CameraService } from 'src/services/camera.service';
 import { StorageService } from 'src/services/storage.service';
 import { Router } from '@angular/router';
 import { CdkDragEnter, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Observable, Subscription, fromEvent, tap } from 'rxjs';
+import { Observable, Subscription, firstValueFrom, fromEvent, tap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from 'src/services/alert.service';
 import {
@@ -339,7 +339,7 @@ export class DashboardComponent {
   }
 
   audioIndex: number = -1;
-  audio(data: any) {
+  async audio(data: any) {
     const hours = JSON.parse(data?.audioHours ?? '[]');
     const currentHour = this.storageSer.getHour(data?.timezone);
     if (hours.includes(currentHour)) return;
@@ -365,6 +365,12 @@ export class DashboardComponent {
           this.alertSrvc.snackError('Siren not Played!');
         },
       });
+
+    // const audioData: any = await firstValueFrom(this.http.get(`${environment.site_url}/play_1_0/${data.cameraId}`));
+    // console.log(audioData);
+    // audioData?.statusCode === 200 ? true : false;
+
+
 
     // this.camSer.play(data).subscribe({
     //   next: (res) => {
@@ -538,14 +544,42 @@ export class DashboardComponent {
     });
   }
 
+  write2Dispatch(data: any) {
+    this.event_service
+      .write2Dispatch(data)
+      .subscribe({
+        next: () => {
+          data.buttons.shift();
+          this.createBtnEl.toArray().forEach((item) => {
+            item.nativeElement.style.pointerEvents = 'all';
+          });
+          this.alertSrvc.snackSuccess(
+            'Event generated successfully!'
+          );
+        },
+        error: () => {
+          data.buttons.shift();
+          this.createBtnEl.toArray().forEach((item) => {
+            item.nativeElement.style.pointerEvents = 'all';
+          });
+          this.alertSrvc.snackError('Event generated failed!');
+        },
+      });
+  }
+
   postScreenshot(data: any, file: any) {
-    console.log(data)
+    // console.log(data);
     // const sites = [36432, 36505, 36554, 36523];
     const hours = JSON.parse(data?.audioHours ?? '[]');
     const currentHour = this.storageSer.getHour(data?.timezone);
-
-    const actionsTaken = [{ name: 'Deterrent Activated', selected: false, time: null, status: false }];
-
+    const actionsTaken = [
+      {
+        name: 'Deterrent',
+        selected: data?.audioUrl ? true : false,
+        status: data?.audioUrl && !hours.includes(currentHour) ? true : false,
+        time: data?.audioUrl && !hours.includes(currentHour) ? this.storageSer.getTimeWithTimezone(data?.timezone) : null,
+      }
+    ];
     const user = this.storageSer.getData('session');
     const time = this.storageSer.getTimeWithTimezone(data?.timezone);
     data.time = time;
@@ -555,53 +589,34 @@ export class DashboardComponent {
         if (res.statusCode === 200) {
           if (this.listType === 6) {
             if (data.color == 'green') {
-              if (!hours.includes(currentHour) && data.audioHoursFlag === 'T') {
+              if (data?.audioUrl && !hours.includes(currentHour)) {
                 this.audio(data);
                 actionsTaken[0].selected = true;
                 actionsTaken[0].status = true;
                 actionsTaken[0].time = this.storageSer.getTimeWithTimezone(data?.timezone);
               }
-              this.event_service
-                .write2Dispatch({
-                  ...data,
-                  queue_name: this.storageSer.getData(2),
-                  actionTag: 'suspicious',
-                  userName: user?.UserName,
-                  userLevelAlarmInfo: [
-                    {
-                      level: 1,
-                      user: user?.UserId,
-                      actionTag: 2,
-                      subActionTag: 23,
-                      activityDetTime: (!hours.includes(currentHour) && data.audioHoursFlag === 'T') ? time : '',
-                      alarm: (!hours.includes(currentHour) && data.audioHoursFlag === 'T') ? 'P' : 'N',
-                      landingTime: time,
-                      reviewStart: time,
-                      reviewEnd: time,
-                      notes: '',
-                      userName: user?.UserName,
-                      actionsTakenInfo: actionsTaken
-                    },
-                  ],
-                })
-                .subscribe({
-                  next: (res) => {
-                    data.buttons.shift();
-                    this.createBtnEl.toArray().forEach((item) => {
-                      item.nativeElement.style.pointerEvents = 'all';
-                    });
-                    this.alertSrvc.snackSuccess(
-                      'Event generated successfully!'
-                    );
+
+              this.write2Dispatch({
+                ...data,
+                queue_name: this.storageSer.getData(2),
+                actionTag: 'suspicious',
+                userLevelAlarmInfo: [
+                  {
+                    level: 1,
+                    user: user?.UserId,
+                    actionTag: 2,
+                    subActionTag: 23,
+                    activityDetTime: (data?.audioUrl && !hours.includes(currentHour)) ? time : '',
+                    alarm: (data?.audioUrl && !hours.includes(currentHour)) ? 'P' : 'N',
+                    landingTime: time,
+                    reviewStart: time,
+                    reviewEnd: time,
+                    notes: '',
+                    userName: user?.UserName,
+                    actionsTakenInfo: actionsTaken
                   },
-                  error: (err) => {
-                    data.buttons.shift();
-                    this.createBtnEl.toArray().forEach((item) => {
-                      item.nativeElement.style.pointerEvents = 'all';
-                    });
-                    this.alertSrvc.snackError('Event generated failed!');
-                  },
-                });
+                ],
+              })
             }
           } else {
             if (

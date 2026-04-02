@@ -54,8 +54,10 @@ export class EventService {
   }
 
   write2Dispatch(payload: any) {
-    let url = `${environment.events_url}/write2Vms_DispatchQueue_1_0/`;
-    let obj = {
+    const url = `${environment.events_url}/write2Vms_DispatchQueue_1_0/`;
+    const user = this.storageSer.getData('session');
+
+    const obj = {
       cameraId: payload?.cameraId,
       color: payload?.color,
       id: payload?.id,
@@ -66,7 +68,7 @@ export class EventService {
       httpUrl: payload?.httpUrl,
       siteId: payload?.siteId,
       siteName: payload?.siteName,
-      userName: payload?.userName,
+      userName: user?.UserName,
       actionTag: payload?.actionTag ?? '',
       nativeApp: payload?.nativeApp,
       actionTime: this.storageSer.getTimeWithTimezone(payload?.timezone),
@@ -117,8 +119,8 @@ export class EventService {
       eventTag: 'LIVE-VMS',
       actionTag: payload?.actionTag,
       userLevels: path === 'pre-dispatch' ? 2 : 3,
-      falseActivityTime: payload?.type == 1 ? payload?.actionTagTime : '',
-      suspiciousTime: payload?.type !== 1 ? payload?.actionTagTime : '',
+      falseActivityTime: payload?.type == 1 ? payload?.userActionTime : '',
+      suspiciousTime: payload?.type !== 1 ? payload?.userActionTime : '',
       callResponseTime: '',
       callNoResponseTime: '',
       eventStartTime: payload?.timestamp,

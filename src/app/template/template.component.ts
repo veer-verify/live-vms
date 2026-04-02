@@ -42,18 +42,15 @@ export class TemplateComponent {
     private SiteSer: SiteService,
     private metadaSer: MetadataService,
     private alaram: AlertService,
-    public storage:StorageService
-  ) {}
-
-  ngOnInit() {
-    this.getTypes();
-    this.getSitesforUser();
-    this.getTemplateData();
-  }
+    public storage: StorageService
+  ) { }
 
   @Input() isSidePanelOpen: any;
-
   @Output() sidePanelClosed = new EventEmitter<boolean>();
+
+  ngOnInit() {
+    this.getTemplateData();
+  }
 
   closeSidePanel() {
     this.sidePanelClosed.emit(false);
@@ -75,55 +72,54 @@ export class TemplateComponent {
     this.siteSearch = event.target.value;
   }
 
-isChecked(): boolean {
-  return (
-    this.siteslist?.length > 0 &&
-    this.siteslist?.length === this.siteName?.length
-  );
-}
-
-toggleSelection(): void {
-  const isAllSelected = this.isChecked();
-  if (isAllSelected) {
-    this.siteName = [];
-  } else {
-    this.siteName = this.siteslist.map((site: any) => site.siteId);
+  isChecked(): boolean {
+    return (
+      this.siteslist?.length > 0 &&
+      this.siteslist?.length === this.siteName?.length
+    );
   }
-}
-selectAll = false;
+
+  toggleSelection(): void {
+    const isAllSelected = this.isChecked();
+    if (isAllSelected) {
+      this.siteName = [];
+    } else {
+      this.siteName = this.siteslist.map((site: any) => site.siteId);
+    }
+  }
+  selectAll = false;
 
   toggleSelectAll() {
-    this.templateData.map((item:any) => item.selectedtemplate = this.selectAll);
-      this.selectedGuardIds = this.templateData.filter((item: any) => item.selectedtemplate) .map((item: any) => item.guardMasterId);
-     
+    this.templateData.map((item: any) => item.selectedtemplate = this.selectAll);
+    this.selectedGuardIds = this.templateData.filter((item: any) => item.selectedtemplate).map((item: any) => item.guardMasterId);
+
   }
-selectedGuardIds:any;
+  selectedGuardIds: any;
 
   updateSelectAll() {
-    this.selectAll = this.templateData.every((item:any) => item.selectedtemplate);
- 
-   this.selectedGuardIds = this.templateData.filter((item: any) => item.selectedtemplate) .map((item: any) => item.guardMasterId);
+    this.selectAll = this.templateData.every((item: any) => item.selectedtemplate);
 
-   
+    this.selectedGuardIds = this.templateData.filter((item: any) => item.selectedtemplate).map((item: any) => item.guardMasterId);
+
+
   }
 
 
   getTypes() {
-    this.metadaSer.getMetadata().subscribe((res: any) => {
-      res.forEach((item: any) => {
-        if (item.typeName === 'Action_Tag') {
-          this.actionTags = item.metadata;
-        }
-        if (item.typeName === 'GuardAlertType') {
-          this.alertTypes = item.metadata;
-        }
-        if (item.typeName === 'GuardSubTypeId') {
-          this.alertSubTypes = item.metadata;
-        }
-        if (item.typeName === 'GuardDetailInfoFields') {
-          this.alertFields = item.metadata;
-        }
-      });
+    const metadata = this.storage.getData('metaData')
+    metadata.forEach((item: any) => {
+      if (item.typeName === 'Action_Tag') {
+        this.actionTags = item.metadata;
+      }
+      if (item.typeName === 'GuardAlertType') {
+        this.alertTypes = item.metadata;
+      }
+      if (item.typeName === 'GuardSubTypeId') {
+        this.alertSubTypes = item.metadata;
+      }
+      if (item.typeName === 'GuardDetailInfoFields') {
+        this.alertFields = item.metadata;
+      }
     });
   }
 
@@ -229,15 +225,15 @@ selectedGuardIds:any;
     switch (i) {
       case 1:
         this.showTemplate = 1;
-        this.alert=null,
-        this.subalert=null;
-        this.templateData=[];
+        this.alert = null,
+          this.subalert = null;
+        this.templateData = [];
         break;
       case 2:
         this.showTemplate = 2;
-        this.alert=null,
-        this.subalert=null;
-        this.siteName=null;
+        this.alert = null,
+          this.subalert = null;
+        this.siteName = null;
         this.getTemplateData();
         break;
       default:
@@ -252,8 +248,10 @@ selectedGuardIds:any;
 
     this.SiteSer.listTemplatesData(payload).subscribe((res: any) => {
       if (res.statusCode == 200) {
+        this.getTypes();
+        this.getSitesforUser();
         this.templateData = res.templateData;
-        this.selectAll=false;
+        this.selectAll = false;
       } else {
         this.templateData = [];
 
@@ -283,37 +281,37 @@ selectedGuardIds:any;
   }
 
   showLoader: boolean = false;
-  mapTemplates(){
+  mapTemplates() {
 
-    let payload={
-      guardMasterId:this.selectedGuardIds,
-      siteId:this.siteName,
-      createdBy:0
+    let payload = {
+      guardMasterId: this.selectedGuardIds,
+      siteId: this.siteName,
+      createdBy: 0
     }
-      this.showLoader=true;
-    this.SiteSer.createTemplateSiteRlsp(payload).subscribe((res:any)=>{
-   
-      if(res.statusCode==200){
+    this.showLoader = true;
+    this.SiteSer.createTemplateSiteRlsp(payload).subscribe((res: any) => {
+
+      if (res.statusCode == 200) {
         this.alaram.success(res.message);
-        this.showLoader=false;
+        this.showLoader = false;
       }
-      else{
+      else {
         this.alaram.snackError(res.message);
-       this.showLoader=false;
+        this.showLoader = false;
       }
     })
 
   }
-  deleteTemplate(item:any){
-   
-    this.SiteSer.deleteoverallTemplate({modifiedBy:0,guardMasterId:item.guardMasterId}).subscribe((res:any)=>{
-       if(res.statusCode==200){
+  deleteTemplate(item: any) {
+
+    this.SiteSer.deleteoverallTemplate({ modifiedBy: 0, guardMasterId: item.guardMasterId }).subscribe((res: any) => {
+      if (res.statusCode == 200) {
         this.alaram.success(res.message);
         this.getTemplateData();
       }
-      else{
+      else {
         this.alaram.snackError(res.message);
-      
+
       }
     })
 
