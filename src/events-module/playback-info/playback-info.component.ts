@@ -14,7 +14,7 @@ export class PlaybackInfoComponent {
     private storage: StorageService
   ) { }
 
-  @Input() data: any
+  @Input() data: any;
   @Output() myEvent = new EventEmitter<boolean>();
   @ViewChild('videoElement') videoElement!: ElementRef;
   time: any;

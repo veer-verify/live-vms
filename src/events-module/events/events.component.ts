@@ -46,7 +46,6 @@ export class EventsComponent {
     this.path = this.router.url.split('/').at(-1);
     this.user = this.storage_service.getUser();
 
-    this.getTypes();
     this.getActionTagCategories();
     this.poolEvents();
     this.aliveUser();
@@ -196,7 +195,7 @@ export class EventsComponent {
       this.storage_service.status_text = 'no events';
     }
 
-    this.actionsTaken = Array.from(this.actionsTakenTypes, (el: any) => ({ name: el.value, selected: false, time: null, status: false, editing: false }));
+    this.actionsTaken = Array.from(this.cameraDetails?.actionsTaken, (el: any) => ({ name: el.value, selected: false, time: null, status: false, editing: false }));
 
   }
 
@@ -219,7 +218,7 @@ export class EventsComponent {
               this.alert_service.snackError(res.message);
             }
           },
-          error: (err) => {
+          error: () => {
             this.isPlaying = false;
             this.alert_service.snackError('Siren not Played!');
           },
@@ -264,38 +263,38 @@ export class EventsComponent {
   }
 
   eventsGenericEmail(type: string) {
-    if (this.emailData?.recipientEmails?.length) {
-      // const output = this.currentItem?.userLevelAlarmInfo.flatMap((item: any) => item?.actionsTakenInfo).filter((item: any) => item?.status).map((el: any) => el.name).join(',');
-      const output = this.currentItem?.userLevelAlarmInfo.flatMap((item: any) => item?.actionsTakenInfo);
+    // if (this.emailData?.recipientEmails?.length) {
+    // const output = this.currentItem?.userLevelAlarmInfo.flatMap((item: any) => item?.actionsTakenInfo).filter((item: any) => item?.status).map((el: any) => el.name).join(',');
+    const output = this.currentItem?.userLevelAlarmInfo.flatMap((item: any) => item?.actionsTakenInfo);
 
-      this.camera_service
-        .eventsGenericEmail({
-          ...this.emailObject,
-          ...this.currentItem,
-          ...this.emailData,
-          ...this.currentSubActionTag,
-          ...{ type: type },
-          ...{ address: this.cameraDetails?.address },
-          ...{ objectName: this.object },
-          // ...{ selectedAction: this.selectedActionTag },
-          actionTaken: output,
-          textDetails: this.smsDetails,
-        })
-        .subscribe({
-          next: (res: any) => {
-            if (res.statusCode === 200) {
-              this.alert_service.snackSuccess(res.message);
-            } else {
-              this.alert_service.error(res.message);
-            }
-          },
-          error: () => {
-            this.alert_service.error('Sending Email Failed!');
-          },
-        });
-    } else {
-      this.alert_service.error('Email data not Found');
-    }
+    this.camera_service
+      .eventsGenericEmail({
+        ...this.emailObject,
+        ...this.currentItem,
+        ...this.emailData,
+        ...this.currentSubActionTag,
+        ...{ type: type },
+        ...{ address: this.cameraDetails?.address },
+        ...{ objectName: this.object },
+        // ...{ selectedAction: this.selectedActionTag },
+        actionTaken: output,
+        textDetails: this.smsDetails,
+      })
+      .subscribe({
+        next: (res: any) => {
+          if (res.statusCode === 200) {
+            this.alert_service.snackSuccess(res.message);
+          } else {
+            this.alert_service.error(res.message);
+          }
+        },
+        error: () => {
+          this.alert_service.error('Sending Email Failed!');
+        },
+      });
+    // } else {
+    //   this.alert_service.error('Email data not Found');
+    // }
   }
 
   notes: string = '';
@@ -540,24 +539,26 @@ export class EventsComponent {
   actionTags: any = [];
   alertTypes: any = [];
   alertSubTypes: any = [];
-  actionsTakenTypes: any = [];
+  // actionsTakenTypes: any = [];
   actionsTaken: any = [];
   getTypes() {
-    this.metadata_service.getMetadata().subscribe((res: any) => {
-      res.forEach((item: any) => {
-        // if (item.type === 98) {
-        //   this.alertTypes = item.metadata;
-        // }
-        // if (item.type === 99) {
-        //   this.alertSubTypes = item.metadata;
-        // }
-        if (item.typeName === 'ActionsTaken') {
-          this.actionsTakenTypes = item.metadata;
-        }
-      });
+    // this.metadata_service.getMetadata().subscribe((res: any) => {
+    //   res.forEach((item: any) => {
+    // if (item.type === 98) {
+    //   this.alertTypes = item.metadata;
+    // }
+    // if (item.type === 99) {
+    //   this.alertSubTypes = item.metadata;
+    // }
+    // if (item.typeName === 'ActionsTaken') {
+    //   this.actionsTakenTypes = item.metadata;
+    // }
+    // });
 
-      this.actionsTaken = Array.from(this.actionsTakenTypes, (el: any) => ({ name: el.value, selected: false, time: null, status: false, editing: false }));
-    });
+    console.log(this.cameraDetails)
+    this.actionsTaken = Array.from(this.cameraDetails?.actionsTaken, (el: any) => ({ name: el.value, selected: false, time: null, status: false, editing: false }));
+    console.log(this.actionsTaken);
+    // });
   }
 
   onSelectionChange(item: any, event: any) {
@@ -639,6 +640,7 @@ export class EventsComponent {
       .subscribe((res: any) => {
         if (res.statusCode == 200) {
           this.cameraDetails = res;
+          this.getTypes();
         }
       });
   }

@@ -340,46 +340,78 @@ export class DashboardComponent {
 
   audioIndex: number = -1;
   async audio(data: any) {
+    const user = this.storageSer.getData('session');
+    const time = this.storageSer.getTimeWithTimezone(data?.timezone);
+    data.time = time;
+
+    // const days = JSON.parse(data?.audioDays ?? '[]');
+    // const currentDay = this.storageSer.getDay(data?.timezone);
+
     const hours = JSON.parse(data?.audioHours ?? '[]');
     const currentHour = this.storageSer.getHour(data?.timezone);
-    if (hours.includes(currentHour)) return;
 
-    this.audioIndex = this.getCurrentPageItems.findIndex((el: any) => el.cameraId === data.cameraId);
-    this.camSer.siren_sub.next(true);
+    // this.audioIndex = this.getCurrentPageItems.findIndex((el: any) => el.cameraId === data.cameraId);
+    // this.camSer.siren_sub.next(true);
 
-    this.http
-      .get(`${environment.site_url}/play_1_0/${data.cameraId}`)
-      .subscribe({
-        next: (res: any) => {
-          this.camSer.siren_sub.next(false);
-          this.audioIndex = -1;
-          if (res.statusCode === 200) {
-            this.alertSrvc.snackSuccess(res.message);
-          } else {
-            this.alertSrvc.snackError(res.message);
-          }
-        },
-        error: (err) => {
-          this.camSer.siren_sub.next(false);
-          this.audioIndex = -1;
-          this.alertSrvc.snackError('Siren not Played!');
-        },
-      });
+    // this.http
+    //   .get(`${environment.site_url}/play_1_0/${data.cameraId}`)
+    //   .subscribe({
+    //     next: (res: any) => {
+    //       this.camSer.siren_sub.next(false);
+    //       this.audioIndex = -1;
+    //       if (res.statusCode === 200) {
+    //         this.alertSrvc.snackSuccess(res.message);
+    //       } else {
+    //         this.alertSrvc.snackError(res.message);
+    //       }
+    //     },
+    //     error: (err) => {
+    //       this.camSer.siren_sub.next(false);
+    //       this.audioIndex = -1;
+    //       this.alertSrvc.snackError('Siren not Played!');
+    //     },
+    //   });
 
-    // const audioData: any = await firstValueFrom(this.http.get(`${environment.site_url}/play_1_0/${data.cameraId}`));
+
+    let audioData: any;
+    if (data?.audioUrl && !hours.includes(currentHour)) {
+      audioData = await firstValueFrom(this.http.get(`${environment.site_url}/play_1_0/${data.cameraId}`));
+    }
     // console.log(audioData);
-    // audioData?.statusCode === 200 ? true : false;
 
+    const actionsTaken = [
+      {
+        name: 'Deterrent',
+        selected: data?.audioUrl ? true : false,
+        status: data?.audioUrl && !hours.includes(currentHour) && audioData?.statusCode === 200 ? true : false,
+        time: data?.audioUrl && !hours.includes(currentHour) ? this.storageSer.getTimeWithTimezone(data?.timezone) : null,
+      }
+    ];
+    // actionsTaken[0].selected = true;
+    // actionsTaken[0].status = true;
+    // actionsTaken[0].time = this.storageSer.getTimeWithTimezone(data?.timezone);
 
-
-    // this.camSer.play(data).subscribe({
-    //   next: (res) => {
-    //     this.alertSrvc.snackSuccess('Siren Played!');
-    //   },
-    //   error: (err) => {
-    //     this.alertSrvc.snackSuccess('Failed!');
-    //   }
-    // });
+    this.write2Dispatch({
+      ...data,
+      queue_name: this.storageSer.getData(2),
+      actionTag: 'suspicious',
+      userLevelAlarmInfo: [
+        {
+          level: 1,
+          user: user?.UserId,
+          actionTag: 2,
+          subActionTag: 23,
+          activityDetTime: (data?.audioUrl && !hours.includes(currentHour)) ? time : '',
+          alarm: (data?.audioUrl && !hours.includes(currentHour)) ? 'P' : 'N',
+          landingTime: time,
+          reviewStart: time,
+          reviewEnd: time,
+          notes: '',
+          userName: user?.UserName,
+          actionsTakenInfo: actionsTaken
+        },
+      ],
+    })
   }
 
   currentItem: any;
@@ -572,51 +604,19 @@ export class DashboardComponent {
     // const sites = [36432, 36505, 36554, 36523];
     const hours = JSON.parse(data?.audioHours ?? '[]');
     const currentHour = this.storageSer.getHour(data?.timezone);
-    const actionsTaken = [
-      {
-        name: 'Deterrent',
-        selected: data?.audioUrl ? true : false,
-        status: data?.audioUrl && !hours.includes(currentHour) ? true : false,
-        time: data?.audioUrl && !hours.includes(currentHour) ? this.storageSer.getTimeWithTimezone(data?.timezone) : null,
-      }
-    ];
-    const user = this.storageSer.getData('session');
-    const time = this.storageSer.getTimeWithTimezone(data?.timezone);
-    data.time = time;
+
+
 
     this.camSer.screenshots(data, file).subscribe({
       next: (res: any) => {
+        data.buttons.shift();
+        this.createBtnEl.toArray().forEach((item) => {
+          item.nativeElement.style.pointerEvents = 'all';
+        });
         if (res.statusCode === 200) {
           if (this.listType === 6) {
             if (data.color == 'green') {
-              if (data?.audioUrl && !hours.includes(currentHour)) {
-                this.audio(data);
-                actionsTaken[0].selected = true;
-                actionsTaken[0].status = true;
-                actionsTaken[0].time = this.storageSer.getTimeWithTimezone(data?.timezone);
-              }
-
-              this.write2Dispatch({
-                ...data,
-                queue_name: this.storageSer.getData(2),
-                actionTag: 'suspicious',
-                userLevelAlarmInfo: [
-                  {
-                    level: 1,
-                    user: user?.UserId,
-                    actionTag: 2,
-                    subActionTag: 23,
-                    activityDetTime: (data?.audioUrl && !hours.includes(currentHour)) ? time : '',
-                    alarm: (data?.audioUrl && !hours.includes(currentHour)) ? 'P' : 'N',
-                    landingTime: time,
-                    reviewStart: time,
-                    reviewEnd: time,
-                    notes: '',
-                    userName: user?.UserName,
-                    actionsTakenInfo: actionsTaken
-                  },
-                ],
-              })
+              this.audio(data);
             }
           } else {
             if (
@@ -641,7 +641,7 @@ export class DashboardComponent {
           }
         }
       },
-      error: (err) => {
+      error: () => {
         data.buttons.shift();
         this.createBtnEl.toArray().forEach((item) => {
           item.nativeElement.style.pointerEvents = 'all';
