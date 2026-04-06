@@ -301,10 +301,7 @@ export class EventsComponent {
   updateEventFullDetails(type: number | string) {
     if (type === 2) return;
 
-    const finalizedActions = this.actionsTaken.filter((el: any) => {
-      delete el.editing;
-      return el.selected;
-    });
+
 
     if (type === 'second-level') {
       this.eventsGenericEmail('complete');
@@ -330,7 +327,9 @@ export class EventsComponent {
         userName: user?.UserName,
         alertTag: this.alertType,
         subAlertTag: this.alertSubType,
-        actionsTakenInfo: finalizedActions
+        actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
+          delete el.editing
+        })
 
       })
       : this.path === 'dispatch'
@@ -346,7 +345,9 @@ export class EventsComponent {
           subActionTag: this.currentSubActionTag?.subCategoryId,
           notes: this.notes,
           userName: user?.UserName,
-          actionsTakenInfo: finalizedActions
+          actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
+            delete el.editing
+          })
 
         })
         : this.currentItem?.userLevelAlarmInfo.push({
@@ -361,7 +362,9 @@ export class EventsComponent {
           subActionTag: this.currentSubActionTag?.subCategoryId,
           notes: this.notes,
           userName: user?.UserName,
-          actionsTakenInfo: finalizedActions
+          actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
+            delete el.editing
+          })
         });
 
     this.event_service
@@ -403,12 +406,6 @@ export class EventsComponent {
   }
 
   write2Dispatch(queue_name: string) {
-    const finalizedActions = this.actionsTaken.filter((el: any) => {
-      delete el.editing
-      return el.selected
-    });
-
-
     if (this.path === 'pre-dispatch') {
       this.eventsGenericEmail('escalate');
     }
@@ -440,7 +437,9 @@ export class EventsComponent {
         userName: user?.UserName,
         alertTag: this.alertType,
         subAlertTag: this.alertSubType,
-        actionsTakenInfo: finalizedActions
+        actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
+          delete el.editing
+        })
 
       })
       : this.path === 'dispatch'
@@ -455,7 +454,9 @@ export class EventsComponent {
           subActionTag: this.currentSubActionTag?.subCategoryId,
           notes: this.notes,
           userName: user?.UserName,
-          actionsTakenInfo: finalizedActions
+          actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
+            delete el.editing
+          })
 
         })
         : this.currentItem?.userLevelAlarmInfo.push({
@@ -469,7 +470,9 @@ export class EventsComponent {
           subActionTag: this.currentSubActionTag?.subCategoryId,
           notes: this.notes,
           userName: user?.UserName,
-          actionsTakenInfo: finalizedActions
+          actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
+            delete el.editing
+          })
 
         });
     this.currentItem.time = this.currentItem.timestamp;

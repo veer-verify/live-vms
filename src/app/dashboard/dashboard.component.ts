@@ -338,7 +338,6 @@ export class DashboardComponent {
     this.cameraIndex = index;
   }
 
-  audioIndex: number = -1;
   async audio(data: any) {
     const user = this.storageSer.getData('session');
     const time = this.storageSer.getTimeWithTimezone(data?.timezone);
@@ -350,34 +349,11 @@ export class DashboardComponent {
     const hours = JSON.parse(data?.audioHours ?? '[]');
     const currentHour = this.storageSer.getHour(data?.timezone);
 
-    // this.audioIndex = this.getCurrentPageItems.findIndex((el: any) => el.cameraId === data.cameraId);
-    // this.camSer.siren_sub.next(true);
-
-    // this.http
-    //   .get(`${environment.site_url}/play_1_0/${data.cameraId}`)
-    //   .subscribe({
-    //     next: (res: any) => {
-    //       this.camSer.siren_sub.next(false);
-    //       this.audioIndex = -1;
-    //       if (res.statusCode === 200) {
-    //         this.alertSrvc.snackSuccess(res.message);
-    //       } else {
-    //         this.alertSrvc.snackError(res.message);
-    //       }
-    //     },
-    //     error: (err) => {
-    //       this.camSer.siren_sub.next(false);
-    //       this.audioIndex = -1;
-    //       this.alertSrvc.snackError('Siren not Played!');
-    //     },
-    //   });
-
 
     let audioData: any;
     if (data?.audioUrl && !hours.includes(currentHour)) {
       audioData = await firstValueFrom(this.http.get(`${environment.site_url}/play_1_0/${data.cameraId}`));
     }
-    // console.log(audioData);
 
     const actionsTaken = [
       {
@@ -387,14 +363,12 @@ export class DashboardComponent {
         time: data?.audioUrl && !hours.includes(currentHour) ? this.storageSer.getTimeWithTimezone(data?.timezone) : null,
       }
     ];
-    // actionsTaken[0].selected = true;
-    // actionsTaken[0].status = true;
-    // actionsTaken[0].time = this.storageSer.getTimeWithTimezone(data?.timezone);
 
     this.write2Dispatch({
       ...data,
       queue_name: this.storageSer.getData(2),
       actionTag: 'suspicious',
+
       userLevelAlarmInfo: [
         {
           level: 1,
@@ -402,7 +376,8 @@ export class DashboardComponent {
           actionTag: 2,
           subActionTag: 23,
           activityDetTime: (data?.audioUrl && !hours.includes(currentHour)) ? time : '',
-          alarm: (data?.audioUrl && !hours.includes(currentHour)) ? 'P' : 'N',
+          // alarm: (data?.audioUrl && !hours.includes(currentHour)) ? 'P' : 'N',
+          alarm: !data?.audioUrl ? 'N' : (data?.audioUrl && hours.includes(currentHour)) ? (audioData?.statusCode === 200 ? 'P' : 'R') : 'F',
           landingTime: time,
           reviewStart: time,
           reviewEnd: time,
@@ -412,6 +387,31 @@ export class DashboardComponent {
         },
       ],
     })
+  }
+
+  audioIndex: number = -1;
+  manualAudio(data: any) {
+    this.audioIndex = this.getCurrentPageItems.findIndex((el: any) => el.cameraId === data.cameraId);
+    this.camSer.siren_sub.next(true);
+
+    this.http
+      .get(`${environment.site_url}/play_1_0/${data.cameraId}`)
+      .subscribe({
+        next: (res: any) => {
+          this.camSer.siren_sub.next(false);
+          this.audioIndex = -1;
+          if (res.statusCode === 200) {
+            this.alertSrvc.snackSuccess(res.message);
+          } else {
+            this.alertSrvc.snackError(res.message);
+          }
+        },
+        error: () => {
+          this.camSer.siren_sub.next(false);
+          this.audioIndex = -1;
+          this.alertSrvc.snackError('Siren not Played!');
+        },
+      });
   }
 
   currentItem: any;
@@ -602,10 +602,11 @@ export class DashboardComponent {
   postScreenshot(data: any, file: any) {
     // console.log(data);
     // const sites = [36432, 36505, 36554, 36523];
-    const hours = JSON.parse(data?.audioHours ?? '[]');
-    const currentHour = this.storageSer.getHour(data?.timezone);
+    // const hours = JSON.parse(data?.audioHours ?? '[]');
+    // const currentHour = this.storageSer.getHour(data?.timezone);
 
-
+    const time = this.storageSer.getTimeWithTimezone(data?.timezone);
+    data.time = time;
 
     this.camSer.screenshots(data, file).subscribe({
       next: (res: any) => {

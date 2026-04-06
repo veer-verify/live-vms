@@ -16,6 +16,12 @@ export class LiveComponent {
   ) { }
 
   ngOnInit() {
+    // console.log(this.data);
+    if (this.data?.liveControl === 1) {
+      this.currentCamera = this.data;
+      this.merged = { ...this.currentCamera, ...this.data };
+      this.showplayback = true;
+    }
     this.getCamerasForSiteId(this.data);
   }
 
