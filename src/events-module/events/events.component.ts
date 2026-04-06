@@ -22,7 +22,6 @@ import moment from 'moment';
   styleUrls: ['./events.component.css'],
 })
 export class EventsComponent {
-
   constructor(
     public storage_service: StorageService,
     private metadata_service: MetadataService,
@@ -34,8 +33,7 @@ export class EventsComponent {
     private router: Router,
     private http: HttpClient,
     private siteser: SiteService,
-  ) { }
-
+  ) {}
 
   environment = environment.eventImageUrl;
   path: any;
@@ -88,13 +86,15 @@ export class EventsComponent {
             })
             .subscribe();
           res.forEach((item: any) => {
-            item.landingTime = this.storage_service.getTimeWithTimezone(item.timezone);
+            item.landingTime = this.storage_service.getTimeWithTimezone(
+              item.timezone,
+            );
             item.audioPlayed = false;
 
             if (!this.eventData.some((el: any) => el.id === item.id)) {
               this.eventData.push(item);
             }
-          })
+          });
 
           if (this.eventData.length === 1) {
             const [event] = this.eventData;
@@ -102,14 +102,13 @@ export class EventsComponent {
           }
         }
       },
-      error: () => { },
+      error: () => {},
     });
     if (this.eventData.length === 0) {
-      this.storage_service.status_text = 'no events'
+      this.storage_service.status_text = 'no events';
     } else {
-      this.storage_service.status_text = ''
+      this.storage_service.status_text = '';
     }
-
   }
 
   currentItem: any;
@@ -177,7 +176,9 @@ export class EventsComponent {
   cancelEvent() {
     this.resetVals();
 
-    const index = this.eventData.findIndex((el: any) => el.id === this.currentItem?.id);
+    const index = this.eventData.findIndex(
+      (el: any) => el.id === this.currentItem?.id,
+    );
     if (this.eventData.length === index + 1) {
       this.eventData.splice(index, 1);
       this.currentItem = this.eventData[index - 1];
@@ -189,14 +190,22 @@ export class EventsComponent {
     if (this.eventData.length < 6) {
       this.event_service.stopEventPooling();
       this.poolEvents();
-    };
+    }
 
     if (this.eventData.length === 0) {
       this.storage_service.status_text = 'no events';
     }
 
-    this.actionsTaken = Array.from(this.cameraDetails?.actionsTaken, (el: any) => ({ name: el.value, selected: false, time: null, status: false, editing: false }));
-
+    this.actionsTaken = Array.from(
+      this.cameraDetails?.actionsTaken,
+      (el: any) => ({
+        name: el.value,
+        selected: false,
+        time: null,
+        status: false,
+        editing: false,
+      }),
+    );
   }
 
   isPlaying: boolean = false;
@@ -265,7 +274,9 @@ export class EventsComponent {
   eventsGenericEmail(type: string) {
     // if (this.emailData?.recipientEmails?.length) {
     // const output = this.currentItem?.userLevelAlarmInfo.flatMap((item: any) => item?.actionsTakenInfo).filter((item: any) => item?.status).map((el: any) => el.name).join(',');
-    const output = this.currentItem?.userLevelAlarmInfo.flatMap((item: any) => item?.actionsTakenInfo);
+    const output = this.currentItem?.userLevelAlarmInfo.flatMap(
+      (item: any) => item?.actionsTakenInfo,
+    );
 
     this.camera_service
       .eventsGenericEmail({
@@ -301,74 +312,76 @@ export class EventsComponent {
   updateEventFullDetails(type: number | string) {
     if (type === 2) return;
 
-    if (type !== 1) {
-      const isChecked = this.actionsTaken.every((item: any) => item.selected);
-      if (!isChecked) return this.alert_service.error('All actions are mandatory please update them!');
+    const user = this.storage_service.getData('session');
+    if (type !== 1 && user?.userLevel === 3) {
+      if (this.actionsTaken.length === 0) return;
+      const allChecked = this.actionsTaken.every((item: any) => item?.selected);
+      if (!allChecked)
+        return this.alert_service.error(
+          'All actions are mandatory please update them!',
+        );
     }
 
     if (type === 'second-level') {
       this.eventsGenericEmail('complete');
     }
 
-    const user = this.storage_service.getData('session');
     const endTime = this.storage_service.getTimeWithTimezone(
       this.currentItem?.timezone,
     );
 
     this.path === 'pre-dispatch'
       ? this.currentItem?.userLevelAlarmInfo.push({
-        level: 2,
-        user: user?.UserId,
-        alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
-        activityDetTime: this.sirenTime ?? '',
-        landingTime: this.currentItem?.landingTime ?? '',
-        reviewStart: this.currentItem?.reviewStart ?? '',
-        reviewEnd: endTime ?? '',
-        actionTag: this.currentActionTag?.categoryId,
-        subActionTag: this.currentSubActionTag?.subCategoryId,
-        notes: this.notes,
-        userName: user?.UserName,
-        alertTag: this.alertType,
-        subAlertTag: this.alertSubType,
-        actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
-          delete el.editing
+          level: 2,
+          user: user?.UserId,
+          alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
+          activityDetTime: this.sirenTime ?? '',
+          landingTime: this.currentItem?.landingTime ?? '',
+          reviewStart: this.currentItem?.reviewStart ?? '',
+          reviewEnd: endTime ?? '',
+          actionTag: this.currentActionTag?.categoryId,
+          subActionTag: this.currentSubActionTag?.subCategoryId,
+          notes: this.notes,
+          userName: user?.UserName,
+          alertTag: this.alertType,
+          subAlertTag: this.alertSubType,
+          actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
+            delete el.editing;
+          }),
         })
-
-      })
       : this.path === 'dispatch'
         ? this.currentItem?.userLevelAlarmInfo.push({
-          level: 3,
-          user: user?.UserId,
-          alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
-          activityDetTime: this.sirenTime ?? '',
-          landingTime: this.currentItem?.landingTime ?? '',
-          reviewStart: this.currentItem?.reviewStart ?? '',
-          reviewEnd: endTime ?? '',
-          actionTag: this.currentActionTag?.categoryId,
-          subActionTag: this.currentSubActionTag?.subCategoryId,
-          notes: this.notes,
-          userName: user?.UserName,
-          actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
-            delete el.editing
+            level: 3,
+            user: user?.UserId,
+            alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
+            activityDetTime: this.sirenTime ?? '',
+            landingTime: this.currentItem?.landingTime ?? '',
+            reviewStart: this.currentItem?.reviewStart ?? '',
+            reviewEnd: endTime ?? '',
+            actionTag: this.currentActionTag?.categoryId,
+            subActionTag: this.currentSubActionTag?.subCategoryId,
+            notes: this.notes,
+            userName: user?.UserName,
+            actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
+              delete el.editing;
+            }),
           })
-
-        })
         : this.currentItem?.userLevelAlarmInfo.push({
-          level: 4,
-          user: user?.UserId,
-          alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
-          activityDetTime: this.sirenTime ?? '',
-          landingTime: this.currentItem?.landingTime ?? '',
-          reviewStart: this.currentItem?.reviewStart ?? '',
-          reviewEnd: endTime ?? '',
-          actionTag: this.currentActionTag?.categoryId,
-          subActionTag: this.currentSubActionTag?.subCategoryId,
-          notes: this.notes,
-          userName: user?.UserName,
-          actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
-            delete el.editing
-          })
-        });
+            level: 4,
+            user: user?.UserId,
+            alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
+            activityDetTime: this.sirenTime ?? '',
+            landingTime: this.currentItem?.landingTime ?? '',
+            reviewStart: this.currentItem?.reviewStart ?? '',
+            reviewEnd: endTime ?? '',
+            actionTag: this.currentActionTag?.categoryId,
+            subActionTag: this.currentSubActionTag?.subCategoryId,
+            notes: this.notes,
+            userName: user?.UserName,
+            actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
+              delete el.editing;
+            }),
+          });
 
     this.event_service
       .consumeConsoleEvents({
@@ -388,7 +401,7 @@ export class EventsComponent {
         subActionTag: this.currentSubActionTag?.subCategoryId,
         objectName: this.object,
         userActionTime: this.userActionTime,
-        userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo
+        userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo,
       })
       .subscribe({
         next: () => {
@@ -409,8 +422,16 @@ export class EventsComponent {
   }
 
   write2Dispatch(queue_name: string) {
-    const isChecked = this.actionsTaken.every((item: any) => item.selected);
-    if (!isChecked) return this.alert_service.error('All actions are mandatory please update them!');
+    let user = this.storage_service.getData('session');
+
+    if (user?.userLevel === 3) {
+      if (this.actionsTaken.length === 0) return;
+      const allChecked = this.actionsTaken.every((item: any) => item?.selected);
+      if (!allChecked)
+        return this.alert_service.error(
+          'All actions are mandatory please update them!',
+        );
+    }
 
     if (this.path === 'pre-dispatch') {
       this.eventsGenericEmail('escalate');
@@ -425,62 +446,58 @@ export class EventsComponent {
       })
       .subscribe();
 
-    let user = this.storage_service.getData('session');
     let endTime = this.storage_service.getTimeWithTimezone(
       this.currentItem?.timezone,
     );
     this.path === 'pre-dispatch'
       ? this.currentItem?.userLevelAlarmInfo.push({
-        level: 2,
-        user: user?.UserId,
-        alarm: 'N',
-        landingTime: this.currentItem?.landingTime ?? '',
-        reviewStart: this.currentItem?.reviewStart ?? '',
-        reviewEnd: endTime ?? '',
-        actionTag: this.currentActionTag?.categoryId,
-        subActionTag: this.currentSubActionTag?.subCategoryId,
-        notes: this.notes,
-        userName: user?.UserName,
-        alertTag: this.alertType,
-        subAlertTag: this.alertSubType,
-        actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
-          delete el.editing
+          level: 2,
+          user: user?.UserId,
+          alarm: 'N',
+          landingTime: this.currentItem?.landingTime ?? '',
+          reviewStart: this.currentItem?.reviewStart ?? '',
+          reviewEnd: endTime ?? '',
+          actionTag: this.currentActionTag?.categoryId,
+          subActionTag: this.currentSubActionTag?.subCategoryId,
+          notes: this.notes,
+          userName: user?.UserName,
+          alertTag: this.alertType,
+          subAlertTag: this.alertSubType,
+          actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
+            delete el.editing;
+          }),
         })
-
-      })
       : this.path === 'dispatch'
         ? this.currentItem?.userLevelAlarmInfo.push({
-          level: 3,
-          user: user?.UserId,
-          alarm: 'N',
-          landingTime: this.currentItem?.landingTime ?? '',
-          reviewStart: this.currentItem?.reviewStart ?? '',
-          reviewEnd: endTime ?? '',
-          actionTag: this.currentActionTag?.categoryId,
-          subActionTag: this.currentSubActionTag?.subCategoryId,
-          notes: this.notes,
-          userName: user?.UserName,
-          actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
-            delete el.editing
+            level: 3,
+            user: user?.UserId,
+            alarm: 'N',
+            landingTime: this.currentItem?.landingTime ?? '',
+            reviewStart: this.currentItem?.reviewStart ?? '',
+            reviewEnd: endTime ?? '',
+            actionTag: this.currentActionTag?.categoryId,
+            subActionTag: this.currentSubActionTag?.subCategoryId,
+            notes: this.notes,
+            userName: user?.UserName,
+            actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
+              delete el.editing;
+            }),
           })
-
-        })
         : this.currentItem?.userLevelAlarmInfo.push({
-          level: 4,
-          user: user?.UserId,
-          alarm: 'N',
-          landingTime: this.currentItem?.landingTime ?? '',
-          reviewStart: this.currentItem?.reviewStart ?? '',
-          reviewEnd: endTime ?? '',
-          actionTag: this.currentActionTag?.categoryId,
-          subActionTag: this.currentSubActionTag?.subCategoryId,
-          notes: this.notes,
-          userName: user?.UserName,
-          actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
-            delete el.editing
-          })
-
-        });
+            level: 4,
+            user: user?.UserId,
+            alarm: 'N',
+            landingTime: this.currentItem?.landingTime ?? '',
+            reviewStart: this.currentItem?.reviewStart ?? '',
+            reviewEnd: endTime ?? '',
+            actionTag: this.currentActionTag?.categoryId,
+            subActionTag: this.currentSubActionTag?.subCategoryId,
+            notes: this.notes,
+            userName: user?.UserName,
+            actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
+              delete el.editing;
+            }),
+          });
     this.currentItem.time = this.currentItem.timestamp;
     this.storage_service.show_loader = true;
     this.event_service
@@ -564,8 +581,17 @@ export class EventsComponent {
     // }
     // });
 
-    console.log(this.cameraDetails)
-    this.actionsTaken = Array.from(this.cameraDetails?.actionsTaken, (el: any) => ({ name: el.value, selected: false, time: null, status: false, editing: false }));
+    console.log(this.cameraDetails);
+    this.actionsTaken = Array.from(
+      this.cameraDetails?.actionsTaken,
+      (el: any) => ({
+        name: el.value,
+        selected: false,
+        time: null,
+        status: false,
+        editing: false,
+      }),
+    );
     console.log(this.actionsTaken);
     // });
   }
@@ -573,7 +599,9 @@ export class EventsComponent {
   onSelectionChange(item: any, event: any) {
     item.selected = event.selected;
     if (item.selected) {
-      item.time = this.storage_service.getTimeWithTimezone(this.currentItem?.timezone);
+      item.time = this.storage_service.getTimeWithTimezone(
+        this.currentItem?.timezone,
+      );
     } else {
       item.time = null;
     }
@@ -615,7 +643,7 @@ export class EventsComponent {
       next: (res: any) => {
         if (res.statusCode === 200) {
           this.actionTagsNew = res.actionTagCategories.filter(
-            (item: any) => item.categoryId !== 3
+            (item: any) => item.categoryId !== 3,
           );
         }
       },
