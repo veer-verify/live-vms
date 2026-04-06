@@ -301,7 +301,10 @@ export class EventsComponent {
   updateEventFullDetails(type: number | string) {
     if (type === 2) return;
 
-
+    if (type !== 1) {
+      const isChecked = this.actionsTaken.every((item: any) => item.selected);
+      if (!isChecked) return this.alert_service.error('All actions are mandatory please update them!');
+    }
 
     if (type === 'second-level') {
       this.eventsGenericEmail('complete');
@@ -406,6 +409,9 @@ export class EventsComponent {
   }
 
   write2Dispatch(queue_name: string) {
+    const isChecked = this.actionsTaken.every((item: any) => item.selected);
+    if (!isChecked) return this.alert_service.error('All actions are mandatory please update them!');
+
     if (this.path === 'pre-dispatch') {
       this.eventsGenericEmail('escalate');
     }
