@@ -2,7 +2,10 @@
 
 <ng-container *ngIf="eventData.length !== 0">
   <!-- actions taken -->
-  <div class="d-flex justify-content-start gap-2" *ngIf="user.userLevel === 3">
+  <div
+    class="d-flex justify-content-start gap-2"
+    *ngIf="user.userLevel === 3 && cameraDetails"
+  >
     <mat-chip-listbox multiple>
       <mat-chip-option
         *ngFor="let item of actionsTaken"
