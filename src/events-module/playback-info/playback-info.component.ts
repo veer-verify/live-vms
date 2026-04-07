@@ -22,34 +22,29 @@ export class PlaybackInfoComponent {
   showControls = false;
   videos: any = [];
   playbacktime: any;
+  state: 'loading' | 'empty' | 'data' = 'loading';
 
   ngOnChanges() {
     this.time = this.storage.getTimeWithTimezone(this.data?.timezone);
     this.getTypes();
   }
 
-  ngOnInit() {
-  }
-
-  showVideoControl = false;
   playbackvideoApi() {
     this.videos = [];
-    this.videos.push('assets/clips/load-video.mp4');
-    this.showVideoControl = false;
+    this.state = 'loading';
     this.event.playbackvideo({ ...this.data, minutesBeforeEvent: this.playbacktime?.value, currentTime: this.time })
       .subscribe({
         next: (res: any) => {
-          this.videos = [];
           if (res.statusCode === 200) {
-            this.showVideoControl = true;
+            this.state = 'data';
             this.videos = res.eventUrls;
-          } else {
-            this.videos.push('assets/clips/error.mp4');
+          }
+          else {
+            this.state = 'empty';
           }
         },
         error: () => {
-          this.videos = [];
-          this.videos.push('assets/clips/error.mp4');
+          this.state = 'empty';
         }
       })
   }

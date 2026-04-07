@@ -15,7 +15,7 @@ export class SiteService {
 
   constructor(private http: HttpClient, private storageSer: StorageService, private datePipe: DatePipe) { }
 
-  public getSites(payload?: any): any {
+  public getSites(payload?: any): Observable<any> {
     let url = `${environment.site_url}/getSitesListForUserName_2_0/`;
 
     let user = this.storageSer.getData('session');

@@ -10,7 +10,7 @@ import { CameraService } from 'src/services/camera.service';
 import { StorageService } from 'src/services/storage.service';
 import { Router } from '@angular/router';
 import { CdkDragEnter, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Observable, Subscription, firstValueFrom, fromEvent, tap } from 'rxjs';
+import { Observable, Subscription, catchError, finalize, firstValueFrom, fromEvent, map, of, tap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from 'src/services/alert.service';
 import {
@@ -128,25 +128,33 @@ export class DashboardComponent {
   errInfo: any;
   getSites() {
     this.showLoader = true;
-    this.siteSrvc.getSites().subscribe(
-      (res: any) => {
-        this.showLoader = false;
-        if (res.Status === 'Success') {
-          this.getTypes();
-          this.sitesList = res.sites.sort((a: any, b: any) =>
+    this.siteSrvc
+      .getSites()
+      .pipe(
+        map((response) => {
+          if (response.Status !== 'Success') {
+            this.sitesList = [];
+            this.errInfo = 'NO SITES';
+            this.showSidenav = false;
+          }
+          return response.sites.sort((a: any, b: any) =>
             a.siteName > b.siteName ? 1 : a.siteName < b.siteName ? -1 : 0
           );
-        } else {
-          this.sitesList = [];
+        }),
+        catchError(() => {
           this.errInfo = 'NO SITES';
           this.showSidenav = false;
-        }
-      },
-      (err: any) => {
-        this.showLoader = false;
-        this.errInfo = 'NO SITES';
+          return of([]);
+        }),
+        finalize(() => {
+          this.showLoader = false;
+        })
+      )
+      .subscribe((res) => {
+        this.getTypes();
+        this.sitesList = res;
       }
-    );
+      );
   }
 
   cameras: any = [];
@@ -341,7 +349,7 @@ export class DashboardComponent {
   async audio(data: any) {
     const user = this.storageSer.getData('session');
     const time = this.storageSer.getTimeWithTimezone(data?.timezone);
-    data.time = time;
+    // data.time = time;
 
     // const days = JSON.parse(data?.audioDays ?? '[]');
     // const currentDay = this.storageSer.getDay(data?.timezone);
@@ -364,6 +372,12 @@ export class DashboardComponent {
       }
     ];
 
+    this.alertSrvc.snackSuccess(
+      !data?.audioUrl ? 'No Deterant Available'
+        : (data?.audioUrl && !hours.includes(currentHour)) ? (audioData?.statusCode === 200 ? 'Activated On-site Deterant' : 'Deterant Activated No Response')
+          : 'Remote Deterant Disabled As Per Your Request'
+    );
+
     this.write2Dispatch({
       ...data,
       queue_name: this.storageSer.getData(2),
@@ -377,7 +391,7 @@ export class DashboardComponent {
           subActionTag: 23,
           activityDetTime: (data?.audioUrl && !hours.includes(currentHour)) ? time : '',
           // alarm: (data?.audioUrl && !hours.includes(currentHour)) ? 'P' : 'N',
-          alarm: !data?.audioUrl ? 'N' : (data?.audioUrl && hours.includes(currentHour)) ? (audioData?.statusCode === 200 ? 'P' : 'R') : 'F',
+          alarm: !data?.audioUrl ? 'N' : (data?.audioUrl && !hours.includes(currentHour)) ? (audioData?.statusCode === 200 ? 'P' : 'R') : 'F',
           landingTime: time,
           reviewStart: time,
           reviewEnd: time,

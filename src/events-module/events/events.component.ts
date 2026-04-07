@@ -33,7 +33,7 @@ export class EventsComponent {
     private router: Router,
     private http: HttpClient,
     private siteser: SiteService,
-  ) {}
+  ) { }
 
   environment = environment.eventImageUrl;
   path: any;
@@ -102,7 +102,7 @@ export class EventsComponent {
           }
         }
       },
-      error: () => {},
+      error: () => { },
     });
     if (this.eventData.length === 0) {
       this.storage_service.status_text = 'no events';
@@ -332,7 +332,26 @@ export class EventsComponent {
 
     this.path === 'pre-dispatch'
       ? this.currentItem?.userLevelAlarmInfo.push({
-          level: 2,
+        level: 2,
+        user: user?.UserId,
+        alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
+        activityDetTime: this.sirenTime ?? '',
+        landingTime: this.currentItem?.landingTime ?? '',
+        reviewStart: this.currentItem?.reviewStart ?? '',
+        reviewEnd: endTime ?? '',
+        actionTag: this.currentActionTag?.categoryId,
+        subActionTag: this.currentSubActionTag?.subCategoryId,
+        notes: this.notes,
+        userName: user?.UserName,
+        alertTag: this.alertType,
+        subAlertTag: this.alertSubType,
+        actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
+          delete el.editing;
+        }),
+      })
+      : this.path === 'dispatch'
+        ? this.currentItem?.userLevelAlarmInfo.push({
+          level: 3,
           user: user?.UserId,
           alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
           activityDetTime: this.sirenTime ?? '',
@@ -343,45 +362,26 @@ export class EventsComponent {
           subActionTag: this.currentSubActionTag?.subCategoryId,
           notes: this.notes,
           userName: user?.UserName,
-          alertTag: this.alertType,
-          subAlertTag: this.alertSubType,
           actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
             delete el.editing;
           }),
         })
-      : this.path === 'dispatch'
-        ? this.currentItem?.userLevelAlarmInfo.push({
-            level: 3,
-            user: user?.UserId,
-            alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
-            activityDetTime: this.sirenTime ?? '',
-            landingTime: this.currentItem?.landingTime ?? '',
-            reviewStart: this.currentItem?.reviewStart ?? '',
-            reviewEnd: endTime ?? '',
-            actionTag: this.currentActionTag?.categoryId,
-            subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: this.notes,
-            userName: user?.UserName,
-            actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
-              delete el.editing;
-            }),
-          })
         : this.currentItem?.userLevelAlarmInfo.push({
-            level: 4,
-            user: user?.UserId,
-            alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
-            activityDetTime: this.sirenTime ?? '',
-            landingTime: this.currentItem?.landingTime ?? '',
-            reviewStart: this.currentItem?.reviewStart ?? '',
-            reviewEnd: endTime ?? '',
-            actionTag: this.currentActionTag?.categoryId,
-            subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: this.notes,
-            userName: user?.UserName,
-            actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
-              delete el.editing;
-            }),
-          });
+          level: 4,
+          user: user?.UserId,
+          alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
+          activityDetTime: this.sirenTime ?? '',
+          landingTime: this.currentItem?.landingTime ?? '',
+          reviewStart: this.currentItem?.reviewStart ?? '',
+          reviewEnd: endTime ?? '',
+          actionTag: this.currentActionTag?.categoryId,
+          subActionTag: this.currentSubActionTag?.subCategoryId,
+          notes: this.notes,
+          userName: user?.UserName,
+          actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
+            delete el.editing;
+          }),
+        });
 
     this.event_service
       .consumeConsoleEvents({
@@ -451,7 +451,25 @@ export class EventsComponent {
     );
     this.path === 'pre-dispatch'
       ? this.currentItem?.userLevelAlarmInfo.push({
-          level: 2,
+        level: 2,
+        user: user?.UserId,
+        alarm: 'N',
+        landingTime: this.currentItem?.landingTime ?? '',
+        reviewStart: this.currentItem?.reviewStart ?? '',
+        reviewEnd: endTime ?? '',
+        actionTag: this.currentActionTag?.categoryId,
+        subActionTag: this.currentSubActionTag?.subCategoryId,
+        notes: this.notes,
+        userName: user?.UserName,
+        alertTag: this.alertType,
+        subAlertTag: this.alertSubType,
+        actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
+          delete el.editing;
+        }),
+      })
+      : this.path === 'dispatch'
+        ? this.currentItem?.userLevelAlarmInfo.push({
+          level: 3,
           user: user?.UserId,
           alarm: 'N',
           landingTime: this.currentItem?.landingTime ?? '',
@@ -461,43 +479,25 @@ export class EventsComponent {
           subActionTag: this.currentSubActionTag?.subCategoryId,
           notes: this.notes,
           userName: user?.UserName,
-          alertTag: this.alertType,
-          subAlertTag: this.alertSubType,
           actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
             delete el.editing;
           }),
         })
-      : this.path === 'dispatch'
-        ? this.currentItem?.userLevelAlarmInfo.push({
-            level: 3,
-            user: user?.UserId,
-            alarm: 'N',
-            landingTime: this.currentItem?.landingTime ?? '',
-            reviewStart: this.currentItem?.reviewStart ?? '',
-            reviewEnd: endTime ?? '',
-            actionTag: this.currentActionTag?.categoryId,
-            subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: this.notes,
-            userName: user?.UserName,
-            actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
-              delete el.editing;
-            }),
-          })
         : this.currentItem?.userLevelAlarmInfo.push({
-            level: 4,
-            user: user?.UserId,
-            alarm: 'N',
-            landingTime: this.currentItem?.landingTime ?? '',
-            reviewStart: this.currentItem?.reviewStart ?? '',
-            reviewEnd: endTime ?? '',
-            actionTag: this.currentActionTag?.categoryId,
-            subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: this.notes,
-            userName: user?.UserName,
-            actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
-              delete el.editing;
-            }),
-          });
+          level: 4,
+          user: user?.UserId,
+          alarm: 'N',
+          landingTime: this.currentItem?.landingTime ?? '',
+          reviewStart: this.currentItem?.reviewStart ?? '',
+          reviewEnd: endTime ?? '',
+          actionTag: this.currentActionTag?.categoryId,
+          subActionTag: this.currentSubActionTag?.subCategoryId,
+          notes: this.notes,
+          userName: user?.UserName,
+          actionsTakenInfo: this.actionsTaken.forEach((el: any) => {
+            delete el.editing;
+          }),
+        });
     this.currentItem.time = this.currentItem.timestamp;
     this.storage_service.show_loader = true;
     this.event_service
@@ -581,7 +581,6 @@ export class EventsComponent {
     // }
     // });
 
-    console.log(this.cameraDetails);
     this.actionsTaken = Array.from(
       this.cameraDetails?.actionsTaken,
       (el: any) => ({
@@ -592,7 +591,6 @@ export class EventsComponent {
         editing: false,
       }),
     );
-    console.log(this.actionsTaken);
     // });
   }
 

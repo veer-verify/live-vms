@@ -8,20 +8,24 @@
     <a (click)="closedialog()"><img loading="lazy" src="assets/icons/close.svg" width="20" alt=""></a>
   </div> -->
 
-  <ng-container></ng-container>
-  <p class="pagination-text" *ngIf="showVideoControl">
+  <p class="pagination-text" *ngIf="state === 'data'">
     {{ currentIndex + 1 }} of {{ videos.length }}
   </p>
   <p class="playback-text">Playback</p>
 
-  <video
-    #videoElement
-    [src]="videos[currentIndex]"
-    [controls]="showVideoControl"
-    autoplay
-    muted
-    loop
-  ></video>
+  <ng-container [ngSwitch]="state">
+    <p *ngSwitchCase="'loading'" class="status-info">loading...</p>
+    <p *ngSwitchCase="'empty'" class="status-info">no footage found!</p>
+    <video
+      *ngSwitchCase="'data'"
+      #videoElement
+      [src]="videos[currentIndex]"
+      [controls]="state === 'data'"
+      autoplay
+      muted
+      loop
+    ></video>
+  </ng-container>
 
   <ng-container *ngIf="videos.length > 1">
     <!-- Left Arrow -->
