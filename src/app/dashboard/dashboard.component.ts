@@ -10,12 +10,20 @@ import { CameraService } from 'src/services/camera.service';
 import { StorageService } from 'src/services/storage.service';
 import { Router } from '@angular/router';
 import { CdkDragEnter, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Observable, Subscription, catchError, finalize, firstValueFrom, fromEvent, map, of, tap } from 'rxjs';
+import {
+  Observable,
+  Subscription,
+  catchError,
+  finalize,
+  firstValueFrom,
+  fromEvent,
+  map,
+  of,
+  tap,
+} from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from 'src/services/alert.service';
-import {
-  HttpClient,
-} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { SiteService } from 'src/services/site.service';
 import { v4 as uuid } from 'uuid';
 import { MetadataService } from 'src/services/metadata.service';
@@ -74,8 +82,8 @@ export class DashboardComponent {
     private metadaSer: MetadataService,
     private http: HttpClient,
     private loginSer: LoginService,
-    private event_service: EventService
-  ) { }
+    private event_service: EventService,
+  ) {}
 
   searchText!: string;
   showLoader: boolean = false;
@@ -120,7 +128,7 @@ export class DashboardComponent {
       width: '600px',
       maxHeight: '600px',
       disableClose: true,
-      panelClass: 'custom-dialog'
+      panelClass: 'custom-dialog',
     });
   }
 
@@ -138,7 +146,7 @@ export class DashboardComponent {
             this.showSidenav = false;
           }
           return response.sites.sort((a: any, b: any) =>
-            a.siteName > b.siteName ? 1 : a.siteName < b.siteName ? -1 : 0
+            a.siteName > b.siteName ? 1 : a.siteName < b.siteName ? -1 : 0,
           );
         }),
         catchError(() => {
@@ -148,13 +156,12 @@ export class DashboardComponent {
         }),
         finalize(() => {
           this.showLoader = false;
-        })
+        }),
       )
       .subscribe((res) => {
         this.getTypes();
         this.sitesList = res;
-      }
-      );
+      });
   }
 
   cameras: any = [];
@@ -190,11 +197,11 @@ export class DashboardComponent {
           }
         });
         this.selector();
-        this.check()
+        this.check();
       },
       error: (err) => {
         this.showCamLoader = false;
-      }
+      },
     });
   }
 
@@ -247,9 +254,7 @@ export class DashboardComponent {
   camerasForPage: any = 20;
   pagesForDropdown: any = [];
   selector(): void {
-    this.totalPages = Math.ceil(
-      this.newCameras.length / this.camerasForPage
-    );
+    this.totalPages = Math.ceil(this.newCameras.length / this.camerasForPage);
     this.pagesForDropdown = new Array(this.totalPages)
       .fill(0)
       .map((x, i) => i + 1);
@@ -297,7 +302,9 @@ export class DashboardComponent {
 
   clearCams(item?: any): void {
     if (item) {
-      let index: number = this.newCameras.findIndex((el: any) => el.cameraId === item.cameraId);
+      let index: number = this.newCameras.findIndex(
+        (el: any) => el.cameraId === item.cameraId,
+      );
       this.newCameras.splice(index, 1);
       this.check();
     } else {
@@ -317,7 +324,7 @@ export class DashboardComponent {
       } else {
         item.isPlaying = false;
       }
-    })
+    });
   }
 
   cameraIndex: number = -1;
@@ -325,24 +332,24 @@ export class DashboardComponent {
     if (this.camerasForPage === 2) {
       this.streamEl
         .toArray()
-      [index].video.nativeElement.parentElement.classList.remove('h2');
+        [index].video.nativeElement.parentElement.classList.remove('h2');
     } else if (this.camerasForPage === 6) {
       this.streamEl
         .toArray()
-      [index].video.nativeElement.parentElement.classList.remove('h6');
+        [index].video.nativeElement.parentElement.classList.remove('h6');
     } else if (this.camerasForPage === 9 || this.camerasForPage === 12) {
       this.streamEl
         .toArray()
-      [index].video.nativeElement.parentElement.classList.remove('h9');
+        [index].video.nativeElement.parentElement.classList.remove('h9');
     } else {
       this.streamEl
         .toArray()
-      [index].video.nativeElement.parentElement.classList.remove('h20');
+        [index].video.nativeElement.parentElement.classList.remove('h20');
     }
 
     this.streamEl
       .toArray()
-    [index].video.nativeElement.parentElement.classList.add('tile-active');
+      [index].video.nativeElement.parentElement.classList.add('tile-active');
     this.cameraIndex = index;
   }
 
@@ -357,25 +364,38 @@ export class DashboardComponent {
     const hours = JSON.parse(data?.audioHours ?? '[]');
     const currentHour = this.storageSer.getHour(data?.timezone);
 
-
     let audioData: any;
     if (data?.audioUrl && !hours.includes(currentHour)) {
-      audioData = await firstValueFrom(this.http.get(`${environment.site_url}/play_1_0/${data.cameraId}`));
+      audioData = await firstValueFrom(
+        this.http.get(`${environment.site_url}/play_1_0/${data.cameraId}`),
+      );
     }
 
     const actionsTaken = [
       {
         name: 'Deterrent',
         selected: data?.audioUrl ? true : false,
-        status: data?.audioUrl && !hours.includes(currentHour) && audioData?.statusCode === 200 ? true : false,
-        time: data?.audioUrl && !hours.includes(currentHour) ? this.storageSer.getTimeWithTimezone(data?.timezone) : null,
-      }
+        status:
+          data?.audioUrl &&
+          !hours.includes(currentHour) &&
+          audioData?.statusCode === 200
+            ? true
+            : false,
+        time:
+          data?.audioUrl && !hours.includes(currentHour)
+            ? this.storageSer.getTimeWithTimezone(data?.timezone)
+            : null,
+      },
     ];
 
     this.alertSrvc.snackSuccess(
-      !data?.audioUrl ? 'No Deterant Available'
-        : (data?.audioUrl && !hours.includes(currentHour)) ? (audioData?.statusCode === 200 ? 'Activated On-site Deterant' : 'Deterant Activated No Response')
-          : 'Remote Deterant Disabled As Per Your Request'
+      !data?.audioUrl
+        ? 'No Deterant Available'
+        : data?.audioUrl && !hours.includes(currentHour)
+          ? audioData?.statusCode === 200
+            ? 'Activated On-site Deterant'
+            : 'Deterant Activated No Response'
+          : 'Remote Deterant Disabled As Per Your Request',
     );
 
     this.write2Dispatch({
@@ -389,23 +409,32 @@ export class DashboardComponent {
           user: user?.UserId,
           actionTag: 2,
           subActionTag: 23,
-          activityDetTime: (data?.audioUrl && !hours.includes(currentHour)) ? time : '',
+          activityDetTime:
+            data?.audioUrl && !hours.includes(currentHour) ? time : '',
           // alarm: (data?.audioUrl && !hours.includes(currentHour)) ? 'P' : 'N',
-          alarm: !data?.audioUrl ? 'N' : (data?.audioUrl && !hours.includes(currentHour)) ? (audioData?.statusCode === 200 ? 'P' : 'R') : 'F',
+          alarm: !data?.audioUrl
+            ? 'N'
+            : data?.audioUrl && !hours.includes(currentHour)
+              ? audioData?.statusCode === 200
+                ? 'P'
+                : 'R'
+              : 'F',
           landingTime: time,
           reviewStart: time,
           reviewEnd: time,
           notes: '',
           userName: user?.UserName,
-          actionsTakenInfo: actionsTaken
+          actionsTakenInfo: actionsTaken,
         },
       ],
-    })
+    });
   }
 
   audioIndex: number = -1;
   manualAudio(data: any) {
-    this.audioIndex = this.getCurrentPageItems.findIndex((el: any) => el.cameraId === data.cameraId);
+    this.audioIndex = this.getCurrentPageItems.findIndex(
+      (el: any) => el.cameraId === data.cameraId,
+    );
     this.camSer.siren_sub.next(true);
 
     this.http
@@ -469,8 +498,8 @@ export class DashboardComponent {
   filteredListTypes() {
     return this.currentSite?.manualEvents === 'T'
       ? this.listTypes.filter(
-        (type: any) => type.label === 'Event' || type.label === 'None'
-      )
+          (type: any) => type.label === 'Event' || type.label === 'None',
+        )
       : this.listTypes;
   }
 
@@ -524,19 +553,19 @@ export class DashboardComponent {
         elementWidth: event.target.offsetParent.clientWidth,
         elementHeight: event.target.offsetParent.clientHeight,
         chkTime1: new Date().setMinutes(
-          new Date().getMinutes() + timeAlert.time1
+          new Date().getMinutes() + timeAlert.time1,
         ),
         chkTime2: new Date().setMinutes(
-          new Date().getMinutes() + timeAlert.time2
+          new Date().getMinutes() + timeAlert.time2,
         ),
         chkTime3: new Date().setMinutes(
-          new Date().getMinutes() + timeAlert.time3
+          new Date().getMinutes() + timeAlert.time3,
         ),
         chkTime4: new Date().setMinutes(
-          new Date().getMinutes() + timeAlert.time4
+          new Date().getMinutes() + timeAlert.time4,
         ),
         chkTime5: new Date().setMinutes(
-          new Date().getMinutes() + timeAlert.time5
+          new Date().getMinutes() + timeAlert.time5,
         ),
         dspTime: this.displayTime,
         width: `${this.listType === 1 ? 8 : this.listType === 2 ? 12 : 15}`,
@@ -591,28 +620,26 @@ export class DashboardComponent {
   }
 
   write2Dispatch(data: any) {
-    this.event_service
-      .write2Dispatch(data)
-      .subscribe({
-        next: () => {
-          data.buttons.shift();
-          this.createBtnEl.toArray().forEach((item) => {
-            item.nativeElement.style.pointerEvents = 'all';
-          });
-          setTimeout(() => {
-            this.alertSrvc.snackSuccess('Event generated successfully!');
-          }, 2000)
-        },
-        error: () => {
-          data.buttons.shift();
-          this.createBtnEl.toArray().forEach((item) => {
-            item.nativeElement.style.pointerEvents = 'all';
-          });
-          setTimeout(() => {
-            this.alertSrvc.snackError('Failed to generate event!');
-          }, 2000)
-        },
-      });
+    this.event_service.write2Dispatch(data).subscribe({
+      next: () => {
+        data.buttons.shift();
+        this.createBtnEl.toArray().forEach((item) => {
+          item.nativeElement.style.pointerEvents = 'all';
+        });
+        setTimeout(() => {
+          this.alertSrvc.snackSuccess('Event generated successfully!');
+        }, 2000);
+      },
+      error: () => {
+        data.buttons.shift();
+        this.createBtnEl.toArray().forEach((item) => {
+          item.nativeElement.style.pointerEvents = 'all';
+        });
+        setTimeout(() => {
+          this.alertSrvc.snackError('Failed to generate event!');
+        }, 2000);
+      },
+    });
   }
 
   postScreenshot(data: any, file: any) {
@@ -626,7 +653,7 @@ export class DashboardComponent {
 
     this.camSer.screenshots(data, file).subscribe({
       next: (res: any) => {
-        data.buttons.shift();
+        // data.buttons.shift();
         this.createBtnEl.toArray().forEach((item) => {
           item.nativeElement.style.pointerEvents = 'all';
         });
@@ -648,9 +675,12 @@ export class DashboardComponent {
               ) {
                 this.emailLimited({ ...data, ...this.emailObject });
               } else if (this.currentItem?.siteId === 36336) {
-                setTimeout(() => {
-                  this.openEmaiDialog(data);
-                }, data?.internalPort * 60 * 1000);
+                setTimeout(
+                  () => {
+                    this.openEmaiDialog(data);
+                  },
+                  data?.internalPort * 60 * 1000,
+                );
               } else {
                 this.openEmaiDialog(data);
               }
@@ -659,7 +689,7 @@ export class DashboardComponent {
         }
       },
       error: () => {
-        data.buttons.shift();
+        // data.buttons.shift();
         this.createBtnEl.toArray().forEach((item) => {
           item.nativeElement.style.pointerEvents = 'all';
         });
@@ -709,7 +739,7 @@ export class DashboardComponent {
     this.mannualEmailBody.cameraId = data.cameraId;
     this.mannualEmailBody.eventFromTime = data.dspTime;
     this.mannualEmailBody.eventToTime = this.storageSer.getTimeWithTimezone(
-      data?.timezone
+      data?.timezone,
     );
 
     this.siteSrvc.getCamerasForSiteId(data).subscribe((res: any) => {
@@ -767,7 +797,7 @@ export class DashboardComponent {
   closeImage1(data: any) {
     this.mannualEmailBody.files.splice(
       this.mannualEmailBody.files.indexOf(data),
-      1
+      1,
     );
   }
 
@@ -822,11 +852,10 @@ export class DashboardComponent {
     index: any,
     color: any,
     btnItem: any,
-    btnIndex: any
+    btnIndex: any,
   ) {
-    let btnEl = await this.createBtnEl.toArray()[index].nativeElement.children[
-      btnIndex
-    ];
+    let btnEl =
+      await this.createBtnEl.toArray()[index].nativeElement.children[btnIndex];
     let imgEl = await btnEl.firstChild;
     let videoComponents = this.streamEl.toArray();
 
@@ -876,7 +905,7 @@ export class DashboardComponent {
   dragMoved() {
     if (!this.dropListContainer) return;
     const placeholderEl = this.dropListContainer.nativeElement.querySelector(
-      '.cdk-drag-placeholder'
+      '.cdk-drag-placeholder',
     );
     const receiverEl =
       this.dragDropInfo?.dragIndex > this.dragDropInfo?.dropIndex
