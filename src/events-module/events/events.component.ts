@@ -34,12 +34,13 @@ export class EventsComponent {
     private router: Router,
     private http: HttpClient,
     private siteser: SiteService,
-  ) {}
+  ) { }
 
   environment = environment.eventImageUrl;
   path: any;
   user: any;
   eventData: any = [];
+
 
   ngOnInit() {
     this.path = this.router.url.split('/').at(-1);
@@ -73,43 +74,37 @@ export class EventsComponent {
   }
 
   poolEvents() {
-    this.event_service.getDispatchData().subscribe({
-      next: (res: any) => {
-        if (res.length !== 0) {
+    this.event_service.getDispatchData()
+      .subscribe({
+        next: (res: any) => {
+          if (res.length === 0) return;
           this.storage_service.status_text = '';
+          const updated = res.map((item: any) => ({
+            ...item,
+            landingTime: this.storage_service.getTimeWithTimezone(item?.timezone),
+            audioPlayed: false,
+          }));
+          const existingIds = new Set(this.eventData.map((e: any) => e.id));
+          const uniqueEvents = updated.filter((e: any) => !existingIds.has(e.id));
+          this.eventData = [...this.eventData, ...uniqueEvents];
+
           this.event_service
             .addQueusInfoRedis({
               userId: 0,
               level: '',
-              queueInfo: { ...res[0] },
+              queueInfo: { ...updated[0] },
               queueName: '',
               consoleType: '',
-            })
-            .subscribe();
-          res.forEach((item: any) => {
-            item.landingTime = this.storage_service.getTimeWithTimezone(
-              item.timezone,
-            );
-            item.audioPlayed = false;
-
-            if (!this.eventData.some((el: any) => el.id === item.id)) {
-              this.eventData.push(item);
-            }
-          });
+            }).subscribe();
 
           if (this.eventData.length === 1) {
-            const [event] = this.eventData;
-            this.displayCurrent(event);
+            this.displayCurrent(this.eventData[0]);
           }
-        }
-      },
-      error: () => {},
-    });
-    if (this.eventData.length === 0) {
-      this.storage_service.status_text = 'no events';
-    } else {
-      this.storage_service.status_text = '';
-    }
+        },
+        error: () => { }
+      });
+
+    this.storage_service.status_text = this.eventData.length === 0 ? 'no events' : '';
   }
 
   currentItem: any;
@@ -125,6 +120,7 @@ export class EventsComponent {
     this.currentItem = null;
     this.cameraDetails = null;
     this.resetVals();
+
     data.reviewStart = this.storage_service.getTimeWithTimezone(data.timezone);
     this.storage_service.status_text = 'loading...';
     setTimeout(() => {
@@ -136,7 +132,17 @@ export class EventsComponent {
         .subscribe((res: any) => {
           if (res.statusCode == 200) {
             this.cameraDetails = res;
-            this.getTypes();
+
+            this.actionsTaken = Array.from(
+              this.cameraDetails?.actionsTaken,
+              (el: any) => ({
+                name: el.value,
+                selected: el.selected ?? false,
+                time: el.time ?? null,
+                status: el.status ?? false,
+                editing: false,
+              }),
+            );
           }
         });
       // this.listActionTags(data);
@@ -323,12 +329,10 @@ export class EventsComponent {
     if (type === 2) return;
 
     const user = this.storage_service.getData('session');
-    if (type !== 1 && user?.userLevel === 3) {
-      if (this.actionsTaken.length === 0) return;
-      const allChecked = this.actionsTaken.every((item: any) => item?.selected);
-      if (!allChecked)
+    if (user?.userLevel === 3 && type !== 1) {
+      if (!this.actionsTaken.some((item: any) => item?.selected))
         return this.alert_service.error(
-          'All actions are mandatory please update them!',
+          'Actions are mandatory please update atleast one of them!'
         );
     }
 
@@ -336,65 +340,26 @@ export class EventsComponent {
       this.eventsGenericEmail('complete');
     }
 
-    const endTime = this.storage_service.getTimeWithTimezone(
-      this.currentItem?.timezone,
-    );
-
-    this.path === 'pre-dispatch'
-      ? this.currentItem?.userLevelAlarmInfo.push({
-          level: 2,
-          user: user?.UserId,
-          alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
-          activityDetTime: this.sirenTime ?? '',
-          landingTime: this.currentItem?.landingTime ?? '',
-          reviewStart: this.currentItem?.reviewStart ?? '',
-          reviewEnd: endTime ?? '',
-          actionTag: this.currentActionTag?.categoryId,
-          subActionTag: this.currentSubActionTag?.subCategoryId,
-          notes: this.notes,
-          userName: user?.UserName,
-          alertTag: this.alertType,
-          subAlertTag: this.alertSubType,
-          actionsTakenInfo: this.actionsTaken.map((el: any) => {
-            const { editing, ...rest } = el;
-            return rest;
-          }),
-        })
-      : this.path === 'dispatch'
-        ? this.currentItem?.userLevelAlarmInfo.push({
-            level: 3,
-            user: user?.UserId,
-            alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
-            activityDetTime: this.sirenTime ?? '',
-            landingTime: this.currentItem?.landingTime ?? '',
-            reviewStart: this.currentItem?.reviewStart ?? '',
-            reviewEnd: endTime ?? '',
-            actionTag: this.currentActionTag?.categoryId,
-            subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: this.notes,
-            userName: user?.UserName,
-            actionsTakenInfo: this.actionsTaken.map((el: any) => {
-              const { editing, ...rest } = el;
-              return rest;
-            }),
-          })
-        : this.currentItem?.userLevelAlarmInfo.push({
-            level: 4,
-            user: user?.UserId,
-            alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
-            activityDetTime: this.sirenTime ?? '',
-            landingTime: this.currentItem?.landingTime ?? '',
-            reviewStart: this.currentItem?.reviewStart ?? '',
-            reviewEnd: endTime ?? '',
-            actionTag: this.currentActionTag?.categoryId,
-            subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: this.notes,
-            userName: user?.UserName,
-            actionsTakenInfo: this.actionsTaken.map((el: any) => {
-              const { editing, ...rest } = el;
-              return rest;
-            }),
-          });
+    const endTime = this.storage_service.getTimeWithTimezone(this.currentItem?.timezone);
+    this.currentItem?.userLevelAlarmInfo.push({
+      level: user?.userLevel,
+      user: user?.UserId,
+      alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
+      activityDetTime: this.sirenTime ?? '',
+      landingTime: this.currentItem?.landingTime ?? '',
+      reviewStart: this.currentItem?.reviewStart ?? '',
+      reviewEnd: endTime ?? '',
+      actionTag: this.currentActionTag?.categoryId,
+      subActionTag: this.currentSubActionTag?.subCategoryId,
+      notes: this.notes,
+      userName: user?.UserName,
+      alertTag: this.alertType,
+      subAlertTag: this.alertSubType,
+      actionsTakenInfo: user?.userLevel === 3 ? this.actionsTaken.map((el: any) => {
+        const { editing, ...rest } = el;
+        return rest;
+      }) : [],
+    })
 
     this.event_service
       .consumeConsoleEvents({
@@ -438,11 +403,9 @@ export class EventsComponent {
     let user = this.storage_service.getData('session');
 
     if (user?.userLevel === 3) {
-      if (this.actionsTaken.length === 0) return;
-      const allChecked = this.actionsTaken.every((item: any) => item?.selected);
-      if (!allChecked)
+      if (!this.actionsTaken.some((item: any) => item?.selected))
         return this.alert_service.error(
-          'All actions are mandatory please update them!',
+          'Actions are mandatory please update atleast one of them!'
         );
     }
 
@@ -459,61 +422,25 @@ export class EventsComponent {
       })
       .subscribe();
 
-    let endTime = this.storage_service.getTimeWithTimezone(
-      this.currentItem?.timezone,
-    );
-    this.path === 'pre-dispatch'
-      ? this.currentItem?.userLevelAlarmInfo.push({
-          level: 2,
-          user: user?.UserId,
-          alarm: 'N',
-          landingTime: this.currentItem?.landingTime ?? '',
-          reviewStart: this.currentItem?.reviewStart ?? '',
-          reviewEnd: endTime ?? '',
-          actionTag: this.currentActionTag?.categoryId,
-          subActionTag: this.currentSubActionTag?.subCategoryId,
-          notes: this.notes,
-          userName: user?.UserName,
-          alertTag: this.alertType,
-          subAlertTag: this.alertSubType,
-          actionsTakenInfo: this.actionsTaken.map((el: any) => {
-            const { editing, ...rest } = el;
-            return rest;
-          }),
-        })
-      : this.path === 'dispatch'
-        ? this.currentItem?.userLevelAlarmInfo.push({
-            level: 3,
-            user: user?.UserId,
-            alarm: 'N',
-            landingTime: this.currentItem?.landingTime ?? '',
-            reviewStart: this.currentItem?.reviewStart ?? '',
-            reviewEnd: endTime ?? '',
-            actionTag: this.currentActionTag?.categoryId,
-            subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: this.notes,
-            userName: user?.UserName,
-            actionsTakenInfo: this.actionsTaken.map((el: any) => {
-              const { editing, ...rest } = el;
-              return rest;
-            }),
-          })
-        : this.currentItem?.userLevelAlarmInfo.push({
-            level: 4,
-            user: user?.UserId,
-            alarm: 'N',
-            landingTime: this.currentItem?.landingTime ?? '',
-            reviewStart: this.currentItem?.reviewStart ?? '',
-            reviewEnd: endTime ?? '',
-            actionTag: this.currentActionTag?.categoryId,
-            subActionTag: this.currentSubActionTag?.subCategoryId,
-            notes: this.notes,
-            userName: user?.UserName,
-            actionsTakenInfo: this.actionsTaken.map((el: any) => {
-              const { editing, ...rest } = el;
-              return rest;
-            }),
-          });
+    const endTime = this.storage_service.getTimeWithTimezone(this.currentItem?.timezone);
+    this.currentItem?.userLevelAlarmInfo.push({
+      level: user?.userLevel,
+      user: user?.UserId,
+      alarm: 'N',
+      landingTime: this.currentItem?.landingTime ?? '',
+      reviewStart: this.currentItem?.reviewStart ?? '',
+      reviewEnd: endTime ?? '',
+      actionTag: this.currentActionTag?.categoryId,
+      subActionTag: this.currentSubActionTag?.subCategoryId,
+      notes: this.notes,
+      userName: user?.UserName,
+      alertTag: this.alertType,
+      subAlertTag: this.alertSubType,
+      actionsTakenInfo: user?.userLevel === 3 ? this.actionsTaken.map((el: any) => {
+        const { editing, ...rest } = el;
+        return rest;
+      }) : [],
+    })
     this.currentItem.time = this.currentItem.timestamp;
     this.storage_service.show_loader = true;
     this.event_service
@@ -596,19 +523,13 @@ export class EventsComponent {
     //   this.actionsTakenTypes = item.metadata;
     // }
     // });
-
-    this.actionsTaken = Array.from(
-      this.cameraDetails?.actionsTaken,
-      (el: any) => ({
-        name: el.value,
-        selected: false,
-        time: null,
-        status: false,
-        editing: false,
-      }),
-    );
     // });
   }
+
+  //   noActionChecked = false;
+  // noActionToggle(event: any) {
+  //   this.noActionChecked = event.selected;
+  // }
 
   onSelectionChange(item: any, event: any) {
     item.selected = event.selected;

@@ -599,16 +599,18 @@ export class DashboardComponent {
           this.createBtnEl.toArray().forEach((item) => {
             item.nativeElement.style.pointerEvents = 'all';
           });
-          this.alertSrvc.snackSuccess(
-            'Event generated successfully!'
-          );
+          setTimeout(() => {
+            this.alertSrvc.snackSuccess('Event generated successfully!');
+          }, 2000)
         },
         error: () => {
           data.buttons.shift();
           this.createBtnEl.toArray().forEach((item) => {
             item.nativeElement.style.pointerEvents = 'all';
           });
-          this.alertSrvc.snackError('Event generated failed!');
+          setTimeout(() => {
+            this.alertSrvc.snackError('Failed to generate event!');
+          }, 2000)
         },
       });
   }

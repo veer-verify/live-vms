@@ -8,11 +8,11 @@
   position: relative;
   width: 100%;
   background: #fff;
-  border-radius: 5px;
+  border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 
   &:hover {
     border: 1px solid #333;
