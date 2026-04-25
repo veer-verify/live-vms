@@ -1,5 +1,7 @@
 <app-status></app-status>
 
+
+
 <ng-container *ngIf="eventData.length !== 0">
   <!-- actions taken -->
   <div
@@ -63,6 +65,16 @@
         >No Action</mat-chip-option
       > -->
     </mat-chip-listbox>
+
+
+<img
+  src="assets/icons/mail.svg"
+  [ngClass]="isMailEnabled ? 'mail-enabled' : 'mail-disabled'"
+
+  (click)="isMailEnabled && openMail()"
+/>
+
+
   </div>
 
   <div class="row mt-2">
@@ -694,3 +706,353 @@
     </div>
   </div>
 </ng-template>
+
+
+
+
+<ng-template #openmailtemplate>
+
+  <div class="button-close-email">
+    <button
+      type="button"
+      class="icon-btn"
+      (click)="closeMailoverlay()"
+      title="Close"
+    >
+      <img
+        src="assets/icons/close-filled-black.svg"
+        alt="close"
+        class="escalated-icon"
+      />
+    </button>
+  </div>
+
+
+  <ng-container *ngIf="isMediaLoading ">
+    <div class="spinner" style="position: absolute; top: 40%; left: 40%"></div>
+  </ng-container>
+
+
+
+  <ng-container
+    *ngIf="!isMediaLoading && !emailData"
+  >
+    <p class="email-text">No Data</p>
+  </ng-container>
+
+  <div class="email-wrapper">
+    <div style="overflow-y: auto; height: 50vh; width: 50vw">
+      <ng-container
+        *ngIf="!isMediaLoading && emailData "
+      >
+        <!-- ================= EMAIL PREVIEW ================= -->
+        <div class="email-logo">
+          <img [src]="emailData?.logoUrl" alt="no image" />
+        </div>
+
+        <div class="email-site">
+          <div class="site-name">{{ currentItem?.siteName }}</div>
+        </div>
+        <div class="email-alert">
+          {{ emailData?.emailSubject }}
+        </div>
+        <div class="email-body-section">
+          <table class="email-table">
+            <tr>
+              <td class="label">To</td>
+              <td class="value">
+                {{
+                  emailData?.recipientEmails?.length
+                    ? emailData.recipientEmails.join(", ")
+                    : "-"
+                }}
+              </td>
+            </tr>
+
+            <tr>
+              <td class="label">Cc</td>
+              <td class="value">
+                {{ emailData?.Cc?.length ? emailData.Cc.join(", ") : "-" }}
+              </td>
+            </tr>
+
+            <tr>
+              <td class="label">Bcc</td>
+              <td class="value">
+                {{ emailData?.BCC?.length ? emailData.BCC.join(", ") : "-" }}
+              </td>
+            </tr>
+            <tr>
+              <td class="label">Date & Time</td>
+              <td class="value">
+                {{ emailData?.emailFields?.DATE }} -
+                {{ emailData?.emailFields?.TIME }}
+              </td>
+            </tr>
+          </table>
+
+          <hr class="divider" />
+
+          <table class="email-table">
+            <tr>
+              <td class="label">Description</td>
+              <td class="value description">
+                {{ emailData?.emailBody }}
+              </td>
+            </tr>
+          </table>
+
+          <table class="email-table">
+            <tr>
+              <td class="label">Camera</td>
+              <td class="value">{{ currentItem?.cameraId }}</td>
+            </tr>
+          </table>
+
+          <div class="email-footer-text">
+            Please review the information above.<br /><br />
+            Call <b>(844) 438-4847 (ext. 1)</b> or email
+            <b>{{ "support@ivisecurity.com" }}</b>
+          </div>
+        </div>
+        <div class="email-gradient"></div>
+        <div class="action-section">
+          <h3 class="action-title">Resolution Details</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Actions Taken</label>
+              <div class="custom-chips-container" (click)="chipInput.focus()">
+                <span
+                  class="custom-chip"
+                  *ngFor="let item of combinedActions; let i = index"
+                >
+                  {{ item }}
+                  <span class="remove-chip" (click)="removeChip(item)">×</span>
+                </span>
+                <input
+                  #chipInput
+                  type="text"
+                  [(ngModel)]="chipText"
+                  placeholder="Describe action taken"
+                  (keydown)="handleChipInput($event)"
+                  (blur)="addChipOnBlur()"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+              <label>Notes</label>
+              <input
+                type="text"
+                [(ngModel)]="resolution"
+                placeholder="Additional notes"
+              />
+            </div>
+          <!-- ===== FILE UPLOAD ===== -->
+          <div class="upload-box">
+            <input
+              #fileInput
+              type="file"
+              multiple
+              (change)="onFilesSelected($event)"
+              accept="image/*,video/*"
+            />
+            <p>Click to upload images/videos</p>
+          </div>
+
+          <!-- ===== FILE LIST ===== -->
+          <div *ngIf="selectedFiles.length" class="file-list">
+            <div
+              *ngFor="let file of selectedFiles; let i = index"
+              class="file-chip"
+            >
+              {{ file.name }}
+              <button (click)="removeFile(i, fileInput)">✕</button>
+            </div>
+          </div>
+
+          <div class="preview-actions">
+            <button class="btn-preview" (click)="showPreview = true">
+              Preview
+            </button>
+            <button
+              class="btn-submit"
+              (click)="submitResolution()"
+              [disabled]="isSubmitting"
+            >
+              Submit
+              <span *ngIf="isSubmitting" class="spinner1"></span>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+
+</ng-template>
+
+
+
+
+
+
+
+
+
+
+<!-- ================= PREVIEW POPUP ================= -->
+<div class="preview-overlay" *ngIf="showPreview">
+  <div class="preview-popup">
+    <div class="button-close-email" style="position: sticky; top: 0">
+      <button
+        type="button"
+        class="icon-btn"
+        (click)="showPreview = false"
+        title="Close"
+      >
+        <img
+          src="assets/icons/close-filled-black.svg"
+          alt="close"
+          class="escalated-icon"
+        />
+      </button>
+    </div>
+
+    <!-- ===== EMAIL TEMPLATE ===== -->
+    <div class="email-wrapper">
+      <div style="overflow-y: auto; max-height: 80vh">
+        <div class="email-logo">
+          <img [src]="emailData?.logoUrl" alt="no image" />
+        </div>
+
+        <div class="email-site">
+          <div class="site-name">{{ currentItem?.siteName }}</div>
+        </div>
+
+        <div class="email-alert">
+          {{ emailData?.emailSubject }}
+        </div>
+
+        <!-- ===== EMAIL TABLE ===== -->
+        <div class="email-body-section">
+          <table class="email-table">
+            <tr>
+              <td class="label">To</td>
+              <td class="value">
+                {{
+                  emailData?.recipientEmails?.length
+                    ? emailData.recipientEmails.join(", ")
+                    : "-"
+                }}
+              </td>
+            </tr>
+
+            <tr>
+              <td class="label">Cc</td>
+              <td class="value">
+                {{ emailData?.Cc?.length ? emailData.Cc.join(", ") : "-" }}
+              </td>
+            </tr>
+
+            <tr>
+              <td class="label">Bcc</td>
+              <td class="value">
+                {{ emailData?.BCC?.length ? emailData.BCC.join(", ") : "-" }}
+              </td>
+            </tr>
+            <tr>
+              <td class="label">Date & Time</td>
+              <td class="value">
+                {{ emailData?.emailFields?.DATE }} -
+                {{ emailData?.emailFields?.TIME }}
+              </td>
+            </tr>
+          </table>
+
+          <hr class="divider" />
+
+          <table class="email-table">
+            <tr>
+              <td class="label">Description</td>
+              <td class="value description">
+                {{ emailData?.emailBody }}
+              </td>
+            </tr>
+          </table>
+
+          <table class="email-table">
+            <tr>
+              <td class="label">Camera</td>
+              <td class="value">{{ currentItem?.cameraId }}</td>
+            </tr>
+          </table>
+
+          <hr class="divider" />
+
+          <table class="email-table">
+            <tr>
+              <td class="label">Actions Taken</td>
+              <td class="value">{{ combinedActions.join(", ") || "-" }}</td>
+            </tr>
+          </table>
+
+          <table class="email-table">
+            <tr>
+              <td class="label">Notes</td>
+              <td class="value">{{ resolution || "-" }}</td>
+            </tr>
+          </table>
+
+          <div class="email-footer-text">
+            Please review the information above.<br /><br />
+            Call <b>(844) 438-4847 (ext. 1)</b> or email
+            <b>{{ "support@ivisecurity.com" }}</b>
+          </div>
+        </div>
+
+        <div class="email-gradient"></div>
+
+        <!-- ================= GMAIL-STYLE ATTACHMENTS ================= -->
+        <div *ngIf="selectedFiles.length" class="gmail-attachments">
+          <h4>Attachments</h4>
+
+          <div class="attachment-list">
+            <div *ngFor="let file of selectedFiles" class="attachment-card">
+              <!-- IMAGE PREVIEW -->
+              <img
+                *ngIf="file.type.startsWith('image')"
+                [src]="file | filePreview"
+                class="attachment-preview"
+              />
+
+              <!-- VIDEO PREVIEW -->
+              <video
+                *ngIf="file.type.startsWith('video')"
+                [src]="file | filePreview"
+                autoplay
+                [muted]="true"
+                loop
+                controls
+                class="attachment-preview"
+              ></video>
+
+              <div class="attachment-name">{{ file.name }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+

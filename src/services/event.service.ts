@@ -5,6 +5,7 @@ import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { mergeMap, Subject, switchMap, takeUntil, timer } from 'rxjs';
+import moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
@@ -268,5 +269,88 @@ export class EventService {
     params = params.set('minutesBeforeEvent', payload?.minutesBeforeEvent ?? 2);
     params = params.set('currentTime', payload?.currentTime);
     return this.http.get(url, { params });
+  }
+
+
+   weekdays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  getHour(timezone: string) {
+    return moment.tz(timezone).hours();
+  }
+  getDay(timezone: string) {
+    return moment.tz(timezone).day();
+  }
+
+  getEmailDataForVMSEvents(payload: any) {
+
+    let url = `${environment.guard_monitoring_url}/getEmailDataForVMSEvents_1_0`;
+
+    let params = new HttpParams();
+    params = params.set("siteId", payload?.siteId);
+    params = params.set("siteName", payload?.siteName);
+    params = params.set("cameraId", payload?.cameraId);
+    params = params.set("alertTypeId", payload?.alertTypeId);
+    params = params.set("subTypeId", payload?.subTypeId);
+    params = params.set("day", payload?.day);
+    params = params.set("hour", payload?.hour);
+    params = params.set(
+      "currentTime",
+      this.datePipe.transform(payload?.currentTime, "yyyy-MM-dd HH:mm:ss")!,
+    );
+    params = params.set("callingSystemDetail", "dashboard");
+
+    return this.http.get(url, { params: params });
+  }
+
+
+    sendResolution(payload: any) {
+    console.log(payload);
+    let url = `${environment.guard_monitoring_url}/sendResolutionEmail_1_0`;
+
+
+    let user = this.storageSer.getUser();
+    payload.createdBy = user?.UserId;
+
+
+
+    const formData = new FormData();
+    formData.append("senderEmail", payload?.senderEmail);
+    formData.append(
+      "recipientEmails",
+      JSON.stringify(payload?.recipientEmails ?? []),
+    );
+    formData.append("bcc", JSON.stringify(payload?.BCC ?? []));
+    formData.append("cc", JSON.stringify(payload?.Cc ?? []));
+    formData.append("subject", payload?.emailSubject);
+    formData.append("body", payload?.emailBody);
+    if (payload?.selectedFiles?.length) {
+      payload.selectedFiles.forEach((file: File) => {
+        formData.append("files", file);
+      });
+    }
+
+
+
+    formData.append("fields", JSON.stringify(payload?.emailFields));
+    formData.append("siteId", payload?.siteId);
+    formData.append("cameraId", payload?.cameraId);
+
+    formData.append("actionsTaken", payload?.action);
+    formData.append("notes", payload?.resolution);
+    formData.append("eventId", payload?.eventId);
+    formData.append("createdBy", user?.UserId);
+    formData.append("alerTagId", payload?.alertTagId1);
+    formData.append("subAlertTagId", payload?.subTypeId1);
+    formData.append("timeZone", payload?.timezone);
+
+
+    return this.http.post(url, formData);
   }
 }

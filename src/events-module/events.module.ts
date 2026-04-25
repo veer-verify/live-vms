@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { EventsComponent } from 'src/events-module/events/events.component';
+import { EventsComponent, FilePreviewPipe } from 'src/events-module/events/events.component';
 import { SharedModule } from 'src/shared-module/shared.module';
 import { AuthGuard } from 'src/utilities/auth.guard';
 import { PlaybackInfoComponent } from './playback-info/playback-info.component';
@@ -24,7 +24,8 @@ const routes: Routes = [
   ],
   imports: [
     RouterModule.forChild(routes),
-    SharedModule
-  ],
+    SharedModule,
+    FilePreviewPipe
+],
 })
 export class EventsModule { }

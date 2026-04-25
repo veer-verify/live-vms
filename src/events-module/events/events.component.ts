@@ -21,6 +21,7 @@ import { finalize } from 'rxjs';
   selector: 'app-events',
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.css'],
+  providers:[AlertService]
 })
 export class EventsComponent {
   constructor(
@@ -42,9 +43,12 @@ export class EventsComponent {
   eventData: any = [];
 
 
+
   ngOnInit() {
     this.path = this.router.url.split('/').at(-1);
     this.user = this.storage_service.getUser();
+
+
 
     this.getActionTagCategories();
     this.poolEvents();
@@ -148,6 +152,10 @@ export class EventsComponent {
       // this.listActionTags(data);
     }, 100);
   }
+
+get isMailEnabled(): boolean {
+  return this.actionsTaken?.some((item:any) => item.selected);
+}
 
   getCurrentSiteAlerts(data: any) {
     this.siteser.getAlertCategoriesForSiteId(data).subscribe((res: any) => {
@@ -336,7 +344,7 @@ export class EventsComponent {
         );
     }
 
-    if (type === 'second-level') {
+    if (type === 'second-level' ) {
       this.eventsGenericEmail('complete');
     }
 
@@ -531,6 +539,8 @@ export class EventsComponent {
   //   this.noActionChecked = event.selected;
   // }
 
+
+
   onSelectionChange(item: any, event: any) {
     item.selected = event.selected;
     if (item.selected) {
@@ -684,11 +694,316 @@ export class EventsComponent {
     }
   }
 
+
+
+
+
+
+@ViewChild('openmailtemplate') openmailtemplate!: TemplateRef<any>;
+
+  isMediaLoading = false;
+
+resolution:any;
+
+  openMail(){
+
+this.getEmailDataForVMSEventsmail();
+
+this.dialog.open(this.openmailtemplate,{
+  disableClose:true
+});
+
+  }
+
+
+
+   selectedFiles: File[] = [];
+  showPreview: boolean = false;
+  onFilesSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files) return;
+
+    const allowedTypes = ["image/", "video/"];
+    const filesArray = Array.from(input.files);
+
+    const validFiles: File[] = [];
+    const invalidFiles: File[] = [];
+
+    filesArray.forEach((file) => {
+      if (allowedTypes.some((type) => file.type.startsWith(type))) {
+        validFiles.push(file);
+      } else {
+        invalidFiles.push(file);
+      }
+    });
+
+    // Add valid files
+    this.selectedFiles = [...this.selectedFiles, ...validFiles];
+
+    // 🔴 Show toast if invalid files found
+    if (invalidFiles.length) {
+      this.alert_service.snackError(
+        "Only images and videos allowed."
+      );
+    }
+
+    // Reset input so same file can be selected again
+    input.value = "";
+  }
+
+  removeFile(index: number, fileInput: HTMLInputElement) {
+    this.selectedFiles.splice(index, 1);
+
+    // reset actual input so filename disappears
+    fileInput.value = "";
+  }
+
+  action: string[] = [];
+  chipText: string = "";
+
+
+  handleChipInput(event: KeyboardEvent) {
+    const value = this.chipText.trim();
+
+    if (event.key === "Enter" || event.key === "," || event.key === "Tab") {
+      event.preventDefault();
+
+      if (value && !this.action.includes(value)) {
+        this.action.push(value);
+        this.chipText = "";
+      }
+    }
+
+    if (event.key === "Backspace" && !this.chipText && this.action.length) {
+      this.action.pop();
+    }
+  }
+
+  addChipOnBlur() {
+    const value = this.chipText.trim();
+
+    if (value && !this.action.includes(value)) {
+      this.action.push(value);
+    }
+
+    this.chipText = "";
+  }
+
+  // removeChip(index: number) {
+  //   this.combinedActions.splice(index, 1);
+  // }
+
+  removeChip(value: string) {
+  // Remove from manual chips
+  this.action = this.action.filter(item => item !== value);
+
+  // Unselect from actionsTaken
+  const found = this.actionsTaken.find((item:any) => item.name === value);
+  if (found) {
+    found.selected = false;
+  }
+}
+
+  getEmailDataForVMSEventsmail() {
+
+    const level2ValidAlerts = this.currentItem.userLevelAlarmInfo
+  .filter((item:any) => item.level === 2 && item.alertTag !== null)
+  .map((item:any) => ({
+    alertTag: item.alertTag,
+    subAlertTag: item.subAlertTag
+  }));
+
+  console.log(level2ValidAlerts[0])
+
+ this.emailObject = {
+      siteId: this.currentItem?.siteId,
+      siteName: this.currentItem?.siteName,
+      alertTypeId: level2ValidAlerts[0]?.alertTag,
+      subTypeId: level2ValidAlerts[0]?.subAlertTag,
+      cameraId: this.currentItem?.cameraId,
+       day: this.storage_service.weekdays[
+        this.storage_service.getDay(this.currentItem?.timezone)
+      ],
+      hour: this.storage_service.getHour(this.currentItem?.timezone),
+      currentTime: this.currentItem?.timestamp,
+    };
+
+    this.isMediaLoading = true;
+
+    this.event_service.getEmailDataForVMSEvents(this.emailObject).subscribe({
+      next: (res: any) => {
+        if (res.statusCode === 200) {
+          this.emailData = res.emailDetails;
+          this.smsDetails = res.smsDetails;
+          this.isMediaLoading = false;
+
+          // console.log(this.emailData)
+
+          // const level1Data = this.currentItem.userLevelAlarmInfo
+          //   .filter((item: any) => item?.level == 1 && Array.isArray(item.actionsTakenInfo))
+          //   .flatMap((item: any) =>
+          //     item.actionsTakenInfo?.map((action: any) => action.name),
+          //   );
+
+
+          // const level2Data =
+          //  this.currentItem.userLevelAlarmInfo
+          //   .filter((item: any) => item?.level == 2 && Array.isArray(item.actionsTakenInfo))
+          //   .flatMap((item: any) =>
+          //    item.actionsTakenInfo?.map((action: any) => action.name),
+          //   );
+
+
+          // const level3Data =
+          //   this.currentItem.userLevelAlarmInfo
+          //   .filter((item: any) => item?.level == 3 && Array.isArray(item.actionsTakenInfo))
+          //   .flatMap((item: any) =>
+          //     item.actionsTakenInfo?.map((action: any) => action.name),
+          //   );
+
+             const level1Data =
+            res.actionsTakenInfo.find((obj: any) => obj.level_1)?.level_1 || [];
+
+          const level2Data =
+            res.actionsTakenInfo.find((obj: any) => obj.level_2)?.level_2 || [];
+
+          const level3Data =
+            res.actionsTakenInfo.find((obj: any) => obj.level_3)?.level_3 || [];
+
+
+          // Directly display API response strings
+          this.action = [...level1Data, ...level2Data, ...level3Data];
+        } else {
+          this.isMediaLoading = false;
+        }
+      },
+      error: (err) => {
+        this.isMediaLoading = false;
+
+        this.alert_service.error("Connection Failed Something went wrong!")
+      },
+    });
+
+  }
+
+  get combinedActions(): string[] {
+  const selected = this.actionsTaken
+    .filter((item:any) => item.selected)
+    .map((item:any) => item.name);
+
+  return [...new Set([...this.action, ...selected])];
+}
+
+
+
+  closeMailoverlay() {
+
+
+    this.dialog.closeAll();
+
+    this.emailData = null;
+    this.selectedFiles = [];
+    this.action = [];
+    this.resolution = null;
+  }
+
+    isSubmitting = false;
+
+  submitResolution() {
+
+const hasAction =
+  (this.action?.length ?? 0) > 0 ||
+  this.actionsTaken?.some((item: any) => item.selected);
+
+    if (
+      !this.emailData?.recipientEmails?.length ||
+        !hasAction ||
+      !this.resolution?.trim()
+    ) {
+      this.alert_service.snackError(
+
+        "Recipient Email ,action taken and notes are mandatory",
+      );
+
+      return;
+    }
+
+    // this.updateEventFullDetails('third-level');
+
+        const level2ValidAlerts = this.currentItem.userLevelAlarmInfo
+  .filter((item:any) => item.level === 2 && item.alertTag !== null)
+  .map((item:any) => ({
+    alertTag: item.alertTag,
+    subAlertTag: item.subAlertTag
+  }));
+
+    this.isSubmitting = true;
+    this.event_service
+      .sendResolution({
+        ...this.currentItem,
+        ...this.emailData,
+        alertTagId1: level2ValidAlerts[0]?.alertTag,
+        subTypeId1: level2ValidAlerts[0]?.subAlertTag,
+        selectedFiles: this.selectedFiles,
+        // action: this.action.join(", "),
+        action: this.combinedActions,
+        resolution: this.resolution,
+      })
+      .subscribe(
+        (res: any) => {
+          if (res.statusCode == 200) {
+            this.alert_service.snackError( "Successfully completed");
+            this.isSubmitting = false;
+            this.closeMailoverlay();
+            this.showPreview = false;
+            this.selectedFiles = [];
+
+            // this.preloadClosedCounts();   //counts
+          } else {
+            this.alert_service.snackError( "Something went wrong");
+            this.isSubmitting = false;
+          }
+        },
+        (error: any) => {
+          this.isSubmitting = false;
+          this.alert_service.snackError( "Something went wrong");
+        },
+      );
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
   ngOnDestroy() {
     this.eventData = [];
     this.storage_service.events_sub.next(this.eventData.length);
 
     this.event_service.stopUserPooling();
     this.event_service.stopEventPooling();
+  }
+
+
+
+
+}
+
+
+
+
+import { Pipe, PipeTransform } from "@angular/core";
+
+@Pipe({ name: "filePreview", standalone: true })
+export class FilePreviewPipe implements PipeTransform {
+  transform(file: File): string {
+    return URL.createObjectURL(file);
   }
 }

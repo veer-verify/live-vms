@@ -82,4 +82,10 @@ export class AlertService {
       allowOutsideClick: false
     })
   }
+
+
+
+  get random(){
+    return Math.random();
+  }
 }

@@ -61,6 +61,7 @@ import { EditFormComponent } from './edit-form/edit-form.component';
 import { SigninComponent } from './signin/signin.component';
 import { SharedModule } from 'src/shared-module/shared.module';
 import { CountryStateCityComponent } from 'src/utilities/country-state-city/country-state-city.component';
+import { AssetService } from 'src/services/asset.service';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -144,7 +145,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true,
-    },
+    }
   ],
   bootstrap: [AppComponent],
 })
