@@ -68,6 +68,8 @@ export class EventsComponent {
   }
 
   consumeConsoleEvents() {
+
+
     this.event_service
       .consumeConsoleEvents({
         userId: 0,
@@ -140,13 +142,16 @@ export class EventsComponent {
             this.actionsTaken = Array.from(
               this.cameraDetails?.actionsTaken,
               (el: any) => ({
-                name: el.value,
+                id: el.id,
+                name: el.value ?? el.name,
                 selected: el.selected ?? false,
                 time: el.time ?? null,
                 status: el.status ?? false,
+                disabled: false,
                 editing: false,
               }),
             );
+            this.syncActionTakenDisabledStates();
           }
         });
       // this.listActionTags(data);
@@ -223,13 +228,16 @@ get isMailEnabled(): boolean {
     this.actionsTaken = Array.from(
       this.cameraDetails?.actionsTaken,
       (el: any) => ({
-        name: el.value,
+        id: el.id,
+        name: el.value ?? el.name,
         selected: false,
         time: null,
         status: false,
+        disabled: false,
         editing: false,
       }),
     );
+    this.syncActionTakenDisabledStates();
   }
 
   isPlaying: boolean = false;
@@ -333,6 +341,9 @@ get isMailEnabled(): boolean {
   }
 
   notes: string = '';
+
+
+
   updateEventFullDetails(type: number | string) {
     if (type === 2) return;
 
@@ -364,13 +375,14 @@ get isMailEnabled(): boolean {
       alertTag: this.alertType,
       subAlertTag: this.alertSubType,
       actionsTakenInfo: user?.userLevel === 3 ? this.actionsTaken.map((el: any) => {
-        const { editing, ...rest } = el;
+        const { id, disabled, editing, ...rest } = el;
         return rest;
       }) : [],
     })
 
     this.event_service
       .consumeConsoleEvents({
+         cameraId:[this.currentItem?.cameraId],
         userId: 0,
         eventTime: [this.currentItem.timestamp],
         consoleType: '',
@@ -423,6 +435,7 @@ get isMailEnabled(): boolean {
 
     this.event_service
       .consumeConsoleEvents({
+        cameraId:[this.currentItem?.cameraId],
         userId: 0,
         eventTime: [this.currentItem.timestamp],
         consoleType: '',
@@ -445,7 +458,7 @@ get isMailEnabled(): boolean {
       alertTag: this.alertType,
       subAlertTag: this.alertSubType,
       actionsTakenInfo: user?.userLevel === 3 ? this.actionsTaken.map((el: any) => {
-        const { editing, ...rest } = el;
+        const { id, disabled, editing, ...rest } = el;
         return rest;
       }) : [],
     })
@@ -541,15 +554,73 @@ get isMailEnabled(): boolean {
 
 
 
+  private isNoActionNecessary(item: any): boolean {
+    return (
+      item?.id === 4 ||
+      String(item?.name ?? '').trim().toLowerCase() === 'no action necessary'
+    );
+  }
+
+  private syncActionTakenDisabledStates(): void {
+    const noActionSelected = this.actionsTaken.some(
+      (action: any) =>
+        this.isNoActionNecessary(action) && action.selected,
+    );
+    const hasOtherSelected = this.actionsTaken.some(
+      (action: any) =>
+        !this.isNoActionNecessary(action) && action.selected,
+    );
+
+    this.actionsTaken.forEach((action: any) => {
+      if (this.isNoActionNecessary(action)) {
+        action.disabled = hasOtherSelected;
+      } else {
+        action.disabled = noActionSelected;
+      }
+    });
+  }
+
   onSelectionChange(item: any, event: any) {
     item.selected = event.selected;
     if (item.selected) {
-      item.time = this.storage_service.getTimeWithTimezone(
-        this.currentItem?.timezone,
+      this.removedActionTakenChips = this.removedActionTakenChips.filter(
+        (name: string) => name !== item.name,
       );
-    } else {
-      item.time = null;
     }
+    item.time = item.selected
+      ? this.storage_service.getTimeWithTimezone(this.currentItem?.timezone)
+      : null;
+    if (!item.selected) {
+      item.status = false;
+      item.editing = false;
+    }
+
+    if (this.isNoActionNecessary(item) && item.selected) {
+      this.actionsTaken.forEach((action: any) => {
+        if (!this.isNoActionNecessary(action)) {
+          action.selected = false;
+          action.time = null;
+          action.status = false;
+          action.editing = false;
+        }
+      });
+    }
+
+    if (!this.isNoActionNecessary(item) && item.selected) {
+      const noActionItem = this.actionsTaken.find((action: any) =>
+        this.isNoActionNecessary(action),
+      );
+
+      if (noActionItem) {
+        noActionItem.selected = false;
+        noActionItem.time = null;
+        noActionItem.status = false;
+        noActionItem.editing = false;
+      }
+    }
+
+    this.syncActionTakenDisabledStates();
+    this.actionsTaken = [...this.actionsTaken];
   }
 
   enableEdit(item: any, event: Event) {
@@ -707,6 +778,12 @@ resolution:any;
 
   openMail(){
 
+      if (!this.actionsTaken.some((item: any) => item?.selected))
+        return this.alert_service.error(
+          'Actions are mandatory please select atleast one of them!'
+        );
+
+
 this.getEmailDataForVMSEventsmail();
 
 this.dialog.open(this.openmailtemplate,{
@@ -760,6 +837,7 @@ this.dialog.open(this.openmailtemplate,{
 
   action: string[] = [];
   chipText: string = "";
+  removedActionTakenChips: string[] = [];
 
 
   handleChipInput(event: KeyboardEvent) {
@@ -794,15 +872,16 @@ this.dialog.open(this.openmailtemplate,{
   // }
 
   removeChip(value: string) {
-  // Remove from manual chips
-  this.action = this.action.filter(item => item !== value);
+    this.action = this.action.filter(item => item !== value);
 
-  // Unselect from actionsTaken
-  const found = this.actionsTaken.find((item:any) => item.name === value);
-  if (found) {
-    found.selected = false;
+    const selectedAction = this.actionsTaken.find(
+      (item: any) => item.name === value && item.selected,
+    );
+
+    if (selectedAction && !this.removedActionTakenChips.includes(value)) {
+      this.removedActionTakenChips = [...this.removedActionTakenChips, value];
+    }
   }
-}
 
   getEmailDataForVMSEventsmail() {
 
@@ -813,7 +892,7 @@ this.dialog.open(this.openmailtemplate,{
     subAlertTag: item.subAlertTag
   }));
 
-  console.log(level2ValidAlerts[0])
+
 
  this.emailObject = {
       siteId: this.currentItem?.siteId,
@@ -887,12 +966,15 @@ this.dialog.open(this.openmailtemplate,{
   }
 
   get combinedActions(): string[] {
-  const selected = this.actionsTaken
-    .filter((item:any) => item.selected)
-    .map((item:any) => item.name);
+    const selected = this.actionsTaken
+      .filter(
+        (item:any) =>
+          item.selected && !this.removedActionTakenChips.includes(item.name),
+      )
+      .map((item:any) => item.name);
 
-  return [...new Set([...this.action, ...selected])];
-}
+    return [...new Set([...this.action, ...selected])];
+  }
 
 
 
@@ -904,12 +986,89 @@ this.dialog.open(this.openmailtemplate,{
     this.emailData = null;
     this.selectedFiles = [];
     this.action = [];
+    this.removedActionTakenChips = [];
     this.resolution = null;
   }
 
     isSubmitting = false;
 
-  submitResolution() {
+
+  updateEventFullDetails3rdlevel(type: number | string){
+      const user = this.storage_service.getData('session');
+    // if (user?.userLevel === 3 && type !== 1) {
+    //   if (!this.actionsTaken.some((item: any) => item?.selected))
+    //     return this.alert_service.error(
+    //       'Actions are mandatory please select atleast one of them!'
+    //     );
+    // }
+
+
+    this.isSubmitting = true;
+
+    const endTime = this.storage_service.getTimeWithTimezone(this.currentItem?.timezone);
+    this.currentItem?.userLevelAlarmInfo.push({
+      level: user?.userLevel,
+      user: user?.UserId,
+      alarm: this.currentItem?.audioPlayed ? 'P' : 'N',
+      activityDetTime: this.sirenTime ?? '',
+      landingTime: this.currentItem?.landingTime ?? '',
+      reviewStart: this.currentItem?.reviewStart ?? '',
+      reviewEnd: endTime ?? '',
+      actionTag: this.currentActionTag?.categoryId,
+      subActionTag: this.currentSubActionTag?.subCategoryId,
+      notes: this.notes,
+      userName: user?.UserName,
+      alertTag: this.alertType,
+      subAlertTag: this.alertSubType,
+      actionsTakenInfo: user?.userLevel === 3 ? this.actionsTaken.map((el: any) => {
+        const { id, disabled, editing, ...rest } = el;
+        return rest;
+      }) : [],
+    })
+
+    this.event_service
+      .consumeConsoleEvents({
+         cameraId:[this.currentItem?.cameraId],
+        userId: 0,
+        eventTime: [this.currentItem.timestamp],
+        consoleType: '',
+        consumeType: '',
+      })
+      .subscribe();
+
+    this.storage_service.show_loader = true;
+    this.event_service
+      .updateEventFullDetails({
+        ...this.currentItem,
+        type,
+        actionTag: this.currentActionTag?.categoryId,
+        subActionTag: this.currentSubActionTag?.subCategoryId,
+        objectName: this.object,
+        userActionTime: this.userActionTime,
+        userLevelAlarmInfo: this.currentItem?.userLevelAlarmInfo,
+      })
+      .subscribe({
+        next: () => {
+          this.storage_service.show_loader = false;
+          this.sirenTime = null;
+           this.isSubmitting = false;
+          this.cancelEvent();
+          this.displayCurrent(this.currentItem);
+          this.alert_service.snackSuccess('Event Updated successfully!');
+        },
+        error: () => {
+          this.storage_service.show_loader = false;
+           this.isSubmitting = false;
+          this.cancelEvent();
+          this.displayCurrent(this.currentItem);
+          this.alert_service.snackError('Failed!');
+        },
+      });
+
+
+}
+
+  submitResolution(type?: number | string) {
 
 const hasAction =
   (this.action?.length ?? 0) > 0 ||
@@ -957,6 +1116,9 @@ const hasAction =
             this.closeMailoverlay();
             this.showPreview = false;
             this.selectedFiles = [];
+            if (type !== undefined) {
+              this.updateEventFullDetails3rdlevel(type);
+            }
 
             // this.preloadClosedCounts();   //counts
           } else {

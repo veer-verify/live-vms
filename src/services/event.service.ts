@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { mergeMap, Subject, switchMap, takeUntil, timer } from 'rxjs';
+import { catchError, EMPTY, Subject, switchMap, takeUntil, timer } from 'rxjs';
 import moment from 'moment';
 
 @Injectable({
@@ -178,16 +178,21 @@ export class EventService {
 
   userPooling$ = new Subject<void>();
   aliveUser() {
+    this.stopUserPooling();
+
     const url = `${environment.event_tags_url}/userActiveStatus_1_0`;
-    let user = this.storageSer.getData('session');
-    let payload = {
-      userId: 0,
-      sessionId: 0,
-    };
-    payload.userId = user?.UserId;
-    payload.sessionId = user?.sessionId;
     return timer(0, 60000).pipe(
-      mergeMap(() => this.http.post(url, payload)),
+      switchMap(() => {
+        const user = this.storageSer.getData('session');
+        const payload = {
+          userId: user?.UserId,
+          sessionId: user?.sessionId,
+        };
+
+        return this.http.post(url, payload).pipe(
+          catchError(() => EMPTY),
+        );
+      }),
       takeUntil(this.userPooling$)
     )
   }

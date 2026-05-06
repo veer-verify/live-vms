@@ -12,6 +12,7 @@
       <mat-chip-option
         *ngFor="let item of actionsTaken"
         [selected]="item.selected"
+        [disabled]="item.disabled"
         (selectionChange)="onSelectionChange(item, $event)"
       >
         <div class="d-flex align-items-center gap-3">
@@ -67,12 +68,12 @@
     </mat-chip-listbox>
 
 
-<img
+<!-- <img
   src="assets/icons/mail.svg"
   [ngClass]="isMailEnabled ? 'mail-enabled' : 'mail-disabled'"
 
   (click)="isMailEnabled && openMail()"
-/>
+/> -->
 
 
   </div>
@@ -602,12 +603,20 @@
             *ngIf="path === 'dispatch' && currentSubActionTag"
             class="mt-5"
           >
-            <button
+            <!-- <button
               class="btn-secondary"
               (click)="updateEventFullDetails('third-level')"
               title="Close"
             >
               Complete
+            </button> -->
+            <button
+              class="btn-secondary"
+           
+              (click)="openMail()"
+              title="Actions are mandatory please select atleast one of them"
+            >
+              Send email and complete
             </button>
             <button
               class="btn-secondary"
@@ -879,10 +888,10 @@
             </button>
             <button
               class="btn-submit"
-              (click)="submitResolution()"
+              (click)="submitResolution('third-level')"
               [disabled]="isSubmitting"
             >
-              Submit
+              Submit and close event
               <span *ngIf="isSubmitting" class="spinner1"></span>
             </button>
           </div>
