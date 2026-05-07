@@ -126,23 +126,40 @@ export class EventsComponent {
     setTimeout(() => {
       this.storage_service.status_text = '';
       this.currentItem = data;
+      // console.log(this.currentItem);
+      // allActions.filter((el: any) => Array.isArray(el) && el.length > 0);
+      const allActions = this.currentItem?.userLevelAlarmInfo.flatMap((item: any) => item?.actionsTakenInfo).filter(Boolean);
+      console.log(allActions);
       this.getCurrentSiteAlerts(data);
+
       this.event_service
         .getMonitoringInfo(this.currentItem)
         .subscribe((res: any) => {
           if (res.statusCode == 200) {
             this.cameraDetails = res;
 
+            // this.actionsTaken = allActions.map((item: any) => ({
+            //   ...item,
+            //   selected: true
+            // }))
+
             this.actionsTaken = Array.from(
               this.cameraDetails?.actionsTaken,
               (el: any) => ({
                 name: el.value,
-                selected: el.selected ?? false,
-                time: el.time ?? null,
-                status: el.status ?? false,
+                selected: false,
+                time: null,
+                status: false,
                 editing: false,
               }),
             );
+
+            //   const updated = allActions.map((item: any) => ({
+            //     ...item,
+            //     status: this.cameraDetails?.actionsTaken.some((sel: any) => sel.name === item.name)
+            //   }));
+            //   console.log(updated);
+            //   this.actionsTaken = updated;
           }
         });
       // this.listActionTags(data);

@@ -83,7 +83,7 @@ export class DashboardComponent {
     private http: HttpClient,
     private loginSer: LoginService,
     private event_service: EventService,
-  ) {}
+  ) { }
 
   searchText!: string;
   showLoader: boolean = false;
@@ -332,24 +332,24 @@ export class DashboardComponent {
     if (this.camerasForPage === 2) {
       this.streamEl
         .toArray()
-        [index].video.nativeElement.parentElement.classList.remove('h2');
+      [index].video.nativeElement.parentElement.classList.remove('h2');
     } else if (this.camerasForPage === 6) {
       this.streamEl
         .toArray()
-        [index].video.nativeElement.parentElement.classList.remove('h6');
+      [index].video.nativeElement.parentElement.classList.remove('h6');
     } else if (this.camerasForPage === 9 || this.camerasForPage === 12) {
       this.streamEl
         .toArray()
-        [index].video.nativeElement.parentElement.classList.remove('h9');
+      [index].video.nativeElement.parentElement.classList.remove('h9');
     } else {
       this.streamEl
         .toArray()
-        [index].video.nativeElement.parentElement.classList.remove('h20');
+      [index].video.nativeElement.parentElement.classList.remove('h20');
     }
 
     this.streamEl
       .toArray()
-      [index].video.nativeElement.parentElement.classList.add('tile-active');
+    [index].video.nativeElement.parentElement.classList.add('tile-active');
     this.cameraIndex = index;
   }
 
@@ -377,8 +377,8 @@ export class DashboardComponent {
         selected: data?.audioUrl ? true : false,
         status:
           data?.audioUrl &&
-          !hours.includes(currentHour) &&
-          audioData?.statusCode === 200
+            !hours.includes(currentHour) &&
+            audioData?.statusCode === 200
             ? true
             : false,
         time:
@@ -498,8 +498,8 @@ export class DashboardComponent {
   filteredListTypes() {
     return this.currentSite?.manualEvents === 'T'
       ? this.listTypes.filter(
-          (type: any) => type.label === 'Event' || type.label === 'None',
-        )
+        (type: any) => type.label === 'Event' || type.label === 'None',
+      )
       : this.listTypes;
   }
 
