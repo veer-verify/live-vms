@@ -80,6 +80,32 @@ export class EventService {
     return this.http.post(url, obj);
   }
 
+  writeVms_To_Console(payload: any) {
+    const url = `${environment.events_url}/writeVms_To_Console_1_0`;
+    const user = this.storageSer.getData('session');
+
+    const obj = {
+      cameraId: payload?.cameraId,
+      color: payload?.color,
+      id: payload?.id,
+      timestamp: payload?.time,
+      eventType: payload?.eventType ?? 'Manual_Wall',
+      queue_name: user?.routingQueueName,
+      timezone: payload?.timezone,
+      httpUrl: payload?.httpUrl,
+      siteId: payload?.siteId,
+      siteName: payload?.siteName,
+      userName: user?.UserName,
+      actionTag: payload?.actionTag ?? '',
+      nativeApp: payload?.nativeApp,
+      actionTime: this.storageSer.getTimeWithTimezone(payload?.timezone),
+      eventTag: payload?.eventTag ?? '',
+      userLevelAlarmInfo: payload?.userLevelAlarmInfo,
+      userLevels: 0,
+    };
+    return this.http.post(url, obj);
+  }
+
   write2Dispatchcustomevent(payload: any) {
     // let url = `${environment.events_url}/writeCustomEvent_1_0/`;
     let url = `${environment.events_url}/write2Vms_DispatchQueue_1_0/`;
@@ -277,7 +303,7 @@ export class EventService {
   }
 
 
-   weekdays = [
+  weekdays = [
     "Sunday",
     "Monday",
     "Tuesday",
@@ -315,7 +341,7 @@ export class EventService {
   }
 
 
-    sendResolution(payload: any) {
+  sendResolution(payload: any) {
     console.log(payload);
     let url = `${environment.guard_monitoring_url}/sendResolutionEmail_1_0`;
 

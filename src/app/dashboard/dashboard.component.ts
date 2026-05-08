@@ -620,6 +620,8 @@ export class DashboardComponent {
   }
 
   write2Dispatch(data: any) {
+    const session = this.storageSer.getData('session');
+
     this.event_service.write2Dispatch(data).subscribe({
       next: () => {
         data.buttons.shift();

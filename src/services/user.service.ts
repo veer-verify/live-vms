@@ -19,16 +19,6 @@ export class UserService {
     private storageSer: StorageService
   ) { }
 
-  loginNew(payload: any) {
-    let url = environment.login_url + `/user_login_1_0`;
-    let credentials = new Map();
-    credentials.set('userName', payload?.userName);
-    credentials.set('password', this.storageSer.encrypt(payload?.password));
-    // credentials.set('password', payload?.password);
-    credentials.set('callingSystemDetail', 'mgmt');
-    return this.http.post(url, Object.fromEntries(credentials));
-  }
-
   logout() {
     this.router.navigate(['./login']);
   }
@@ -53,7 +43,7 @@ export class UserService {
     if (userId) {
       params = params.set('userId', userId)
     }
-    return this.http.get(url, {params: params});
+    return this.http.get(url, { params: params });
   }
 
   listUsersByRole() {
@@ -176,7 +166,7 @@ export class UserService {
     return this.http.get(url, { params: params });
   }
 
-  getPasswordbyUser(payload:any){
+  getPasswordbyUser(payload: any) {
 
     let url = `${environment.login_url}/getPassword_1_0`;
     let params = new HttpParams();

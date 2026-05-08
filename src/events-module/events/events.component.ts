@@ -94,14 +94,16 @@ export class EventsComponent {
           const uniqueEvents = updated.filter((e: any) => !existingIds.has(e.id));
           this.eventData = [...this.eventData, ...uniqueEvents];
 
-          this.event_service
-            .addQueusInfoRedis({
-              userId: 0,
-              level: '',
-              queueInfo: { ...updated[0] },
-              queueName: '',
-              consoleType: '',
-            }).subscribe();
+          uniqueEvents.forEach((event: any) => {
+            this.event_service
+              .addQueusInfoRedis({
+                userId: 0,
+                level: '',
+                queueInfo: { ...event },
+                queueName: '',
+                consoleType: '',
+              }).subscribe();
+          });
 
           if (this.eventData.length === 1) {
             this.displayCurrent(this.eventData[0]);
