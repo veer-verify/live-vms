@@ -81,6 +81,7 @@ export class EventService {
   }
 
   writeVms_To_Console(payload: any) {
+    // const url = 'http://192.168.0.110:8002/writeVms_To_Console_1_0';
     const url = `${environment.events_url}/writeVms_To_Console_1_0`;
     const user = this.storageSer.getData('session');
 

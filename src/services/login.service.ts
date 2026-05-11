@@ -19,8 +19,8 @@ export class LoginService {
   ) { }
 
   login(payload: any): Observable<any> {
-    const url = 'http://192.168.0.110:8001/user_login_1_0';
-    // let url = `${environment.login_url}/user_login_1_0`;
+    // const url = 'http://192.168.0.110:8001/user_login_1_0';
+    let url = `${environment.login_url}/user_login_1_0`;
     let credentials = new Map();
     credentials.set('userName', payload?.userName);
     // credentials.set('password', btoa(JSON.stringify(payload?.password)));

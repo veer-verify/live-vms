@@ -621,8 +621,11 @@ export class DashboardComponent {
 
   write2Dispatch(data: any) {
     const session = this.storageSer.getData('session');
+    const dispatchRequest = session?.routingType === 'console'
+      ? this.event_service.writeVms_To_Console(data)
+      : this.event_service.write2Dispatch(data);
 
-    this.event_service.write2Dispatch(data).subscribe({
+    dispatchRequest.subscribe({
       next: () => {
         data.buttons.shift();
         this.createBtnEl.toArray().forEach((item) => {
