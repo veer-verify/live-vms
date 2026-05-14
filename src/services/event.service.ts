@@ -81,7 +81,6 @@ export class EventService {
   }
 
   writeVms_To_Console(payload: any) {
-    // const url = 'http://192.168.0.110:8002/writeVms_To_Console_1_0';
     const url = `${environment.events_url}/writeVms_To_Console_1_0`;
     const user = this.storageSer.getData('session');
 
@@ -91,7 +90,7 @@ export class EventService {
       id: payload?.id,
       timestamp: payload?.time,
       eventType: payload?.eventType ?? 'Manual_Wall',
-      queue_name: user?.routingQueueName,
+      queue_name: payload?.queue_name,
       timezone: payload?.timezone,
       httpUrl: payload?.httpUrl,
       siteId: payload?.siteId,
@@ -273,6 +272,16 @@ export class EventService {
     const url = `${environment.event_tags_url}/getVmsEventFlow_1_0`;
     let params = new HttpParams();
     params = params.set('callingSystemDetail', 'vms');
+    return this.http.get(url, { params });
+  }
+
+  getEventFlowForCamera(payload: any) {
+    const url = `${environment.event_tags_url}/getEventFlowForCamera_1_0`;
+    // const url = 'http://192.168.0.229:8234/events_data/getEventFlowForCamera_1_0'
+    let params = new HttpParams();
+    params = params.set('cameraId', payload?.cameraId);
+    params = params.set('level', payload?.level ?? 1);
+    params = params.set('callingSystemDetail', payload?.callingSystemDetail ?? 'vms');
     return this.http.get(url, { params });
   }
 

@@ -19,6 +19,7 @@ import {
   fromEvent,
   map,
   of,
+  switchMap,
   tap,
 } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
@@ -621,9 +622,20 @@ export class DashboardComponent {
 
   write2Dispatch(data: any) {
     const session = this.storageSer.getData('session');
-    const dispatchRequest = session?.routingType === 'console'
-      ? this.event_service.writeVms_To_Console(data)
-      : this.event_service.write2Dispatch(data);
+    //   const dispatchRequest = session?.routingType === 'console'
+    // ? this.event_service.writeVms_To_Console(data)
+    // : this.event_service.write2Dispatch(data);
+    const dispatchRequest = this.event_service.getEventFlowForCamera({
+      cameraId: data?.cameraId,
+      level: 1,
+      callingSystemDetail: 'vms',
+    }).pipe(
+      map((res: any) => res?.data?.queueName ?? res?.data?.queue_name ?? ''),
+      switchMap((queueName: string) => this.event_service.writeVms_To_Console({
+        ...data,
+        queue_name: queueName,
+      })),
+    );
 
     dispatchRequest.subscribe({
       next: () => {
