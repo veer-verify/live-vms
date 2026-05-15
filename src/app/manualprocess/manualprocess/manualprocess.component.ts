@@ -10,6 +10,7 @@ import { MetadataService } from 'src/services/metadata.service';
 import { SiteService } from 'src/services/site.service';
 import { StorageService } from 'src/services/storage.service';
 import { v4 as uuid } from 'uuid';
+import { map, switchMap } from 'rxjs';
 @Component({
   selector: 'app-manualprocess',
   templateUrl: './manualprocess.component.html',
@@ -38,26 +39,26 @@ export class ManualprocessComponent {
   dateTimeForm!: FormGroup;
 
   constructor(
-      public dialogRef: MatDialogRef<ManualprocessComponent>,
+    public dialogRef: MatDialogRef<ManualprocessComponent>,
     private SiteSer: SiteService,
     private metadaSer: MetadataService,
     private alaram: AlertService,
-      private camSer: CameraService,
+    private camSer: CameraService,
     public storageSer: StorageService,
     private fb: FormBuilder,
-    private event_service:EventService,
-    private alertSrvc:AlertService,
+    private event_service: EventService,
+    private alertSrvc: AlertService,
     private datePipe: DatePipe
   ) {
 
     this.isDialogMode = !!this.dialogRef;
     this.dateTimeForm = this.fb.group({
-      date: ['',[Validators.required]],
-      hours: ['00',[Validators.required]],
-      minutes: ['00',[Validators.required]],
-      seconds: ['00',[Validators.required]],
-      site: [null,[Validators.required]],
-      camera: [null,[Validators.required]],
+      date: ['', [Validators.required]],
+      hours: ['00', [Validators.required]],
+      minutes: ['00', [Validators.required]],
+      seconds: ['00', [Validators.required]],
+      site: [null, [Validators.required]],
+      camera: [null, [Validators.required]],
 
       isActive: [false]
     });
@@ -70,29 +71,29 @@ export class ManualprocessComponent {
   @Output() sidePanelClosed = new EventEmitter<boolean>();
 
   Cameras: any[] = [];
- Sites: any=[];
+  Sites: any = [];
   site: any;
   camera: any;
 
   ngOnInit() {
     this.getSitesforUser();
 
-      this.dateTimeForm.get('site')?.valueChanges.subscribe((siteId: any) => {
+    this.dateTimeForm.get('site')?.valueChanges.subscribe((siteId: any) => {
 
-    if (siteId) {
+      if (siteId) {
 
-      // reset camera when site changes
-      this.dateTimeForm.patchValue({ camera: null });
+        // reset camera when site changes
+        this.dateTimeForm.patchValue({ camera: null });
 
-      this.getMonitoringStatus_cameras(siteId);
-    }
+        this.getMonitoringStatus_cameras(siteId);
+      }
 
-  });
+    });
 
   }
 
 
-    getSitesforUser() {
+  getSitesforUser() {
 
     this.SiteSer.getSites().subscribe((res: any) => {
 
@@ -103,10 +104,10 @@ export class ManualprocessComponent {
     });
   }
 
-monitoringCameras:any=[];
+  monitoringCameras: any = [];
 
-    getMonitoringStatus_cameras(siteId: any) {
-      this.monitoringCameras=[];
+  getMonitoringStatus_cameras(siteId: any) {
+    this.monitoringCameras = [];
 
     this.SiteSer.getCamerasForForPortal({ siteId: siteId }).subscribe(
       (res: any) => {
@@ -125,82 +126,93 @@ monitoringCameras:any=[];
   getFormattedDateTime() {
     const { date, hours, minutes, seconds } = this.dateTimeForm.value;
 
-    if (!date) return ;
+    if (!date) return;
 
-const formattedDate = this.datePipe.transform(
-  this.dateTimeForm.value.date,
-  'yyyy-MM-dd'
-);
+    const padTimePart = (value: any) => String(value ?? '0').padStart(2, '0');
+    const formattedDate = this.datePipe.transform(
+      this.dateTimeForm.value.date,
+      'yyyy-MM-dd'
+    );
 
-    return `${formattedDate} ${hours}:${minutes}:${seconds}`;
+    return `${formattedDate} ${padTimePart(hours)}:${padTimePart(minutes)}:${padTimePart(seconds)}`;
   }
 
 
-onFileChange(event: any) {
-  const file = event.target.files[0];
+  onFileChange(event: any) {
+    const file = event.target.files[0];
 
-  if (!file) return;
+    if (!file) return;
 
-  this.setSingleFile(file);
+    this.setSingleFile(file);
     event.target.value = '';
-}
+  }
 
 
 
- selectedFiles: any = null;
+  selectedFiles: any = null;
 
-setSingleFile(file: File) {
+  setSingleFile(file: File) {
 
-  const reader = new FileReader();
+    const reader = new FileReader();
 
-  reader.onload = () => {
-    this.selectedFiles = {
-      file: file,
-      name: file.name,
-      type: file.type,
-      preview: reader.result
-    }
-  };
+    reader.onload = () => {
+      this.selectedFiles = {
+        file: file,
+        name: file.name,
+        type: file.type,
+        preview: reader.result
+      }
+    };
 
-  reader.readAsDataURL(file);
-}
+    reader.readAsDataURL(file);
+  }
 
   removeFile() {
-    this.selectedFiles=null;
+    this.selectedFiles = null;
   }
-isLoading = false;
+  isLoading = false;
 
 
   postScreenshot() {
-    if(this.selectedFiles==null){
-       return this.alertSrvc.error("Please upload image");
+    if (this.selectedFiles == null) {
+      return this.alertSrvc.error("Please upload image");
     }
 
-        if (this.dateTimeForm.invalid) {
-       return this.alertSrvc.error("Please fill all fields");
-     }
+    if (this.dateTimeForm.invalid) {
+      return this.alertSrvc.error("Please fill all fields");
+    }
 
-     this.isLoading=true;
+    this.isLoading = true;
 
     let user = this.storageSer.getData('session');
-   let data = this.dateTimeForm.get('camera')?.value;
+    let data = this.dateTimeForm.get('camera')?.value;
     let time = this.getFormattedDateTime();
     data.time = time;
     data.color = 'green';
-    data.nativeApp=this.dateTimeForm.get('isActive')?.value;
-    data.id= uuid();
+    data.nativeApp = this.dateTimeForm.get('isActive')?.value;
+    data.id = uuid();
 
 
-    let file= this.selectedFiles?.file;
+    let file = this.selectedFiles?.file;
 
     this.camSer.screenshots(data, file).subscribe({
       next: (res: any) => {
         if (res.statusCode === 200) {
-              this.event_service
-                .write2Dispatchcustomevent({
+          this.event_service
+            .getEventFlowForCamera({
+              cameraId: data?.cameraId,
+              level: 1,
+              callingSystemDetail: 'vms',
+            })
+            .pipe(
+              map((res: any) => res?.data?.queueName ?? res?.data?.queue_name ?? ''),
+              switchMap((queueName: string) =>
+                this.event_service.writeVms_To_Console({
                   ...data,
-                  queue_name: this.storageSer.getData(2),
+                  queue_name: queueName,
                   actionTag: 'suspicious',
+                  eventTag: 'LIVE-VMS',
+                  eventType: 'Custom_Event',
                   userName: user?.UserName,
                   userLevelAlarmInfo: [
                     {
@@ -218,27 +230,29 @@ isLoading = false;
                     },
                   ],
                 })
-                .subscribe({
-                  next: (res) => {
+              )
+            )
+            .subscribe({
+              next: (res) => {
 
-                    this.dialogRef.close();
-                    this.alertSrvc.snackSuccess(
-                      'Event generated successfully!'
-                    );
-                       this.isLoading=false;
-                  },
-                  error: (err) => {
+                this.dialogRef.close();
+                this.alertSrvc.snackSuccess(
+                  'Event generated successfully!'
+                );
+                this.isLoading = false;
+              },
+              error: (err) => {
 
-                     this.isLoading=false;
-                    this.alertSrvc.snackError('Event generated failed!');
-                  },
-                });
+                this.isLoading = false;
+                this.alertSrvc.snackError('Event generated failed!');
+              },
+            });
 
         }
       },
       error: (err) => {
 
-         this.isLoading=false;
+        this.isLoading = false;
         this.alertSrvc.snackError('Event generated failed!');
       },
     });
